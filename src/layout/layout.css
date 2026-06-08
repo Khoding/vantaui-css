@@ -1,5 +1,5 @@
 /* ============================================================
-   BatOS — Layout system (responsive-first)
+   VantaUI — Layout system (responsive-first)
    Container, flex helpers, a 12-column mobile-first grid, a
    zero-config auto grid, and breakpoint show/hide utilities.
 
@@ -8,79 +8,79 @@
      l  64rem / 1024px     xl 80rem / 1280px
 
    Grid columns stack on the smallest screen and opt into columns at
-   larger breakpoints, the BeerCSS way: <div class="batos-grid">
-     <div class="batos-s12 batos-m6 batos-l4">…</div> …
+   larger breakpoints, the BeerCSS way: <div class="vui-grid">
+     <div class="vui-s12 vui-m6 vui-l4">…</div> …
    </div>
    ============================================================ */
 
 /* ---------- Container ---------- */
-.batos-container {
+.vui-container {
   inline-size: 100%;
   max-inline-size: var(--container-max);
   margin-inline: auto;
   padding-inline: var(--container-pad);
 }
-.batos-container--narrow {
+.vui-container--narrow {
   max-inline-size: var(--container-narrow);
 }
-.batos-container--fluid {
+.vui-container--fluid {
   max-inline-size: none;
 }
 
 /* ---------- Flex helpers ---------- */
-.batos-row {
+.vui-row {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--gutter);
 }
-.batos-row--wrap {
+.vui-row--wrap {
   flex-wrap: wrap;
 }
-.batos-col {
+.vui-col {
   display: flex;
   flex-direction: column;
 }
 /* Vertical rhythm stack */
-.batos-stack {
+.vui-stack {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
 }
 /* Horizontal cluster that wraps */
-.batos-cluster {
+.vui-cluster {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-4);
 }
-.batos-center {
+.vui-center {
   display: grid;
   place-items: center;
 }
-.batos-between {
+.vui-between {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-5);
 }
-.batos-spacer {
+.vui-spacer {
   flex: 1 1 auto;
 }
 
 /* ---------- Auto grid (zero-config, truly responsive) ---------- */
-/* Cards flow and wrap; control the min track via --batos-min. */
-.batos-autogrid {
+/* Cards flow and wrap; control the min track via --vui-min. */
+.vui-autogrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(var(--batos-min, 16rem), 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--vui-min, 16rem), 100%), 1fr));
   gap: var(--gutter);
 }
-.batos-autogrid--fit {
-  grid-template-columns: repeat(auto-fit, minmax(min(var(--batos-min, 16rem), 100%), 1fr));
+.vui-autogrid--fit {
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--vui-min, 16rem), 100%), 1fr));
 }
 
 /* ---------- 12-column grid ---------- */
-.batos-grid {
+.vui-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: var(--gutter);
@@ -88,173 +88,173 @@
 /* Direct children span full width by default (stack on mobile), then
    opt into smaller spans at each breakpoint. Span logic is centralised:
    the s/m/l classes only set a custom property. */
-.batos-grid > * {
+.vui-grid > * {
   grid-column: span var(--col-s, 12);
 }
 
-.batos-s1 {
+.vui-s1 {
   --col-s: 1;
 }
-.batos-s2 {
+.vui-s2 {
   --col-s: 2;
 }
-.batos-s3 {
+.vui-s3 {
   --col-s: 3;
 }
-.batos-s4 {
+.vui-s4 {
   --col-s: 4;
 }
-.batos-s5 {
+.vui-s5 {
   --col-s: 5;
 }
-.batos-s6 {
+.vui-s6 {
   --col-s: 6;
 }
-.batos-s7 {
+.vui-s7 {
   --col-s: 7;
 }
-.batos-s8 {
+.vui-s8 {
   --col-s: 8;
 }
-.batos-s9 {
+.vui-s9 {
   --col-s: 9;
 }
-.batos-s10 {
+.vui-s10 {
   --col-s: 10;
 }
-.batos-s11 {
+.vui-s11 {
   --col-s: 11;
 }
-.batos-s12 {
+.vui-s12 {
   --col-s: 12;
 }
 
-.batos-m1 {
+.vui-m1 {
   --col-m: 1;
 }
-.batos-m2 {
+.vui-m2 {
   --col-m: 2;
 }
-.batos-m3 {
+.vui-m3 {
   --col-m: 3;
 }
-.batos-m4 {
+.vui-m4 {
   --col-m: 4;
 }
-.batos-m5 {
+.vui-m5 {
   --col-m: 5;
 }
-.batos-m6 {
+.vui-m6 {
   --col-m: 6;
 }
-.batos-m7 {
+.vui-m7 {
   --col-m: 7;
 }
-.batos-m8 {
+.vui-m8 {
   --col-m: 8;
 }
-.batos-m9 {
+.vui-m9 {
   --col-m: 9;
 }
-.batos-m10 {
+.vui-m10 {
   --col-m: 10;
 }
-.batos-m11 {
+.vui-m11 {
   --col-m: 11;
 }
-.batos-m12 {
+.vui-m12 {
   --col-m: 12;
 }
 
-.batos-l1 {
+.vui-l1 {
   --col-l: 1;
 }
-.batos-l2 {
+.vui-l2 {
   --col-l: 2;
 }
-.batos-l3 {
+.vui-l3 {
   --col-l: 3;
 }
-.batos-l4 {
+.vui-l4 {
   --col-l: 4;
 }
-.batos-l5 {
+.vui-l5 {
   --col-l: 5;
 }
-.batos-l6 {
+.vui-l6 {
   --col-l: 6;
 }
-.batos-l7 {
+.vui-l7 {
   --col-l: 7;
 }
-.batos-l8 {
+.vui-l8 {
   --col-l: 8;
 }
-.batos-l9 {
+.vui-l9 {
   --col-l: 9;
 }
-.batos-l10 {
+.vui-l10 {
   --col-l: 10;
 }
-.batos-l11 {
+.vui-l11 {
   --col-l: 11;
 }
-.batos-l12 {
+.vui-l12 {
   --col-l: 12;
 }
 
 @media (min-width: 48rem) {
-  .batos-grid > * {
+  .vui-grid > * {
     grid-column: span var(--col-m, var(--col-s, 12));
   }
 }
 @media (min-width: 64rem) {
-  .batos-grid > * {
+  .vui-grid > * {
     grid-column: span var(--col-l, var(--col-m, var(--col-s, 12)));
   }
 }
 
 /* ---------- Breakpoint show/hide (hide-only — keeps natural display) ---------- */
 @media (max-width: 35.999rem) {
-  .batos-from-s {
+  .vui-from-s {
     display: none !important;
   }
 }
 @media (min-width: 36rem) {
-  .batos-until-s {
+  .vui-until-s {
     display: none !important;
   }
 }
 
 @media (max-width: 47.999rem) {
-  .batos-from-m {
+  .vui-from-m {
     display: none !important;
   }
 }
 @media (min-width: 48rem) {
-  .batos-until-m {
+  .vui-until-m {
     display: none !important;
   }
 }
 
 @media (max-width: 63.999rem) {
-  .batos-from-l {
+  .vui-from-l {
     display: none !important;
   }
 }
 @media (min-width: 64rem) {
-  .batos-until-l {
+  .vui-until-l {
     display: none !important;
   }
 }
 
 @media (max-width: 79.999rem) {
-  .batos-from-xl {
+  .vui-from-xl {
     display: none !important;
   }
 }
 @media (min-width: 80rem) {
-  .batos-until-xl {
+  .vui-until-xl {
     display: none !important;
   }
 }

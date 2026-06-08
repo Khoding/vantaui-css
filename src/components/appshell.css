@@ -1,12 +1,12 @@
 /* ============================================================
-   BatOS — App shell (responsive)
+   VantaUI — App shell (responsive)
    The tactical desktop layout: left rail + top bar + content stage.
    Mobile-first: on phones the rail drops to a bottom command bar and
    the bars stack; from the `m` breakpoint up it becomes the classic
    vertical rail beside a scrolling stage. Fills the viewport.
    ============================================================ */
 
-.batos-app {
+.vui-app {
   display: grid;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: 1fr;
@@ -22,7 +22,7 @@
 }
 
 /* ---------- Rail ---------- */
-.batos-rail {
+.vui-rail {
   display: flex;
   z-index: 3;
   grid-area: rail;
@@ -35,23 +35,23 @@
   border-block-start: var(--border-hair) solid var(--hairline);
   background-color: var(--bg-void);
 }
-.batos-rail__emblem {
+.vui-rail__emblem {
   display: none;
   inline-size: 38px;
   block-size: 38px;
   color: var(--accent);
   filter: drop-shadow(var(--glow-cyan-md));
 }
-.batos-rail__emblem img,
-.batos-rail__emblem svg {
+.vui-rail__emblem img,
+.vui-rail__emblem svg {
   inline-size: 100%;
   block-size: 100%;
 }
-.batos-rail__spacer {
+.vui-rail__spacer {
   display: none;
   flex: 1;
 }
-.batos-rail__item {
+.vui-rail__item {
   --bevel-sm: 6px;
   display: grid;
   position: relative;
@@ -68,15 +68,15 @@
     color var(--dur-fast) var(--ease-hud),
     background-color var(--dur-fast) var(--ease-hud);
 }
-.batos-rail__item:hover {
+.vui-rail__item:hover {
   background-color: color-mix(in srgb, var(--accent) 5%, transparent);
   color: var(--text-secondary);
 }
-.batos-rail__item--active {
+.vui-rail__item--active {
   background-color: color-mix(in srgb, var(--cyan-400) 12%, transparent);
   color: var(--accent);
 }
-.batos-rail__item--active::before {
+.vui-rail__item--active::before {
   position: absolute;
   block-size: 3px;
   inset-block-start: -8px;
@@ -88,7 +88,7 @@
 }
 
 /* ---------- Top bar ---------- */
-.batos-topbar {
+.vui-topbar {
   display: flex;
   z-index: 3;
   grid-area: topbar;
@@ -100,7 +100,7 @@
   border-block-end: var(--border-hair) solid var(--hairline);
   background-color: var(--bg-void);
 }
-.batos-topbar__eyebrow {
+.vui-topbar__eyebrow {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -111,14 +111,14 @@
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
 }
-.batos-topbar__eyebrow b {
+.vui-topbar__eyebrow b {
   color: var(--accent);
   font-weight: var(--fw-semibold);
 }
-.batos-topbar__spacer {
+.vui-topbar__spacer {
   flex: 1;
 }
-.batos-topbar__stat {
+.vui-topbar__stat {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -126,14 +126,14 @@
   font-size: var(--fs-xs);
   font-family: var(--font-mono);
 }
-.batos-topbar__clock {
+.vui-topbar__clock {
   color: var(--text-primary);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-md);
   font-family: var(--font-hud);
   letter-spacing: 0.04em;
 }
-.batos-topbar__user {
+.vui-topbar__user {
   --bevel-sm: 5px;
   display: grid;
   place-items: center;
@@ -149,7 +149,7 @@
 }
 
 /* ---------- Stage ---------- */
-.batos-stage {
+.vui-stage {
   position: relative;
   grid-area: stage;
   padding: var(--space-7);
@@ -158,21 +158,21 @@
   background-size: var(--grid-fine-size);
   background-color: var(--bg-base);
 }
-.batos-stage::before,
-.batos-stage::after {
+.vui-stage::before,
+.vui-stage::after {
   position: absolute;
   inset: 0;
   content: '';
   pointer-events: none;
 }
-.batos-stage::before {
+.vui-stage::before {
   background-image: var(--vignette);
 }
-.batos-stage::after {
+.vui-stage::after {
   background-image: var(--scanlines);
   opacity: 0.6;
 }
-.batos-stage__inner {
+.vui-stage__inner {
   z-index: 1;
   position: relative;
   max-inline-size: 74rem;
@@ -180,7 +180,7 @@
 }
 
 /* ---------- Screen header composite ---------- */
-.batos-screen-head {
+.vui-screen-head {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -188,7 +188,7 @@
   margin-block-end: var(--space-6);
   gap: var(--space-4);
 }
-.batos-screen-title {
+.vui-screen-title {
   margin: 0;
   color: var(--text-primary);
   font-weight: var(--fw-bold);
@@ -198,7 +198,7 @@
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
-.batos-screen-sub {
+.vui-screen-sub {
   margin-block-start: 8px;
   color: var(--text-muted);
   font-size: var(--fs-xs);
@@ -207,7 +207,7 @@
 
 /* ---------- Tablet and up: classic vertical rail ---------- */
 @media (min-width: 48rem) {
-  .batos-app {
+  .vui-app {
     grid-template-rows: 56px 1fr;
     grid-template-columns: 76px 1fr;
     grid-template-areas:
@@ -216,7 +216,7 @@
     block-size: 100dvh;
     min-block-size: 0;
   }
-  .batos-rail {
+  .vui-rail {
     flex-direction: column;
     justify-content: flex-start;
     padding-inline: 0;
@@ -225,21 +225,21 @@
     border-inline-end: var(--border-hair) solid var(--hairline);
     border-block-start: 0;
   }
-  .batos-rail__emblem {
+  .vui-rail__emblem {
     display: block;
     margin-block-end: 12px;
   }
-  .batos-rail__spacer {
+  .vui-rail__spacer {
     display: block;
   }
-  .batos-rail__item--active::before {
+  .vui-rail__item--active::before {
     inline-size: 3px;
     block-size: auto;
     inset-block: 10px;
     inset-inline: auto;
     inset-inline-start: -14px;
   }
-  .batos-stage {
+  .vui-stage {
     padding: var(--space-7);
   }
 }

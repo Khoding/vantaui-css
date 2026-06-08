@@ -1,17 +1,17 @@
 /* ============================================================
-   BatOS — Semantic element defaults (scoped to .batos)
+   VantaUI — Semantic element defaults (scoped to .vui)
    "Write proper HTML, get a tactical UI." Everything here is scoped
-   under the `.batos` root and authored at zero specificity via
-   :where(), so your app's own classes always win. Add class="batos"
+   under the `.vui` root and authored at zero specificity via
+   :where(), so your app's own classes always win. Add class="vui"
    to <body> (the Vue/Nuxt integration does this for you) and bare
    semantic markup comes alive — no classes required.
 
-   Elements that already carry an explicit batos-* component class are
+   Elements that already carry an explicit vui-* component class are
    excluded, so the class layer stays in full control when you opt in.
    ============================================================ */
 
 /* ---------- Headings → display / heading roles ---------- */
-:where(.batos h1) {
+:where(.vui h1) {
   color: var(--text-primary);
   font-weight: var(--fw-bold);
   font-size: var(--fs-3xl);
@@ -20,7 +20,7 @@
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
-:where(.batos h2) {
+:where(.vui h2) {
   color: var(--text-primary);
   font-weight: var(--fw-bold);
   font-size: var(--fs-2xl);
@@ -29,7 +29,7 @@
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
-:where(.batos h3) {
+:where(.vui h3) {
   color: var(--text-primary);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-xl);
@@ -38,7 +38,7 @@
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
-:where(.batos h4) {
+:where(.vui h4) {
   color: var(--text-secondary);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-lg);
@@ -47,7 +47,7 @@
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
 }
-:where(.batos h5, .batos h6) {
+:where(.vui h5, .vui h6) {
   color: var(--text-muted);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-xs);
@@ -57,42 +57,42 @@
 }
 
 /* ---------- Body copy ---------- */
-:where(.batos p, .batos li) {
+:where(.vui p, .vui li) {
   color: var(--text-secondary);
 }
-:where(.batos small) {
+:where(.vui small) {
   color: var(--text-muted);
   font-size: var(--fs-xs);
 }
-:where(.batos strong, .batos b) {
+:where(.vui strong, .vui b) {
   color: var(--text-primary);
   font-weight: var(--fw-semibold);
 }
-:where(.batos a:not([class*='batos-'])) {
+:where(.vui a:not([class*='vui-'])) {
   color: var(--accent);
   text-decoration: none;
   text-underline-offset: 3px;
 }
-:where(.batos a:not([class*='batos-']):hover) {
+:where(.vui a:not([class*='vui-']):hover) {
   color: var(--cyan-200);
   text-decoration: underline;
   text-decoration-color: var(--hairline-accent);
 }
 
 /* ---------- Mono / terminal text ---------- */
-:where(.batos code, .batos kbd, .batos samp, .batos pre) {
+:where(.vui code, .vui kbd, .vui samp, .vui pre) {
   color: var(--text-secondary);
   font-size: 0.9em;
   font-family: var(--font-mono);
 }
-:where(.batos code) {
+:where(.vui code) {
   padding-inline: 0.4em;
   padding-block: 0.1em;
   border: var(--border-hair) solid var(--hairline);
   background-color: var(--surface-inset);
   color: var(--cyan-200);
 }
-:where(.batos kbd) {
+:where(.vui kbd) {
   padding-inline: 0.45em;
   padding-block: 0.15em;
   border: var(--border-hair) solid var(--hairline-strong);
@@ -100,7 +100,7 @@
   box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.5);
   color: var(--text-primary);
 }
-:where(.batos pre) {
+:where(.vui pre) {
   padding: var(--space-5);
   overflow-x: auto;
   border: var(--border-hair) solid var(--hairline);
@@ -109,7 +109,7 @@
   line-height: var(--lh-mono);
   clip-path: var(--clip-chamfer);
 }
-:where(.batos pre code) {
+:where(.vui pre code) {
   padding: 0;
   border: 0;
   background: none;
@@ -117,14 +117,14 @@
 }
 
 /* ---------- Inline highlight ---------- */
-:where(.batos mark) {
+:where(.vui mark) {
   padding-inline: 0.25em;
   background-color: color-mix(in srgb, var(--accent) 20%, transparent);
   color: var(--cyan-50);
 }
 
 /* ---------- Rules / quotes ---------- */
-:where(.batos hr) {
+:where(.vui hr) {
   block-size: 1px;
   margin-block: var(--space-6);
   border: 0;
@@ -136,7 +136,7 @@
     transparent
   );
 }
-:where(.batos blockquote) {
+:where(.vui blockquote) {
   margin-inline: 0;
   padding-inline-start: var(--space-5);
   border-inline-start: var(--border-bold) solid var(--accent);
@@ -145,14 +145,14 @@
 }
 
 /* ---------- Lists ---------- */
-:where(.batos ul, .batos ol) {
+:where(.vui ul, .vui ol) {
   padding-inline-start: var(--space-6);
 }
-:where(.batos ul) {
+:where(.vui ul) {
   padding-inline-start: var(--space-5);
   list-style: none;
 }
-:where(.batos ul > li)::before {
+:where(.vui ul > li)::before {
   margin-inline-start: calc(-1 * var(--space-4));
   margin-inline-end: var(--space-3);
   content: '›';
@@ -160,7 +160,7 @@
 }
 
 /* ---------- Selection within a tactical surface ---------- */
-:where(.batos ::selection) {
+:where(.vui ::selection) {
   background-color: rgba(66, 227, 255, 0.28);
   color: var(--cyan-50);
 }

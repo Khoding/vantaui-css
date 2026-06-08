@@ -4,12 +4,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BatOS CSS — Tactical HUD design system</title>
+  <title>VantaUI CSS — Tactical HUD design system</title>
   <meta name="description"
-    content="BatOS CSS — a dark, angular, military-telemetry tactical HUD design system. Semantic-first CSS library; framework-agnostic with Vue & Nuxt adapters." />
+    content="VantaUI CSS — a dark, angular, military-telemetry tactical HUD design system. Semantic-first CSS library; framework-agnostic with Vue & Nuxt adapters." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
-  <link rel="stylesheet" href="../dist/batos.css" />
+  <link rel="stylesheet" href="../dist/vantaui.css" />
   <style>
     /* ---- Docs chrome (unlayered → always wins over the framework) ---- */
     html {
@@ -243,9 +243,9 @@
 
     /* Any bare card cluster a demo drops in flows responsively by default:
      as many ~13rem cards as fit, collapsing to a single full-width card. */
-    .doc-demo .batos-autogrid {
+    .doc-demo .vui-autogrid {
       inline-size: 100%;
-      --batos-min: 13rem;
+      --vui-min: 13rem;
     }
 
     .doc-demo--frame {
@@ -253,7 +253,7 @@
       display: block;
     }
 
-    .doc-demo--frame .batos-app {
+    .doc-demo--frame .vui-app {
       block-size: 440px;
       min-block-size: 0;
     }
@@ -453,7 +453,7 @@
   </style>
 </head>
 
-<body class="batos">
+<body class="vui">
   <button class="doc-menu-btn" id="doc-menu" aria-label="Toggle navigation"><i class="ti ti-menu-2"></i></button>
 
   <div class="doc-shell">
@@ -471,15 +471,15 @@
     <main class="doc-main">
       <header class="doc-hero">
         <div class="doc-hero__in">
-          <p class="batos-eyebrow">WayneTech Tactical Interface</p>
+          <p class="vui-eyebrow">WayneTech Tactical Interface</p>
           <h1>Bat<b>OS</b> CSS</h1>
           <p>A dark, angular, military-telemetry <strong>tactical HUD</strong> design system — as a semantic-first CSS
             library. Write proper HTML, get a HUD. Framework-agnostic, with first-class Vue &amp; Nuxt adapters and a
             zero-dependency JS layer.</p>
           <div class="doc-hero__meta">
-            <span class="batos-badge batos-badge--green batos-badge--dot">Zero-CLS fonts</span>
-            <span class="batos-badge batos-badge--cyan">Cascade layers</span>
-            <span class="batos-badge batos-badge--neutral">No build required</span>
+            <span class="vui-badge vui-badge--green vui-badge--dot">Zero-CLS fonts</span>
+            <span class="vui-badge vui-badge--cyan">Cascade layers</span>
+            <span class="vui-badge vui-badge--neutral">No build required</span>
           </div>
         </div>
       </header>
@@ -488,7 +488,7 @@
     </main>
   </div>
 
-  <script type="module" src="../js/batos.js"></script>
+  <script type="module" src="../js/vantaui.js"></script>
   <script type="module" src="gallery.js"></script>
   <script>
     (function () {

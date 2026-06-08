@@ -1,5 +1,5 @@
 /* ============================================================
-   BatOS palette → OKLCH generator.
+   VantaUI palette → OKLCH generator.
    Converts the hand-tuned sRGB palette to OKLCH so colour tokens
    can ship as `oklch(...)` (with a hex/rgba fallback). Run with:
      node scripts/palette-oklch.mjs

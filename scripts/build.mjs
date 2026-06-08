@@ -1,5 +1,5 @@
 /* ============================================================
-   BatOS build — bundle src/batos.css into dist/ with LightningCSS.
+   VantaUI build — bundle src/vantaui.css into dist/ with LightningCSS.
    Inlines the local @import graph, keeps cascade layers, adds vendor
    prefixes for the browserslist targets, and emits both a readable
    bundle and a minified one.
@@ -19,8 +19,8 @@ import {dirname, resolve} from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 const srcDir = resolve(root, 'src');
-const entry = resolve(srcDir, 'batos.css');
-const tmpEntry = resolve(srcDir, '__batos_build_entry.css');
+const entry = resolve(srcDir, 'vantaui.css');
+const tmpEntry = resolve(srcDir, '__vantaui_build_entry.css');
 const outDir = resolve(root, 'dist');
 
 // LightningCSS targets (major << 16 | minor << 8). This is the real feature
@@ -69,10 +69,10 @@ function build({minify, outFile}) {
   console.log(`✔ ${outFile.padEnd(16)} ${(out.length / 1024).toFixed(1)} kB`);
 }
 
-console.log('BatOS — building dist/ …');
+console.log('VantaUI — building dist/ …');
 try {
-  build({minify: false, outFile: 'batos.css'});
-  build({minify: true, outFile: 'batos.min.css'});
+  build({minify: false, outFile: 'vantaui.css'});
+  build({minify: true, outFile: 'vantaui.min.css'});
   console.log('Done.');
 } finally {
   rmSync(tmpEntry, {force: true});

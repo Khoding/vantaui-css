@@ -1,9 +1,9 @@
 /* ============================================================
-   BatOS — optional behaviours, classic-script build.
-   Same features as js/batos.js but as a plain <script> (no module),
+   VantaUI — optional behaviours, classic-script build.
+   Same features as js/vantaui.js but as a plain <script> (no module),
    so it works with a simple tag and even over file://:
-     <script src="batos.global.js"></script>
-   Exposes window.BatOS = { init, tabs, setValue } and auto-inits.
+     <script src="vantaui.global.js"></script>
+   Exposes window.vui = { init, tabs, setValue } and auto-inits.
    The CSS is fully usable without this file.
    ============================================================ */
 (function () {
@@ -13,8 +13,8 @@
   function tabs(root) {
     root = root || document;
     root.querySelectorAll('[role="tablist"]').forEach(function (list) {
-      if (list.dataset.batosTabsReady) return;
-      list.dataset.batosTabsReady = '1';
+      if (list.dataset.vuiTabsReady) return;
+      list.dataset.vuiTabsReady = '1';
       var tabEls = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
       var panelFor = function (tab) {
         var id = tab.getAttribute('aria-controls') || tab.dataset.tab;
@@ -94,7 +94,7 @@
 
   function clocks(root) {
     root = root || document;
-    var els = root.querySelectorAll('[data-batos-clock]');
+    var els = root.querySelectorAll('[data-vui-clock]');
     if (!els.length) return;
     var pad = function (n) {
       return String(n).padStart(2, '0');
@@ -107,8 +107,8 @@
       });
     };
     tick();
-    clearInterval(window.__batosClock);
-    window.__batosClock = setInterval(tick, 1000);
+    clearInterval(window.__vuiClock);
+    window.__vuiClock = setInterval(tick, 1000);
   }
 
   function init(root) {
@@ -117,7 +117,7 @@
     clocks(root);
   }
 
-  window.BatOS = {init: init, tabs: tabs, setValue: setValue};
+  window.vui = {init: init, tabs: tabs, setValue: setValue};
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {

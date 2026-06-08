@@ -1,5 +1,5 @@
 /* ============================================================
-   BatOS — Forms
+   VantaUI — Forms
    Native elements are styled directly, so semantic markup needs no
    wrappers: <input>, <textarea>, <select> become inset terminal
    fields; <input type=checkbox|radio> draw their own notched marks;
@@ -7,19 +7,19 @@
 
    A <label> that wraps a control (label :has(> input)) lays out as a
    stacked field; an inline label (checkbox/radio) lays out as a row.
-   Add a leading icon with .batos-field:has(svg).
+   Add a leading icon with .vui-field:has(svg).
    ============================================================ */
 
 /* ---------- Text-like fields ---------- */
 :where(
-  .batos
+  .vui
     input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='submit']):not(
       [type='button']
-    ):not([type='reset']):not([type='image']):not([type='color']):not([class*='batos-'])
+    ):not([type='reset']):not([type='image']):not([type='color']):not([class*='vui-'])
 ),
-:where(.batos textarea:not([class*='batos-'])),
-:where(.batos select:not([class*='batos-'])),
-.batos-input {
+:where(.vui textarea:not([class*='vui-'])),
+:where(.vui select:not([class*='vui-'])),
+.vui-input {
   --bevel-md: 8px;
   appearance: none;
   inline-size: 100%;
@@ -39,29 +39,29 @@
     border-color var(--dur-base) var(--ease-hud),
     box-shadow var(--dur-base) var(--ease-hud);
 }
-:where(.batos textarea) {
+:where(.vui textarea) {
   min-block-size: 6rem;
   line-height: var(--lh-mono);
   resize: vertical;
 }
-:where(.batos input::placeholder, .batos textarea::placeholder),
-.batos-input::placeholder {
+:where(.vui input::placeholder, .vui textarea::placeholder),
+.vui-input::placeholder {
   color: var(--text-faint);
 }
-:where(.batos input:focus, .batos textarea:focus, .batos select:focus),
-.batos-input:focus {
+:where(.vui input:focus, .vui textarea:focus, .vui select:focus),
+.vui-input:focus {
   border-color: var(--hairline-accent);
   box-shadow:
     var(--shadow-inset),
     0 0 18px -4px var(--accent-glow);
 }
-:where(.batos input:disabled, .batos textarea:disabled, .batos select:disabled),
-.batos-input:disabled {
+:where(.vui input:disabled, .vui textarea:disabled, .vui select:disabled),
+.vui-input:disabled {
   cursor: not-allowed;
   opacity: 0.45;
 }
-:where(.batos input[aria-invalid='true'], .batos textarea[aria-invalid='true']),
-.batos-input--invalid {
+:where(.vui input[aria-invalid='true'], .vui textarea[aria-invalid='true']),
+.vui-input--invalid {
   border-color: var(--red-500);
   box-shadow:
     var(--shadow-inset),
@@ -69,8 +69,8 @@
 }
 
 /* Custom select chevron (cyan) */
-:where(.batos select:not([multiple])),
-.batos-select {
+:where(.vui select:not([multiple])),
+.vui-select {
   padding-inline-end: 34px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2342e3ff' stroke-width='1.5'/%3E%3C/svg%3E");
   background-position: right 14px center;
@@ -78,16 +78,16 @@
 }
 
 /* ---------- Field wrapper (label + control + hint) ---------- */
-:where(.batos label:has(> input:not([type='checkbox']):not([type='radio']))),
-:where(.batos label:has(> textarea)),
-:where(.batos label:has(> select)),
-.batos-field {
+:where(.vui label:has(> input:not([type='checkbox']):not([type='radio']))),
+:where(.vui label:has(> textarea)),
+:where(.vui label:has(> select)),
+.vui-field {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-:where(.batos .batos-field__label),
-.batos-field > :where(span, .batos-field__label):first-child {
+:where(.vui .vui-field__label),
+.vui-field > :where(span, .vui-field__label):first-child {
   color: var(--text-muted);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-2xs);
@@ -95,17 +95,17 @@
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
-.batos-field__hint {
+.vui-field__hint {
   color: var(--text-faint);
   font-size: var(--fs-xs);
   font-family: var(--font-mono);
 }
-.batos-field__hint--err {
+.vui-field__hint--err {
   color: var(--red-400);
 }
 
 /* Input shell with a leading icon (detected via :has) */
-.batos-input-wrap {
+.vui-input-wrap {
   --bevel-md: 8px;
   display: flex;
   position: relative;
@@ -118,18 +118,18 @@
     border-color var(--dur-base) var(--ease-hud),
     box-shadow var(--dur-base) var(--ease-hud);
 }
-.batos-input-wrap:focus-within {
+.vui-input-wrap:focus-within {
   border-color: var(--hairline-accent);
   box-shadow:
     var(--shadow-inset),
     0 0 18px -4px var(--accent-glow);
 }
-.batos-input-wrap > :where(svg, i, .batos-input-wrap__icon) {
+.vui-input-wrap > :where(svg, i, .vui-input-wrap__icon) {
   flex: none;
   margin-inline-start: 12px;
   color: var(--text-muted);
 }
-.batos-input-wrap > input {
+.vui-input-wrap > input {
   border: 0;
   background: none;
   box-shadow: none;
@@ -137,9 +137,9 @@
 }
 
 /* ---------- Checkbox & radio (drawn on the element) ---------- */
-:where(.batos input[type='checkbox']:not([role='switch']):not([class*='batos-'])),
-:where(.batos input[type='radio']:not([class*='batos-'])),
-.batos-check {
+:where(.vui input[type='checkbox']:not([role='switch']):not([class*='vui-'])),
+:where(.vui input[type='radio']:not([class*='vui-'])),
+.vui-check {
   --bevel-sm: 4px;
   display: inline-grid;
   appearance: none;
@@ -154,9 +154,9 @@
   cursor: pointer;
   transition: all var(--dur-fast) var(--ease-hud);
 }
-:where(.batos input[type='checkbox']:not([role='switch']))::before,
-:where(.batos input[type='radio'])::before,
-.batos-check::before {
+:where(.vui input[type='checkbox']:not([role='switch']))::before,
+:where(.vui input[type='radio'])::before,
+.vui-check::before {
   content: '';
   --bevel-sm: 2px;
   inline-size: 10px;
@@ -168,37 +168,37 @@
   opacity: 0;
   transition: all var(--dur-fast) var(--ease-hud);
 }
-:where(.batos input[type='radio']),
-.batos-check--radio {
+:where(.vui input[type='radio']),
+.vui-check--radio {
   border-radius: var(--radius-pill);
   clip-path: none;
 }
-:where(.batos input[type='radio'])::before,
-.batos-check--radio::before {
+:where(.vui input[type='radio'])::before,
+.vui-check--radio::before {
   inline-size: 8px;
   block-size: 8px;
   border-radius: var(--radius-pill);
   clip-path: none;
 }
-:where(.batos input[type='checkbox']:checked, .batos input[type='radio']:checked),
-.batos-check:checked {
+:where(.vui input[type='checkbox']:checked, .vui input[type='radio']:checked),
+.vui-check:checked {
   border-color: var(--hairline-accent);
 }
-:where(.batos input[type='checkbox']:checked, .batos input[type='radio']:checked)::before,
-.batos-check:checked::before {
+:where(.vui input[type='checkbox']:checked, .vui input[type='radio']:checked)::before,
+.vui-check:checked::before {
   transform: scale(1);
   opacity: 1;
 }
-:where(.batos input[type='checkbox']:focus-visible, .batos input[type='radio']:focus-visible),
-.batos-check:focus-visible {
+:where(.vui input[type='checkbox']:focus-visible, .vui input[type='radio']:focus-visible),
+.vui-check:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
 /* Inline control labels: <label><input type=checkbox> Text</label> */
-:where(.batos label:has(> input[type='checkbox'])),
-:where(.batos label:has(> input[type='radio'])),
-.batos-check-label {
+:where(.vui label:has(> input[type='checkbox'])),
+:where(.vui label:has(> input[type='radio'])),
+.vui-check-label {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -210,8 +210,8 @@
 }
 
 /* ---------- Switch: <input type=checkbox role=switch> ---------- */
-:where(.batos input[type='checkbox'][role='switch']),
-.batos-switch {
+:where(.vui input[type='checkbox'][role='switch']),
+.vui-switch {
   appearance: none;
   position: relative;
   flex: none;
@@ -224,8 +224,8 @@
   cursor: pointer;
   transition: all var(--dur-base) var(--ease-hud);
 }
-:where(.batos input[type='checkbox'][role='switch'])::before,
-.batos-switch::before {
+:where(.vui input[type='checkbox'][role='switch'])::before,
+.vui-switch::before {
   position: absolute;
   inline-size: 16px;
   block-size: 16px;
@@ -236,40 +236,40 @@
   clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
   transition: all var(--dur-base) var(--ease-hud);
 }
-:where(.batos input[type='checkbox'][role='switch']:checked),
-.batos-switch:checked {
+:where(.vui input[type='checkbox'][role='switch']:checked),
+.vui-switch:checked {
   border-color: var(--hairline-accent);
   background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
   box-shadow: inset 0 0 12px -2px var(--accent-glow);
 }
-:where(.batos input[type='checkbox'][role='switch']:checked)::before,
-.batos-switch:checked::before {
+:where(.vui input[type='checkbox'][role='switch']:checked)::before,
+.vui-switch:checked::before {
   inset-inline-start: 26px;
   background-color: var(--cyan-400);
   box-shadow: var(--glow-cyan-md);
 }
-:where(.batos input[type='checkbox'][role='switch']:focus-visible),
-.batos-switch:focus-visible {
+:where(.vui input[type='checkbox'][role='switch']:focus-visible),
+.vui-switch:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
 /* ---------- Range slider ---------- */
-:where(.batos input[type='range']),
-.batos-range {
+:where(.vui input[type='range']),
+.vui-range {
   appearance: none;
   inline-size: 100%;
   background: none;
   cursor: pointer;
 }
-:where(.batos input[type='range'])::-webkit-slider-runnable-track,
-.batos-range::-webkit-slider-runnable-track {
+:where(.vui input[type='range'])::-webkit-slider-runnable-track,
+.vui-range::-webkit-slider-runnable-track {
   block-size: 6px;
   border: var(--border-hair) solid var(--hairline);
   background-color: var(--surface-inset);
 }
-:where(.batos input[type='range'])::-webkit-slider-thumb,
-.batos-range::-webkit-slider-thumb {
+:where(.vui input[type='range'])::-webkit-slider-thumb,
+.vui-range::-webkit-slider-thumb {
   appearance: none;
   inline-size: 14px;
   block-size: 16px;
@@ -278,14 +278,14 @@
   box-shadow: var(--glow-cyan-sm);
   clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
 }
-:where(.batos input[type='range'])::-moz-range-track,
-.batos-range::-moz-range-track {
+:where(.vui input[type='range'])::-moz-range-track,
+.vui-range::-moz-range-track {
   block-size: 6px;
   border: var(--border-hair) solid var(--hairline);
   background-color: var(--surface-inset);
 }
-:where(.batos input[type='range'])::-moz-range-thumb,
-.batos-range::-moz-range-thumb {
+:where(.vui input[type='range'])::-moz-range-thumb,
+.vui-range::-moz-range-thumb {
   inline-size: 14px;
   block-size: 16px;
   border: 0;
@@ -295,6 +295,6 @@
 }
 
 /* Accent for any native control we don't fully restyle */
-:where(.batos) {
+:where(.vui) {
   accent-color: var(--accent);
 }

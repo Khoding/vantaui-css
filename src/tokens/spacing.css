@@ -1,5 +1,5 @@
 /* ============================================================
-   BatOS — Spacing, Radii & Geometry
+   VantaUI — Spacing, Radii & Geometry
    The system is built on sharp angles. Corners are cut (chamfered),
    not rounded. Radii are near-zero by default; the "--bevel" tokens
    drive the diagonal corner cuts used everywhere via clip-path.
@@ -37,7 +37,7 @@
   --bevel-xl: 24px;
 
   /* Ready-made clip paths for chamfered corners.
-     Cut top-left + bottom-right (the BatOS default asymmetric cut). */
+     Cut top-left + bottom-right (the VantaUI default asymmetric cut). */
   --clip-chamfer: polygon(
     var(--bevel-md) 0,
     100% 0,

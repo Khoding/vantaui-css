@@ -1,13 +1,13 @@
 /* ============================================================
-   BatOS — Overlays & misc surfaces
+   VantaUI — Overlays & misc surfaces
    Native <dialog> as a chamfered modal with a scrim backdrop, a
    labelled divider, a tooltip, and a key/value readout row — small
    pieces that round out a HUD.
    ============================================================ */
 
 /* ---------- Modal: native <dialog> ---------- */
-:where(.batos dialog),
-.batos-dialog {
+:where(.vui dialog),
+.vui-dialog {
   --bevel-md: 12px;
   max-inline-size: min(92vw, 34rem);
   padding: 0;
@@ -19,13 +19,13 @@
   color: var(--text-primary);
   clip-path: var(--clip-chamfer);
 }
-:where(.batos dialog)::backdrop,
-.batos-dialog::backdrop {
+:where(.vui dialog)::backdrop,
+.vui-dialog::backdrop {
   backdrop-filter: blur(2px);
   background-color: var(--scrim);
 }
-:where(.batos dialog > header),
-.batos-dialog__head {
+:where(.vui dialog > header),
+.vui-dialog__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -34,13 +34,13 @@
   gap: var(--space-4);
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-:where(.batos dialog > :not(header):not(footer)),
-.batos-dialog__body {
+:where(.vui dialog > :not(header):not(footer)),
+.vui-dialog__body {
   padding-inline: var(--space-6);
   padding-block: var(--space-5);
 }
-:where(.batos dialog > footer),
-.batos-dialog__foot {
+:where(.vui dialog > footer),
+.vui-dialog__foot {
   display: flex;
   justify-content: flex-end;
   padding-inline: var(--space-6);
@@ -49,27 +49,27 @@
   border-block-start: var(--border-hair) solid var(--hairline);
 }
 
-/* ---------- Labelled divider: <div class="batos-divider" data-label="SECTOR"> ---------- */
-.batos-divider {
+/* ---------- Labelled divider: <div class="vui-divider" data-label="SECTOR"> ---------- */
+.vui-divider {
   display: flex;
   align-items: center;
   gap: var(--space-4);
   color: var(--text-faint);
 }
-.batos-divider::before,
-.batos-divider::after {
+.vui-divider::before,
+.vui-divider::after {
   flex: 1;
   block-size: 1px;
   background-image: linear-gradient(90deg, transparent, var(--hairline-strong));
   content: '';
 }
-.batos-divider::after {
+.vui-divider::after {
   background-image: linear-gradient(90deg, var(--hairline-strong), transparent);
 }
-.batos-divider[data-label]::before {
+.vui-divider[data-label]::before {
   content: none;
 }
-.batos-divider[data-label] {
+.vui-divider[data-label] {
   font-weight: var(--fw-semibold);
   font-size: var(--fs-2xs);
   font-family: var(--font-display);
@@ -77,11 +77,11 @@
   text-transform: uppercase;
 }
 
-/* ---------- Tooltip: any element + .batos-tooltip[data-tip] ---------- */
-.batos-tooltip {
+/* ---------- Tooltip: any element + .vui-tooltip[data-tip] ---------- */
+.vui-tooltip {
   position: relative;
 }
-.batos-tooltip::after {
+.vui-tooltip::after {
   z-index: 50;
   position: absolute;
   inline-size: max-content;
@@ -104,13 +104,13 @@
   pointer-events: none;
   transition: opacity var(--dur-fast) var(--ease-hud);
 }
-.batos-tooltip:hover::after,
-.batos-tooltip:focus-visible::after {
+.vui-tooltip:hover::after,
+.vui-tooltip:focus-visible::after {
   opacity: 1;
 }
 
 /* ---------- Key/value readout row ---------- */
-.batos-kv {
+.vui-kv {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -118,41 +118,41 @@
   gap: var(--space-4);
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-.batos-kv > :first-child {
+.vui-kv > :first-child {
   color: var(--text-muted);
   font-size: var(--fs-2xs);
   font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
-.batos-kv > :last-child {
+.vui-kv > :last-child {
   color: var(--text-primary);
   font-size: var(--fs-sm);
   font-family: var(--font-mono);
 }
 
-/* big stat readout: <div class="batos-stat"><b>98.6</b><span>Integrity</span></div> */
-.batos-stat {
+/* big stat readout: <div class="vui-stat"><b>98.6</b><span>Integrity</span></div> */
+.vui-stat {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-.batos-stat > b {
+.vui-stat > b {
   color: var(--text-primary);
   font-weight: var(--fw-bold);
   font-size: var(--fs-3xl);
   line-height: 1;
   font-family: var(--font-hud);
 }
-.batos-stat--signal > b {
+.vui-stat--signal > b {
   color: var(--accent);
   text-shadow: var(--text-glow-cyan);
 }
-.batos-stat--amber > b {
+.vui-stat--amber > b {
   color: var(--amber-500);
   text-shadow: var(--text-glow-amber);
 }
-.batos-stat > span {
+.vui-stat > span {
   color: var(--text-muted);
   font-size: var(--fs-2xs);
   font-family: var(--font-display);

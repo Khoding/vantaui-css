@@ -1,12 +1,12 @@
 /* ============================================================
-   BatOS — Nuxt 3 module.
+   VantaUI — Nuxt 3 module.
    nuxt.config.ts:
      export default defineNuxtConfig({
-       modules: ["batos-css/nuxt"],
-       batos: { behaviours: true, bodyClass: true }
+       modules: ["vui-css/nuxt"],
+       VantaUI: { behaviours: true, bodyClass: true }
      })
 
-   Registers the stylesheet, adds `.batos` to <body> (so semantic HTML
+   Registers the stylesheet, adds `.vui` to <body> (so semantic HTML
    is styled app-wide), and — client-side — boots the optional
    behaviours (tabs, animated meters, clock).
    ============================================================ */
@@ -15,8 +15,8 @@ import {defineNuxtModule, addPluginTemplate} from '@nuxt/kit';
 
 export default defineNuxtModule({
   meta: {
-    name: 'batos-css',
-    configKey: 'batos',
+    name: 'vui-css',
+    configKey: 'VantaUI',
     compatibility: {nuxt: '>=3.0.0'},
   },
   defaults: {
@@ -26,22 +26,22 @@ export default defineNuxtModule({
   },
   setup(options, nuxt) {
     if (options.css) {
-      nuxt.options.css.push('batos-css/dist/batos.min.css');
+      nuxt.options.css.push('vui-css/dist/vantaui.min.css');
     }
 
     if (options.bodyClass) {
       const head = (nuxt.options.app.head ||= {});
       const bodyAttrs = (head.bodyAttrs ||= {});
-      bodyAttrs.class = `${bodyAttrs.class ? bodyAttrs.class + ' ' : ''}batos`;
+      bodyAttrs.class = `${bodyAttrs.class ? bodyAttrs.class + ' ' : ''}VantaUI`;
     }
 
     if (options.behaviours) {
       addPluginTemplate({
-        filename: 'batos-behaviours.client.mjs',
+        filename: 'vui-behaviours.client.mjs',
         mode: 'client',
         getContents: () =>
           [
-            'import { init } from "batos-css/js";',
+            'import { init } from "vui-css/js";',
             'export default defineNuxtPlugin((nuxtApp) => {',
             "  nuxtApp.hook('app:mounted', () => init());",
             "  nuxtApp.hook('page:finish', () => init());",

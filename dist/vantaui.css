@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
-@layer batos.tokens {
+@layer vui.tokens {
   :root {
     --ink-1000: oklch(12.5% .016 245.5);
     --ink-900: oklch(14.7% .018 254.4);
@@ -173,7 +173,7 @@
     --focus-ring: 0 0 0 1.5px var(--bg-base), 0 0 0 3px var(--cyan-400), var(--glow-cyan-sm);
   }
 
-  @keyframes batos-flicker {
+  @keyframes vui-flicker {
     0%, 100% {
       opacity: 1;
     }
@@ -195,7 +195,7 @@
     }
   }
 
-  @keyframes batos-scan {
+  @keyframes vui-scan {
     from {
       transform: translateY(-100%);
     }
@@ -205,7 +205,7 @@
     }
   }
 
-  @keyframes batos-pulse {
+  @keyframes vui-pulse {
     0%, 100% {
       opacity: 1;
     }
@@ -215,7 +215,7 @@
     }
   }
 
-  @keyframes batos-sweep {
+  @keyframes vui-sweep {
     from {
       transform: rotate(0);
     }
@@ -235,7 +235,7 @@
   }
 }
 
-@layer batos.reset {
+@layer vui.reset {
   *, :before, :after {
     box-sizing: border-box;
   }
@@ -320,8 +320,8 @@
   }
 }
 
-@layer batos.base {
-  :where(.batos h1) {
+@layer vui.base {
+  :where(.vui h1) {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-3xl);
@@ -331,7 +331,7 @@
     text-transform: uppercase;
   }
 
-  :where(.batos h2) {
+  :where(.vui h2) {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-2xl);
@@ -341,7 +341,7 @@
     text-transform: uppercase;
   }
 
-  :where(.batos h3) {
+  :where(.vui h3) {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-xl);
@@ -351,7 +351,7 @@
     text-transform: uppercase;
   }
 
-  :where(.batos h4) {
+  :where(.vui h4) {
     color: var(--text-secondary);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-lg);
@@ -361,7 +361,7 @@
     text-transform: uppercase;
   }
 
-  :where(.batos h5, .batos h6) {
+  :where(.vui h5, .vui h6) {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-xs);
@@ -370,40 +370,40 @@
     text-transform: uppercase;
   }
 
-  :where(.batos p, .batos li) {
+  :where(.vui p, .vui li) {
     color: var(--text-secondary);
   }
 
-  :where(.batos small) {
+  :where(.vui small) {
     color: var(--text-muted);
     font-size: var(--fs-xs);
   }
 
-  :where(.batos strong, .batos b) {
+  :where(.vui strong, .vui b) {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
   }
 
-  :where(.batos a:not([class*="batos-"])) {
+  :where(.vui a:not([class*="vui-"])) {
     color: var(--accent);
     text-underline-offset: 3px;
     text-decoration: none;
   }
 
-  :where(.batos a:not([class*="batos-"]):hover) {
+  :where(.vui a:not([class*="vui-"]):hover) {
     color: var(--cyan-200);
     text-decoration: underline;
     -webkit-text-decoration-color: var(--hairline-accent);
     text-decoration-color: var(--hairline-accent);
   }
 
-  :where(.batos code, .batos kbd, .batos samp, .batos pre) {
+  :where(.vui code, .vui kbd, .vui samp, .vui pre) {
     color: var(--text-secondary);
     font-size: .9em;
     font-family: var(--font-mono);
   }
 
-  :where(.batos code) {
+  :where(.vui code) {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     color: var(--cyan-200);
@@ -411,7 +411,7 @@
     padding-inline: .4em;
   }
 
-  :where(.batos kbd) {
+  :where(.vui kbd) {
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: var(--surface-panel);
     color: var(--text-primary);
@@ -420,7 +420,7 @@
     box-shadow: inset 0 -2px #00000080;
   }
 
-  :where(.batos pre) {
+  :where(.vui pre) {
     padding: var(--space-5);
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
@@ -430,20 +430,20 @@
     overflow-x: auto;
   }
 
-  :where(.batos pre code) {
+  :where(.vui pre code) {
     color: inherit;
     background: none;
     border: 0;
     padding: 0;
   }
 
-  :where(.batos mark) {
+  :where(.vui mark) {
     background-color: color-mix(in srgb, var(--accent) 20%, transparent);
     color: var(--cyan-50);
     padding-inline: .25em;
   }
 
-  :where(.batos hr) {
+  :where(.vui hr) {
     block-size: 1px;
     margin-block: var(--space-6);
     background-image: linear-gradient(90deg,
@@ -454,7 +454,7 @@
     border: 0;
   }
 
-  :where(.batos blockquote) {
+  :where(.vui blockquote) {
     border-inline-start: var(--border-bold) solid var(--accent);
     color: var(--text-secondary);
     margin-inline: 0;
@@ -462,16 +462,16 @@
     font-style: normal;
   }
 
-  :where(.batos ul, .batos ol) {
+  :where(.vui ul, .vui ol) {
     padding-inline-start: var(--space-6);
   }
 
-  :where(.batos ul) {
+  :where(.vui ul) {
     padding-inline-start: var(--space-5);
     list-style: none;
   }
 
-  :where(.batos ul > li):before {
+  :where(.vui ul > li):before {
     content: "›";
     color: var(--accent);
     margin-inline-start: calc(-1 * var(--space-4));
@@ -483,7 +483,7 @@
     background-color: #42e3ff47;
   }
 
-  .batos-display {
+  .vui-display {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--text-display-size);
@@ -493,7 +493,7 @@
     text-transform: uppercase;
   }
 
-  .batos-title {
+  .vui-title {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--text-title-size);
@@ -503,7 +503,7 @@
     text-transform: uppercase;
   }
 
-  .batos-heading {
+  .vui-heading {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
     font-size: var(--text-heading-size);
@@ -513,14 +513,14 @@
     text-transform: uppercase;
   }
 
-  .batos-mono {
+  .vui-mono {
     color: var(--text-secondary);
     font-size: var(--text-mono-size);
     line-height: var(--lh-mono);
     font-family: var(--font-mono);
   }
 
-  .batos-readout {
+  .vui-readout {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-3xl);
@@ -529,7 +529,7 @@
     letter-spacing: var(--ls-wide);
   }
 
-  .batos-label, .batos-eyebrow {
+  .vui-label, .vui-eyebrow {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -538,36 +538,36 @@
     text-transform: uppercase;
   }
 
-  .batos-eyebrow {
+  .vui-eyebrow {
     align-items: center;
     gap: 8px;
     display: inline-flex;
   }
 
-  .batos-eyebrow:before {
+  .vui-eyebrow:before {
     content: "//";
     color: var(--accent);
     letter-spacing: 0;
   }
 
-  .batos-signal {
+  .vui-signal {
     color: var(--text-signal);
     text-shadow: var(--text-glow-cyan);
   }
 
-  .batos-chamfer {
+  .vui-chamfer {
     clip-path: var(--clip-chamfer);
   }
 
-  .batos-notch {
+  .vui-notch {
     clip-path: var(--clip-notch);
   }
 
-  .batos-brackets {
+  .vui-brackets {
     position: relative;
   }
 
-  .batos-brackets:before, .batos-brackets:after {
+  .vui-brackets:before, .vui-brackets:after {
     border: var(--border-thin) solid var(--hairline-accent);
     content: "";
     pointer-events: none;
@@ -576,21 +576,21 @@
     position: absolute;
   }
 
-  .batos-brackets:before {
+  .vui-brackets:before {
     border-block-end: 0;
     border-inline-end: 0;
     inset-block-start: 0;
     inset-inline-start: 0;
   }
 
-  .batos-brackets:after {
+  .vui-brackets:after {
     border-block-start: 0;
     border-inline-start: 0;
     inset-block-end: 0;
     inset-inline-end: 0;
   }
 
-  .batos-rule {
+  .vui-rule {
     background-image: linear-gradient(90deg,
     transparent,
     var(--hairline-strong) 12%,
@@ -601,361 +601,361 @@
     margin-block: 0;
   }
 
-  .batos-bg-grid {
+  .vui-bg-grid {
     background-image: var(--grid-fine);
     background-size: var(--grid-fine-size);
     background-color: var(--bg-base);
   }
 
-  .batos-bg-scan {
+  .vui-bg-scan {
     background-image: var(--scanlines);
     background-color: var(--bg-base);
   }
 
-  .batos-bg-hud {
+  .vui-bg-hud {
     background-image: var(--grid-fine);
     background-size: var(--grid-fine-size);
     background-color: var(--bg-base);
     position: relative;
   }
 
-  .batos-bg-hud:before, .batos-bg-hud:after {
+  .vui-bg-hud:before, .vui-bg-hud:after {
     content: "";
     pointer-events: none;
     position: absolute;
     inset: 0;
   }
 
-  .batos-bg-hud:before {
+  .vui-bg-hud:before {
     background-image: var(--vignette);
   }
 
-  .batos-bg-hud:after {
+  .vui-bg-hud:after {
     background-image: var(--scanlines);
     opacity: .6;
   }
 
-  .batos-dot {
+  .vui-dot {
     border-radius: var(--radius-pill);
     background-color: var(--status-online);
     block-size: 7px;
     inline-size: 7px;
     box-shadow: var(--glow-green-md);
-    animation: batos-pulse 2.4s var(--ease-inout) infinite;
+    animation: vui-pulse 2.4s var(--ease-inout) infinite;
     flex: none;
     display: inline-block;
   }
 
-  .batos-dot--warn {
+  .vui-dot--warn {
     background-color: var(--status-warn);
     box-shadow: var(--glow-amber-md);
   }
 
-  .batos-dot--threat {
+  .vui-dot--threat {
     background-color: var(--status-threat);
     box-shadow: var(--glow-red-md);
   }
 
-  .batos-dot--cyan {
+  .vui-dot--cyan {
     background-color: var(--accent);
     box-shadow: var(--glow-cyan-md);
   }
 
-  .batos-dot--idle {
+  .vui-dot--idle {
     background-color: var(--text-muted);
     box-shadow: none;
     animation: none;
   }
 }
 
-@layer batos.layout {
-  .batos-container {
+@layer vui.layout {
+  .vui-container {
     inline-size: 100%;
     max-inline-size: var(--container-max);
     padding-inline: var(--container-pad);
     margin-inline: auto;
   }
 
-  .batos-container--narrow {
+  .vui-container--narrow {
     max-inline-size: var(--container-narrow);
   }
 
-  .batos-container--fluid {
+  .vui-container--fluid {
     max-inline-size: none;
   }
 
-  .batos-row {
+  .vui-row {
     align-items: center;
     gap: var(--gutter);
     flex-direction: row;
     display: flex;
   }
 
-  .batos-row--wrap {
+  .vui-row--wrap {
     flex-wrap: wrap;
   }
 
-  .batos-col {
+  .vui-col {
     flex-direction: column;
     display: flex;
   }
 
-  .batos-stack {
+  .vui-stack {
     gap: var(--space-5);
     flex-direction: column;
     display: flex;
   }
 
-  .batos-cluster {
+  .vui-cluster {
     align-items: center;
     gap: var(--space-4);
     flex-wrap: wrap;
     display: flex;
   }
 
-  .batos-center {
+  .vui-center {
     place-items: center;
     display: grid;
   }
 
-  .batos-between {
+  .vui-between {
     justify-content: space-between;
     align-items: center;
     gap: var(--space-5);
     display: flex;
   }
 
-  .batos-spacer {
+  .vui-spacer {
     flex: auto;
   }
 
-  .batos-autogrid {
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--batos-min, 16rem), 100%), 1fr));
+  .vui-autogrid {
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--vui-min, 16rem), 100%), 1fr));
     gap: var(--gutter);
     display: grid;
   }
 
-  .batos-autogrid--fit {
-    grid-template-columns: repeat(auto-fit, minmax(min(var(--batos-min, 16rem), 100%), 1fr));
+  .vui-autogrid--fit {
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--vui-min, 16rem), 100%), 1fr));
   }
 
-  .batos-grid {
+  .vui-grid {
     gap: var(--gutter);
     grid-template-columns: repeat(12, minmax(0, 1fr));
     display: grid;
   }
 
-  .batos-grid > * {
+  .vui-grid > * {
     grid-column: span var(--col-s, 12);
   }
 
-  .batos-s1 {
+  .vui-s1 {
     --col-s: 1;
   }
 
-  .batos-s2 {
+  .vui-s2 {
     --col-s: 2;
   }
 
-  .batos-s3 {
+  .vui-s3 {
     --col-s: 3;
   }
 
-  .batos-s4 {
+  .vui-s4 {
     --col-s: 4;
   }
 
-  .batos-s5 {
+  .vui-s5 {
     --col-s: 5;
   }
 
-  .batos-s6 {
+  .vui-s6 {
     --col-s: 6;
   }
 
-  .batos-s7 {
+  .vui-s7 {
     --col-s: 7;
   }
 
-  .batos-s8 {
+  .vui-s8 {
     --col-s: 8;
   }
 
-  .batos-s9 {
+  .vui-s9 {
     --col-s: 9;
   }
 
-  .batos-s10 {
+  .vui-s10 {
     --col-s: 10;
   }
 
-  .batos-s11 {
+  .vui-s11 {
     --col-s: 11;
   }
 
-  .batos-s12 {
+  .vui-s12 {
     --col-s: 12;
   }
 
-  .batos-m1 {
+  .vui-m1 {
     --col-m: 1;
   }
 
-  .batos-m2 {
+  .vui-m2 {
     --col-m: 2;
   }
 
-  .batos-m3 {
+  .vui-m3 {
     --col-m: 3;
   }
 
-  .batos-m4 {
+  .vui-m4 {
     --col-m: 4;
   }
 
-  .batos-m5 {
+  .vui-m5 {
     --col-m: 5;
   }
 
-  .batos-m6 {
+  .vui-m6 {
     --col-m: 6;
   }
 
-  .batos-m7 {
+  .vui-m7 {
     --col-m: 7;
   }
 
-  .batos-m8 {
+  .vui-m8 {
     --col-m: 8;
   }
 
-  .batos-m9 {
+  .vui-m9 {
     --col-m: 9;
   }
 
-  .batos-m10 {
+  .vui-m10 {
     --col-m: 10;
   }
 
-  .batos-m11 {
+  .vui-m11 {
     --col-m: 11;
   }
 
-  .batos-m12 {
+  .vui-m12 {
     --col-m: 12;
   }
 
-  .batos-l1 {
+  .vui-l1 {
     --col-l: 1;
   }
 
-  .batos-l2 {
+  .vui-l2 {
     --col-l: 2;
   }
 
-  .batos-l3 {
+  .vui-l3 {
     --col-l: 3;
   }
 
-  .batos-l4 {
+  .vui-l4 {
     --col-l: 4;
   }
 
-  .batos-l5 {
+  .vui-l5 {
     --col-l: 5;
   }
 
-  .batos-l6 {
+  .vui-l6 {
     --col-l: 6;
   }
 
-  .batos-l7 {
+  .vui-l7 {
     --col-l: 7;
   }
 
-  .batos-l8 {
+  .vui-l8 {
     --col-l: 8;
   }
 
-  .batos-l9 {
+  .vui-l9 {
     --col-l: 9;
   }
 
-  .batos-l10 {
+  .vui-l10 {
     --col-l: 10;
   }
 
-  .batos-l11 {
+  .vui-l11 {
     --col-l: 11;
   }
 
-  .batos-l12 {
+  .vui-l12 {
     --col-l: 12;
   }
 
   @media (width >= 48rem) {
-    .batos-grid > * {
+    .vui-grid > * {
       grid-column: span var(--col-m, var(--col-s, 12));
     }
   }
 
   @media (width >= 64rem) {
-    .batos-grid > * {
+    .vui-grid > * {
       grid-column: span var(--col-l, var(--col-m, var(--col-s, 12)));
     }
   }
 
   @media (width <= 35.999rem) {
-    .batos-from-s {
+    .vui-from-s {
       display: none !important;
     }
   }
 
   @media (width >= 36rem) {
-    .batos-until-s {
+    .vui-until-s {
       display: none !important;
     }
   }
 
   @media (width <= 47.999rem) {
-    .batos-from-m {
+    .vui-from-m {
       display: none !important;
     }
   }
 
   @media (width >= 48rem) {
-    .batos-until-m {
+    .vui-until-m {
       display: none !important;
     }
   }
 
   @media (width <= 63.999rem) {
-    .batos-from-l {
+    .vui-from-l {
       display: none !important;
     }
   }
 
   @media (width >= 64rem) {
-    .batos-until-l {
+    .vui-until-l {
       display: none !important;
     }
   }
 
   @media (width <= 79.999rem) {
-    .batos-from-xl {
+    .vui-from-xl {
       display: none !important;
     }
   }
 
   @media (width >= 80rem) {
-    .batos-until-xl {
+    .vui-until-xl {
       display: none !important;
     }
   }
 }
 
-@layer batos.components {
-  :where(.batos button:not([class*="batos-"]):not([role="tab"]):not([role="switch"])), .batos-btn, :where([class*="batos-btn--"]:not(.batos-btn--icon)) {
+@layer vui.components {
+  :where(.vui button:not([class*="vui-"]):not([role="tab"]):not([role="switch"])), .vui-btn, :where([class*="vui-btn--"]:not(.vui-btn--icon)) {
     --_accent: var(--cyan-400);
     --_glow: var(--glow-cyan-md);
     --bevel-md: 10px;
@@ -986,91 +986,91 @@
     position: relative;
   }
 
-  :where(.batos button:not([class*="batos-"]):hover), .batos-btn:hover, :where([class*="batos-btn--"]:not(.batos-btn--icon):hover) {
+  :where(.vui button:not([class*="vui-"]):hover), .vui-btn:hover, :where([class*="vui-btn--"]:not(.vui-btn--icon):hover) {
     background-color: color-mix(in srgb, var(--_accent) 18%, transparent);
     box-shadow: var(--_glow);
     color: var(--cyan-200);
   }
 
-  :where(.batos button:not([class*="batos-"]):active), .batos-btn:active, :where([class*="batos-btn--"]:not(.batos-btn--icon):active) {
+  :where(.vui button:not([class*="vui-"]):active), .vui-btn:active, :where([class*="vui-btn--"]:not(.vui-btn--icon):active) {
     transform: translateY(1px);
   }
 
-  :where(.batos button:not([class*="batos-"]):focus-visible), .batos-btn:focus-visible, :where([class*="batos-btn--"]:not(.batos-btn--icon):focus-visible) {
+  :where(.vui button:not([class*="vui-"]):focus-visible), .vui-btn:focus-visible, :where([class*="vui-btn--"]:not(.vui-btn--icon):focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.batos button[type="submit"]:not([class*="batos-"])), .batos-btn--primary {
+  :where(.vui button[type="submit"]:not([class*="vui-"])), .vui-btn--primary {
     background-color: var(--_accent);
     box-shadow: var(--_glow);
     color: var(--ink-900);
   }
 
-  :where(.batos button[type="submit"]:not([class*="batos-"]):hover), .batos-btn--primary:hover {
+  :where(.vui button[type="submit"]:not([class*="vui-"]):hover), .vui-btn--primary:hover {
     background-color: var(--cyan-200);
     box-shadow: var(--glow-cyan-lg);
     color: var(--ink-900);
   }
 
-  .batos-btn--ghost {
+  .vui-btn--ghost {
     color: var(--text-secondary);
     letter-spacing: var(--ls-wider);
     background-color: #0000;
     border-color: #0000;
   }
 
-  .batos-btn--ghost:hover {
+  .vui-btn--ghost:hover {
     background-color: color-mix(in srgb, var(--accent) 6%, transparent);
     box-shadow: none;
     color: var(--_accent);
   }
 
-  .batos-btn--secondary {
+  .vui-btn--secondary {
     border-color: var(--_accent);
     background-color: color-mix(in srgb, var(--_accent) 8%, transparent);
     color: var(--_accent);
   }
 
-  :where(.batos button[data-tone="amber"]), .batos-btn--amber {
+  :where(.vui button[data-tone="amber"]), .vui-btn--amber {
     --_accent: var(--amber-500);
     --_glow: var(--glow-amber-md);
   }
 
-  :where(.batos button[data-tone="danger"], .batos button[data-tone="threat"]), .batos-btn--danger {
+  :where(.vui button[data-tone="danger"], .vui button[data-tone="threat"]), .vui-btn--danger {
     --_accent: var(--red-500);
     --_glow: var(--glow-red-md);
   }
 
-  :where(.batos button[data-tone="secure"]), .batos-btn--secure {
+  :where(.vui button[data-tone="secure"]), .vui-btn--secure {
     --_accent: var(--green-500);
     --_glow: var(--glow-green-md);
   }
 
-  .batos-btn--danger.batos-btn--primary {
+  .vui-btn--danger.vui-btn--primary {
     color: var(--cyan-50);
   }
 
-  :where(.batos button[data-size="sm"]), .batos-btn--sm {
+  :where(.vui button[data-size="sm"]), .vui-btn--sm {
     font-size: var(--fs-xs);
     --bevel-md: 7px;
     padding-block: 7px;
     padding-inline: 14px;
   }
 
-  :where(.batos button[data-size="lg"]), .batos-btn--lg {
+  :where(.vui button[data-size="lg"]), .vui-btn--lg {
     font-size: var(--fs-base);
     --bevel-md: 12px;
     padding-block: 15px;
     padding-inline: 30px;
   }
 
-  .batos-btn--block {
+  .vui-btn--block {
     inline-size: 100%;
     display: flex;
   }
 
-  :where(.batos button:not([class*="batos-"]):has( > svg:only-child)), :where(.batos button:not([class*="batos-"]):has( > i:only-child)), .batos-iconbtn, .batos-btn--icon {
+  :where(.vui button:not([class*="vui-"]):has( > svg:only-child)), :where(.vui button:not([class*="vui-"]):has( > i:only-child)), .vui-iconbtn, .vui-btn--icon {
     --bevel-sm: 6px;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: color-mix(in srgb, var(--cyan-400) 6%, transparent);
@@ -1087,44 +1087,44 @@
     display: inline-flex;
   }
 
-  :where(.batos button:not([class*="batos-"]):has( > svg:only-child):hover), :where(.batos button:not([class*="batos-"]):has( > i:only-child):hover), .batos-iconbtn:hover, .batos-btn--icon:hover {
+  :where(.vui button:not([class*="vui-"]):has( > svg:only-child):hover), :where(.vui button:not([class*="vui-"]):has( > i:only-child):hover), .vui-iconbtn:hover, .vui-btn--icon:hover {
     border-color: var(--hairline-accent);
     background-color: color-mix(in srgb, var(--cyan-400) 14%, transparent);
     box-shadow: var(--glow-cyan-sm);
     color: var(--accent);
   }
 
-  .batos-iconbtn:active, .batos-btn--icon:active {
+  .vui-iconbtn:active, .vui-btn--icon:active {
     transform: translateY(1px);
   }
 
-  .batos-iconbtn:focus-visible, .batos-btn--icon:focus-visible {
+  .vui-iconbtn:focus-visible, .vui-btn--icon:focus-visible {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  .batos-iconbtn--active, .batos-btn--icon[aria-pressed="true"] {
+  .vui-iconbtn--active, .vui-btn--icon[aria-pressed="true"] {
     border-color: var(--hairline-accent);
     background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
     box-shadow: var(--glow-cyan-sm);
     color: var(--accent);
   }
 
-  .batos-iconbtn--sm {
+  .vui-iconbtn--sm {
     block-size: 30px;
     inline-size: 30px;
     font-size: var(--fs-sm);
     --bevel-sm: 5px;
   }
 
-  .batos-iconbtn--lg {
+  .vui-iconbtn--lg {
     block-size: 46px;
     inline-size: 46px;
     font-size: var(--fs-lg);
     --bevel-sm: 7px;
   }
 
-  :where(.batos button:disabled), .batos-btn[disabled], .batos-btn--disabled, .batos-iconbtn[disabled] {
+  :where(.vui button:disabled), .vui-btn[disabled], .vui-btn--disabled, .vui-iconbtn[disabled] {
     box-shadow: none;
     cursor: not-allowed;
     filter: saturate(.4);
@@ -1132,13 +1132,13 @@
     transform: none;
   }
 
-  .batos-btn-group {
+  .vui-btn-group {
     gap: var(--space-3);
     flex-wrap: wrap;
     display: inline-flex;
   }
 
-  :where(.batos article:not([class*="batos-"])), .batos-panel, :where([class*="batos-panel--"]:not([class*="batos-panel__"])) {
+  :where(.vui article:not([class*="vui-"])), .vui-panel, :where([class*="vui-panel--"]:not([class*="vui-panel__"])) {
     --bevel-md: 10px;
     padding: var(--space-5);
     border: var(--border-hair) solid var(--hairline);
@@ -1150,7 +1150,7 @@
     position: relative;
   }
 
-  :where(.batos article:not([class*="batos-"]) > header), .batos-panel__head {
+  :where(.vui article:not([class*="vui-"]) > header), .vui-panel__head {
     margin: calc(-1 * var(--space-5));
     padding-inline: var(--space-5);
     justify-content: space-between;
@@ -1162,7 +1162,7 @@
     display: flex;
   }
 
-  :where(.batos article:not([class*="batos-"]) > footer), .batos-panel__foot {
+  :where(.vui article:not([class*="vui-"]) > footer), .vui-panel__foot {
     margin: calc(-1 * var(--space-5));
     padding-inline: var(--space-5);
     justify-content: flex-end;
@@ -1174,7 +1174,7 @@
     display: flex;
   }
 
-  .batos-panel__eyebrow {
+  .vui-panel__eyebrow {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -1186,55 +1186,55 @@
     display: inline-flex;
   }
 
-  .batos-panel__eyebrow:before {
+  .vui-panel__eyebrow:before {
     content: "//";
     color: var(--accent);
   }
 
-  .batos-panel__aside {
+  .vui-panel__aside {
     color: var(--text-faint);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
   }
 
-  .batos-panel__body {
+  .vui-panel__body {
     padding: var(--space-5);
   }
 
-  .batos-panel:has( > .batos-panel__head), .batos-panel:has( > .batos-panel__body) {
+  .vui-panel:has( > .vui-panel__head), .vui-panel:has( > .vui-panel__body) {
     padding: 0;
   }
 
-  .batos-panel:has( > .batos-panel__head) > .batos-panel__head {
+  .vui-panel:has( > .vui-panel__head) > .vui-panel__head {
     margin: 0;
   }
 
-  .batos-panel--raised {
+  .vui-panel--raised {
     background-color: var(--surface-panel-2);
     box-shadow: var(--shadow-raised);
   }
 
-  .batos-panel--inset {
+  .vui-panel--inset {
     background-color: var(--surface-inset);
     box-shadow: var(--shadow-inset);
   }
 
-  .batos-panel--flat {
+  .vui-panel--flat {
     box-shadow: none;
   }
 
-  .batos-panel--glow, :where(.batos article[data-glow]) {
+  .vui-panel--glow, :where(.vui article[data-glow]) {
     border-color: var(--hairline-accent);
     box-shadow: var(--shadow-panel),
     0 0 24px -6px var(--accent-glow);
   }
 
-  .batos-panel--notch {
+  .vui-panel--notch {
     --bevel-sm: 8px;
     clip-path: var(--clip-notch);
   }
 
-  .batos-panel--brackets:before, .batos-panel--brackets:after, :where(.batos article[data-brackets]):before, :where(.batos article[data-brackets]):after {
+  .vui-panel--brackets:before, .vui-panel--brackets:after, :where(.vui article[data-brackets]):before, :where(.vui article[data-brackets]):after {
     border: var(--border-bold) solid var(--accent);
     content: "";
     block-size: 14px;
@@ -1244,21 +1244,21 @@
     position: absolute;
   }
 
-  .batos-panel--brackets:before, :where(.batos article[data-brackets]):before {
+  .vui-panel--brackets:before, :where(.vui article[data-brackets]):before {
     border-block-end: 0;
     border-inline-end: 0;
     inset-block-start: 6px;
     inset-inline-start: 6px;
   }
 
-  .batos-panel--brackets:after, :where(.batos article[data-brackets]):after {
+  .vui-panel--brackets:after, :where(.vui article[data-brackets]):after {
     border-block-start: 0;
     border-inline-start: 0;
     inset-block-end: 6px;
     inset-inline-end: 6px;
   }
 
-  .batos-badge, :where(.batos [data-badge]), :where([class*="batos-badge--"]) {
+  .vui-badge, :where(.vui [data-badge]), :where([class*="vui-badge--"]) {
     --_c: var(--cyan-400);
     --bevel-sm: 4px;
     border: var(--border-hair) solid currentColor;
@@ -1279,11 +1279,11 @@
     display: inline-flex;
   }
 
-  .batos-badge > .batos-badge__dot, .batos-badge:before {
+  .vui-badge > .vui-badge__dot, .vui-badge:before {
     flex: none;
   }
 
-  .batos-badge--dot:before {
+  .vui-badge--dot:before {
     border-radius: var(--radius-pill);
     content: "";
     background-color: currentColor;
@@ -1292,58 +1292,58 @@
     box-shadow: 0 0 6px;
   }
 
-  .batos-badge--solid {
+  .vui-badge--solid {
     color: var(--_c);
     background-color: currentColor;
     border-color: currentColor;
   }
 
-  .batos-badge--solid > * {
+  .vui-badge--solid > * {
     color: var(--ink-900);
   }
 
-  .batos-badge--cyan, :where(.batos [data-badge][data-tone="cyan"]) {
+  .vui-badge--cyan, :where(.vui [data-badge][data-tone="cyan"]) {
     --_c: var(--cyan-400);
     color: var(--cyan-400);
   }
 
-  .batos-badge--amber, :where(.batos [data-badge][data-tone="amber"]) {
+  .vui-badge--amber, :where(.vui [data-badge][data-tone="amber"]) {
     --_c: var(--amber-500);
     color: var(--amber-500);
   }
 
-  .batos-badge--red, :where(.batos [data-badge][data-tone="red"]) {
+  .vui-badge--red, :where(.vui [data-badge][data-tone="red"]) {
     --_c: var(--red-500);
     color: var(--red-500);
   }
 
-  .batos-badge--green, :where(.batos [data-badge][data-tone="green"]) {
+  .vui-badge--green, :where(.vui [data-badge][data-tone="green"]) {
     --_c: var(--green-500);
     color: var(--green-500);
   }
 
-  .batos-badge--neutral, :where(.batos [data-badge][data-tone="neutral"]) {
+  .vui-badge--neutral, :where(.vui [data-badge][data-tone="neutral"]) {
     --_c: var(--slate-400);
     color: var(--slate-400);
   }
 
-  .batos-badge--solid.batos-badge--cyan {
+  .vui-badge--solid.vui-badge--cyan {
     color: var(--cyan-400);
   }
 
-  .batos-badge--solid.batos-badge--amber {
+  .vui-badge--solid.vui-badge--amber {
     color: var(--amber-500);
   }
 
-  .batos-badge--solid.batos-badge--red {
+  .vui-badge--solid.vui-badge--red {
     color: var(--red-500);
   }
 
-  .batos-badge--solid.batos-badge--green {
+  .vui-badge--solid.vui-badge--green {
     color: var(--green-500);
   }
 
-  :where(.batos input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"]):not([class*="batos-"])), :where(.batos textarea:not([class*="batos-"])), :where(.batos select:not([class*="batos-"])), .batos-input {
+  :where(.vui input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"]):not([class*="vui-"])), :where(.vui textarea:not([class*="vui-"])), :where(.vui select:not([class*="vui-"])), .vui-input {
     --bevel-md: 8px;
     appearance: none;
     border: var(--border-hair) solid var(--hairline-strong);
@@ -1363,47 +1363,47 @@
     padding-inline: 14px;
   }
 
-  :where(.batos textarea) {
+  :where(.vui textarea) {
     min-block-size: 6rem;
     line-height: var(--lh-mono);
     resize: vertical;
   }
 
-  :where(), .batos-input::placeholder {
+  :where(), .vui-input::placeholder {
     color: var(--text-faint);
   }
 
-  :where(.batos input:focus, .batos textarea:focus, .batos select:focus), .batos-input:focus {
+  :where(.vui input:focus, .vui textarea:focus, .vui select:focus), .vui-input:focus {
     border-color: var(--hairline-accent);
     box-shadow: var(--shadow-inset),
     0 0 18px -4px var(--accent-glow);
   }
 
-  :where(.batos input:disabled, .batos textarea:disabled, .batos select:disabled), .batos-input:disabled {
+  :where(.vui input:disabled, .vui textarea:disabled, .vui select:disabled), .vui-input:disabled {
     cursor: not-allowed;
     opacity: .45;
   }
 
-  :where(.batos input[aria-invalid="true"], .batos textarea[aria-invalid="true"]), .batos-input--invalid {
+  :where(.vui input[aria-invalid="true"], .vui textarea[aria-invalid="true"]), .vui-input--invalid {
     border-color: var(--red-500);
     box-shadow: var(--shadow-inset),
     0 0 16px -4px var(--red-glow);
   }
 
-  :where(.batos select:not([multiple])), .batos-select {
+  :where(.vui select:not([multiple])), .vui-select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2342e3ff' stroke-width='1.5'/%3E%3C/svg%3E");
     background-position: right 14px center;
     background-repeat: no-repeat;
     padding-inline-end: 34px;
   }
 
-  :where(.batos label:has( > input:not([type="checkbox"]):not([type="radio"]))), :where(.batos label:has( > textarea)), :where(.batos label:has( > select)), .batos-field {
+  :where(.vui label:has( > input:not([type="checkbox"]):not([type="radio"]))), :where(.vui label:has( > textarea)), :where(.vui label:has( > select)), .vui-field {
     flex-direction: column;
     gap: 6px;
     display: flex;
   }
 
-  :where(.batos .batos-field__label), .batos-field > :where(span, .batos-field__label):first-child {
+  :where(.vui .vui-field__label), .vui-field > :where(span, .vui-field__label):first-child {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -1412,17 +1412,17 @@
     text-transform: uppercase;
   }
 
-  .batos-field__hint {
+  .vui-field__hint {
     color: var(--text-faint);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
   }
 
-  .batos-field__hint--err {
+  .vui-field__hint--err {
     color: var(--red-400);
   }
 
-  .batos-input-wrap {
+  .vui-input-wrap {
     --bevel-md: 8px;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: var(--surface-inset);
@@ -1435,26 +1435,26 @@
     position: relative;
   }
 
-  .batos-input-wrap:focus-within {
+  .vui-input-wrap:focus-within {
     border-color: var(--hairline-accent);
     box-shadow: var(--shadow-inset),
     0 0 18px -4px var(--accent-glow);
   }
 
-  .batos-input-wrap > :where(svg, i, .batos-input-wrap__icon) {
+  .vui-input-wrap > :where(svg, i, .vui-input-wrap__icon) {
     color: var(--text-muted);
     flex: none;
     margin-inline-start: 12px;
   }
 
-  .batos-input-wrap > input {
+  .vui-input-wrap > input {
     box-shadow: none;
     clip-path: none;
     background: none;
     border: 0;
   }
 
-  :where(.batos input[type="checkbox"]:not([role="switch"]):not([class*="batos-"])), :where(.batos input[type="radio"]:not([class*="batos-"])), .batos-check {
+  :where(.vui input[type="checkbox"]:not([role="switch"]):not([class*="vui-"])), :where(.vui input[type="radio"]:not([class*="vui-"])), .vui-check {
     --bevel-sm: 4px;
     appearance: none;
     border: var(--border-thin) solid var(--hairline-strong);
@@ -1470,7 +1470,7 @@
     display: inline-grid;
   }
 
-  :where(.batos input[type="checkbox"]:not([role="switch"])):before, :where(.batos input[type="radio"]):before, .batos-check:before {
+  :where(.vui input[type="checkbox"]:not([role="switch"])):before, :where(.vui input[type="radio"]):before, .vui-check:before {
     content: "";
     --bevel-sm: 2px;
     background-color: var(--cyan-400);
@@ -1483,33 +1483,33 @@
     transform: scale(.4);
   }
 
-  :where(.batos input[type="radio"]), .batos-check--radio {
+  :where(.vui input[type="radio"]), .vui-check--radio {
     border-radius: var(--radius-pill);
     clip-path: none;
   }
 
-  :where(.batos input[type="radio"]):before, .batos-check--radio:before {
+  :where(.vui input[type="radio"]):before, .vui-check--radio:before {
     border-radius: var(--radius-pill);
     clip-path: none;
     block-size: 8px;
     inline-size: 8px;
   }
 
-  :where(.batos input[type="checkbox"]:checked, .batos input[type="radio"]:checked), .batos-check:checked {
+  :where(.vui input[type="checkbox"]:checked, .vui input[type="radio"]:checked), .vui-check:checked {
     border-color: var(--hairline-accent);
   }
 
-  :where(.batos input[type="checkbox"]:checked, .batos input[type="radio"]:checked):before, .batos-check:checked:before {
+  :where(.vui input[type="checkbox"]:checked, .vui input[type="radio"]:checked):before, .vui-check:checked:before {
     opacity: 1;
     transform: scale(1);
   }
 
-  :where(.batos input[type="checkbox"]:focus-visible, .batos input[type="radio"]:focus-visible), .batos-check:focus-visible {
+  :where(.vui input[type="checkbox"]:focus-visible, .vui input[type="radio"]:focus-visible), .vui-check:focus-visible {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.batos label:has( > input[type="checkbox"])), :where(.batos label:has( > input[type="radio"])), .batos-check-label {
+  :where(.vui label:has( > input[type="checkbox"])), :where(.vui label:has( > input[type="radio"])), .vui-check-label {
     color: var(--text-secondary);
     font-size: var(--fs-sm);
     font-family: var(--font-ui);
@@ -1521,7 +1521,7 @@
     display: inline-flex;
   }
 
-  :where(.batos input[type="checkbox"][role="switch"]), .batos-switch {
+  :where(.vui input[type="checkbox"][role="switch"]), .vui-switch {
     appearance: none;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: var(--surface-inset);
@@ -1535,7 +1535,7 @@
     position: relative;
   }
 
-  :where(.batos input[type="checkbox"][role="switch"]):before, .batos-switch:before {
+  :where(.vui input[type="checkbox"][role="switch"]):before, .vui-switch:before {
     background-color: var(--slate-400);
     content: "";
     clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
@@ -1547,43 +1547,43 @@
     inset-inline-start: 2px;
   }
 
-  :where(.batos input[type="checkbox"][role="switch"]:checked), .batos-switch:checked {
+  :where(.vui input[type="checkbox"][role="switch"]:checked), .vui-switch:checked {
     border-color: var(--hairline-accent);
     background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
     box-shadow: inset 0 0 12px -2px var(--accent-glow);
   }
 
-  :where(.batos input[type="checkbox"][role="switch"]:checked):before, .batos-switch:checked:before {
+  :where(.vui input[type="checkbox"][role="switch"]:checked):before, .vui-switch:checked:before {
     background-color: var(--cyan-400);
     box-shadow: var(--glow-cyan-md);
     inset-inline-start: 26px;
   }
 
-  :where(.batos input[type="checkbox"][role="switch"]:focus-visible), .batos-switch:focus-visible {
+  :where(.vui input[type="checkbox"][role="switch"]:focus-visible), .vui-switch:focus-visible {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.batos input[type="range"]), .batos-range {
+  :where(.vui input[type="range"]), .vui-range {
     appearance: none;
     cursor: pointer;
     background: none;
     inline-size: 100%;
   }
 
-  :where(.batos input[type="range"])::-webkit-slider-runnable-track {
+  :where(.vui input[type="range"])::-webkit-slider-runnable-track {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     block-size: 6px;
   }
 
-  .batos-range::-webkit-slider-runnable-track {
+  .vui-range::-webkit-slider-runnable-track {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     block-size: 6px;
   }
 
-  :where(.batos input[type="range"])::-webkit-slider-thumb {
+  :where(.vui input[type="range"])::-webkit-slider-thumb {
     appearance: none;
     background-color: var(--cyan-400);
     block-size: 16px;
@@ -1593,7 +1593,7 @@
     margin-block-start: -6px;
   }
 
-  .batos-range::-webkit-slider-thumb {
+  .vui-range::-webkit-slider-thumb {
     appearance: none;
     background-color: var(--cyan-400);
     block-size: 16px;
@@ -1603,19 +1603,19 @@
     margin-block-start: -6px;
   }
 
-  :where(.batos input[type="range"])::-moz-range-track {
+  :where(.vui input[type="range"])::-moz-range-track {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     block-size: 6px;
   }
 
-  .batos-range::-moz-range-track {
+  .vui-range::-moz-range-track {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     block-size: 6px;
   }
 
-  :where(.batos input[type="range"])::-moz-range-thumb {
+  :where(.vui input[type="range"])::-moz-range-thumb {
     background-color: var(--cyan-400);
     block-size: 16px;
     inline-size: 14px;
@@ -1624,7 +1624,7 @@
     border: 0;
   }
 
-  .batos-range::-moz-range-thumb {
+  .vui-range::-moz-range-thumb {
     background-color: var(--cyan-400);
     block-size: 16px;
     inline-size: 14px;
@@ -1633,11 +1633,11 @@
     border: 0;
   }
 
-  :where(.batos) {
+  :where(.vui) {
     accent-color: var(--accent);
   }
 
-  .batos-alert, :where([class*="batos-alert--"]), :where(.batos [role="status"]:not([class*="batos-"])), :where(.batos [role="alert"]:not([class*="batos-"])) {
+  .vui-alert, :where([class*="vui-alert--"]), :where(.vui [role="status"]:not([class*="vui-"])), :where(.vui [role="alert"]:not([class*="vui-"])) {
     --_c: var(--cyan-400);
     --_glyph: "◈";
     --bevel-md: 9px;
@@ -1656,7 +1656,7 @@
     position: relative;
   }
 
-  .batos-alert:before, :where([class*="batos-alert--"]):before, :where(.batos [role="status"]:not([class*="batos-"])):before, :where(.batos [role="alert"]:not([class*="batos-"])):before {
+  .vui-alert:before, :where([class*="vui-alert--"]):before, :where(.vui [role="status"]:not([class*="vui-"])):before, :where(.vui [role="alert"]:not([class*="vui-"])):before {
     background-color: var(--_c);
     inline-size: 3px;
     box-shadow: 0 0 12px var(--_c);
@@ -1666,8 +1666,8 @@
     inset-inline-start: 0;
   }
 
-  .batos-alert:after, :where([class*="batos-alert--"]):after, :where(.batos [role="status"]:not([class*="batos-"])):after, :where(.batos [role="alert"]:not([class*="batos-"])):after {
-    content: var(--batos-alert-glyph, var(--_glyph));
+  .vui-alert:after, :where([class*="vui-alert--"]):after, :where(.vui [role="status"]:not([class*="vui-"])):after, :where(.vui [role="alert"]:not([class*="vui-"])):after {
+    content: var(--vui-alert-glyph, var(--_glyph));
     color: var(--_c);
     font-weight: var(--fw-bold);
     font-size: var(--fs-md);
@@ -1678,7 +1678,7 @@
     order: -1;
   }
 
-  .batos-alert :where(strong, b, h1, h2, h3, h4, h5, h6), .batos-alert__title {
+  .vui-alert :where(strong, b, h1, h2, h3, h4, h5, h6), .vui-alert__title {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-sm);
@@ -1689,27 +1689,27 @@
     display: block;
   }
 
-  :where(.batos [role="alert"]:not([class*="batos-"])), .batos-alert--threat, :where(.batos-alert[data-tone="threat"]) {
+  :where(.vui [role="alert"]:not([class*="vui-"])), .vui-alert--threat, :where(.vui-alert[data-tone="threat"]) {
     --_c: var(--red-500);
     --_glyph: "⬢";
   }
 
-  .batos-alert--warn, :where(.batos-alert[data-tone="warn"]) {
+  .vui-alert--warn, :where(.vui-alert[data-tone="warn"]) {
     --_c: var(--amber-500);
     --_glyph: "▲";
   }
 
-  .batos-alert--secure, :where(.batos-alert[data-tone="secure"]) {
+  .vui-alert--secure, :where(.vui-alert[data-tone="secure"]) {
     --_c: var(--green-500);
     --_glyph: "◉";
   }
 
-  .batos-alert--info, :where(.batos-alert[data-tone="info"]) {
+  .vui-alert--info, :where(.vui-alert[data-tone="info"]) {
     --_c: var(--cyan-400);
     --_glyph: "◈";
   }
 
-  :where(.batos progress), .batos-progress {
+  :where(.vui progress), .vui-progress {
     appearance: none;
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
@@ -1720,33 +1720,33 @@
     overflow: hidden;
   }
 
-  :where(.batos progress)::-webkit-progress-bar {
+  :where(.vui progress)::-webkit-progress-bar {
     background-color: var(--surface-inset);
   }
 
-  .batos-progress::-webkit-progress-bar {
+  .vui-progress::-webkit-progress-bar {
     background-color: var(--surface-inset);
   }
 
-  :where(.batos progress)::-webkit-progress-value {
+  :where(.vui progress)::-webkit-progress-value {
     background-color: var(--cyan-400);
     box-shadow: 0 0 10px color-mix(in srgb, var(--cyan-400) 70%, transparent);
   }
 
-  .batos-progress::-webkit-progress-value {
+  .vui-progress::-webkit-progress-value {
     background-color: var(--cyan-400);
     box-shadow: 0 0 10px color-mix(in srgb, var(--cyan-400) 70%, transparent);
   }
 
-  :where(.batos progress)::-moz-progress-bar {
+  :where(.vui progress)::-moz-progress-bar {
     background-color: var(--cyan-400);
   }
 
-  .batos-progress::-moz-progress-bar {
+  .vui-progress::-moz-progress-bar {
     background-color: var(--cyan-400);
   }
 
-  :where(.batos meter), .batos-meter-el {
+  :where(.vui meter), .vui-meter-el {
     appearance: none;
     border: var(--border-hair) solid var(--hairline);
     background: var(--surface-inset);
@@ -1756,36 +1756,36 @@
     overflow: hidden;
   }
 
-  :where(.batos meter)::-webkit-meter-bar {
+  :where(.vui meter)::-webkit-meter-bar {
     background: var(--surface-inset);
     border: 0;
   }
 
-  :where(.batos meter)::-webkit-meter-optimum-value {
+  :where(.vui meter)::-webkit-meter-optimum-value {
     background-color: var(--green-500);
   }
 
-  :where(.batos meter)::-webkit-meter-suboptimum-value {
+  :where(.vui meter)::-webkit-meter-suboptimum-value {
     background-color: var(--amber-500);
   }
 
-  :where(.batos meter)::-webkit-meter-even-less-good-value {
+  :where(.vui meter)::-webkit-meter-even-less-good-value {
     background-color: var(--red-500);
   }
 
-  :where(.batos meter:-moz-meter-optimum)::-moz-meter-bar {
+  :where(.vui meter:-moz-meter-optimum)::-moz-meter-bar {
     background-color: var(--green-500);
   }
 
-  :where(.batos meter:-moz-meter-sub-optimum)::-moz-meter-bar {
+  :where(.vui meter:-moz-meter-sub-optimum)::-moz-meter-bar {
     background-color: var(--amber-500);
   }
 
-  :where(.batos meter:-moz-meter-sub-sub-optimum)::-moz-meter-bar {
+  :where(.vui meter:-moz-meter-sub-sub-optimum)::-moz-meter-bar {
     background-color: var(--red-500);
   }
 
-  .batos-meter {
+  .vui-meter {
     --value: 0;
     --max: 100;
     --_c: var(--cyan-400);
@@ -1795,14 +1795,14 @@
     display: flex;
   }
 
-  .batos-meter__top {
+  .vui-meter__top {
     justify-content: space-between;
     align-items: baseline;
     gap: 8px;
     display: flex;
   }
 
-  .batos-meter__label {
+  .vui-meter__label {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -1811,7 +1811,7 @@
     text-transform: uppercase;
   }
 
-  .batos-meter__val {
+  .vui-meter__val {
     color: var(--_c);
     font-weight: var(--fw-bold);
     font-size: var(--fs-base);
@@ -1820,15 +1820,15 @@
     text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
   }
 
-  .batos-meter__val:empty {
-    counter-reset: batos-meter var(--value);
+  .vui-meter__val:empty {
+    counter-reset: vui-meter var(--value);
   }
 
-  .batos-meter__val:empty:after {
-    content: counter(batos-meter) "%";
+  .vui-meter__val:empty:after {
+    content: counter(vui-meter) "%";
   }
 
-  .batos-meter__track {
+  .vui-meter__track {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
@@ -1837,7 +1837,7 @@
     overflow: hidden;
   }
 
-  .batos-meter__fill {
+  .vui-meter__fill {
     inline-size: clamp(0%, calc(var(--value) / var(--max) * 100%), 100%);
     background-color: var(--_c);
     block-size: 100%;
@@ -1845,7 +1845,7 @@
     transition: inline-size var(--dur-slow) var(--ease-hud);
   }
 
-  .batos-meter--segmented .batos-meter__track:after {
+  .vui-meter--segmented .vui-meter__track:after {
     background-image: repeating-linear-gradient(90deg,
     transparent 0,
     transparent 10px,
@@ -1857,23 +1857,23 @@
     inset: 0;
   }
 
-  .batos-meter--amber {
+  .vui-meter--amber {
     --_c: var(--amber-500);
   }
 
-  .batos-meter--red {
+  .vui-meter--red {
     --_c: var(--red-500);
   }
 
-  .batos-meter--green {
+  .vui-meter--green {
     --_c: var(--green-500);
   }
 
-  .batos-meter--cyan {
+  .vui-meter--cyan {
     --_c: var(--cyan-400);
   }
 
-  .batos-gauge {
+  .vui-gauge {
     --value: 0;
     --max: 100;
     --size: 8rem;
@@ -1891,7 +1891,7 @@
     position: relative;
   }
 
-  .batos-gauge:before {
+  .vui-gauge:before {
     background: conic-gradient(from 225deg,
     var(--_c) 0,
     var(--_c) calc(var(--_deg) - .6deg),
@@ -1921,7 +1921,7 @@
     inset: 0;
   }
 
-  .batos-gauge:after {
+  .vui-gauge:after {
     content: "";
     background: radial-gradient(circle at 50% calc(var(--thickness) / 2),
     var(--_c) 0,
@@ -1936,7 +1936,7 @@
     inset: 0;
   }
 
-  .batos-gauge__value, .batos-gauge > b {
+  .vui-gauge__value, .vui-gauge > b {
     color: var(--_c);
     font-weight: var(--fw-bold);
     font-size: calc(var(--size) * .26);
@@ -1945,21 +1945,21 @@
     position: relative;
   }
 
-  .batos-gauge__value:empty {
-    counter-reset: batos-gauge var(--value);
+  .vui-gauge__value:empty {
+    counter-reset: vui-gauge var(--value);
   }
 
-  .batos-gauge__value:empty:after {
-    content: counter(batos-gauge);
+  .vui-gauge__value:empty:after {
+    content: counter(vui-gauge);
   }
 
-  .batos-gauge small {
+  .vui-gauge small {
     color: var(--text-muted);
     font-size: calc(var(--size) * .1);
     position: relative;
   }
 
-  .batos-gauge__label {
+  .vui-gauge__label {
     color: var(--text-muted);
     font-size: calc(var(--size) * .08);
     font-family: var(--font-display);
@@ -1969,38 +1969,38 @@
     position: relative;
   }
 
-  .batos-gauge--sm {
+  .vui-gauge--sm {
     --size: 6rem;
   }
 
-  .batos-gauge--lg {
+  .vui-gauge--lg {
     --size: 11rem;
   }
 
-  .batos-gauge--amber {
+  .vui-gauge--amber {
     --_c: var(--amber-500);
   }
 
-  .batos-gauge--red {
+  .vui-gauge--red {
     --_c: var(--red-500);
   }
 
-  .batos-gauge--green {
+  .vui-gauge--green {
     --_c: var(--green-500);
   }
 
-  .batos-gauge--cyan {
+  .vui-gauge--cyan {
     --_c: var(--cyan-400);
   }
 
-  :where(.batos nav[role="tablist"]), .batos-tabs {
+  :where(.vui nav[role="tablist"]), .vui-tabs {
     border-block-end: var(--border-hair) solid var(--hairline);
     flex-wrap: wrap;
     gap: 2px;
     display: flex;
   }
 
-  :where(.batos [role="tab"]), .batos-tab {
+  :where(.vui [role="tab"]), .vui-tab {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-sm);
@@ -2021,17 +2021,17 @@
     position: relative;
   }
 
-  :where(.batos [role="tab"]:hover), .batos-tab:hover {
+  :where(.vui [role="tab"]:hover), .vui-tab:hover {
     background-color: color-mix(in srgb, var(--accent) 4%, transparent);
     color: var(--text-secondary);
   }
 
-  :where(.batos [role="tab"][aria-selected="true"]), .batos-tab--active {
+  :where(.vui [role="tab"][aria-selected="true"]), .vui-tab--active {
     background-color: color-mix(in srgb, var(--cyan-400) 8%, transparent);
     color: var(--accent);
   }
 
-  :where(.batos [role="tab"][aria-selected="true"]):after, .batos-tab--active:after {
+  :where(.vui [role="tab"][aria-selected="true"]):after, .vui-tab--active:after {
     background-color: var(--accent);
     block-size: 2px;
     box-shadow: var(--glow-cyan-md);
@@ -2041,12 +2041,12 @@
     inset-inline: 0;
   }
 
-  :where(.batos [role="tab"]:focus-visible), .batos-tab:focus-visible {
+  :where(.vui [role="tab"]:focus-visible), .vui-tab:focus-visible {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  .batos-tab__count {
+  .vui-tab__count {
     border: var(--border-hair) solid var(--hairline-strong);
     color: var(--text-faint);
     font-size: var(--fs-2xs);
@@ -2055,20 +2055,20 @@
     padding-inline: 5px;
   }
 
-  :where(.batos [role="tab"][aria-selected="true"]) .batos-tab__count, .batos-tab--active .batos-tab__count {
+  :where(.vui [role="tab"][aria-selected="true"]) .vui-tab__count, .vui-tab--active .vui-tab__count {
     border-color: var(--hairline-accent);
     color: var(--accent);
   }
 
-  :where(.batos [role="tabpanel"]), .batos-tab-panel {
+  :where(.vui [role="tabpanel"]), .vui-tab-panel {
     padding-block-start: var(--space-5);
   }
 
-  :where(.batos [role="tabpanel"][hidden]), .batos-tab-panel[hidden] {
+  :where(.vui [role="tabpanel"][hidden]), .vui-tab-panel[hidden] {
     display: none;
   }
 
-  :where(.batos details), .batos-details {
+  :where(.vui details), .vui-details {
     --bevel-md: 8px;
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-panel);
@@ -2076,11 +2076,11 @@
     clip-path: var(--clip-chamfer);
   }
 
-  :where(.batos details + details), .batos-details + .batos-details {
+  :where(.vui details + details), .vui-details + .vui-details {
     margin-block-start: var(--space-3);
   }
 
-  :where(.batos details > summary), .batos-details > summary {
+  :where(.vui details > summary), .vui-details > summary {
     padding-inline: var(--space-5);
     color: var(--text-secondary);
     font-weight: var(--fw-semibold);
@@ -2097,32 +2097,32 @@
     display: flex;
   }
 
-  :where(.batos details > summary)::-webkit-details-marker {
+  :where(.vui details > summary)::-webkit-details-marker {
     display: none;
   }
 
-  :where(.batos details > summary):before, .batos-details > summary:before {
+  :where(.vui details > summary):before, .vui-details > summary:before {
     content: "›";
     color: var(--accent);
     transition: transform var(--dur-fast) var(--ease-hud);
     font-size: 1.1em;
   }
 
-  :where(.batos details[open] > summary):before, .batos-details[open] > summary:before {
+  :where(.vui details[open] > summary):before, .vui-details[open] > summary:before {
     transform: rotate(90deg);
   }
 
-  :where(.batos details[open] > summary), .batos-details[open] > summary {
+  :where(.vui details[open] > summary), .vui-details[open] > summary {
     border-block-end: var(--border-hair) solid var(--hairline);
     color: var(--accent);
   }
 
-  :where(.batos details > summary:focus-visible), .batos-details > summary:focus-visible {
+  :where(.vui details > summary:focus-visible), .vui-details > summary:focus-visible {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.batos details > :not(summary)), .batos-details > :not(summary) {
+  :where(.vui details > :not(summary)), .vui-details > :not(summary) {
     padding-inline: var(--space-5);
     padding-block: var(--space-4);
     color: var(--text-muted);
@@ -2131,7 +2131,7 @@
     font-family: var(--font-mono);
   }
 
-  .batos-table-scroll {
+  .vui-table-scroll {
     border: var(--border-hair) solid var(--hairline);
     inline-size: 100%;
     clip-path: var(--clip-chamfer);
@@ -2139,7 +2139,7 @@
     overflow-x: auto;
   }
 
-  :where(.batos table:not([class*="batos-"])), .batos-table {
+  :where(.vui table:not([class*="vui-"])), .vui-table {
     border-collapse: collapse;
     inline-size: 100%;
     color: var(--text-secondary);
@@ -2147,7 +2147,7 @@
     font-family: var(--font-mono);
   }
 
-  :where(.batos table caption), .batos-table caption {
+  :where(.vui table caption), .vui-table caption {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -2160,7 +2160,7 @@
     padding-inline: 14px;
   }
 
-  :where(.batos table th), .batos-table th {
+  :where(.vui table th), .vui-table th {
     border-block-end: var(--border-hair) solid var(--hairline-strong);
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
@@ -2174,32 +2174,32 @@
     padding-inline: 14px;
   }
 
-  :where(.batos table td), .batos-table td {
+  :where(.vui table td), .vui-table td {
     border-block-end: var(--border-hair) solid var(--hairline);
     padding-block: 10px;
     padding-inline: 14px;
   }
 
-  :where(.batos table tbody tr), .batos-table tbody tr {
+  :where(.vui table tbody tr), .vui-table tbody tr {
     transition: background-color var(--dur-fast) var(--ease-hud);
   }
 
-  :where(.batos table tbody tr:hover), .batos-table tbody tr:hover {
+  :where(.vui table tbody tr:hover), .vui-table tbody tr:hover {
     background-color: color-mix(in srgb, var(--accent) 5%, transparent);
   }
 
-  :where(.batos table tbody tr:last-child td), .batos-table tbody tr:last-child td {
+  :where(.vui table tbody tr:last-child td), .vui-table tbody tr:last-child td {
     border-block-end: 0;
   }
 
-  :where(.batos table [data-num]), .batos-table [data-num] {
+  :where(.vui table [data-num]), .vui-table [data-num] {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
     font-family: var(--font-hud);
     text-align: end;
   }
 
-  :where(.batos dialog), .batos-dialog {
+  :where(.vui dialog), .vui-dialog {
     --bevel-md: 12px;
     border: var(--border-hair) solid var(--hairline-accent);
     background-color: var(--surface-panel);
@@ -2211,13 +2211,13 @@
     padding: 0;
   }
 
-  :where(.batos dialog)::backdrop, .batos-dialog::backdrop {
+  :where(.vui dialog)::backdrop, .vui-dialog::backdrop {
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
     background-color: var(--scrim);
   }
 
-  :where(.batos dialog > header), .batos-dialog__head {
+  :where(.vui dialog > header), .vui-dialog__head {
     padding-inline: var(--space-6);
     justify-content: space-between;
     align-items: center;
@@ -2227,12 +2227,12 @@
     display: flex;
   }
 
-  :where(.batos dialog > :not(header):not(footer)), .batos-dialog__body {
+  :where(.vui dialog > :not(header):not(footer)), .vui-dialog__body {
     padding-inline: var(--space-6);
     padding-block: var(--space-5);
   }
 
-  :where(.batos dialog > footer), .batos-dialog__foot {
+  :where(.vui dialog > footer), .vui-dialog__foot {
     padding-inline: var(--space-6);
     justify-content: flex-end;
     gap: var(--space-3);
@@ -2241,29 +2241,29 @@
     display: flex;
   }
 
-  .batos-divider {
+  .vui-divider {
     align-items: center;
     gap: var(--space-4);
     color: var(--text-faint);
     display: flex;
   }
 
-  .batos-divider:before, .batos-divider:after {
+  .vui-divider:before, .vui-divider:after {
     background-image: linear-gradient(90deg, transparent, var(--hairline-strong));
     content: "";
     flex: 1;
     block-size: 1px;
   }
 
-  .batos-divider:after {
+  .vui-divider:after {
     background-image: linear-gradient(90deg, var(--hairline-strong), transparent);
   }
 
-  .batos-divider[data-label]:before {
+  .vui-divider[data-label]:before {
     content: none;
   }
 
-  .batos-divider[data-label] {
+  .vui-divider[data-label] {
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
     font-family: var(--font-display);
@@ -2271,11 +2271,11 @@
     text-transform: uppercase;
   }
 
-  .batos-tooltip {
+  .vui-tooltip {
     position: relative;
   }
 
-  .batos-tooltip:after {
+  .vui-tooltip:after {
     z-index: 50;
     border: var(--border-hair) solid var(--hairline-accent);
     background-color: var(--ink-800);
@@ -2299,11 +2299,11 @@
     translate: -50%;
   }
 
-  .batos-tooltip:hover:after, .batos-tooltip:focus-visible:after {
+  .vui-tooltip:hover:after, .vui-tooltip:focus-visible:after {
     opacity: 1;
   }
 
-  .batos-kv {
+  .vui-kv {
     justify-content: space-between;
     align-items: baseline;
     gap: var(--space-4);
@@ -2312,7 +2312,7 @@
     display: flex;
   }
 
-  .batos-kv > :first-child {
+  .vui-kv > :first-child {
     color: var(--text-muted);
     font-size: var(--fs-2xs);
     font-family: var(--font-display);
@@ -2320,19 +2320,19 @@
     text-transform: uppercase;
   }
 
-  .batos-kv > :last-child {
+  .vui-kv > :last-child {
     color: var(--text-primary);
     font-size: var(--fs-sm);
     font-family: var(--font-mono);
   }
 
-  .batos-stat {
+  .vui-stat {
     flex-direction: column;
     gap: 4px;
     display: flex;
   }
 
-  .batos-stat > b {
+  .vui-stat > b {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-3xl);
@@ -2340,17 +2340,17 @@
     font-family: var(--font-hud);
   }
 
-  .batos-stat--signal > b {
+  .vui-stat--signal > b {
     color: var(--accent);
     text-shadow: var(--text-glow-cyan);
   }
 
-  .batos-stat--amber > b {
+  .vui-stat--amber > b {
     color: var(--amber-500);
     text-shadow: var(--text-glow-amber);
   }
 
-  .batos-stat > span {
+  .vui-stat > span {
     color: var(--text-muted);
     font-size: var(--fs-2xs);
     font-family: var(--font-display);
@@ -2358,7 +2358,7 @@
     text-transform: uppercase;
   }
 
-  .batos-app {
+  .vui-app {
     background-color: var(--bg-base);
     min-block-size: 100dvh;
     color: var(--text-primary);
@@ -2371,7 +2371,7 @@
     overflow: hidden;
   }
 
-  .batos-rail {
+  .vui-rail {
     z-index: 3;
     border-block-start: var(--border-hair) solid var(--hairline);
     background-color: var(--bg-void);
@@ -2385,7 +2385,7 @@
     display: flex;
   }
 
-  .batos-rail__emblem {
+  .vui-rail__emblem {
     block-size: 38px;
     inline-size: 38px;
     color: var(--accent);
@@ -2393,17 +2393,17 @@
     display: none;
   }
 
-  .batos-rail__emblem img, .batos-rail__emblem svg {
+  .vui-rail__emblem img, .vui-rail__emblem svg {
     block-size: 100%;
     inline-size: 100%;
   }
 
-  .batos-rail__spacer {
+  .vui-rail__spacer {
     flex: 1;
     display: none;
   }
 
-  .batos-rail__item {
+  .vui-rail__item {
     --bevel-sm: 6px;
     block-size: 46px;
     inline-size: 46px;
@@ -2420,17 +2420,17 @@
     position: relative;
   }
 
-  .batos-rail__item:hover {
+  .vui-rail__item:hover {
     background-color: color-mix(in srgb, var(--accent) 5%, transparent);
     color: var(--text-secondary);
   }
 
-  .batos-rail__item--active {
+  .vui-rail__item--active {
     background-color: color-mix(in srgb, var(--cyan-400) 12%, transparent);
     color: var(--accent);
   }
 
-  .batos-rail__item--active:before {
+  .vui-rail__item--active:before {
     background-color: var(--accent);
     block-size: 3px;
     box-shadow: var(--glow-cyan-md);
@@ -2440,7 +2440,7 @@
     inset-inline: 10px;
   }
 
-  .batos-topbar {
+  .vui-topbar {
     z-index: 3;
     min-block-size: 56px;
     padding-inline: var(--space-5);
@@ -2453,7 +2453,7 @@
     display: flex;
   }
 
-  .batos-topbar__eyebrow {
+  .vui-topbar__eyebrow {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-xs);
@@ -2465,16 +2465,16 @@
     display: flex;
   }
 
-  .batos-topbar__eyebrow b {
+  .vui-topbar__eyebrow b {
     color: var(--accent);
     font-weight: var(--fw-semibold);
   }
 
-  .batos-topbar__spacer {
+  .vui-topbar__spacer {
     flex: 1;
   }
 
-  .batos-topbar__stat {
+  .vui-topbar__stat {
     color: var(--text-secondary);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
@@ -2483,7 +2483,7 @@
     display: flex;
   }
 
-  .batos-topbar__clock {
+  .vui-topbar__clock {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-md);
@@ -2491,7 +2491,7 @@
     letter-spacing: .04em;
   }
 
-  .batos-topbar__user {
+  .vui-topbar__user {
     --bevel-sm: 5px;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: var(--surface-panel);
@@ -2506,7 +2506,7 @@
     display: grid;
   }
 
-  .batos-stage {
+  .vui-stage {
     padding: var(--space-7);
     background-image: var(--grid-fine);
     background-size: var(--grid-fine-size);
@@ -2516,30 +2516,30 @@
     overflow-y: auto;
   }
 
-  .batos-stage:before, .batos-stage:after {
+  .vui-stage:before, .vui-stage:after {
     content: "";
     pointer-events: none;
     position: absolute;
     inset: 0;
   }
 
-  .batos-stage:before {
+  .vui-stage:before {
     background-image: var(--vignette);
   }
 
-  .batos-stage:after {
+  .vui-stage:after {
     background-image: var(--scanlines);
     opacity: .6;
   }
 
-  .batos-stage__inner {
+  .vui-stage__inner {
     z-index: 1;
     max-inline-size: 74rem;
     margin-inline: auto;
     position: relative;
   }
 
-  .batos-screen-head {
+  .vui-screen-head {
     justify-content: space-between;
     align-items: flex-end;
     gap: var(--space-4);
@@ -2548,7 +2548,7 @@
     display: flex;
   }
 
-  .batos-screen-title {
+  .vui-screen-title {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-2xl);
@@ -2559,7 +2559,7 @@
     margin: 0;
   }
 
-  .batos-screen-sub {
+  .vui-screen-sub {
     color: var(--text-muted);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
@@ -2567,7 +2567,7 @@
   }
 
   @media (width >= 48rem) {
-    .batos-app {
+    .vui-app {
       grid-template: "rail topbar" 56px
                      "rail stage" 1fr
                      / 76px 1fr;
@@ -2575,7 +2575,7 @@
       min-block-size: 0;
     }
 
-    .batos-rail {
+    .vui-rail {
       border-inline-end: var(--border-hair) solid var(--hairline);
       border-block-start: 0;
       flex-direction: column;
@@ -2585,62 +2585,62 @@
       padding-inline: 0;
     }
 
-    .batos-rail__emblem {
+    .vui-rail__emblem {
       margin-block-end: 12px;
       display: block;
     }
 
-    .batos-rail__spacer {
+    .vui-rail__spacer {
       display: block;
     }
 
-    .batos-rail__item--active:before {
+    .vui-rail__item--active:before {
       block-size: auto;
       inline-size: 3px;
       inset-block: 10px;
       inset-inline: -14px auto;
     }
 
-    .batos-stage {
+    .vui-stage {
       padding: var(--space-7);
     }
   }
 }
 
-@layer batos.utilities {
-  .batos-block {
+@layer vui.utilities {
+  .vui-block {
     display: block;
   }
 
-  .batos-inline-block {
+  .vui-inline-block {
     display: inline-block;
   }
 
-  .batos-inline {
+  .vui-inline {
     display: inline;
   }
 
-  .batos-flex {
+  .vui-flex {
     display: flex;
   }
 
-  .batos-inline-flex {
+  .vui-inline-flex {
     display: inline-flex;
   }
 
-  .batos-grid-d {
+  .vui-grid-d {
     display: grid;
   }
 
-  .batos-contents {
+  .vui-contents {
     display: contents;
   }
 
-  .batos-hidden {
+  .vui-hidden {
     display: none !important;
   }
 
-  .batos-sr-only {
+  .vui-sr-only {
     white-space: nowrap;
     clip-path: inset(50%);
     border: 0;
@@ -2652,546 +2652,546 @@
     overflow: hidden;
   }
 
-  .batos-flex-row {
+  .vui-flex-row {
     flex-direction: row;
   }
 
-  .batos-flex-col {
+  .vui-flex-col {
     flex-direction: column;
   }
 
-  .batos-wrap {
+  .vui-wrap {
     flex-wrap: wrap;
   }
 
-  .batos-nowrap {
+  .vui-nowrap {
     flex-wrap: nowrap;
   }
 
-  .batos-flex-1 {
+  .vui-flex-1 {
     flex: 1;
   }
 
-  .batos-grow {
+  .vui-grow {
     flex-grow: 1;
   }
 
-  .batos-shrink-0 {
+  .vui-shrink-0 {
     flex-shrink: 0;
   }
 
-  .batos-items-start {
+  .vui-items-start {
     align-items: flex-start;
   }
 
-  .batos-items-center {
+  .vui-items-center {
     align-items: center;
   }
 
-  .batos-items-end {
+  .vui-items-end {
     align-items: flex-end;
   }
 
-  .batos-items-stretch {
+  .vui-items-stretch {
     align-items: stretch;
   }
 
-  .batos-items-baseline {
+  .vui-items-baseline {
     align-items: baseline;
   }
 
-  .batos-justify-start {
+  .vui-justify-start {
     justify-content: flex-start;
   }
 
-  .batos-justify-center {
+  .vui-justify-center {
     justify-content: center;
   }
 
-  .batos-justify-end {
+  .vui-justify-end {
     justify-content: flex-end;
   }
 
-  .batos-justify-between {
+  .vui-justify-between {
     justify-content: space-between;
   }
 
-  .batos-justify-around {
+  .vui-justify-around {
     justify-content: space-around;
   }
 
-  .batos-relative {
+  .vui-relative {
     position: relative;
   }
 
-  .batos-absolute {
+  .vui-absolute {
     position: absolute;
   }
 
-  .batos-sticky {
+  .vui-sticky {
     position: sticky;
   }
 
-  .batos-w-full {
+  .vui-w-full {
     inline-size: 100%;
   }
 
-  .batos-h-full {
+  .vui-h-full {
     block-size: 100%;
   }
 
-  .batos-w-auto {
+  .vui-w-auto {
     inline-size: auto;
   }
 
-  .batos-min-w-0 {
+  .vui-min-w-0 {
     min-inline-size: 0;
   }
 
-  .batos-overflow-auto {
+  .vui-overflow-auto {
     overflow: auto;
   }
 
-  .batos-overflow-hidden {
+  .vui-overflow-hidden {
     overflow: hidden;
   }
 
-  .batos-gap-0 {
+  .vui-gap-0 {
     gap: var(--space-0);
   }
 
-  .batos-gap-1 {
+  .vui-gap-1 {
     gap: var(--space-1);
   }
 
-  .batos-gap-2 {
+  .vui-gap-2 {
     gap: var(--space-2);
   }
 
-  .batos-gap-3 {
+  .vui-gap-3 {
     gap: var(--space-3);
   }
 
-  .batos-gap-4 {
+  .vui-gap-4 {
     gap: var(--space-4);
   }
 
-  .batos-gap-5 {
+  .vui-gap-5 {
     gap: var(--space-5);
   }
 
-  .batos-gap-6 {
+  .vui-gap-6 {
     gap: var(--space-6);
   }
 
-  .batos-gap-7 {
+  .vui-gap-7 {
     gap: var(--space-7);
   }
 
-  .batos-gap-8 {
+  .vui-gap-8 {
     gap: var(--space-8);
   }
 
-  .batos-p-0 {
+  .vui-p-0 {
     padding: var(--space-0);
   }
 
-  .batos-p-1 {
+  .vui-p-1 {
     padding: var(--space-1);
   }
 
-  .batos-p-2 {
+  .vui-p-2 {
     padding: var(--space-2);
   }
 
-  .batos-p-3 {
+  .vui-p-3 {
     padding: var(--space-3);
   }
 
-  .batos-p-4 {
+  .vui-p-4 {
     padding: var(--space-4);
   }
 
-  .batos-p-5 {
+  .vui-p-5 {
     padding: var(--space-5);
   }
 
-  .batos-p-6 {
+  .vui-p-6 {
     padding: var(--space-6);
   }
 
-  .batos-p-7 {
+  .vui-p-7 {
     padding: var(--space-7);
   }
 
-  .batos-p-8 {
+  .vui-p-8 {
     padding: var(--space-8);
   }
 
-  .batos-pi-0 {
+  .vui-pi-0 {
     padding-inline: var(--space-0);
   }
 
-  .batos-pi-2 {
+  .vui-pi-2 {
     padding-inline: var(--space-2);
   }
 
-  .batos-pi-3 {
+  .vui-pi-3 {
     padding-inline: var(--space-3);
   }
 
-  .batos-pi-4 {
+  .vui-pi-4 {
     padding-inline: var(--space-4);
   }
 
-  .batos-pi-5 {
+  .vui-pi-5 {
     padding-inline: var(--space-5);
   }
 
-  .batos-pi-6 {
+  .vui-pi-6 {
     padding-inline: var(--space-6);
   }
 
-  .batos-pi-7 {
+  .vui-pi-7 {
     padding-inline: var(--space-7);
   }
 
-  .batos-pi-8 {
+  .vui-pi-8 {
     padding-inline: var(--space-8);
   }
 
-  .batos-pb-0 {
+  .vui-pb-0 {
     padding-block: var(--space-0);
   }
 
-  .batos-pb-2 {
+  .vui-pb-2 {
     padding-block: var(--space-2);
   }
 
-  .batos-pb-3 {
+  .vui-pb-3 {
     padding-block: var(--space-3);
   }
 
-  .batos-pb-4 {
+  .vui-pb-4 {
     padding-block: var(--space-4);
   }
 
-  .batos-pb-5 {
+  .vui-pb-5 {
     padding-block: var(--space-5);
   }
 
-  .batos-pb-6 {
+  .vui-pb-6 {
     padding-block: var(--space-6);
   }
 
-  .batos-pb-7 {
+  .vui-pb-7 {
     padding-block: var(--space-7);
   }
 
-  .batos-pb-8 {
+  .vui-pb-8 {
     padding-block: var(--space-8);
   }
 
-  .batos-m-0 {
+  .vui-m-0 {
     margin: var(--space-0);
   }
 
-  .batos-m-2 {
+  .vui-m-2 {
     margin: var(--space-2);
   }
 
-  .batos-m-3 {
+  .vui-m-3 {
     margin: var(--space-3);
   }
 
-  .batos-m-4 {
+  .vui-m-4 {
     margin: var(--space-4);
   }
 
-  .batos-m-5 {
+  .vui-m-5 {
     margin: var(--space-5);
   }
 
-  .batos-m-6 {
+  .vui-m-6 {
     margin: var(--space-6);
   }
 
-  .batos-m-auto {
+  .vui-m-auto {
     margin: auto;
   }
 
-  .batos-mi-auto {
+  .vui-mi-auto {
     margin-inline: auto;
   }
 
-  .batos-mb-0 {
+  .vui-mb-0 {
     margin-block: var(--space-0);
   }
 
-  .batos-mb-2 {
+  .vui-mb-2 {
     margin-block: var(--space-2);
   }
 
-  .batos-mb-3 {
+  .vui-mb-3 {
     margin-block: var(--space-3);
   }
 
-  .batos-mb-4 {
+  .vui-mb-4 {
     margin-block: var(--space-4);
   }
 
-  .batos-mb-5 {
+  .vui-mb-5 {
     margin-block: var(--space-5);
   }
 
-  .batos-mb-6 {
+  .vui-mb-6 {
     margin-block: var(--space-6);
   }
 
-  .batos-mb-7 {
+  .vui-mb-7 {
     margin-block: var(--space-7);
   }
 
-  .batos-mb-8 {
+  .vui-mb-8 {
     margin-block: var(--space-8);
   }
 
-  .batos-mbe-3 {
+  .vui-mbe-3 {
     margin-block-end: var(--space-3);
   }
 
-  .batos-mbe-4 {
+  .vui-mbe-4 {
     margin-block-end: var(--space-4);
   }
 
-  .batos-mbe-5 {
+  .vui-mbe-5 {
     margin-block-end: var(--space-5);
   }
 
-  .batos-mbe-6 {
+  .vui-mbe-6 {
     margin-block-end: var(--space-6);
   }
 
-  .batos-text-start {
+  .vui-text-start {
     text-align: start;
   }
 
-  .batos-text-center {
+  .vui-text-center {
     text-align: center;
   }
 
-  .batos-text-end {
+  .vui-text-end {
     text-align: end;
   }
 
-  .batos-upper {
+  .vui-upper {
     text-transform: uppercase;
   }
 
-  .batos-nowrap-text {
+  .vui-nowrap-text {
     white-space: nowrap;
   }
 
-  .batos-truncate {
+  .vui-truncate {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
   }
 
-  .batos-font-display {
+  .vui-font-display {
     font-family: var(--font-display);
   }
 
-  .batos-font-ui {
+  .vui-font-ui {
     font-family: var(--font-ui);
   }
 
-  .batos-font-hud {
+  .vui-font-hud {
     font-family: var(--font-hud);
   }
 
-  .batos-font-mono {
+  .vui-font-mono {
     font-family: var(--font-mono);
   }
 
-  .batos-fw-light {
+  .vui-fw-light {
     font-weight: var(--fw-light);
   }
 
-  .batos-fw-regular {
+  .vui-fw-regular {
     font-weight: var(--fw-regular);
   }
 
-  .batos-fw-medium {
+  .vui-fw-medium {
     font-weight: var(--fw-medium);
   }
 
-  .batos-fw-semibold {
+  .vui-fw-semibold {
     font-weight: var(--fw-semibold);
   }
 
-  .batos-fw-bold {
+  .vui-fw-bold {
     font-weight: var(--fw-bold);
   }
 
-  .batos-tracked {
+  .vui-tracked {
     letter-spacing: var(--ls-wide);
   }
 
-  .batos-tracked-wider {
+  .vui-tracked-wider {
     letter-spacing: var(--ls-wider);
   }
 
-  .batos-tracked-widest {
+  .vui-tracked-widest {
     letter-spacing: var(--ls-widest);
   }
 
-  .batos-text-2xs {
+  .vui-text-2xs {
     font-size: var(--fs-2xs);
   }
 
-  .batos-text-xs {
+  .vui-text-xs {
     font-size: var(--fs-xs);
   }
 
-  .batos-text-sm {
+  .vui-text-sm {
     font-size: var(--fs-sm);
   }
 
-  .batos-text-base {
+  .vui-text-base {
     font-size: var(--fs-base);
   }
 
-  .batos-text-md {
+  .vui-text-md {
     font-size: var(--fs-md);
   }
 
-  .batos-text-lg {
+  .vui-text-lg {
     font-size: var(--fs-lg);
   }
 
-  .batos-text-xl {
+  .vui-text-xl {
     font-size: var(--fs-xl);
   }
 
-  .batos-text-2xl {
+  .vui-text-2xl {
     font-size: var(--fs-2xl);
   }
 
-  .batos-text-3xl {
+  .vui-text-3xl {
     font-size: var(--fs-3xl);
   }
 
-  .batos-text-4xl {
+  .vui-text-4xl {
     font-size: var(--fs-4xl);
   }
 
-  .batos-text-5xl {
+  .vui-text-5xl {
     font-size: var(--fs-5xl);
   }
 
-  .batos-text-primary {
+  .vui-text-primary {
     color: var(--text-primary);
   }
 
-  .batos-text-secondary {
+  .vui-text-secondary {
     color: var(--text-secondary);
   }
 
-  .batos-text-muted {
+  .vui-text-muted {
     color: var(--text-muted);
   }
 
-  .batos-text-faint {
+  .vui-text-faint {
     color: var(--text-faint);
   }
 
-  .batos-text-cyan {
+  .vui-text-cyan {
     color: var(--cyan-400);
   }
 
-  .batos-text-amber {
+  .vui-text-amber {
     color: var(--amber-500);
   }
 
-  .batos-text-red {
+  .vui-text-red {
     color: var(--red-500);
   }
 
-  .batos-text-green {
+  .vui-text-green {
     color: var(--green-500);
   }
 
-  .batos-bg-void {
+  .vui-bg-void {
     background-color: var(--bg-void);
   }
 
-  .batos-bg-base {
+  .vui-bg-base {
     background-color: var(--bg-base);
   }
 
-  .batos-bg-raised {
+  .vui-bg-raised {
     background-color: var(--bg-raised);
   }
 
-  .batos-bg-panel {
+  .vui-bg-panel {
     background-color: var(--surface-panel);
   }
 
-  .batos-bg-inset {
+  .vui-bg-inset {
     background-color: var(--surface-inset);
   }
 
-  .batos-border {
+  .vui-border {
     border: var(--border-hair) solid var(--hairline);
   }
 
-  .batos-border-strong {
+  .vui-border-strong {
     border: var(--border-hair) solid var(--hairline-strong);
   }
 
-  .batos-border-accent {
+  .vui-border-accent {
     border: var(--border-thin) solid var(--hairline-accent);
   }
 
-  .batos-border-0 {
+  .vui-border-0 {
     border: 0;
   }
 
-  .batos-glow-cyan {
+  .vui-glow-cyan {
     box-shadow: var(--glow-cyan-md);
   }
 
-  .batos-glow-amber {
+  .vui-glow-amber {
     box-shadow: var(--glow-amber-md);
   }
 
-  .batos-glow-red {
+  .vui-glow-red {
     box-shadow: var(--glow-red-md);
   }
 
-  .batos-glow-green {
+  .vui-glow-green {
     box-shadow: var(--glow-green-md);
   }
 
-  .batos-text-glow {
+  .vui-text-glow {
     text-shadow: var(--text-glow-cyan);
   }
 
-  .batos-pointer {
+  .vui-pointer {
     cursor: pointer;
   }
 
-  .batos-select-none {
+  .vui-select-none {
     -webkit-user-select: none;
     user-select: none;
   }
 
-  .batos-flicker {
-    animation: batos-flicker 6s var(--ease-inout) infinite;
+  .vui-flicker {
+    animation: vui-flicker 6s var(--ease-inout) infinite;
   }
 
-  .batos-scanning {
-    animation: batos-pulse 2.4s var(--ease-inout) infinite;
+  .vui-scanning {
+    animation: vui-pulse 2.4s var(--ease-inout) infinite;
   }
 }

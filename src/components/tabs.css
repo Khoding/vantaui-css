@@ -1,22 +1,22 @@
 /* ============================================================
-   BatOS — Tabs & disclosures
+   VantaUI — Tabs & disclosures
    Tab strip: semantic <nav role="tablist"> with <button role="tab">,
    active state read from [aria-selected="true"] (the optional JS helper
-   or your framework manages it), or forced with .batos-tab--active.
+   or your framework manages it), or forced with .vui-tab--active.
    Disclosure: native <details>/<summary> styled as a chamfered, zero-JS
    accordion — great for FAQ / collapsible telemetry.
    ============================================================ */
 
 /* ---------- Tab strip ---------- */
-:where(.batos nav[role='tablist']),
-.batos-tabs {
+:where(.vui nav[role='tablist']),
+.vui-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-:where(.batos [role='tab']),
-.batos-tab {
+:where(.vui [role='tab']),
+.vui-tab {
   display: inline-flex;
   position: relative;
   align-items: center;
@@ -37,18 +37,18 @@
     color var(--dur-fast) var(--ease-hud),
     background-color var(--dur-fast) var(--ease-hud);
 }
-:where(.batos [role='tab']:hover),
-.batos-tab:hover {
+:where(.vui [role='tab']:hover),
+.vui-tab:hover {
   background-color: color-mix(in srgb, var(--accent) 4%, transparent);
   color: var(--text-secondary);
 }
-:where(.batos [role='tab'][aria-selected='true']),
-.batos-tab--active {
+:where(.vui [role='tab'][aria-selected='true']),
+.vui-tab--active {
   background-color: color-mix(in srgb, var(--cyan-400) 8%, transparent);
   color: var(--accent);
 }
-:where(.batos [role='tab'][aria-selected='true'])::after,
-.batos-tab--active::after {
+:where(.vui [role='tab'][aria-selected='true'])::after,
+.vui-tab--active::after {
   position: absolute;
   block-size: 2px;
   inset-block-end: -1px;
@@ -57,13 +57,13 @@
   box-shadow: var(--glow-cyan-md);
   content: '';
 }
-:where(.batos [role='tab']:focus-visible),
-.batos-tab:focus-visible {
+:where(.vui [role='tab']:focus-visible),
+.vui-tab:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 /* count chip */
-.batos-tab__count {
+.vui-tab__count {
   padding-inline: 5px;
   padding-block: 1px;
   border: var(--border-hair) solid var(--hairline-strong);
@@ -71,37 +71,37 @@
   font-size: var(--fs-2xs);
   font-family: var(--font-mono);
 }
-:where(.batos [role='tab'][aria-selected='true']) .batos-tab__count,
-.batos-tab--active .batos-tab__count {
+:where(.vui [role='tab'][aria-selected='true']) .vui-tab__count,
+.vui-tab--active .vui-tab__count {
   border-color: var(--hairline-accent);
   color: var(--accent);
 }
 
 /* tab panels: hide the inactive ones (JS toggles [hidden]) */
-:where(.batos [role='tabpanel']),
-.batos-tab-panel {
+:where(.vui [role='tabpanel']),
+.vui-tab-panel {
   padding-block-start: var(--space-5);
 }
-:where(.batos [role='tabpanel'][hidden]),
-.batos-tab-panel[hidden] {
+:where(.vui [role='tabpanel'][hidden]),
+.vui-tab-panel[hidden] {
   display: none;
 }
 
 /* ---------- Disclosure: <details> / <summary> (zero JS) ---------- */
-:where(.batos details),
-.batos-details {
+:where(.vui details),
+.vui-details {
   --bevel-md: 8px;
   border: var(--border-hair) solid var(--hairline);
   background-color: var(--surface-panel);
   box-shadow: var(--shadow-panel);
   clip-path: var(--clip-chamfer);
 }
-:where(.batos details + details),
-.batos-details + .batos-details {
+:where(.vui details + details),
+.vui-details + .vui-details {
   margin-block-start: var(--space-3);
 }
-:where(.batos details > summary),
-.batos-details > summary {
+:where(.vui details > summary),
+.vui-details > summary {
   display: flex;
   align-items: center;
   padding-inline: var(--space-5);
@@ -117,32 +117,32 @@
   cursor: pointer;
   transition: color var(--dur-fast) var(--ease-hud);
 }
-:where(.batos details > summary)::-webkit-details-marker {
+:where(.vui details > summary)::-webkit-details-marker {
   display: none;
 }
-:where(.batos details > summary)::before,
-.batos-details > summary::before {
+:where(.vui details > summary)::before,
+.vui-details > summary::before {
   content: '›';
   color: var(--accent);
   font-size: 1.1em;
   transition: transform var(--dur-fast) var(--ease-hud);
 }
-:where(.batos details[open] > summary)::before,
-.batos-details[open] > summary::before {
+:where(.vui details[open] > summary)::before,
+.vui-details[open] > summary::before {
   transform: rotate(90deg);
 }
-:where(.batos details[open] > summary),
-.batos-details[open] > summary {
+:where(.vui details[open] > summary),
+.vui-details[open] > summary {
   border-block-end: var(--border-hair) solid var(--hairline);
   color: var(--accent);
 }
-:where(.batos details > summary:focus-visible),
-.batos-details > summary:focus-visible {
+:where(.vui details > summary:focus-visible),
+.vui-details > summary:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
-:where(.batos details > :not(summary)),
-.batos-details > :not(summary) {
+:where(.vui details > :not(summary)),
+.vui-details > :not(summary) {
   padding-inline: var(--space-5);
   padding-block: var(--space-4);
   color: var(--text-muted);

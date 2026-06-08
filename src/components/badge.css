@@ -1,13 +1,13 @@
 /* ============================================================
-   BatOS — Badges / status tags
+   VantaUI — Badges / status tags
    Status tag chip with an optional live dot. Tone via class or
-   [data-tone]. A leading <i>/<svg>/.batos-dot sits inline (gap auto).
-   Semantic: <mark class="batos-badge"> or any element + class.
+   [data-tone]. A leading <i>/<svg>/.vui-dot sits inline (gap auto).
+   Semantic: <mark class="vui-badge"> or any element + class.
    ============================================================ */
 
-.batos-badge,
-:where(.batos [data-badge]),
-:where([class*='batos-badge--']) {
+.vui-badge,
+:where(.vui [data-badge]),
+:where([class*='vui-badge--']) {
   --_c: var(--cyan-400);
   --bevel-sm: 4px;
   display: inline-flex;
@@ -29,11 +29,11 @@
 }
 
 /* live dot inside a badge */
-.batos-badge > .batos-badge__dot,
-.batos-badge::before {
+.vui-badge > .vui-badge__dot,
+.vui-badge::before {
   flex: none;
 }
-.batos-badge--dot::before {
+.vui-badge--dot::before {
   inline-size: 6px;
   block-size: 6px;
   border-radius: var(--radius-pill);
@@ -43,54 +43,54 @@
 }
 
 /* solid fill variant */
-.batos-badge--solid {
+.vui-badge--solid {
   border-color: currentColor;
   background-color: currentColor;
 }
-.batos-badge--solid {
+.vui-badge--solid {
   color: var(--_c);
 }
-.batos-badge--solid > * {
+.vui-badge--solid > * {
   color: var(--ink-900);
 }
 
 /* ---- Tones ---- */
-.batos-badge--cyan,
-:where(.batos [data-badge][data-tone='cyan']) {
+.vui-badge--cyan,
+:where(.vui [data-badge][data-tone='cyan']) {
   --_c: var(--cyan-400);
   color: var(--cyan-400);
 }
-.batos-badge--amber,
-:where(.batos [data-badge][data-tone='amber']) {
+.vui-badge--amber,
+:where(.vui [data-badge][data-tone='amber']) {
   --_c: var(--amber-500);
   color: var(--amber-500);
 }
-.batos-badge--red,
-:where(.batos [data-badge][data-tone='red']) {
+.vui-badge--red,
+:where(.vui [data-badge][data-tone='red']) {
   --_c: var(--red-500);
   color: var(--red-500);
 }
-.batos-badge--green,
-:where(.batos [data-badge][data-tone='green']) {
+.vui-badge--green,
+:where(.vui [data-badge][data-tone='green']) {
   --_c: var(--green-500);
   color: var(--green-500);
 }
-.batos-badge--neutral,
-:where(.batos [data-badge][data-tone='neutral']) {
+.vui-badge--neutral,
+:where(.vui [data-badge][data-tone='neutral']) {
   --_c: var(--slate-400);
   color: var(--slate-400);
 }
 
 /* On solid badges keep the inner text ink-dark */
-.batos-badge--solid.batos-badge--cyan {
+.vui-badge--solid.vui-badge--cyan {
   color: var(--cyan-400);
 }
-.batos-badge--solid.batos-badge--amber {
+.vui-badge--solid.vui-badge--amber {
   color: var(--amber-500);
 }
-.batos-badge--solid.batos-badge--red {
+.vui-badge--solid.vui-badge--red {
   color: var(--red-500);
 }
-.batos-badge--solid.batos-badge--green {
+.vui-badge--solid.vui-badge--green {
   color: var(--green-500);
 }

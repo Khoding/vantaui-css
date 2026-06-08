@@ -1,16 +1,16 @@
 /* ============================================================
-   BatOS — Radial gauge (pure CSS)
+   VantaUI — Radial gauge (pure CSS)
    A 270° arc readout built from a conic-gradient ring (masked to a
    ring, glow follows the arc). Driven entirely by custom properties —
    no SVG, no JS:
-     <div class="batos-gauge" style="--value:72">
-       <b class="batos-gauge__value"></b><small>%</small>
-       <span class="batos-gauge__label">Integrity</span>
+     <div class="vui-gauge" style="--value:72">
+       <b class="vui-gauge__value"></b><small>%</small>
+       <span class="vui-gauge__label">Integrity</span>
      </div>
-   Leave .batos-gauge__value empty and it renders --value via a counter.
+   Leave .vui-gauge__value empty and it renders --value via a counter.
    ============================================================ */
 
-.batos-gauge {
+.vui-gauge {
   --value: 0;
   --max: 100;
   --size: 8rem;
@@ -28,7 +28,7 @@
   gap: 2px;
   font-family: var(--font-hud);
 }
-.batos-gauge::before {
+.vui-gauge::before {
   position: absolute;
   inset: 0;
   border-radius: 50%;
@@ -62,7 +62,7 @@
 }
 /* Rounded end-cap: a lit dot on the ring centre-line, rotated to the arc tip,
    turning the flat butt edge into a clean rounded terminal. */
-.batos-gauge::after {
+.vui-gauge::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -78,8 +78,8 @@
   transition: transform var(--dur-slow) var(--ease-hud);
   pointer-events: none;
 }
-.batos-gauge__value,
-.batos-gauge > b {
+.vui-gauge__value,
+.vui-gauge > b {
   position: relative;
   color: var(--_c);
   font-weight: var(--fw-bold);
@@ -87,18 +87,18 @@
   line-height: 1;
   text-shadow: 0 0 12px color-mix(in srgb, var(--_c) 55%, transparent);
 }
-.batos-gauge__value:empty {
-  counter-reset: batos-gauge var(--value);
+.vui-gauge__value:empty {
+  counter-reset: vui-gauge var(--value);
 }
-.batos-gauge__value:empty::after {
-  content: counter(batos-gauge);
+.vui-gauge__value:empty::after {
+  content: counter(vui-gauge);
 }
-.batos-gauge small {
+.vui-gauge small {
   position: relative;
   color: var(--text-muted);
   font-size: calc(var(--size) * 0.1);
 }
-.batos-gauge__label {
+.vui-gauge__label {
   position: relative;
   margin-block-start: 2px;
   color: var(--text-muted);
@@ -109,23 +109,23 @@
 }
 
 /* ---- Sizes ---- */
-.batos-gauge--sm {
+.vui-gauge--sm {
   --size: 6rem;
 }
-.batos-gauge--lg {
+.vui-gauge--lg {
   --size: 11rem;
 }
 
 /* ---- Tones ---- */
-.batos-gauge--amber {
+.vui-gauge--amber {
   --_c: var(--amber-500);
 }
-.batos-gauge--red {
+.vui-gauge--red {
   --_c: var(--red-500);
 }
-.batos-gauge--green {
+.vui-gauge--green {
   --_c: var(--green-500);
 }
-.batos-gauge--cyan {
+.vui-gauge--cyan {
   --_c: var(--cyan-400);
 }

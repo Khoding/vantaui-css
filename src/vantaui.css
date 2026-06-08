@@ -1,0 +1,47 @@
+/* ============================================================
+   VantaUI — entry stylesheet.
+   Link/import THIS file. It is an import manifest assembled into
+   cascade layers so a host app's own (unlayered) styles always win —
+   safe to drop into any Vue / Nuxt / vanilla project.
+
+   Layer order (low → high priority):
+     tokens → reset → base → layout → components → utilities
+   Anything you write outside these layers beats all of VantaUI.
+   ============================================================ */
+
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components, vui.utilities;
+
+/* Fonts stay unlayered so @font-face / the remote @import resolve globally */
+@import url('./tokens/fonts.css');
+
+/* Tokens */
+@import url('./tokens/colors.css') layer(vui.tokens);
+@import url('./tokens/typography.css') layer(vui.tokens);
+@import url('./tokens/spacing.css') layer(vui.tokens);
+@import url('./tokens/effects.css') layer(vui.tokens);
+
+/* Reset */
+@import url('./base/reset.css') layer(vui.reset);
+
+/* Base: semantic element defaults + HUD primitives */
+@import url('./base/elements.css') layer(vui.base);
+@import url('./base/primitives.css') layer(vui.base);
+
+/* Layout system */
+@import url('./layout/layout.css') layer(vui.layout);
+
+/* Components */
+@import url('./components/button.css') layer(vui.components);
+@import url('./components/panel.css') layer(vui.components);
+@import url('./components/badge.css') layer(vui.components);
+@import url('./components/forms.css') layer(vui.components);
+@import url('./components/alert.css') layer(vui.components);
+@import url('./components/meter.css') layer(vui.components);
+@import url('./components/gauge.css') layer(vui.components);
+@import url('./components/tabs.css') layer(vui.components);
+@import url('./components/table.css') layer(vui.components);
+@import url('./components/overlay.css') layer(vui.components);
+@import url('./components/appshell.css') layer(vui.components);
+
+/* Utilities (win on ties) */
+@import url('./utilities/utilities.css') layer(vui.utilities);

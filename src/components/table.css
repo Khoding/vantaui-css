@@ -1,12 +1,12 @@
 /* ============================================================
-   BatOS — Data tables
-   Semantic <table> inside .batos becomes a tactical telemetry grid:
+   VantaUI — Data tables
+   Semantic <table> inside .vui becomes a tactical telemetry grid:
    mono body, uppercase eyebrow headers, hairline rows, cyan hover.
-   Wrap wide tables in .batos-table-scroll for horizontal overflow on
+   Wrap wide tables in .vui-table-scroll for horizontal overflow on
    small screens.
    ============================================================ */
 
-.batos-table-scroll {
+.vui-table-scroll {
   inline-size: 100%;
   overflow-x: auto;
   border: var(--border-hair) solid var(--hairline);
@@ -14,16 +14,16 @@
   --bevel-md: 10px;
 }
 
-:where(.batos table:not([class*='batos-'])),
-.batos-table {
+:where(.vui table:not([class*='vui-'])),
+.vui-table {
   inline-size: 100%;
   border-collapse: collapse;
   color: var(--text-secondary);
   font-size: var(--fs-sm);
   font-family: var(--font-mono);
 }
-:where(.batos table caption),
-.batos-table caption {
+:where(.vui table caption),
+.vui-table caption {
   padding-inline: 14px;
   padding-block: 10px;
   color: var(--text-muted);
@@ -35,8 +35,8 @@
   text-transform: uppercase;
   caption-side: top;
 }
-:where(.batos table th),
-.batos-table th {
+:where(.vui table th),
+.vui-table th {
   padding-inline: 14px;
   padding-block: 10px;
   border-block-end: var(--border-hair) solid var(--hairline-strong);
@@ -49,27 +49,27 @@
   text-transform: uppercase;
   white-space: nowrap;
 }
-:where(.batos table td),
-.batos-table td {
+:where(.vui table td),
+.vui-table td {
   padding-inline: 14px;
   padding-block: 10px;
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-:where(.batos table tbody tr),
-.batos-table tbody tr {
+:where(.vui table tbody tr),
+.vui-table tbody tr {
   transition: background-color var(--dur-fast) var(--ease-hud);
 }
-:where(.batos table tbody tr:hover),
-.batos-table tbody tr:hover {
+:where(.vui table tbody tr:hover),
+.vui-table tbody tr:hover {
   background-color: color-mix(in srgb, var(--accent) 5%, transparent);
 }
-:where(.batos table tbody tr:last-child td),
-.batos-table tbody tr:last-child td {
+:where(.vui table tbody tr:last-child td),
+.vui-table tbody tr:last-child td {
   border-block-end: 0;
 }
 /* numeric columns read better right-aligned via [data-num] */
-:where(.batos table [data-num]),
-.batos-table [data-num] {
+:where(.vui table [data-num]),
+.vui-table [data-num] {
   color: var(--text-primary);
   font-weight: var(--fw-semibold);
   font-family: var(--font-hud);

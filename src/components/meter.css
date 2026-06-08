@@ -1,16 +1,16 @@
 /* ============================================================
-   BatOS — Meters & progress
+   VantaUI — Meters & progress
    Native <meter> and <progress> are restyled into telemetry bars
-   (no classes needed). The .batos-meter composite adds a label +
+   (no classes needed). The .vui-meter composite adds a label +
    value readout and is driven entirely by CSS custom properties:
-     <div class="batos-meter" style="--value:72">…</div>
+     <div class="vui-meter" style="--value:72">…</div>
    The value text auto-renders from --value via a counter, so no JS
    is required — though the optional JS helper can animate it.
    ============================================================ */
 
 /* ---------- Native <progress> ---------- */
-:where(.batos progress),
-.batos-progress {
+:where(.vui progress),
+.vui-progress {
   appearance: none;
   inline-size: 100%;
   block-size: 8px;
@@ -20,23 +20,23 @@
   color: var(--cyan-400);
   clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
 }
-:where(.batos progress)::-webkit-progress-bar,
-.batos-progress::-webkit-progress-bar {
+:where(.vui progress)::-webkit-progress-bar,
+.vui-progress::-webkit-progress-bar {
   background-color: var(--surface-inset);
 }
-:where(.batos progress)::-webkit-progress-value,
-.batos-progress::-webkit-progress-value {
+:where(.vui progress)::-webkit-progress-value,
+.vui-progress::-webkit-progress-value {
   background-color: var(--cyan-400);
   box-shadow: 0 0 10px color-mix(in srgb, var(--cyan-400) 70%, transparent);
 }
-:where(.batos progress)::-moz-progress-bar,
-.batos-progress::-moz-progress-bar {
+:where(.vui progress)::-moz-progress-bar,
+.vui-progress::-moz-progress-bar {
   background-color: var(--cyan-400);
 }
 
 /* ---------- Native <meter> (coloured by threshold) ---------- */
-:where(.batos meter),
-.batos-meter-el {
+:where(.vui meter),
+.vui-meter-el {
   appearance: none;
   inline-size: 100%;
   block-size: 8px;
@@ -45,31 +45,31 @@
   background: var(--surface-inset);
   clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
 }
-:where(.batos meter)::-webkit-meter-bar {
+:where(.vui meter)::-webkit-meter-bar {
   border: 0;
   background: var(--surface-inset);
 }
-:where(.batos meter)::-webkit-meter-optimum-value {
+:where(.vui meter)::-webkit-meter-optimum-value {
   background-color: var(--green-500);
 }
-:where(.batos meter)::-webkit-meter-suboptimum-value {
+:where(.vui meter)::-webkit-meter-suboptimum-value {
   background-color: var(--amber-500);
 }
-:where(.batos meter)::-webkit-meter-even-less-good-value {
+:where(.vui meter)::-webkit-meter-even-less-good-value {
   background-color: var(--red-500);
 }
-:where(.batos meter:-moz-meter-optimum)::-moz-meter-bar {
+:where(.vui meter:-moz-meter-optimum)::-moz-meter-bar {
   background-color: var(--green-500);
 }
-:where(.batos meter:-moz-meter-sub-optimum)::-moz-meter-bar {
+:where(.vui meter:-moz-meter-sub-optimum)::-moz-meter-bar {
   background-color: var(--amber-500);
 }
-:where(.batos meter:-moz-meter-sub-sub-optimum)::-moz-meter-bar {
+:where(.vui meter:-moz-meter-sub-sub-optimum)::-moz-meter-bar {
   background-color: var(--red-500);
 }
 
-/* ---------- .batos-meter composite (CSS-driven) ---------- */
-.batos-meter {
+/* ---------- .vui-meter composite (CSS-driven) ---------- */
+.vui-meter {
   --value: 0;
   --max: 100;
   --_c: var(--cyan-400);
@@ -78,13 +78,13 @@
   inline-size: 100%;
   gap: 6px;
 }
-.batos-meter__top {
+.vui-meter__top {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
 }
-.batos-meter__label {
+.vui-meter__label {
   color: var(--text-muted);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-2xs);
@@ -92,7 +92,7 @@
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
-.batos-meter__val {
+.vui-meter__val {
   color: var(--_c);
   font-weight: var(--fw-bold);
   font-size: var(--fs-base);
@@ -101,13 +101,13 @@
   text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
 }
 /* auto value text from --value when the span is left empty */
-.batos-meter__val:empty {
-  counter-reset: batos-meter var(--value);
+.vui-meter__val:empty {
+  counter-reset: vui-meter var(--value);
 }
-.batos-meter__val:empty::after {
-  content: counter(batos-meter) '%';
+.vui-meter__val:empty::after {
+  content: counter(vui-meter) '%';
 }
-.batos-meter__track {
+.vui-meter__track {
   position: relative;
   block-size: 8px;
   overflow: hidden;
@@ -115,7 +115,7 @@
   background-color: var(--surface-inset);
   clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
 }
-.batos-meter__fill {
+.vui-meter__fill {
   inline-size: clamp(0%, calc(var(--value) / var(--max) * 100%), 100%);
   block-size: 100%;
   background-color: var(--_c);
@@ -123,7 +123,7 @@
   transition: inline-size var(--dur-slow) var(--ease-hud);
 }
 /* segmented ticks overlay */
-.batos-meter--segmented .batos-meter__track::after {
+.vui-meter--segmented .vui-meter__track::after {
   position: absolute;
   inset: 0;
   background-image: repeating-linear-gradient(
@@ -138,15 +138,15 @@
 }
 
 /* ---- Tones ---- */
-.batos-meter--amber {
+.vui-meter--amber {
   --_c: var(--amber-500);
 }
-.batos-meter--red {
+.vui-meter--red {
   --_c: var(--red-500);
 }
-.batos-meter--green {
+.vui-meter--green {
   --_c: var(--green-500);
 }
-.batos-meter--cyan {
+.vui-meter--cyan {
   --_c: var(--cyan-400);
 }

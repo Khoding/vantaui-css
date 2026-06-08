@@ -1,15 +1,15 @@
 /* ============================================================
-   BatOS — Alerts / notices
+   VantaUI — Alerts / notices
    Inline system notice with an accent rail + glyph. Semantic:
    [role="status"] reads as info (cyan), [role="alert"] as threat
    (red). Tone via class or [data-tone]; glyph auto-set per tone and
-   overridable with --batos-alert-glyph. Optional <strong>/<h*> title.
+   overridable with --vui-alert-glyph. Optional <strong>/<h*> title.
    ============================================================ */
 
-.batos-alert,
-:where([class*='batos-alert--']),
-:where(.batos [role='status']:not([class*='batos-'])),
-:where(.batos [role='alert']:not([class*='batos-'])) {
+.vui-alert,
+:where([class*='vui-alert--']),
+:where(.vui [role='status']:not([class*='vui-'])),
+:where(.vui [role='alert']:not([class*='vui-'])) {
   --_c: var(--cyan-400);
   --_glyph: '\25C8'; /* ◈ */
   --bevel-md: 9px;
@@ -29,10 +29,10 @@
 }
 
 /* accent rail */
-.batos-alert::before,
-:where([class*='batos-alert--'])::before,
-:where(.batos [role='status']:not([class*='batos-']))::before,
-:where(.batos [role='alert']:not([class*='batos-']))::before {
+.vui-alert::before,
+:where([class*='vui-alert--'])::before,
+:where(.vui [role='status']:not([class*='vui-']))::before,
+:where(.vui [role='alert']:not([class*='vui-']))::before {
   position: absolute;
   inline-size: 3px;
   inset-block: 0;
@@ -43,13 +43,13 @@
 }
 
 /* leading glyph */
-.batos-alert::after,
-:where([class*='batos-alert--'])::after,
-:where(.batos [role='status']:not([class*='batos-']))::after,
-:where(.batos [role='alert']:not([class*='batos-']))::after {
+.vui-alert::after,
+:where([class*='vui-alert--'])::after,
+:where(.vui [role='status']:not([class*='vui-']))::after,
+:where(.vui [role='alert']:not([class*='vui-']))::after {
   flex: none;
   order: -1;
-  content: var(--batos-alert-glyph, var(--_glyph));
+  content: var(--vui-alert-glyph, var(--_glyph));
   color: var(--_c);
   font-weight: var(--fw-bold);
   font-size: var(--fs-md);
@@ -59,8 +59,8 @@
 }
 
 /* title inside the body */
-.batos-alert :where(strong, b, h1, h2, h3, h4, h5, h6),
-.batos-alert__title {
+.vui-alert :where(strong, b, h1, h2, h3, h4, h5, h6),
+.vui-alert__title {
   display: block;
   margin-block-end: 3px;
   color: var(--text-primary);
@@ -72,24 +72,24 @@
 }
 
 /* ---- Tones ---- */
-:where(.batos [role='alert']:not([class*='batos-'])),
-.batos-alert--threat,
-:where(.batos-alert[data-tone='threat']) {
+:where(.vui [role='alert']:not([class*='vui-'])),
+.vui-alert--threat,
+:where(.vui-alert[data-tone='threat']) {
   --_c: var(--red-500);
   --_glyph: '\2B22'; /* ⬢ */
 }
-.batos-alert--warn,
-:where(.batos-alert[data-tone='warn']) {
+.vui-alert--warn,
+:where(.vui-alert[data-tone='warn']) {
   --_c: var(--amber-500);
   --_glyph: '\25B2'; /* ▲ */
 }
-.batos-alert--secure,
-:where(.batos-alert[data-tone='secure']) {
+.vui-alert--secure,
+:where(.vui-alert[data-tone='secure']) {
   --_c: var(--green-500);
   --_glyph: '\25C9'; /* ◉ */
 }
-.batos-alert--info,
-:where(.batos-alert[data-tone='info']) {
+.vui-alert--info,
+:where(.vui-alert[data-tone='info']) {
   --_c: var(--cyan-400);
   --_glyph: '\25C8'; /* ◈ */
 }

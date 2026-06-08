@@ -1,5 +1,5 @@
 /* ============================================================
-   BatOS — Effects: glows, shadows, scanlines, grids, motion
+   VantaUI — Effects: glows, shadows, scanlines, grids, motion
    Light is emitted, not cast. "Shadows" are really inner darkening
    + outer colored glow. Surfaces carry faint hex/scan textures.
    ============================================================ */
@@ -54,7 +54,7 @@
 }
 
 /* Subtle global keyframes available to components & kits */
-@keyframes batos-flicker {
+@keyframes vui-flicker {
   0%,
   100% {
     opacity: 1;
@@ -72,7 +72,7 @@
     opacity: 0.85;
   }
 }
-@keyframes batos-scan {
+@keyframes vui-scan {
   from {
     transform: translateY(-100%);
   }
@@ -80,7 +80,7 @@
     transform: translateY(100%);
   }
 }
-@keyframes batos-pulse {
+@keyframes vui-pulse {
   0%,
   100% {
     opacity: 1;
@@ -89,7 +89,7 @@
     opacity: 0.45;
   }
 }
-@keyframes batos-sweep {
+@keyframes vui-sweep {
   from {
     transform: rotate(0deg);
   }
