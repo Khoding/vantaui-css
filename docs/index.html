@@ -16,8 +16,22 @@
       scroll-behavior: smooth;
     }
 
+    /* The dark base must live on the document itself so it shows through every
+     gutter and reflow gap — never let a stray light colour leak between cards. */
+    html,
+    body {
+      background: var(--bg-void);
+    }
+
     body {
       margin: 0;
+      min-block-size: 100dvh;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
     }
 
     .doc-shell {
@@ -117,17 +131,20 @@
       background: color-mix(in srgb, var(--cyan-400) 8%, transparent);
     }
 
-    /* ---------- Main column ---------- */
+    /* ---------- Main column ----------
+     Horizontal padding is the page gutter. It never drops below 20px, so on the
+     smallest phone the content always keeps a margin from the screen edge. */
     .doc-main {
       padding: var(--space-8) clamp(20px, 4vw, 64px) var(--space-13);
       max-inline-size: 1080px;
+      min-inline-size: 0;
     }
 
     /* ---------- Hero ---------- */
     .doc-hero {
       position: relative;
       overflow: hidden;
-      padding: var(--space-11) var(--space-8) var(--space-10);
+      padding: clamp(var(--space-8), 6vw, var(--space-11)) clamp(var(--space-6), 5vw, var(--space-8)) clamp(var(--space-7), 5vw, var(--space-10));
       border: 1px solid var(--hairline);
       clip-path: var(--clip-chamfer);
       --bevel-md: 16px;
@@ -153,6 +170,7 @@
     .doc-hero h1 {
       font-size: var(--fs-5xl);
       margin: 0 0 16px;
+      text-wrap: balance;
     }
 
     .doc-hero h1 b {
@@ -165,6 +183,7 @@
       font-size: var(--fs-md);
       color: var(--text-secondary);
       margin: 0 0 24px;
+      text-wrap: pretty;
     }
 
     .doc-hero__meta {
@@ -209,7 +228,7 @@
     }
 
     .doc-demo {
-      padding: var(--space-7);
+      padding: clamp(var(--space-5), 3vw, var(--space-7));
       background-color: var(--bg-base);
       background-image: var(--scanlines);
       display: flex;
@@ -220,6 +239,13 @@
 
     .doc-demo>* {
       max-inline-size: 100%;
+    }
+
+    /* Any bare card cluster a demo drops in flows responsively by default:
+     as many ~13rem cards as fit, collapsing to a single full-width card. */
+    .doc-demo .batos-autogrid {
+      inline-size: 100%;
+      --batos-min: 13rem;
     }
 
     .doc-demo--frame {
@@ -244,6 +270,7 @@
       border-radius: 0;
       background: var(--ink-1000);
       max-block-size: 360px;
+      overflow: auto;
     }
 
     .doc-copy {
@@ -291,7 +318,7 @@
 
     .doc-swatches {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(110px, 100%), 1fr));
       gap: 8px;
     }
 
@@ -400,6 +427,27 @@
 
       .doc-main {
         padding-top: var(--space-11);
+      }
+    }
+
+    /* Phones: tighten the rhythm so content breathes without ever shrinking type
+     into illegibility. Layout reflows; gutters stay. */
+    @media (max-width: 40rem) {
+      .doc-section {
+        padding-block: var(--space-7);
+      }
+
+      .doc-geo {
+        gap: 10px;
+      }
+
+      .doc-geo__plate {
+        inline-size: 100%;
+        flex: 1 1 130px;
+      }
+
+      .doc-hero__meta {
+        gap: 8px;
       }
     }
   </style>

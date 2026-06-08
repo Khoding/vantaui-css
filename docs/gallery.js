@@ -182,10 +182,10 @@
       id: 'autogrid',
       title: 'Auto grid & flex helpers',
       blurb:
-        'Zero-config responsive card flow, plus the flex utilities the whole system is built from: row, col, stack, cluster, between, center, spacer.',
+        '<code>batos-autogrid</code> is the responsive-by-default card flow: it fits as many cards as the space allows at your <code>--batos-min</code> width, then reflows down to a single full-width card on a phone — no breakpoints to write. Add <code>--fit</code> so a short last row stretches to fill. Plus the flex utilities the whole system is built from: row, col, stack, cluster, between, center, spacer.',
       examples: [
         {
-          code: '<div class="batos-autogrid" style="--batos-min:11rem">\n  <article>Auto</article>\n  <article>Wrapping</article>\n  <article>Cards</article>\n</div>',
+          code: '<div class="batos-autogrid batos-autogrid--fit" style="--batos-min:13rem">\n  <article>Sector 14-C</article>\n  <article>Sector 22-A</article>\n  <article>Sector 09-F</article>\n  <article>Sector 31-B</article>\n</div>',
         },
         {
           code: '<div class="batos-between">\n  <span class="batos-eyebrow">Sector 14-C</span>\n  <span class="batos-badge batos-badge--green batos-badge--dot">Online</span>\n</div>',
