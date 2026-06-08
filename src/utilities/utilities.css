@@ -1,0 +1,200 @@
+/* ============================================================
+   BatOS — Utilities
+   A focused, BeerCSS-sized set of helpers (not a Tailwind-scale
+   explosion): spacing on the 8px scale, display/flex, text + colour,
+   surfaces, glows. All batos- prefixed and logical-property based.
+   Spacing index N maps to --space-N (0,2,4,8,12,16,20,24,32 px).
+   ============================================================ */
+
+/* ---------- Display ---------- */
+.batos-block { display: block; }
+.batos-inline-block { display: inline-block; }
+.batos-inline { display: inline; }
+.batos-flex { display: flex; }
+.batos-inline-flex { display: inline-flex; }
+.batos-grid-d { display: grid; }
+.batos-contents { display: contents; }
+.batos-hidden { display: none !important; }
+.batos-sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Flex / grid behaviour ---------- */
+.batos-flex-row { flex-direction: row; }
+.batos-flex-col { flex-direction: column; }
+.batos-wrap { flex-wrap: wrap; }
+.batos-nowrap { flex-wrap: nowrap; }
+.batos-flex-1 { flex: 1 1 0%; }
+.batos-grow { flex-grow: 1; }
+.batos-shrink-0 { flex-shrink: 0; }
+
+.batos-items-start { align-items: flex-start; }
+.batos-items-center { align-items: center; }
+.batos-items-end { align-items: flex-end; }
+.batos-items-stretch { align-items: stretch; }
+.batos-items-baseline { align-items: baseline; }
+
+.batos-justify-start { justify-content: flex-start; }
+.batos-justify-center { justify-content: center; }
+.batos-justify-end { justify-content: flex-end; }
+.batos-justify-between { justify-content: space-between; }
+.batos-justify-around { justify-content: space-around; }
+
+/* ---------- Position / sizing ---------- */
+.batos-relative { position: relative; }
+.batos-absolute { position: absolute; }
+.batos-sticky { position: sticky; }
+.batos-w-full { inline-size: 100%; }
+.batos-h-full { block-size: 100%; }
+.batos-w-auto { inline-size: auto; }
+.batos-min-w-0 { min-inline-size: 0; }
+.batos-overflow-auto { overflow: auto; }
+.batos-overflow-hidden { overflow: hidden; }
+
+/* ---------- Gap (8px scale) ---------- */
+.batos-gap-0 { gap: var(--space-0); }
+.batos-gap-1 { gap: var(--space-1); }
+.batos-gap-2 { gap: var(--space-2); }
+.batos-gap-3 { gap: var(--space-3); }
+.batos-gap-4 { gap: var(--space-4); }
+.batos-gap-5 { gap: var(--space-5); }
+.batos-gap-6 { gap: var(--space-6); }
+.batos-gap-7 { gap: var(--space-7); }
+.batos-gap-8 { gap: var(--space-8); }
+
+/* ---------- Padding (all / inline / block) ---------- */
+.batos-p-0 { padding: var(--space-0); }
+.batos-p-1 { padding: var(--space-1); }
+.batos-p-2 { padding: var(--space-2); }
+.batos-p-3 { padding: var(--space-3); }
+.batos-p-4 { padding: var(--space-4); }
+.batos-p-5 { padding: var(--space-5); }
+.batos-p-6 { padding: var(--space-6); }
+.batos-p-7 { padding: var(--space-7); }
+.batos-p-8 { padding: var(--space-8); }
+
+.batos-pi-0 { padding-inline: var(--space-0); }
+.batos-pi-2 { padding-inline: var(--space-2); }
+.batos-pi-3 { padding-inline: var(--space-3); }
+.batos-pi-4 { padding-inline: var(--space-4); }
+.batos-pi-5 { padding-inline: var(--space-5); }
+.batos-pi-6 { padding-inline: var(--space-6); }
+.batos-pi-7 { padding-inline: var(--space-7); }
+.batos-pi-8 { padding-inline: var(--space-8); }
+
+.batos-pb-0 { padding-block: var(--space-0); }
+.batos-pb-2 { padding-block: var(--space-2); }
+.batos-pb-3 { padding-block: var(--space-3); }
+.batos-pb-4 { padding-block: var(--space-4); }
+.batos-pb-5 { padding-block: var(--space-5); }
+.batos-pb-6 { padding-block: var(--space-6); }
+.batos-pb-7 { padding-block: var(--space-7); }
+.batos-pb-8 { padding-block: var(--space-8); }
+
+/* ---------- Margin (all / inline / block + auto) ---------- */
+.batos-m-0 { margin: var(--space-0); }
+.batos-m-2 { margin: var(--space-2); }
+.batos-m-3 { margin: var(--space-3); }
+.batos-m-4 { margin: var(--space-4); }
+.batos-m-5 { margin: var(--space-5); }
+.batos-m-6 { margin: var(--space-6); }
+.batos-m-auto { margin: auto; }
+.batos-mi-auto { margin-inline: auto; }
+
+.batos-mb-0 { margin-block: var(--space-0); }
+.batos-mb-2 { margin-block: var(--space-2); }
+.batos-mb-3 { margin-block: var(--space-3); }
+.batos-mb-4 { margin-block: var(--space-4); }
+.batos-mb-5 { margin-block: var(--space-5); }
+.batos-mb-6 { margin-block: var(--space-6); }
+.batos-mb-7 { margin-block: var(--space-7); }
+.batos-mb-8 { margin-block: var(--space-8); }
+
+/* margin-block-end only — handy for vertical rhythm */
+.batos-mbe-3 { margin-block-end: var(--space-3); }
+.batos-mbe-4 { margin-block-end: var(--space-4); }
+.batos-mbe-5 { margin-block-end: var(--space-5); }
+.batos-mbe-6 { margin-block-end: var(--space-6); }
+
+/* ---------- Text ---------- */
+.batos-text-start { text-align: start; }
+.batos-text-center { text-align: center; }
+.batos-text-end { text-align: end; }
+.batos-upper { text-transform: uppercase; }
+.batos-nowrap-text { white-space: nowrap; }
+.batos-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.batos-font-display { font-family: var(--font-display); }
+.batos-font-ui { font-family: var(--font-ui); }
+.batos-font-hud { font-family: var(--font-hud); }
+.batos-font-mono { font-family: var(--font-mono); }
+
+.batos-fw-light { font-weight: var(--fw-light); }
+.batos-fw-regular { font-weight: var(--fw-regular); }
+.batos-fw-medium { font-weight: var(--fw-medium); }
+.batos-fw-semibold { font-weight: var(--fw-semibold); }
+.batos-fw-bold { font-weight: var(--fw-bold); }
+
+.batos-tracked { letter-spacing: var(--ls-wide); }
+.batos-tracked-wider { letter-spacing: var(--ls-wider); }
+.batos-tracked-widest { letter-spacing: var(--ls-widest); }
+
+.batos-text-2xs { font-size: var(--fs-2xs); }
+.batos-text-xs { font-size: var(--fs-xs); }
+.batos-text-sm { font-size: var(--fs-sm); }
+.batos-text-base { font-size: var(--fs-base); }
+.batos-text-md { font-size: var(--fs-md); }
+.batos-text-lg { font-size: var(--fs-lg); }
+.batos-text-xl { font-size: var(--fs-xl); }
+.batos-text-2xl { font-size: var(--fs-2xl); }
+.batos-text-3xl { font-size: var(--fs-3xl); }
+.batos-text-4xl { font-size: var(--fs-4xl); }
+.batos-text-5xl { font-size: var(--fs-5xl); }
+
+/* ---------- Text colour ---------- */
+.batos-text-primary { color: var(--text-primary); }
+.batos-text-secondary { color: var(--text-secondary); }
+.batos-text-muted { color: var(--text-muted); }
+.batos-text-faint { color: var(--text-faint); }
+.batos-text-cyan { color: var(--cyan-400); }
+.batos-text-amber { color: var(--amber-500); }
+.batos-text-red { color: var(--red-500); }
+.batos-text-green { color: var(--green-500); }
+
+/* ---------- Surfaces ---------- */
+.batos-bg-void { background-color: var(--bg-void); }
+.batos-bg-base { background-color: var(--bg-base); }
+.batos-bg-raised { background-color: var(--bg-raised); }
+.batos-bg-panel { background-color: var(--surface-panel); }
+.batos-bg-inset { background-color: var(--surface-inset); }
+
+/* ---------- Borders ---------- */
+.batos-border { border: var(--border-hair) solid var(--hairline); }
+.batos-border-strong { border: var(--border-hair) solid var(--hairline-strong); }
+.batos-border-accent { border: var(--border-thin) solid var(--hairline-accent); }
+.batos-border-0 { border: 0; }
+
+/* ---------- Glows ---------- */
+.batos-glow-cyan { box-shadow: var(--glow-cyan-md); }
+.batos-glow-amber { box-shadow: var(--glow-amber-md); }
+.batos-glow-red { box-shadow: var(--glow-red-md); }
+.batos-glow-green { box-shadow: var(--glow-green-md); }
+.batos-text-glow { text-shadow: var(--text-glow-cyan); }
+
+/* ---------- Misc ---------- */
+.batos-pointer { cursor: pointer; }
+.batos-select-none { user-select: none; }
+.batos-flicker { animation: batos-flicker 6s var(--ease-inout) infinite; }
+.batos-scanning { animation: batos-pulse 2.4s var(--ease-inout) infinite; }

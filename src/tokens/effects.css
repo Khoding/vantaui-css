@@ -1,0 +1,92 @@
+/* ============================================================
+   BatOS — Effects: glows, shadows, scanlines, grids, motion
+   Light is emitted, not cast. "Shadows" are really inner darkening
+   + outer colored glow. Surfaces carry faint hex/scan textures.
+   ============================================================ */
+
+:root {
+  /* ---- Outer glows (emissive accents) ---- */
+  --glow-cyan-sm: 0 0 6px rgba(66, 227, 255, 0.45);
+  --glow-cyan-md: 0 0 14px rgba(66, 227, 255, 0.5), 0 0 2px rgba(66, 227, 255, 0.8);
+  --glow-cyan-lg: 0 0 28px rgba(66, 227, 255, 0.55), 0 0 6px rgba(66, 227, 255, 0.9);
+  --glow-amber-md: 0 0 14px rgba(255, 138, 26, 0.5), 0 0 2px rgba(255, 138, 26, 0.85);
+  --glow-red-md: 0 0 14px rgba(255, 46, 63, 0.5), 0 0 2px rgba(255, 46, 63, 0.85);
+  --glow-green-md: 0 0 12px rgba(33, 217, 126, 0.45), 0 0 2px rgba(33, 217, 126, 0.8);
+
+  /* ---- Panel depth: inner darkening + faint emissive rim ---- */
+  --shadow-panel:
+    inset 0 1px 0 rgba(120, 196, 240, 0.06),
+    inset 0 0 0 1px rgba(120, 196, 240, 0.05),
+    0 18px 40px -20px rgba(0, 0, 0, 0.9);
+  --shadow-raised:
+    inset 0 1px 0 rgba(120, 196, 240, 0.08),
+    0 24px 60px -24px rgba(0, 0, 0, 0.95);
+  --shadow-inset:
+    inset 0 2px 10px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(120, 196, 240, 0.06);
+
+  /* ---- Text glow (signal readouts) ---- */
+  --text-glow-cyan: 0 0 10px rgba(66, 227, 255, 0.55);
+  --text-glow-amber: 0 0 10px rgba(255, 138, 26, 0.5);
+
+  /* ---- Textures (compose into background-image) ---- */
+  --scanlines: repeating-linear-gradient(
+    to bottom,
+    rgba(120, 196, 240, 0.035) 0px,
+    rgba(120, 196, 240, 0.035) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  --grid-fine:
+    linear-gradient(rgba(120, 196, 240, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 196, 240, 0.05) 1px, transparent 1px);
+  --grid-fine-size: 28px 28px;
+
+  /* Radial vignette to pull focus to center of a HUD */
+  --vignette: radial-gradient(120% 90% at 50% 35%, transparent 40%, rgba(2, 6, 11, 0.75) 100%);
+
+  /* ---- Motion ---- */
+  --ease-hud: cubic-bezier(0.16, 1, 0.3, 1);     /* entrances / fills */
+  --ease-snap: cubic-bezier(0.7, 0, 0.84, 0);    /* dismissals */
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 360ms;
+  --dur-boot: 700ms;
+
+  /* Focus ring */
+  --focus-ring: 0 0 0 1.5px var(--bg-base), 0 0 0 3px var(--cyan-400), var(--glow-cyan-sm);
+}
+
+/* Subtle global keyframes available to components & kits */
+@keyframes batos-flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  94% { opacity: 0.72; }
+  96% { opacity: 1; }
+  97% { opacity: 0.85; }
+}
+@keyframes batos-scan {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
+@keyframes batos-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+@keyframes batos-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Honour reduced-motion: kill ambient loops + long transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,152 @@
+/* ============================================================
+   BatOS — Tabs & disclosures
+   Tab strip: semantic <nav role="tablist"> with <button role="tab">,
+   active state read from [aria-selected="true"] (the optional JS helper
+   or your framework manages it), or forced with .batos-tab--active.
+   Disclosure: native <details>/<summary> styled as a chamfered, zero-JS
+   accordion — great for FAQ / collapsible telemetry.
+   ============================================================ */
+
+/* ---------- Tab strip ---------- */
+:where(.batos nav[role="tablist"]),
+.batos-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  border-block-end: var(--border-hair) solid var(--hairline);
+}
+:where(.batos [role="tab"]),
+.batos-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding-block: 11px 13px;
+  padding-inline: 18px;
+  clip-path: polygon(8px 0, 100% 0, 100% 100%, 0 100%);
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.batos [role="tab"]:hover),
+.batos-tab:hover {
+  color: var(--text-secondary);
+  background-color: color-mix(in srgb, var(--accent) 4%, transparent);
+}
+:where(.batos [role="tab"][aria-selected="true"]),
+.batos-tab--active {
+  color: var(--accent);
+  background-color: color-mix(in srgb, var(--cyan-400) 8%, transparent);
+}
+:where(.batos [role="tab"][aria-selected="true"])::after,
+.batos-tab--active::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -1px;
+  block-size: 2px;
+  background-color: var(--accent);
+  box-shadow: var(--glow-cyan-md);
+}
+:where(.batos [role="tab"]:focus-visible),
+.batos-tab:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+/* count chip */
+.batos-tab__count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--text-faint);
+  padding-block: 1px;
+  padding-inline: 5px;
+  border: var(--border-hair) solid var(--hairline-strong);
+}
+:where(.batos [role="tab"][aria-selected="true"]) .batos-tab__count,
+.batos-tab--active .batos-tab__count {
+  color: var(--accent);
+  border-color: var(--hairline-accent);
+}
+
+/* tab panels: hide the inactive ones (JS toggles [hidden]) */
+:where(.batos [role="tabpanel"]),
+.batos-tab-panel {
+  padding-block-start: var(--space-5);
+}
+:where(.batos [role="tabpanel"][hidden]),
+.batos-tab-panel[hidden] {
+  display: none;
+}
+
+/* ---------- Disclosure: <details> / <summary> (zero JS) ---------- */
+:where(.batos details),
+.batos-details {
+  --bevel-md: 8px;
+  background-color: var(--surface-panel);
+  border: var(--border-hair) solid var(--hairline);
+  box-shadow: var(--shadow-panel);
+  clip-path: var(--clip-chamfer);
+}
+:where(.batos details + details),
+.batos-details + .batos-details {
+  margin-block-start: var(--space-3);
+}
+:where(.batos details > summary),
+.batos-details > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  list-style: none;
+  padding-block: 12px;
+  padding-inline: var(--space-5);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast) var(--ease-hud);
+}
+:where(.batos details > summary)::-webkit-details-marker {
+  display: none;
+}
+:where(.batos details > summary)::before,
+.batos-details > summary::before {
+  content: "›";
+  color: var(--accent);
+  font-size: 1.1em;
+  transition: transform var(--dur-fast) var(--ease-hud);
+}
+:where(.batos details[open] > summary)::before,
+.batos-details[open] > summary::before {
+  transform: rotate(90deg);
+}
+:where(.batos details[open] > summary),
+.batos-details[open] > summary {
+  color: var(--accent);
+  border-block-end: var(--border-hair) solid var(--hairline);
+}
+:where(.batos details > summary:focus-visible),
+.batos-details > summary:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+:where(.batos details > :not(summary)),
+.batos-details > :not(summary) {
+  padding-block: var(--space-4);
+  padding-inline: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-mono);
+}

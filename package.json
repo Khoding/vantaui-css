@@ -1,0 +1,68 @@
+{
+  "name": "batos-css",
+  "version": "1.0.0",
+  "description": "BatOS Tactical Design System — a dark, angular, military-telemetry HUD CSS library. Semantic-first like BeerCSS: write proper HTML, get a tactical UI. Responsive, OKLCH, zero-dependency, framework-agnostic (Vue / Nuxt / vanilla).",
+  "type": "module",
+  "license": "MIT",
+  "author": "BatOS Tactical Design System",
+  "keywords": [
+    "css",
+    "css-framework",
+    "design-system",
+    "hud",
+    "tactical",
+    "batos",
+    "beercss-like",
+    "oklch",
+    "responsive",
+    "vue",
+    "nuxt",
+    "semantic-html"
+  ],
+  "style": "dist/batos.css",
+  "main": "dist/batos.min.css",
+  "sideEffects": [
+    "*.css",
+    "./js/batos.js",
+    "./vue/index.js"
+  ],
+  "exports": {
+    ".": {
+      "style": "./dist/batos.css",
+      "default": "./dist/batos.min.css"
+    },
+    "./css": "./dist/batos.css",
+    "./min": "./dist/batos.min.css",
+    "./js": "./js/batos.js",
+    "./js/global": "./js/batos.global.js",
+    "./vue": "./vue/index.js",
+    "./nuxt": "./nuxt/module.mjs",
+    "./src/*": "./src/*",
+    "./assets/*": "./assets/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "js",
+    "vue",
+    "nuxt",
+    "assets",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "palette": "node scripts/palette-oklch.mjs",
+    "prepublishOnly": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "lightningcss": "^1.29.1"
+  },
+  "browserslist": [
+    "Chrome >= 105",
+    "Edge >= 105",
+    "Firefox >= 121",
+    "Safari >= 16.4"
+  ]
+}

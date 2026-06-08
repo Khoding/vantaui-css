@@ -1,0 +1,245 @@
+/* ============================================================
+   BatOS — App shell (responsive)
+   The tactical desktop layout: left rail + top bar + content stage.
+   Mobile-first: on phones the rail drops to a bottom command bar and
+   the bars stack; from the `m` breakpoint up it becomes the classic
+   vertical rail beside a scrolling stage. Fills the viewport.
+   ============================================================ */
+
+.batos-app {
+  display: grid;
+  min-block-size: 100dvh;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "topbar"
+    "stage"
+    "rail";
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  overflow: hidden;
+}
+
+/* ---------- Rail ---------- */
+.batos-rail {
+  grid-area: rail;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  gap: 6px;
+  padding-block: 8px;
+  padding-inline: 8px;
+  background-color: var(--bg-void);
+  border-block-start: var(--border-hair) solid var(--hairline);
+  z-index: 3;
+}
+.batos-rail__emblem {
+  display: none;
+  inline-size: 38px;
+  block-size: 38px;
+  color: var(--accent);
+  filter: drop-shadow(var(--glow-cyan-md));
+}
+.batos-rail__emblem img,
+.batos-rail__emblem svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+.batos-rail__spacer {
+  display: none;
+  flex: 1;
+}
+.batos-rail__item {
+  --bevel-sm: 6px;
+  position: relative;
+  inline-size: 46px;
+  block-size: 46px;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: var(--fs-lg);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  clip-path: var(--clip-notch);
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+.batos-rail__item:hover {
+  color: var(--text-secondary);
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+.batos-rail__item--active {
+  color: var(--accent);
+  background-color: color-mix(in srgb, var(--cyan-400) 12%, transparent);
+}
+.batos-rail__item--active::before {
+  content: "";
+  position: absolute;
+  /* mobile: active marker is a top bar */
+  inset-inline: 10px;
+  inset-block-start: -8px;
+  block-size: 3px;
+  background-color: var(--accent);
+  box-shadow: var(--glow-cyan-md);
+}
+
+/* ---------- Top bar ---------- */
+.batos-topbar {
+  grid-area: topbar;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: 0;
+  padding-inline: var(--space-5);
+  min-block-size: 56px;
+  background-color: var(--bg-void);
+  border-block-end: var(--border-hair) solid var(--hairline);
+  z-index: 3;
+}
+.batos-topbar__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.batos-topbar__eyebrow b {
+  color: var(--accent);
+  font-weight: var(--fw-semibold);
+}
+.batos-topbar__spacer {
+  flex: 1;
+}
+.batos-topbar__stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+.batos-topbar__clock {
+  font-family: var(--font-hud);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-md);
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+.batos-topbar__user {
+  --bevel-sm: 5px;
+  inline-size: 34px;
+  block-size: 34px;
+  display: grid;
+  place-items: center;
+  background-color: var(--surface-panel);
+  border: var(--border-hair) solid var(--hairline-strong);
+  clip-path: var(--clip-notch);
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  color: var(--accent);
+}
+
+/* ---------- Stage ---------- */
+.batos-stage {
+  grid-area: stage;
+  position: relative;
+  padding: var(--space-7);
+  overflow-y: auto;
+  background-color: var(--bg-base);
+  background-image: var(--grid-fine);
+  background-size: var(--grid-fine-size);
+}
+.batos-stage::before,
+.batos-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.batos-stage::before {
+  background-image: var(--vignette);
+}
+.batos-stage::after {
+  background-image: var(--scanlines);
+  opacity: 0.6;
+}
+.batos-stage__inner {
+  position: relative;
+  z-index: 1;
+  max-inline-size: 74rem;
+  margin-inline: auto;
+}
+
+/* ---------- Screen header composite ---------- */
+.batos-screen-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-block-end: var(--space-6);
+}
+.batos-screen-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-2xl);
+  line-height: 1;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.batos-screen-sub {
+  margin-block-start: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+/* ---------- Tablet and up: classic vertical rail ---------- */
+@media (min-width: 48rem) {
+  .batos-app {
+    block-size: 100dvh;
+    min-block-size: 0;
+    grid-template-columns: 76px 1fr;
+    grid-template-rows: 56px 1fr;
+    grid-template-areas:
+      "rail topbar"
+      "rail stage";
+  }
+  .batos-rail {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 6px;
+    padding-block: 14px;
+    padding-inline: 0;
+    border-block-start: 0;
+    border-inline-end: var(--border-hair) solid var(--hairline);
+  }
+  .batos-rail__emblem {
+    display: block;
+    margin-block-end: 12px;
+  }
+  .batos-rail__spacer {
+    display: block;
+  }
+  .batos-rail__item--active::before {
+    inset-inline: auto;
+    inset-inline-start: -14px;
+    inset-block: 10px;
+    inline-size: 3px;
+    block-size: auto;
+  }
+  .batos-stage {
+    padding: var(--space-7);
+  }
+}

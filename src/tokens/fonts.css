@@ -1,0 +1,15 @@
+/* ============================================================
+   BatOS — Webfonts
+   Loaded from Google Fonts CDN. Closest matches to the angular,
+   technical, military-readout type of the batOS / WayneTech HUD.
+     - Chakra Petch     -> display / headings / UI labels (angular)
+     - Rajdhani         -> condensed HUD readouts, numerics, gauges
+     - Share Tech Mono  -> telemetry, data dumps, terminal output
+
+   NOTE: remote @import is preserved by the bundler (it only inlines
+   local files). To ship fully offline, self-host the three families
+   as woff2 + explicit @font-face and delete this import.
+   `display=swap` keeps text visible while the fonts stream in.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");

@@ -1,0 +1,61 @@
+/* ============================================================
+   BatOS — Typography
+   Three voices: Chakra Petch (UI/display, uppercase + tracked),
+   Rajdhani (condensed HUD readouts & numerics), Share Tech Mono
+   (telemetry / data). Display type is almost always uppercase with
+   positive letter-spacing — it reads as machine output.
+
+   Sizes are fluid: micro UI labels stay fixed for legibility, while
+   display sizes scale with the viewport via clamp() — no size is ever
+   tied to a media-query breakpoint.
+   ============================================================ */
+
+:root {
+  /* ---- Families ---- */
+  --font-display: "Chakra Petch", "Saira Condensed", system-ui, sans-serif;
+  --font-ui: "Chakra Petch", "Rajdhani", system-ui, sans-serif;
+  --font-hud: "Rajdhani", "Chakra Petch", system-ui, sans-serif;   /* big numerics */
+  --font-mono: "Share Tech Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  /* ---- Weights ---- */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Fluid type scale (1.250-ish, HUD-tuned).
+          Micro sizes fixed; body and up scale with the viewport. ---- */
+  --fs-2xs: 0.625rem;    /* 10px */
+  --fs-xs: 0.6875rem;    /* 11px */
+  --fs-sm: 0.8125rem;    /* 13px */
+  --fs-base: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);          /* 15 → 16 */
+  --fs-md: clamp(1.0625rem, 1rem + 0.3vw, 1.15rem);           /* 17 → 18.4 */
+  --fs-lg: clamp(1.2rem, 1.05rem + 0.7vw, 1.3125rem);         /* 19.2 → 21 */
+  --fs-xl: clamp(1.4rem, 1.15rem + 1.2vw, 1.6875rem);         /* 22.4 → 27 */
+  --fs-2xl: clamp(1.7rem, 1.3rem + 1.9vw, 2.125rem);          /* 27.2 → 34 */
+  --fs-3xl: clamp(2.1rem, 1.5rem + 2.9vw, 2.75rem);           /* 33.6 → 44 */
+  --fs-4xl: clamp(2.5rem, 1.6rem + 4.2vw, 3.625rem);          /* 40 → 58 */
+  --fs-5xl: clamp(3rem, 1.7rem + 6vw, 4.75rem);               /* 48 → 76 */
+
+  /* ---- Line heights ---- */
+  --lh-tight: 1.05;
+  --lh-snug: 1.2;
+  --lh-normal: 1.45;
+  --lh-mono: 1.5;
+
+  /* ---- Letter spacing (tracking is core to the look) ---- */
+  --ls-tight: -0.01em;
+  --ls-normal: 0;
+  --ls-wide: 0.08em;
+  --ls-wider: 0.16em;
+  --ls-widest: 0.28em;
+
+  /* ---- Semantic roles ---- */
+  --text-display-size: var(--fs-4xl);
+  --text-title-size: var(--fs-2xl);
+  --text-heading-size: var(--fs-lg);
+  --text-body-size: var(--fs-base);
+  --text-label-size: var(--fs-xs);
+  --text-mono-size: var(--fs-sm);
+}

@@ -1,0 +1,77 @@
+/* ============================================================
+   BatOS — Data tables
+   Semantic <table> inside .batos becomes a tactical telemetry grid:
+   mono body, uppercase eyebrow headers, hairline rows, cyan hover.
+   Wrap wide tables in .batos-table-scroll for horizontal overflow on
+   small screens.
+   ============================================================ */
+
+.batos-table-scroll {
+  inline-size: 100%;
+  overflow-x: auto;
+  border: var(--border-hair) solid var(--hairline);
+  clip-path: var(--clip-chamfer);
+  --bevel-md: 10px;
+}
+
+:where(.batos table:not([class*="batos-"])),
+.batos-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+:where(.batos table caption),
+.batos-table caption {
+  caption-side: top;
+  text-align: start;
+  padding-block: 10px;
+  padding-inline: 14px;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+:where(.batos table th),
+.batos-table th {
+  text-align: start;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-block: 10px;
+  padding-inline: 14px;
+  border-block-end: var(--border-hair) solid var(--hairline-strong);
+  white-space: nowrap;
+}
+:where(.batos table td),
+.batos-table td {
+  padding-block: 10px;
+  padding-inline: 14px;
+  border-block-end: var(--border-hair) solid var(--hairline);
+}
+:where(.batos table tbody tr),
+.batos-table tbody tr {
+  transition: background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.batos table tbody tr:hover),
+.batos-table tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+:where(.batos table tbody tr:last-child td),
+.batos-table tbody tr:last-child td {
+  border-block-end: 0;
+}
+/* numeric columns read better right-aligned via [data-num] */
+:where(.batos table [data-num]),
+.batos-table [data-num] {
+  text-align: end;
+  font-family: var(--font-hud);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}

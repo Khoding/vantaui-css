@@ -1,0 +1,68 @@
+/* ============================================================
+   BatOS — Badges / status tags
+   Status tag chip with an optional live dot. Tone via class or
+   [data-tone]. A leading <i>/<svg>/.batos-dot sits inline (gap auto).
+   Semantic: <mark class="batos-badge"> or any element + class.
+   ============================================================ */
+
+.batos-badge,
+:where(.batos [data-badge]),
+:where([class*="batos-badge--"]) {
+  --_c: var(--cyan-400);
+  --bevel-sm: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  padding-block: 4px;
+  padding-inline: 9px;
+  color: var(--_c);
+  border: var(--border-hair) solid currentColor;
+  background-color: color-mix(in srgb, currentColor 12%, transparent);
+  clip-path: var(--clip-notch);
+}
+
+/* live dot inside a badge */
+.batos-badge > .batos-badge__dot,
+.batos-badge::before {
+  flex: none;
+}
+.batos-badge--dot::before {
+  content: "";
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: var(--radius-pill);
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* solid fill variant */
+.batos-badge--solid {
+  background-color: currentColor;
+  border-color: currentColor;
+}
+.batos-badge--solid {
+  color: var(--_c);
+}
+.batos-badge--solid > * {
+  color: var(--ink-900);
+}
+
+/* ---- Tones ---- */
+.batos-badge--cyan,    :where(.batos [data-badge][data-tone="cyan"])    { --_c: var(--cyan-400);  color: var(--cyan-400); }
+.batos-badge--amber,   :where(.batos [data-badge][data-tone="amber"])   { --_c: var(--amber-500); color: var(--amber-500); }
+.batos-badge--red,     :where(.batos [data-badge][data-tone="red"])     { --_c: var(--red-500);   color: var(--red-500); }
+.batos-badge--green,   :where(.batos [data-badge][data-tone="green"])   { --_c: var(--green-500); color: var(--green-500); }
+.batos-badge--neutral, :where(.batos [data-badge][data-tone="neutral"]) { --_c: var(--slate-400); color: var(--slate-400); }
+
+/* On solid badges keep the inner text ink-dark */
+.batos-badge--solid.batos-badge--cyan  { color: var(--cyan-400); }
+.batos-badge--solid.batos-badge--amber { color: var(--amber-500); }
+.batos-badge--solid.batos-badge--red   { color: var(--red-500); }
+.batos-badge--solid.batos-badge--green { color: var(--green-500); }

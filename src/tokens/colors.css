@@ -1,0 +1,135 @@
+/* ============================================================
+   BatOS — Color System (OKLCH)
+   A cold, near-black tactical palette lit by a single electric
+   "detective" cyan, with hostile amber + threat red as the only
+   other voices. Color is rare and meaningful: cyan = you / system,
+   amber = caution / militia, red = threat, green = secure / online.
+
+   Every token ships twice: an sRGB hex/rgba fallback first, then the
+   canonical OKLCH value. Engines without `oklch()` keep the fallback;
+   modern engines use OKLCH (cleaner tints via color-mix + relative
+   color syntax). The two are the same colour.
+   ============================================================ */
+
+:root {
+  /* ---- Core ink / surfaces (cool near-black, blue undertone) ---- */
+  --ink-1000: #03070c;
+  --ink-1000: oklch(12.5% 0.016 245.5);  /* void / page base */
+  --ink-900: #060b12;
+  --ink-900: oklch(14.7% 0.018 254.4);    /* primary background */
+  --ink-800: #0a1019;
+  --ink-800: oklch(17.2% 0.021 258.3);    /* raised background */
+  --ink-700: #0e1722;
+  --ink-700: oklch(20.2% 0.026 253.9);    /* panel surface */
+  --ink-600: #13202e;
+  --ink-600: oklch(23.9% 0.033 251.1);    /* panel surface, lighter */
+  --ink-500: #1b2c3d;
+  --ink-500: oklch(28.7% 0.039 249.3);    /* inset / wells */
+  --ink-400: #28415a;
+  --ink-400: oklch(36.7% 0.053 249.5);    /* dividers on dark */
+
+  /* ---- Cyan — the signal color (detective glow / "you") ---- */
+  --cyan-50: #e9fbff;
+  --cyan-50: oklch(97.6% 0.02 212.5);
+  --cyan-200: #a8ecff;
+  --cyan-200: oklch(90.4% 0.072 217);
+  --cyan-400: #42e3ff;
+  --cyan-400: oklch(84.6% 0.133 212.1);   /* primary accent */
+  --cyan-500: #18cdf2;
+  --cyan-500: oklch(78.4% 0.137 217.5);
+  --cyan-600: #0aa6cc;
+  --cyan-600: oklch(67.3% 0.123 222.1);
+  --cyan-700: #0b7d9c;
+  --cyan-700: oklch(54.8% 0.1 223.7);
+  --cyan-glow: rgba(66, 227, 255, 0.55);
+  --cyan-glow: oklch(84.6% 0.133 212.1 / 0.55);
+
+  /* ---- Amber — hostile / militia / caution ---- */
+  --amber-300: #ffce7a;
+  --amber-300: oklch(87.7% 0.116 79.8);
+  --amber-400: #ffae3b;
+  --amber-400: oklch(81.1% 0.155 71);
+  --amber-500: #ff8a1a;
+  --amber-500: oklch(74.8% 0.177 55.9);   /* Arkham Knight signal */
+  --amber-600: #d96a0c;
+  --amber-600: oklch(64.5% 0.164 51.2);
+  --amber-glow: rgba(255, 138, 26, 0.5);
+  --amber-glow: oklch(74.8% 0.177 55.9 / 0.5);
+
+  /* ---- Threat red ---- */
+  --red-400: #ff5a64;
+  --red-400: oklch(69% 0.2 20.7);
+  --red-500: #ff2e3f;
+  --red-500: oklch(64.7% 0.239 23.8);
+  --red-600: #cc1828;
+  --red-600: oklch(54% 0.208 24.8);
+  --red-glow: rgba(255, 46, 63, 0.5);
+  --red-glow: oklch(64.7% 0.239 23.8 / 0.5);
+
+  /* ---- Secure green (online / authorized / Riddler-adjacent) ---- */
+  --green-400: #57f5a3;
+  --green-400: oklch(86.7% 0.176 156.7);
+  --green-500: #21d97e;
+  --green-500: oklch(78% 0.189 154.4);
+  --green-600: #12a861;
+  --green-600: oklch(64.4% 0.156 154.8);
+  --green-glow: rgba(33, 217, 126, 0.45);
+  --green-glow: oklch(78% 0.189 154.4 / 0.45);
+
+  /* ---- Cool neutrals / text ---- */
+  --slate-50: #eaf4ff;
+  --slate-50: oklch(96.3% 0.018 250.6);
+  --slate-200: #c2d6e8;
+  --slate-200: oklch(86.7% 0.033 245.3);
+  --slate-300: #9fb6c9;
+  --slate-300: oklch(76.5% 0.037 243.1);
+  --slate-400: #74909f;
+  --slate-400: oklch(63.7% 0.039 231.5);
+  --slate-500: #51697a;
+  --slate-500: oklch(50.8% 0.039 239.4);
+  --slate-600: #38505f;
+  --slate-600: oklch(41.8% 0.039 236.3);
+
+  /* ================= SEMANTIC ALIASES ================= */
+
+  /* Backgrounds */
+  --bg-void: var(--ink-1000);
+  --bg-base: var(--ink-900);
+  --bg-raised: var(--ink-800);
+  --surface-panel: var(--ink-700);
+  --surface-panel-2: var(--ink-600);
+  --surface-inset: var(--ink-500);
+
+  /* Text */
+  --text-primary: var(--slate-50);
+  --text-secondary: var(--slate-300);
+  --text-muted: var(--slate-400);
+  --text-faint: var(--slate-600);
+  --text-signal: var(--cyan-400);   /* glowing key data */
+  --text-invert: var(--ink-900);
+
+  /* Accent / brand */
+  --accent: var(--cyan-400);
+  --accent-strong: var(--cyan-500);
+  --accent-dim: var(--cyan-700);
+  --accent-glow: var(--cyan-glow);
+
+  /* Status */
+  --status-online: var(--green-500);
+  --status-warn: var(--amber-500);
+  --status-threat: var(--red-500);
+  --status-hostile: var(--amber-500);
+
+  /* Lines / borders */
+  --hairline: rgba(120, 196, 240, 0.16);
+  --hairline: oklch(78.7% 0.098 235.3 / 0.16);
+  --hairline-strong: rgba(120, 196, 240, 0.32);
+  --hairline-strong: oklch(78.7% 0.098 235.3 / 0.32);
+  --hairline-accent: rgba(66, 227, 255, 0.45);
+  --hairline-accent: oklch(84.6% 0.133 212.1 / 0.45);
+  --divider: var(--ink-400);
+
+  /* Scrim / overlays */
+  --scrim: rgba(2, 6, 11, 0.72);
+  --scrim: oklch(11.8% 0.017 243.7 / 0.72);
+}

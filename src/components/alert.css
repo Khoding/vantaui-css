@@ -1,0 +1,95 @@
+/* ============================================================
+   BatOS — Alerts / notices
+   Inline system notice with an accent rail + glyph. Semantic:
+   [role="status"] reads as info (cyan), [role="alert"] as threat
+   (red). Tone via class or [data-tone]; glyph auto-set per tone and
+   overridable with --batos-alert-glyph. Optional <strong>/<h*> title.
+   ============================================================ */
+
+.batos-alert,
+:where([class*="batos-alert--"]),
+:where(.batos [role="status"]:not([class*="batos-"])),
+:where(.batos [role="alert"]:not([class*="batos-"])) {
+  --_c: var(--cyan-400);
+  --_glyph: "\25C8"; /* ◈ */
+  --bevel-md: 9px;
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding-block: 13px;
+  padding-inline: 16px 14px;
+  background-color: var(--surface-panel);
+  border: var(--border-hair) solid var(--_c);
+  clip-path: var(--clip-chamfer);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-mono);
+}
+
+/* accent rail */
+.batos-alert::before,
+:where([class*="batos-alert--"])::before,
+:where(.batos [role="status"]:not([class*="batos-"]))::before,
+:where(.batos [role="alert"]:not([class*="batos-"]))::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 3px;
+  background-color: var(--_c);
+  box-shadow: 0 0 12px var(--_c);
+}
+
+/* leading glyph */
+.batos-alert::after,
+:where([class*="batos-alert--"])::after,
+:where(.batos [role="status"]:not([class*="batos-"]))::after,
+:where(.batos [role="alert"]:not([class*="batos-"]))::after {
+  content: var(--batos-alert-glyph, var(--_glyph));
+  order: -1;
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  line-height: 1.3;
+  color: var(--_c);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 60%, transparent);
+}
+
+/* title inside the body */
+.batos-alert :where(strong, b, h1, h2, h3, h4, h5, h6),
+.batos-alert__title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-block-end: 3px;
+}
+
+/* ---- Tones ---- */
+:where(.batos [role="alert"]:not([class*="batos-"])),
+.batos-alert--threat,
+:where(.batos-alert[data-tone="threat"]) {
+  --_c: var(--red-500);
+  --_glyph: "\2B22"; /* ⬢ */
+}
+.batos-alert--warn,
+:where(.batos-alert[data-tone="warn"]) {
+  --_c: var(--amber-500);
+  --_glyph: "\25B2"; /* ▲ */
+}
+.batos-alert--secure,
+:where(.batos-alert[data-tone="secure"]) {
+  --_c: var(--green-500);
+  --_glyph: "\25C9"; /* ◉ */
+}
+.batos-alert--info,
+:where(.batos-alert[data-tone="info"]) {
+  --_c: var(--cyan-400);
+  --_glyph: "\25C8"; /* ◈ */
+}

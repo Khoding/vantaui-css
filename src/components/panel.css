@@ -1,0 +1,138 @@
+/* ============================================================
+   BatOS — Panels / surfaces
+   Semantic: a bare <article> inside .batos becomes a chamfered plate.
+   A <header>/<footer> inside it auto-spans edge-to-edge with a hairline
+   divider (detected via :has, laid out with negative margins). The
+   .batos-panel class does the same anywhere, with depth + accent variants.
+   ============================================================ */
+
+/* Base applies to: bare <article> in .batos, the .batos-panel class, AND any
+   lone batos-panel--* modifier — so a bordered/raised/bracketed plate always
+   carries its padding + surface, never just the decoration. */
+:where(.batos article:not([class*="batos-"])),
+.batos-panel,
+:where([class*="batos-panel--"]:not([class*="batos-panel__"])) {
+  --bevel-md: 10px;
+  position: relative;
+  display: block;
+  padding: var(--space-5);
+  background-color: var(--surface-panel);
+  border: var(--border-hair) solid var(--hairline);
+  box-shadow: var(--shadow-panel);
+  clip-path: var(--clip-chamfer);
+  color: var(--text-primary);
+}
+
+/* Header / footer span the full plate width with a hairline divider */
+:where(.batos article:not([class*="batos-"]) > header),
+.batos-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: calc(-1 * var(--space-5));
+  margin-block-end: var(--space-5);
+  padding-block: 12px;
+  padding-inline: var(--space-5);
+  border-block-end: var(--border-hair) solid var(--hairline);
+}
+:where(.batos article:not([class*="batos-"]) > footer),
+.batos-panel__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin: calc(-1 * var(--space-5));
+  margin-block-start: var(--space-5);
+  padding-block: 12px;
+  padding-inline: var(--space-5);
+  border-block-start: var(--border-hair) solid var(--hairline);
+}
+
+/* `//`-prefixed system eyebrow inside a panel header */
+.batos-panel__eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.batos-panel__eyebrow::before {
+  content: "//";
+  color: var(--accent);
+}
+.batos-panel__aside {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+/* Explicit body wrapper (optional; only needed when you can't rely on
+   the article's own padding, e.g. a flush media area). */
+.batos-panel__body {
+  padding: var(--space-5);
+}
+.batos-panel:has(> .batos-panel__head),
+.batos-panel:has(> .batos-panel__body) {
+  padding: 0;
+}
+.batos-panel:has(> .batos-panel__head) > .batos-panel__head {
+  margin: 0;
+}
+
+/* ---- Depth variants ---- */
+.batos-panel--raised {
+  background-color: var(--surface-panel-2);
+  box-shadow: var(--shadow-raised);
+}
+.batos-panel--inset {
+  background-color: var(--surface-inset);
+  box-shadow: var(--shadow-inset);
+}
+.batos-panel--flat {
+  box-shadow: none;
+}
+
+/* ---- Accent rim glow ---- */
+.batos-panel--glow,
+:where(.batos article[data-glow]) {
+  border-color: var(--hairline-accent);
+  box-shadow: var(--shadow-panel), 0 0 24px -6px var(--accent-glow);
+}
+
+/* ---- Notched plate variant ---- */
+.batos-panel--notch {
+  --bevel-sm: 8px;
+  clip-path: var(--clip-notch);
+}
+
+/* ---- Corner brackets ---- */
+.batos-panel--brackets::before,
+.batos-panel--brackets::after,
+:where(.batos article[data-brackets])::before,
+:where(.batos article[data-brackets])::after {
+  content: "";
+  position: absolute;
+  inline-size: 14px;
+  block-size: 14px;
+  border: var(--border-bold) solid var(--accent);
+  pointer-events: none;
+  filter: drop-shadow(var(--glow-cyan-sm));
+}
+.batos-panel--brackets::before,
+:where(.batos article[data-brackets])::before {
+  inset-block-start: 6px;
+  inset-inline-start: 6px;
+  border-inline-end: 0;
+  border-block-end: 0;
+}
+.batos-panel--brackets::after,
+:where(.batos article[data-brackets])::after {
+  inset-block-end: 6px;
+  inset-inline-end: 6px;
+  border-inline-start: 0;
+  border-block-start: 0;
+}

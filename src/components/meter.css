@@ -1,0 +1,132 @@
+/* ============================================================
+   BatOS — Meters & progress
+   Native <meter> and <progress> are restyled into telemetry bars
+   (no classes needed). The .batos-meter composite adds a label +
+   value readout and is driven entirely by CSS custom properties:
+     <div class="batos-meter" style="--value:72">…</div>
+   The value text auto-renders from --value via a counter, so no JS
+   is required — though the optional JS helper can animate it.
+   ============================================================ */
+
+/* ---------- Native <progress> ---------- */
+:where(.batos progress),
+.batos-progress {
+  appearance: none;
+  inline-size: 100%;
+  block-size: 8px;
+  background-color: var(--surface-inset);
+  border: var(--border-hair) solid var(--hairline);
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  overflow: hidden;
+  color: var(--cyan-400);
+}
+:where(.batos progress)::-webkit-progress-bar,
+.batos-progress::-webkit-progress-bar {
+  background-color: var(--surface-inset);
+}
+:where(.batos progress)::-webkit-progress-value,
+.batos-progress::-webkit-progress-value {
+  background-color: var(--cyan-400);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--cyan-400) 70%, transparent);
+}
+:where(.batos progress)::-moz-progress-bar,
+.batos-progress::-moz-progress-bar {
+  background-color: var(--cyan-400);
+}
+
+/* ---------- Native <meter> (coloured by threshold) ---------- */
+:where(.batos meter),
+.batos-meter-el {
+  appearance: none;
+  inline-size: 100%;
+  block-size: 8px;
+  background: var(--surface-inset);
+  border: var(--border-hair) solid var(--hairline);
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  overflow: hidden;
+}
+:where(.batos meter)::-webkit-meter-bar {
+  background: var(--surface-inset);
+  border: 0;
+}
+:where(.batos meter)::-webkit-meter-optimum-value { background-color: var(--green-500); }
+:where(.batos meter)::-webkit-meter-suboptimum-value { background-color: var(--amber-500); }
+:where(.batos meter)::-webkit-meter-even-less-good-value { background-color: var(--red-500); }
+:where(.batos meter:-moz-meter-optimum)::-moz-meter-bar { background-color: var(--green-500); }
+:where(.batos meter:-moz-meter-sub-optimum)::-moz-meter-bar { background-color: var(--amber-500); }
+:where(.batos meter:-moz-meter-sub-sub-optimum)::-moz-meter-bar { background-color: var(--red-500); }
+
+/* ---------- .batos-meter composite (CSS-driven) ---------- */
+.batos-meter {
+  --value: 0;
+  --max: 100;
+  --_c: var(--cyan-400);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  inline-size: 100%;
+}
+.batos-meter__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.batos-meter__label {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.batos-meter__val {
+  font-family: var(--font-hud);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-base);
+  letter-spacing: 0.02em;
+  color: var(--_c);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
+}
+/* auto value text from --value when the span is left empty */
+.batos-meter__val:empty {
+  counter-reset: batos-meter var(--value);
+}
+.batos-meter__val:empty::after {
+  content: counter(batos-meter) "%";
+}
+.batos-meter__track {
+  position: relative;
+  block-size: 8px;
+  background-color: var(--surface-inset);
+  border: var(--border-hair) solid var(--hairline);
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  overflow: hidden;
+}
+.batos-meter__fill {
+  block-size: 100%;
+  inline-size: clamp(0%, calc(var(--value) / var(--max) * 100%), 100%);
+  background-color: var(--_c);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 70%, transparent);
+  transition: inline-size var(--dur-slow) var(--ease-hud);
+}
+/* segmented ticks overlay */
+.batos-meter--segmented .batos-meter__track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 10px,
+    var(--bg-base) 10px,
+    var(--bg-base) 12px
+  );
+}
+
+/* ---- Tones ---- */
+.batos-meter--amber { --_c: var(--amber-500); }
+.batos-meter--red   { --_c: var(--red-500); }
+.batos-meter--green { --_c: var(--green-500); }
+.batos-meter--cyan  { --_c: var(--cyan-400); }

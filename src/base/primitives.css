@@ -1,0 +1,188 @@
+/* ============================================================
+   BatOS — Base primitives
+   Reusable HUD building blocks: type roles, eyebrow labels, chamfer
+   plates, corner brackets, hairline rules, textured backdrops, the
+   live status dot. These are the vocabulary every component is built
+   from — and they're useful on their own.
+   ============================================================ */
+
+/* ---------- Type roles ---------- */
+.batos-display {
+  font-family: var(--font-display);
+  font-size: var(--text-display-size);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.batos-title {
+  font-family: var(--font-display);
+  font-size: var(--text-title-size);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.batos-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-size);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.batos-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-size);
+  line-height: var(--lh-mono);
+  color: var(--text-secondary);
+}
+/* Big HUD numeric readout */
+.batos-readout {
+  font-family: var(--font-hud);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-3xl);
+  line-height: 1;
+  letter-spacing: var(--ls-wide);
+  color: var(--text-primary);
+}
+
+/* ---------- Eyebrow / system label ---------- */
+.batos-label,
+.batos-eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+/* `//`-prefixed system eyebrow */
+.batos-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.batos-eyebrow::before {
+  content: "//";
+  color: var(--accent);
+  letter-spacing: 0;
+}
+
+/* ---------- Emissive signal text ---------- */
+.batos-signal {
+  color: var(--text-signal);
+  text-shadow: var(--text-glow-cyan);
+}
+
+/* ---------- Chamfered / notched plates ---------- */
+.batos-chamfer {
+  clip-path: var(--clip-chamfer);
+}
+.batos-notch {
+  clip-path: var(--clip-notch);
+}
+
+/* ---------- Corner-bracket frame: wrap content, get L-shaped ticks ---------- */
+.batos-brackets {
+  position: relative;
+}
+.batos-brackets::before,
+.batos-brackets::after {
+  content: "";
+  position: absolute;
+  inline-size: 14px;
+  block-size: 14px;
+  border: var(--border-thin) solid var(--hairline-accent);
+  pointer-events: none;
+}
+.batos-brackets::before {
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  border-inline-end: 0;
+  border-block-end: 0;
+}
+.batos-brackets::after {
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  border-inline-start: 0;
+  border-block-start: 0;
+}
+
+/* ---------- Hairline rule with a fading center tick ---------- */
+.batos-rule {
+  block-size: 1px;
+  border: 0;
+  margin-block: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--hairline-strong) 12%,
+    var(--hairline-strong) 88%,
+    transparent
+  );
+}
+
+/* ---------- Textured backdrop helpers ---------- */
+.batos-bg-grid {
+  background-color: var(--bg-base);
+  background-image: var(--grid-fine);
+  background-size: var(--grid-fine-size);
+}
+.batos-bg-scan {
+  background-color: var(--bg-base);
+  background-image: var(--scanlines);
+}
+/* Composite HUD backdrop: ink + hex grid + scanlines + vignette */
+.batos-bg-hud {
+  position: relative;
+  background-color: var(--bg-base);
+  background-image: var(--grid-fine);
+  background-size: var(--grid-fine-size);
+}
+.batos-bg-hud::before,
+.batos-bg-hud::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.batos-bg-hud::before {
+  background-image: var(--vignette);
+}
+.batos-bg-hud::after {
+  background-image: var(--scanlines);
+  opacity: 0.6;
+}
+
+/* ---------- Blinking status dot ---------- */
+.batos-dot {
+  inline-size: 7px;
+  block-size: 7px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  flex: none;
+  background-color: var(--status-online);
+  box-shadow: var(--glow-green-md);
+  animation: batos-pulse 2.4s var(--ease-inout) infinite;
+}
+.batos-dot--warn {
+  background-color: var(--status-warn);
+  box-shadow: var(--glow-amber-md);
+}
+.batos-dot--threat {
+  background-color: var(--status-threat);
+  box-shadow: var(--glow-red-md);
+}
+.batos-dot--cyan {
+  background-color: var(--accent);
+  box-shadow: var(--glow-cyan-md);
+}
+.batos-dot--idle {
+  background-color: var(--text-muted);
+  box-shadow: none;
+  animation: none;
+}

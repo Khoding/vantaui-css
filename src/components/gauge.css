@@ -1,0 +1,85 @@
+/* ============================================================
+   BatOS — Radial gauge (pure CSS)
+   A 270° arc readout built from a conic-gradient ring (masked to a
+   ring, glow follows the arc). Driven entirely by custom properties —
+   no SVG, no JS:
+     <div class="batos-gauge" style="--value:72">
+       <b class="batos-gauge__value"></b><small>%</small>
+       <span class="batos-gauge__label">Integrity</span>
+     </div>
+   Leave .batos-gauge__value empty and it renders --value via a counter.
+   ============================================================ */
+
+.batos-gauge {
+  --value: 0;
+  --max: 100;
+  --size: 8rem;
+  --thickness: 0.4rem;
+  --_c: var(--cyan-400);
+  position: relative;
+  inline-size: var(--size);
+  aspect-ratio: 1;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: var(--font-hud);
+}
+.batos-gauge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 225deg,
+    var(--_c) 0,
+    var(--_c) calc(var(--value) / var(--max) * 270deg),
+    var(--surface-inset) calc(var(--value) / var(--max) * 270deg),
+    var(--surface-inset) 270deg,
+    transparent 270deg 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 calc(100% - var(--thickness)));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 calc(100% - var(--thickness)));
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--_c) 70%, transparent));
+  transition: background var(--dur-slow) var(--ease-hud);
+}
+.batos-gauge__value,
+.batos-gauge > b {
+  position: relative;
+  font-weight: var(--fw-bold);
+  font-size: calc(var(--size) * 0.26);
+  line-height: 1;
+  color: var(--_c);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--_c) 55%, transparent);
+}
+.batos-gauge__value:empty {
+  counter-reset: batos-gauge var(--value);
+}
+.batos-gauge__value:empty::after {
+  content: counter(batos-gauge);
+}
+.batos-gauge small {
+  position: relative;
+  font-size: calc(var(--size) * 0.1);
+  color: var(--text-muted);
+}
+.batos-gauge__label {
+  position: relative;
+  margin-block-start: 2px;
+  font-family: var(--font-display);
+  font-size: calc(var(--size) * 0.08);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ---- Sizes ---- */
+.batos-gauge--sm { --size: 6rem; }
+.batos-gauge--lg { --size: 11rem; }
+
+/* ---- Tones ---- */
+.batos-gauge--amber { --_c: var(--amber-500); }
+.batos-gauge--red   { --_c: var(--red-500); }
+.batos-gauge--green { --_c: var(--green-500); }
+.batos-gauge--cyan  { --_c: var(--cyan-400); }

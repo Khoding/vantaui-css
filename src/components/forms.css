@@ -1,0 +1,290 @@
+/* ============================================================
+   BatOS — Forms
+   Native elements are styled directly, so semantic markup needs no
+   wrappers: <input>, <textarea>, <select> become inset terminal
+   fields; <input type=checkbox|radio> draw their own notched marks;
+   <input type=checkbox role=switch> becomes an angled toggle.
+
+   A <label> that wraps a control (label :has(> input)) lays out as a
+   stacked field; an inline label (checkbox/radio) lays out as a row.
+   Add a leading icon with .batos-field:has(svg).
+   ============================================================ */
+
+/* ---------- Text-like fields ---------- */
+:where(.batos
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"]):not([class*="batos-"])),
+:where(.batos textarea:not([class*="batos-"])),
+:where(.batos select:not([class*="batos-"])),
+.batos-input {
+  --bevel-md: 8px;
+  inline-size: 100%;
+  min-inline-size: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  padding-block: 11px;
+  padding-inline: 14px;
+  background-color: var(--surface-inset);
+  border: var(--border-hair) solid var(--hairline-strong);
+  box-shadow: var(--shadow-inset);
+  clip-path: var(--clip-chamfer);
+  appearance: none;
+  outline: none;
+  transition:
+    border-color var(--dur-base) var(--ease-hud),
+    box-shadow var(--dur-base) var(--ease-hud);
+}
+:where(.batos textarea) {
+  min-block-size: 6rem;
+  line-height: var(--lh-mono);
+  resize: vertical;
+}
+:where(.batos input::placeholder, .batos textarea::placeholder),
+.batos-input::placeholder {
+  color: var(--text-faint);
+}
+:where(.batos input:focus, .batos textarea:focus, .batos select:focus),
+.batos-input:focus {
+  border-color: var(--hairline-accent);
+  box-shadow: var(--shadow-inset), 0 0 18px -4px var(--accent-glow);
+}
+:where(.batos input:disabled, .batos textarea:disabled, .batos select:disabled),
+.batos-input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+:where(.batos input[aria-invalid="true"], .batos textarea[aria-invalid="true"]),
+.batos-input--invalid {
+  border-color: var(--red-500);
+  box-shadow: var(--shadow-inset), 0 0 16px -4px var(--red-glow);
+}
+
+/* Custom select chevron (cyan) */
+:where(.batos select:not([multiple])),
+.batos-select {
+  padding-inline-end: 34px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2342e3ff' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+/* ---------- Field wrapper (label + control + hint) ---------- */
+:where(.batos label:has(> input:not([type="checkbox"]):not([type="radio"]))),
+:where(.batos label:has(> textarea)),
+:where(.batos label:has(> select)),
+.batos-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+:where(.batos .batos-field__label),
+.batos-field > :where(span, .batos-field__label):first-child {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.batos-field__hint {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+.batos-field__hint--err {
+  color: var(--red-400);
+}
+
+/* Input shell with a leading icon (detected via :has) */
+.batos-input-wrap {
+  --bevel-md: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--surface-inset);
+  border: var(--border-hair) solid var(--hairline-strong);
+  box-shadow: var(--shadow-inset);
+  clip-path: var(--clip-chamfer);
+  transition:
+    border-color var(--dur-base) var(--ease-hud),
+    box-shadow var(--dur-base) var(--ease-hud);
+}
+.batos-input-wrap:focus-within {
+  border-color: var(--hairline-accent);
+  box-shadow: var(--shadow-inset), 0 0 18px -4px var(--accent-glow);
+}
+.batos-input-wrap > :where(svg, i, .batos-input-wrap__icon) {
+  margin-inline-start: 12px;
+  color: var(--text-muted);
+  flex: none;
+}
+.batos-input-wrap > input {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  clip-path: none;
+}
+
+/* ---------- Checkbox & radio (drawn on the element) ---------- */
+:where(.batos input[type="checkbox"]:not([role="switch"]):not([class*="batos-"])),
+:where(.batos input[type="radio"]:not([class*="batos-"])),
+.batos-check {
+  --bevel-sm: 4px;
+  appearance: none;
+  flex: none;
+  inline-size: 18px;
+  block-size: 18px;
+  margin: 0;
+  display: inline-grid;
+  place-content: center;
+  background-color: var(--surface-inset);
+  border: var(--border-thin) solid var(--hairline-strong);
+  clip-path: var(--clip-notch);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-hud);
+}
+:where(.batos input[type="checkbox"]:not([role="switch"]))::before,
+:where(.batos input[type="radio"])::before,
+.batos-check::before {
+  content: "";
+  --bevel-sm: 2px;
+  inline-size: 10px;
+  block-size: 10px;
+  background-color: var(--cyan-400);
+  box-shadow: var(--glow-cyan-sm);
+  clip-path: var(--clip-notch);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: all var(--dur-fast) var(--ease-hud);
+}
+:where(.batos input[type="radio"]),
+.batos-check--radio {
+  border-radius: var(--radius-pill);
+  clip-path: none;
+}
+:where(.batos input[type="radio"])::before,
+.batos-check--radio::before {
+  border-radius: var(--radius-pill);
+  clip-path: none;
+  inline-size: 8px;
+  block-size: 8px;
+}
+:where(.batos input[type="checkbox"]:checked, .batos input[type="radio"]:checked),
+.batos-check:checked {
+  border-color: var(--hairline-accent);
+}
+:where(.batos input[type="checkbox"]:checked, .batos input[type="radio"]:checked)::before,
+.batos-check:checked::before {
+  opacity: 1;
+  transform: scale(1);
+}
+:where(.batos input[type="checkbox"]:focus-visible, .batos input[type="radio"]:focus-visible),
+.batos-check:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Inline control labels: <label><input type=checkbox> Text</label> */
+:where(.batos label:has(> input[type="checkbox"])),
+:where(.batos label:has(> input[type="radio"])),
+.batos-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font-ui);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+/* ---------- Switch: <input type=checkbox role=switch> ---------- */
+:where(.batos input[type="checkbox"][role="switch"]),
+.batos-switch {
+  appearance: none;
+  position: relative;
+  flex: none;
+  inline-size: 46px;
+  block-size: 22px;
+  margin: 0;
+  background-color: var(--surface-inset);
+  border: var(--border-hair) solid var(--hairline-strong);
+  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+  cursor: pointer;
+  transition: all var(--dur-base) var(--ease-hud);
+}
+:where(.batos input[type="checkbox"][role="switch"])::before,
+.batos-switch::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  inline-size: 16px;
+  block-size: 16px;
+  background-color: var(--slate-400);
+  clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+  transition: all var(--dur-base) var(--ease-hud);
+}
+:where(.batos input[type="checkbox"][role="switch"]:checked),
+.batos-switch:checked {
+  border-color: var(--hairline-accent);
+  background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
+  box-shadow: inset 0 0 12px -2px var(--accent-glow);
+}
+:where(.batos input[type="checkbox"][role="switch"]:checked)::before,
+.batos-switch:checked::before {
+  inset-inline-start: 26px;
+  background-color: var(--cyan-400);
+  box-shadow: var(--glow-cyan-md);
+}
+:where(.batos input[type="checkbox"][role="switch"]:focus-visible),
+.batos-switch:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ---------- Range slider ---------- */
+:where(.batos input[type="range"]),
+.batos-range {
+  inline-size: 100%;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+}
+:where(.batos input[type="range"])::-webkit-slider-runnable-track,
+.batos-range::-webkit-slider-runnable-track {
+  block-size: 6px;
+  background-color: var(--surface-inset);
+  border: var(--border-hair) solid var(--hairline);
+}
+:where(.batos input[type="range"])::-webkit-slider-thumb,
+.batos-range::-webkit-slider-thumb {
+  appearance: none;
+  margin-block-start: -6px;
+  inline-size: 14px;
+  block-size: 16px;
+  background-color: var(--cyan-400);
+  box-shadow: var(--glow-cyan-sm);
+  clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+}
+:where(.batos input[type="range"])::-moz-range-track,
+.batos-range::-moz-range-track {
+  block-size: 6px;
+  background-color: var(--surface-inset);
+  border: var(--border-hair) solid var(--hairline);
+}
+:where(.batos input[type="range"])::-moz-range-thumb,
+.batos-range::-moz-range-thumb {
+  inline-size: 14px;
+  block-size: 16px;
+  border: 0;
+  background-color: var(--cyan-400);
+  box-shadow: var(--glow-cyan-sm);
+  clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+}
+
+/* Accent for any native control we don't fully restyle */
+:where(.batos) {
+  accent-color: var(--accent);
+}

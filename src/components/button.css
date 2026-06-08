@@ -1,0 +1,205 @@
+/* ============================================================
+   BatOS — Buttons
+   Semantic: a bare <button> or <a class="batos-btn"> inside .batos
+   becomes a chamfered outline control. type="submit" auto-promotes to
+   the filled primary CTA. Icon-only buttons (a lone <svg>/<i>) collapse
+   to a square via :has(). Tone via [data-tone] or batos-btn--* classes.
+   ============================================================ */
+
+/* Base applies to: bare <button> in .batos, the .batos-btn class, AND any
+   lone batos-btn--* modifier (the idiomatic terse form) — so a modifier on
+   its own is always a complete, legible button. The icon variant opts out. */
+:where(.batos button:not([class*="batos-"]):not([role="tab"]):not([role="switch"])),
+.batos-btn,
+:where([class*="batos-btn--"]:not(.batos-btn--icon)) {
+  --_accent: var(--cyan-400);
+  --_glow: var(--glow-cyan-md);
+  --bevel-md: 10px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  white-space: nowrap;
+  cursor: pointer;
+  padding-block: 11px;
+  padding-inline: 22px;
+  color: var(--_accent);
+  border: var(--border-thin) solid var(--_accent);
+  background-color: color-mix(in srgb, var(--_accent) 8%, transparent);
+  clip-path: var(--clip-chamfer);
+  transition:
+    background-color var(--dur-fast) var(--ease-hud),
+    color var(--dur-fast) var(--ease-hud),
+    box-shadow var(--dur-base) var(--ease-hud),
+    transform var(--dur-fast) var(--ease-hud);
+  user-select: none;
+}
+
+:where(.batos button:not([class*="batos-"]):hover),
+.batos-btn:hover,
+:where([class*="batos-btn--"]:not(.batos-btn--icon):hover) {
+  background-color: color-mix(in srgb, var(--_accent) 18%, transparent);
+  box-shadow: var(--_glow);
+  color: var(--cyan-200);
+}
+:where(.batos button:not([class*="batos-"]):active),
+.batos-btn:active,
+:where([class*="batos-btn--"]:not(.batos-btn--icon):active) {
+  transform: translateY(1px);
+}
+:where(.batos button:not([class*="batos-"]):focus-visible),
+.batos-btn:focus-visible,
+:where([class*="batos-btn--"]:not(.batos-btn--icon):focus-visible) {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ---- Primary: filled emissive. submit buttons promote automatically ---- */
+:where(.batos button[type="submit"]:not([class*="batos-"])),
+.batos-btn--primary {
+  background-color: var(--_accent);
+  color: var(--ink-900);
+  box-shadow: var(--_glow);
+}
+:where(.batos button[type="submit"]:not([class*="batos-"]):hover),
+.batos-btn--primary:hover {
+  background-color: var(--cyan-200);
+  color: var(--ink-900);
+  box-shadow: var(--glow-cyan-lg);
+}
+
+/* ---- Ghost: bare ---- */
+.batos-btn--ghost {
+  border-color: transparent;
+  background-color: transparent;
+  color: var(--text-secondary);
+  letter-spacing: var(--ls-wider);
+}
+.batos-btn--ghost:hover {
+  color: var(--_accent);
+  background-color: color-mix(in srgb, var(--accent) 6%, transparent);
+  box-shadow: none;
+}
+
+/* ---- Secondary (explicit alias of the default outline look) ---- */
+.batos-btn--secondary {
+  background-color: color-mix(in srgb, var(--_accent) 8%, transparent);
+  border-color: var(--_accent);
+  color: var(--_accent);
+}
+
+/* ---- Tones (class or [data-tone]) ---- */
+:where(.batos button[data-tone="amber"]),
+.batos-btn--amber {
+  --_accent: var(--amber-500);
+  --_glow: var(--glow-amber-md);
+}
+:where(.batos button[data-tone="danger"], .batos button[data-tone="threat"]),
+.batos-btn--danger {
+  --_accent: var(--red-500);
+  --_glow: var(--glow-red-md);
+}
+:where(.batos button[data-tone="secure"]),
+.batos-btn--secure {
+  --_accent: var(--green-500);
+  --_glow: var(--glow-green-md);
+}
+.batos-btn--danger.batos-btn--primary {
+  color: var(--cyan-50);
+}
+
+/* ---- Sizes ---- */
+:where(.batos button[data-size="sm"]),
+.batos-btn--sm {
+  font-size: var(--fs-xs);
+  padding-block: 7px;
+  padding-inline: 14px;
+  --bevel-md: 7px;
+}
+:where(.batos button[data-size="lg"]),
+.batos-btn--lg {
+  font-size: var(--fs-base);
+  padding-block: 15px;
+  padding-inline: 30px;
+  --bevel-md: 12px;
+}
+
+/* ---- Full-width ---- */
+.batos-btn--block {
+  display: flex;
+  inline-size: 100%;
+}
+
+/* ---- Icon-only → square notched control (detected via :has) ---- */
+:where(.batos button:not([class*="batos-"]):has(> svg:only-child)),
+:where(.batos button:not([class*="batos-"]):has(> i:only-child)),
+.batos-iconbtn,
+.batos-btn--icon {
+  --bevel-sm: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 38px;
+  block-size: 38px;
+  padding: 0;
+  font-size: var(--fs-md);
+  color: var(--text-secondary);
+  background-color: color-mix(in srgb, var(--cyan-400) 6%, transparent);
+  border: var(--border-hair) solid var(--hairline-strong);
+  clip-path: var(--clip-notch);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-hud);
+}
+:where(.batos button:not([class*="batos-"]):has(> svg:only-child):hover),
+:where(.batos button:not([class*="batos-"]):has(> i:only-child):hover),
+.batos-iconbtn:hover,
+.batos-btn--icon:hover {
+  color: var(--accent);
+  border-color: var(--hairline-accent);
+  background-color: color-mix(in srgb, var(--cyan-400) 14%, transparent);
+  box-shadow: var(--glow-cyan-sm);
+}
+.batos-iconbtn:active,
+.batos-btn--icon:active {
+  transform: translateY(1px);
+}
+.batos-iconbtn:focus-visible,
+.batos-btn--icon:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.batos-iconbtn--active,
+.batos-btn--icon[aria-pressed="true"] {
+  color: var(--accent);
+  border-color: var(--hairline-accent);
+  background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
+  box-shadow: var(--glow-cyan-sm);
+}
+.batos-iconbtn--sm { inline-size: 30px; block-size: 30px; font-size: var(--fs-sm); --bevel-sm: 5px; }
+.batos-iconbtn--lg { inline-size: 46px; block-size: 46px; font-size: var(--fs-lg); --bevel-sm: 7px; }
+
+/* ---- Disabled (shared) ---- */
+:where(.batos button:disabled),
+.batos-btn[disabled],
+.batos-btn--disabled,
+.batos-iconbtn[disabled] {
+  cursor: not-allowed;
+  opacity: 0.4;
+  box-shadow: none;
+  transform: none;
+  filter: saturate(0.4);
+}
+
+/* ---- Button group: chamfered cluster ---- */
+.batos-btn-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
