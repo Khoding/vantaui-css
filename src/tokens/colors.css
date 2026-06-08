@@ -14,19 +14,19 @@
 :root {
   /* ---- Core ink / surfaces (cool near-black, blue undertone) ---- */
   --ink-1000: #03070c;
-  --ink-1000: oklch(12.5% 0.016 245.5);  /* void / page base */
+  --ink-1000: oklch(12.5% 0.016 245.5); /* void / page base */
   --ink-900: #060b12;
-  --ink-900: oklch(14.7% 0.018 254.4);    /* primary background */
+  --ink-900: oklch(14.7% 0.018 254.4); /* primary background */
   --ink-800: #0a1019;
-  --ink-800: oklch(17.2% 0.021 258.3);    /* raised background */
+  --ink-800: oklch(17.2% 0.021 258.3); /* raised background */
   --ink-700: #0e1722;
-  --ink-700: oklch(20.2% 0.026 253.9);    /* panel surface */
+  --ink-700: oklch(20.2% 0.026 253.9); /* panel surface */
   --ink-600: #13202e;
-  --ink-600: oklch(23.9% 0.033 251.1);    /* panel surface, lighter */
+  --ink-600: oklch(23.9% 0.033 251.1); /* panel surface, lighter */
   --ink-500: #1b2c3d;
-  --ink-500: oklch(28.7% 0.039 249.3);    /* inset / wells */
+  --ink-500: oklch(28.7% 0.039 249.3); /* inset / wells */
   --ink-400: #28415a;
-  --ink-400: oklch(36.7% 0.053 249.5);    /* dividers on dark */
+  --ink-400: oklch(36.7% 0.053 249.5); /* dividers on dark */
 
   /* ---- Cyan — the signal color (detective glow / "you") ---- */
   --cyan-50: #e9fbff;
@@ -34,7 +34,7 @@
   --cyan-200: #a8ecff;
   --cyan-200: oklch(90.4% 0.072 217);
   --cyan-400: #42e3ff;
-  --cyan-400: oklch(84.6% 0.133 212.1);   /* primary accent */
+  --cyan-400: oklch(84.6% 0.133 212.1); /* primary accent */
   --cyan-500: #18cdf2;
   --cyan-500: oklch(78.4% 0.137 217.5);
   --cyan-600: #0aa6cc;
@@ -50,7 +50,7 @@
   --amber-400: #ffae3b;
   --amber-400: oklch(81.1% 0.155 71);
   --amber-500: #ff8a1a;
-  --amber-500: oklch(74.8% 0.177 55.9);   /* Arkham Knight signal */
+  --amber-500: oklch(74.8% 0.177 55.9); /* Arkham Knight signal */
   --amber-600: #d96a0c;
   --amber-600: oklch(64.5% 0.164 51.2);
   --amber-glow: rgba(255, 138, 26, 0.5);
@@ -105,7 +105,7 @@
   --text-secondary: var(--slate-300);
   --text-muted: var(--slate-400);
   --text-faint: var(--slate-600);
-  --text-signal: var(--cyan-400);   /* glowing key data */
+  --text-signal: var(--cyan-400); /* glowing key data */
   --text-invert: var(--ink-900);
 
   /* Accent / brand */

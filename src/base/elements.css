@@ -12,48 +12,48 @@
 
 /* ---------- Headings → display / heading roles ---------- */
 :where(.batos h1) {
-  font-family: var(--font-display);
-  font-size: var(--fs-3xl);
+  color: var(--text-primary);
   font-weight: var(--fw-bold);
+  font-size: var(--fs-3xl);
   line-height: var(--lh-tight);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--text-primary);
 }
 :where(.batos h2) {
-  font-family: var(--font-display);
-  font-size: var(--fs-2xl);
+  color: var(--text-primary);
   font-weight: var(--fw-bold);
+  font-size: var(--fs-2xl);
   line-height: var(--lh-snug);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--text-primary);
 }
 :where(.batos h3) {
-  font-family: var(--font-display);
-  font-size: var(--fs-xl);
+  color: var(--text-primary);
   font-weight: var(--fw-semibold);
+  font-size: var(--fs-xl);
   line-height: var(--lh-snug);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--text-primary);
 }
 :where(.batos h4) {
-  font-family: var(--font-display);
-  font-size: var(--fs-lg);
+  color: var(--text-secondary);
   font-weight: var(--fw-semibold);
+  font-size: var(--fs-lg);
   line-height: var(--lh-snug);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
-  color: var(--text-secondary);
 }
 :where(.batos h5, .batos h6) {
-  font-family: var(--font-display);
-  font-size: var(--fs-xs);
+  color: var(--text-muted);
   font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-widest);
   text-transform: uppercase;
-  color: var(--text-muted);
 }
 
 /* ---------- Body copy ---------- */
@@ -61,19 +61,19 @@
   color: var(--text-secondary);
 }
 :where(.batos small) {
-  font-size: var(--fs-xs);
   color: var(--text-muted);
+  font-size: var(--fs-xs);
 }
 :where(.batos strong, .batos b) {
   color: var(--text-primary);
   font-weight: var(--fw-semibold);
 }
-:where(.batos a:not([class*="batos-"])) {
+:where(.batos a:not([class*='batos-'])) {
   color: var(--accent);
   text-decoration: none;
   text-underline-offset: 3px;
 }
-:where(.batos a:not([class*="batos-"]):hover) {
+:where(.batos a:not([class*='batos-']):hover) {
   color: var(--cyan-200);
   text-decoration: underline;
   text-decoration-color: var(--hairline-accent);
@@ -81,53 +81,53 @@
 
 /* ---------- Mono / terminal text ---------- */
 :where(.batos code, .batos kbd, .batos samp, .batos pre) {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
   color: var(--text-secondary);
+  font-size: 0.9em;
+  font-family: var(--font-mono);
 }
 :where(.batos code) {
-  padding-block: 0.1em;
   padding-inline: 0.4em;
-  background-color: var(--surface-inset);
+  padding-block: 0.1em;
   border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-inset);
   color: var(--cyan-200);
 }
 :where(.batos kbd) {
-  padding-block: 0.15em;
   padding-inline: 0.45em;
-  background-color: var(--surface-panel);
+  padding-block: 0.15em;
   border: var(--border-hair) solid var(--hairline-strong);
+  background-color: var(--surface-panel);
   box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.5);
   color: var(--text-primary);
 }
 :where(.batos pre) {
   padding: var(--space-5);
-  background-color: var(--surface-inset);
-  border: var(--border-hair) solid var(--hairline);
-  box-shadow: var(--shadow-inset);
-  clip-path: var(--clip-chamfer);
   overflow-x: auto;
+  border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-inset);
+  box-shadow: var(--shadow-inset);
   line-height: var(--lh-mono);
+  clip-path: var(--clip-chamfer);
 }
 :where(.batos pre code) {
   padding: 0;
-  background: none;
   border: 0;
+  background: none;
   color: inherit;
 }
 
 /* ---------- Inline highlight ---------- */
 :where(.batos mark) {
+  padding-inline: 0.25em;
   background-color: color-mix(in srgb, var(--accent) 20%, transparent);
   color: var(--cyan-50);
-  padding-inline: 0.25em;
 }
 
 /* ---------- Rules / quotes ---------- */
 :where(.batos hr) {
   block-size: 1px;
-  border: 0;
   margin-block: var(--space-6);
+  border: 0;
   background-image: linear-gradient(
     90deg,
     transparent,
@@ -149,14 +149,14 @@
   padding-inline-start: var(--space-6);
 }
 :where(.batos ul) {
-  list-style: none;
   padding-inline-start: var(--space-5);
+  list-style: none;
 }
 :where(.batos ul > li)::before {
-  content: "›";
-  color: var(--accent);
   margin-inline-start: calc(-1 * var(--space-4));
   margin-inline-end: var(--space-3);
+  content: '›';
+  color: var(--accent);
 }
 
 /* ---------- Selection within a tactical surface ---------- */

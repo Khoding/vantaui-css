@@ -16,18 +16,17 @@
   --size: 8rem;
   --thickness: 0.4rem;
   --_c: var(--cyan-400);
-  position: relative;
-  inline-size: var(--size);
-  aspect-ratio: 1;
   display: inline-flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  aspect-ratio: 1;
+  inline-size: var(--size);
   gap: 2px;
   font-family: var(--font-hud);
 }
 .batos-gauge::before {
-  content: "";
   position: absolute;
   inset: 0;
   border-radius: 50%;
@@ -39,18 +38,27 @@
     var(--surface-inset) 270deg,
     transparent 270deg 360deg
   );
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 calc(100% - var(--thickness)));
-  mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 calc(100% - var(--thickness)));
+  content: '';
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--thickness)),
+    #000 calc(100% - var(--thickness))
+  );
   filter: drop-shadow(0 0 5px color-mix(in srgb, var(--_c) 70%, transparent));
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--thickness)),
+    #000 calc(100% - var(--thickness))
+  );
   transition: background var(--dur-slow) var(--ease-hud);
 }
 .batos-gauge__value,
 .batos-gauge > b {
   position: relative;
+  color: var(--_c);
   font-weight: var(--fw-bold);
   font-size: calc(var(--size) * 0.26);
   line-height: 1;
-  color: var(--_c);
   text-shadow: 0 0 12px color-mix(in srgb, var(--_c) 55%, transparent);
 }
 .batos-gauge__value:empty {
@@ -61,25 +69,37 @@
 }
 .batos-gauge small {
   position: relative;
-  font-size: calc(var(--size) * 0.1);
   color: var(--text-muted);
+  font-size: calc(var(--size) * 0.1);
 }
 .batos-gauge__label {
   position: relative;
   margin-block-start: 2px;
-  font-family: var(--font-display);
+  color: var(--text-muted);
   font-size: calc(var(--size) * 0.08);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--text-muted);
 }
 
 /* ---- Sizes ---- */
-.batos-gauge--sm { --size: 6rem; }
-.batos-gauge--lg { --size: 11rem; }
+.batos-gauge--sm {
+  --size: 6rem;
+}
+.batos-gauge--lg {
+  --size: 11rem;
+}
 
 /* ---- Tones ---- */
-.batos-gauge--amber { --_c: var(--amber-500); }
-.batos-gauge--red   { --_c: var(--red-500); }
-.batos-gauge--green { --_c: var(--green-500); }
-.batos-gauge--cyan  { --_c: var(--cyan-400); }
+.batos-gauge--amber {
+  --_c: var(--amber-500);
+}
+.batos-gauge--red {
+  --_c: var(--red-500);
+}
+.batos-gauge--green {
+  --_c: var(--green-500);
+}
+.batos-gauge--cyan {
+  --_c: var(--cyan-400);
+}

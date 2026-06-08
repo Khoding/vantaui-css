@@ -1,15 +1,71 @@
 /* ============================================================
    BatOS — Webfonts
-   Loaded from Google Fonts CDN. Closest matches to the angular,
-   technical, military-readout type of the batOS / WayneTech HUD.
+   Closest matches to the angular, technical, military-readout type
+   of the batOS / WayneTech HUD.
      - Chakra Petch     -> display / headings / UI labels (angular)
      - Rajdhani         -> condensed HUD readouts, numerics, gauges
      - Share Tech Mono  -> telemetry, data dumps, terminal output
 
-   NOTE: remote @import is preserved by the bundler (it only inlines
-   local files). To ship fully offline, self-host the three families
-   as woff2 + explicit @font-face and delete this import.
-   `display=swap` keeps text visible while the fonts stream in.
+   ------------------------------------------------------------
+   ZERO-CLS FONT LOADING
+   `display=swap` paints text immediately in a fallback, then swaps to
+   the webfont when it streams in. Normally that swap reflows the page
+   (Cumulative Layout Shift) because the fallback has different metrics.
+
+   The three `@font-face` blocks below are *metric-matched fallbacks*:
+   each aliases a local system font (Arial / Courier New) and overrides
+   its size, ascent and descent so it occupies the EXACT same space as
+   the real webfont. They sit second in every --font-* stack, so the
+   first paint already has the right geometry and the swap causes ~zero
+   layout shift — the same technique Nuxt Fonts / fontaine generate.
+
+   Override values were measured empirically against the live webfonts
+   (canvas fontBoundingBox + average advance width). No JS, no build
+   step, works whether the webfonts come from the CDN or are self-hosted.
+   ------------------------------------------------------------
+   To ship fully offline: self-host the three families as woff2 +
+   explicit @font-face, delete the @import below, and KEEP these
+   fallback blocks (they still kill CLS while the local woff2 decodes).
+   For the fastest real-font fetch, add to your <head>:
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+/* ---- Metric-matched fallbacks (eliminate the swap reflow) ---- */
+
+/* Chakra Petch ≈ Arial (size-adjust ~100%: nearly 1:1 advance widths) */
+@font-face {
+  font-style: normal;
+  font-weight: 300 700;
+  src: local('Arial'), local('Liberation Sans'), local('Helvetica Neue'), local('Roboto');
+  size-adjust: 99.82%;
+  font-family: 'Chakra Petch Fallback';
+  ascent-override: 99.38%;
+  descent-override: 30.86%;
+  line-gap-override: 0%;
+}
+
+/* Rajdhani is condensed → squeeze the fallback's advance width to match */
+@font-face {
+  font-style: normal;
+  font-weight: 400 700;
+  src: local('Arial'), local('Liberation Sans'), local('Helvetica Neue'), local('Roboto');
+  size-adjust: 87.88%;
+  font-family: 'Rajdhani Fallback';
+  ascent-override: 105.82%;
+  descent-override: 39.37%;
+  line-gap-override: 0%;
+}
+
+/* Share Tech Mono ≈ Courier New (mono → mono) */
+@font-face {
+  font-style: normal;
+  font-weight: 400;
+  src: local('Courier New'), local('Liberation Mono'), local('DejaVu Sans Mono'), local('Menlo');
+  size-adjust: 89.99%;
+  font-family: 'Share Tech Mono Fallback';
+  ascent-override: 98.35%;
+  descent-override: 26.89%;
+  line-gap-override: 0%;
+}

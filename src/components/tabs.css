@@ -8,81 +8,81 @@
    ============================================================ */
 
 /* ---------- Tab strip ---------- */
-:where(.batos nav[role="tablist"]),
+:where(.batos nav[role='tablist']),
 .batos-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-:where(.batos [role="tab"]),
+:where(.batos [role='tab']),
 .batos-tab {
-  position: relative;
   display: inline-flex;
+  position: relative;
   align-items: center;
+  padding-inline: 18px;
+  padding-block: 11px 13px;
   gap: 8px;
-  font-family: var(--font-display);
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-sm);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
-  color: var(--text-muted);
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  padding-block: 11px 13px;
-  padding-inline: 18px;
   clip-path: polygon(8px 0, 100% 0, 100% 100%, 0 100%);
+  cursor: pointer;
   transition:
     color var(--dur-fast) var(--ease-hud),
     background-color var(--dur-fast) var(--ease-hud);
 }
-:where(.batos [role="tab"]:hover),
+:where(.batos [role='tab']:hover),
 .batos-tab:hover {
-  color: var(--text-secondary);
   background-color: color-mix(in srgb, var(--accent) 4%, transparent);
+  color: var(--text-secondary);
 }
-:where(.batos [role="tab"][aria-selected="true"]),
+:where(.batos [role='tab'][aria-selected='true']),
 .batos-tab--active {
-  color: var(--accent);
   background-color: color-mix(in srgb, var(--cyan-400) 8%, transparent);
+  color: var(--accent);
 }
-:where(.batos [role="tab"][aria-selected="true"])::after,
+:where(.batos [role='tab'][aria-selected='true'])::after,
 .batos-tab--active::after {
-  content: "";
   position: absolute;
-  inset-inline: 0;
-  inset-block-end: -1px;
   block-size: 2px;
+  inset-block-end: -1px;
+  inset-inline: 0;
   background-color: var(--accent);
   box-shadow: var(--glow-cyan-md);
+  content: '';
 }
-:where(.batos [role="tab"]:focus-visible),
+:where(.batos [role='tab']:focus-visible),
 .batos-tab:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 /* count chip */
 .batos-tab__count {
-  font-family: var(--font-mono);
-  font-size: var(--fs-2xs);
-  color: var(--text-faint);
-  padding-block: 1px;
   padding-inline: 5px;
+  padding-block: 1px;
   border: var(--border-hair) solid var(--hairline-strong);
+  color: var(--text-faint);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
 }
-:where(.batos [role="tab"][aria-selected="true"]) .batos-tab__count,
+:where(.batos [role='tab'][aria-selected='true']) .batos-tab__count,
 .batos-tab--active .batos-tab__count {
-  color: var(--accent);
   border-color: var(--hairline-accent);
+  color: var(--accent);
 }
 
 /* tab panels: hide the inactive ones (JS toggles [hidden]) */
-:where(.batos [role="tabpanel"]),
+:where(.batos [role='tabpanel']),
 .batos-tab-panel {
   padding-block-start: var(--space-5);
 }
-:where(.batos [role="tabpanel"][hidden]),
+:where(.batos [role='tabpanel'][hidden]),
 .batos-tab-panel[hidden] {
   display: none;
 }
@@ -91,8 +91,8 @@
 :where(.batos details),
 .batos-details {
   --bevel-md: 8px;
-  background-color: var(--surface-panel);
   border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-panel);
   box-shadow: var(--shadow-panel);
   clip-path: var(--clip-chamfer);
 }
@@ -104,17 +104,17 @@
 .batos-details > summary {
   display: flex;
   align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  list-style: none;
-  padding-block: 12px;
   padding-inline: var(--space-5);
-  font-family: var(--font-display);
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
+  padding-block: 12px;
+  gap: 10px;
   color: var(--text-secondary);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  list-style: none;
+  text-transform: uppercase;
+  cursor: pointer;
   transition: color var(--dur-fast) var(--ease-hud);
 }
 :where(.batos details > summary)::-webkit-details-marker {
@@ -122,7 +122,7 @@
 }
 :where(.batos details > summary)::before,
 .batos-details > summary::before {
-  content: "›";
+  content: '›';
   color: var(--accent);
   font-size: 1.1em;
   transition: transform var(--dur-fast) var(--ease-hud);
@@ -133,8 +133,8 @@
 }
 :where(.batos details[open] > summary),
 .batos-details[open] > summary {
-  color: var(--accent);
   border-block-end: var(--border-hair) solid var(--hairline);
+  color: var(--accent);
 }
 :where(.batos details > summary:focus-visible),
 .batos-details > summary:focus-visible {
@@ -143,10 +143,10 @@
 }
 :where(.batos details > :not(summary)),
 .batos-details > :not(summary) {
-  padding-block: var(--space-4);
   padding-inline: var(--space-5);
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
+  padding-block: var(--space-4);
   color: var(--text-muted);
+  font-size: var(--fs-sm);
   line-height: var(--lh-mono);
+  font-family: var(--font-mono);
 }

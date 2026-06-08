@@ -8,57 +8,57 @@
 
 /* ---------- Type roles ---------- */
 .batos-display {
-  font-family: var(--font-display);
-  font-size: var(--text-display-size);
+  color: var(--text-primary);
   font-weight: var(--fw-bold);
+  font-size: var(--text-display-size);
   line-height: var(--lh-tight);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--text-primary);
 }
 .batos-title {
-  font-family: var(--font-display);
-  font-size: var(--text-title-size);
+  color: var(--text-primary);
   font-weight: var(--fw-bold);
+  font-size: var(--text-title-size);
   line-height: var(--lh-snug);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--text-primary);
 }
 .batos-heading {
-  font-family: var(--font-display);
-  font-size: var(--text-heading-size);
+  color: var(--text-primary);
   font-weight: var(--fw-semibold);
+  font-size: var(--text-heading-size);
   line-height: var(--lh-snug);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--text-primary);
 }
 .batos-mono {
-  font-family: var(--font-mono);
+  color: var(--text-secondary);
   font-size: var(--text-mono-size);
   line-height: var(--lh-mono);
-  color: var(--text-secondary);
+  font-family: var(--font-mono);
 }
 /* Big HUD numeric readout */
 .batos-readout {
-  font-family: var(--font-hud);
+  color: var(--text-primary);
   font-weight: var(--fw-bold);
   font-size: var(--fs-3xl);
   line-height: 1;
+  font-family: var(--font-hud);
   letter-spacing: var(--ls-wide);
-  color: var(--text-primary);
 }
 
 /* ---------- Eyebrow / system label ---------- */
 .batos-label,
 .batos-eyebrow {
-  font-family: var(--font-display);
-  font-size: var(--fs-2xs);
+  color: var(--text-muted);
   font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-widest);
   text-transform: uppercase;
-  color: var(--text-muted);
 }
 /* `//`-prefixed system eyebrow */
 .batos-eyebrow {
@@ -67,7 +67,7 @@
   gap: 8px;
 }
 .batos-eyebrow::before {
-  content: "//";
+  content: '//';
   color: var(--accent);
   letter-spacing: 0;
 }
@@ -92,11 +92,11 @@
 }
 .batos-brackets::before,
 .batos-brackets::after {
-  content: "";
   position: absolute;
   inline-size: 14px;
   block-size: 14px;
   border: var(--border-thin) solid var(--hairline-accent);
+  content: '';
   pointer-events: none;
 }
 .batos-brackets::before {
@@ -115,8 +115,8 @@
 /* ---------- Hairline rule with a fading center tick ---------- */
 .batos-rule {
   block-size: 1px;
-  border: 0;
   margin-block: 0;
+  border: 0;
   background-image: linear-gradient(
     90deg,
     transparent,
@@ -128,26 +128,26 @@
 
 /* ---------- Textured backdrop helpers ---------- */
 .batos-bg-grid {
-  background-color: var(--bg-base);
   background-image: var(--grid-fine);
   background-size: var(--grid-fine-size);
+  background-color: var(--bg-base);
 }
 .batos-bg-scan {
-  background-color: var(--bg-base);
   background-image: var(--scanlines);
+  background-color: var(--bg-base);
 }
 /* Composite HUD backdrop: ink + hex grid + scanlines + vignette */
 .batos-bg-hud {
   position: relative;
-  background-color: var(--bg-base);
   background-image: var(--grid-fine);
   background-size: var(--grid-fine-size);
+  background-color: var(--bg-base);
 }
 .batos-bg-hud::before,
 .batos-bg-hud::after {
-  content: "";
   position: absolute;
   inset: 0;
+  content: '';
   pointer-events: none;
 }
 .batos-bg-hud::before {
@@ -160,11 +160,11 @@
 
 /* ---------- Blinking status dot ---------- */
 .batos-dot {
+  display: inline-block;
+  flex: none;
   inline-size: 7px;
   block-size: 7px;
   border-radius: var(--radius-pill);
-  display: inline-block;
-  flex: none;
   background-color: var(--status-online);
   box-shadow: var(--glow-green-md);
   animation: batos-pulse 2.4s var(--ease-inout) infinite;

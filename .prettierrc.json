@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "bracketSpacing": false,
+  "bracketSameLine": false,
+  "jsxSingleQuote": false,
+  "printWidth": 100,
+  "proseWrap": "never",
+  "quoteProps": "as-needed",
+  "semi": true,
+  "arrowParens": "avoid",
+  "tabWidth": 2,
+  "singleQuote": true,
+  "htmlWhitespaceSensitivity": "css",
+  "plugins": ["prettier-plugin-css-order"],
+  "cssDeclarationSorterOrder": "smacss",
+  "cssDeclarationSorterKeepOverrides": false
+}

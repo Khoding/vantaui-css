@@ -15,15 +15,10 @@
 
   /* ---- Panel depth: inner darkening + faint emissive rim ---- */
   --shadow-panel:
-    inset 0 1px 0 rgba(120, 196, 240, 0.06),
-    inset 0 0 0 1px rgba(120, 196, 240, 0.05),
+    inset 0 1px 0 rgba(120, 196, 240, 0.06), inset 0 0 0 1px rgba(120, 196, 240, 0.05),
     0 18px 40px -20px rgba(0, 0, 0, 0.9);
-  --shadow-raised:
-    inset 0 1px 0 rgba(120, 196, 240, 0.08),
-    0 24px 60px -24px rgba(0, 0, 0, 0.95);
-  --shadow-inset:
-    inset 0 2px 10px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 1px rgba(120, 196, 240, 0.06);
+  --shadow-raised: inset 0 1px 0 rgba(120, 196, 240, 0.08), 0 24px 60px -24px rgba(0, 0, 0, 0.95);
+  --shadow-inset: inset 0 2px 10px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(120, 196, 240, 0.06);
 
   /* ---- Text glow (signal readouts) ---- */
   --text-glow-cyan: 0 0 10px rgba(66, 227, 255, 0.55);
@@ -46,8 +41,8 @@
   --vignette: radial-gradient(120% 90% at 50% 35%, transparent 40%, rgba(2, 6, 11, 0.75) 100%);
 
   /* ---- Motion ---- */
-  --ease-hud: cubic-bezier(0.16, 1, 0.3, 1);     /* entrances / fills */
-  --ease-snap: cubic-bezier(0.7, 0, 0.84, 0);    /* dismissals */
+  --ease-hud: cubic-bezier(0.16, 1, 0.3, 1); /* entrances / fills */
+  --ease-snap: cubic-bezier(0.7, 0, 0.84, 0); /* dismissals */
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 120ms;
   --dur-base: 200ms;
@@ -60,23 +55,47 @@
 
 /* Subtle global keyframes available to components & kits */
 @keyframes batos-flicker {
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  94% { opacity: 0.72; }
-  96% { opacity: 1; }
-  97% { opacity: 0.85; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 0.72;
+  }
+  96% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.85;
+  }
 }
 @keyframes batos-scan {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(100%); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100%);
+  }
 }
 @keyframes batos-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.45; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
 }
 @keyframes batos-sweep {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Honour reduced-motion: kill ambient loops + long transitions. */
@@ -86,7 +105,7 @@
   *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
   }
 }

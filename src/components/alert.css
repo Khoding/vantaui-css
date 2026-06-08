@@ -7,54 +7,54 @@
    ============================================================ */
 
 .batos-alert,
-:where([class*="batos-alert--"]),
-:where(.batos [role="status"]:not([class*="batos-"])),
-:where(.batos [role="alert"]:not([class*="batos-"])) {
+:where([class*='batos-alert--']),
+:where(.batos [role='status']:not([class*='batos-'])),
+:where(.batos [role='alert']:not([class*='batos-'])) {
   --_c: var(--cyan-400);
-  --_glyph: "\25C8"; /* ◈ */
+  --_glyph: '\25C8'; /* ◈ */
   --bevel-md: 9px;
-  position: relative;
   display: flex;
-  gap: 12px;
+  position: relative;
   align-items: flex-start;
-  padding-block: 13px;
   padding-inline: 16px 14px;
-  background-color: var(--surface-panel);
+  padding-block: 13px;
+  gap: 12px;
   border: var(--border-hair) solid var(--_c);
-  clip-path: var(--clip-chamfer);
+  background-color: var(--surface-panel);
   color: var(--text-secondary);
-  font-family: var(--font-mono);
   font-size: var(--fs-sm);
   line-height: var(--lh-mono);
+  font-family: var(--font-mono);
+  clip-path: var(--clip-chamfer);
 }
 
 /* accent rail */
 .batos-alert::before,
-:where([class*="batos-alert--"])::before,
-:where(.batos [role="status"]:not([class*="batos-"]))::before,
-:where(.batos [role="alert"]:not([class*="batos-"]))::before {
-  content: "";
+:where([class*='batos-alert--'])::before,
+:where(.batos [role='status']:not([class*='batos-']))::before,
+:where(.batos [role='alert']:not([class*='batos-']))::before {
   position: absolute;
+  inline-size: 3px;
   inset-block: 0;
   inset-inline-start: 0;
-  inline-size: 3px;
   background-color: var(--_c);
   box-shadow: 0 0 12px var(--_c);
+  content: '';
 }
 
 /* leading glyph */
 .batos-alert::after,
-:where([class*="batos-alert--"])::after,
-:where(.batos [role="status"]:not([class*="batos-"]))::after,
-:where(.batos [role="alert"]:not([class*="batos-"]))::after {
-  content: var(--batos-alert-glyph, var(--_glyph));
-  order: -1;
+:where([class*='batos-alert--'])::after,
+:where(.batos [role='status']:not([class*='batos-']))::after,
+:where(.batos [role='alert']:not([class*='batos-']))::after {
   flex: none;
-  font-family: var(--font-display);
+  order: -1;
+  content: var(--batos-alert-glyph, var(--_glyph));
+  color: var(--_c);
   font-weight: var(--fw-bold);
   font-size: var(--fs-md);
   line-height: 1.3;
-  color: var(--_c);
+  font-family: var(--font-display);
   text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 60%, transparent);
 }
 
@@ -62,34 +62,34 @@
 .batos-alert :where(strong, b, h1, h2, h3, h4, h5, h6),
 .batos-alert__title {
   display: block;
-  font-family: var(--font-display);
+  margin-block-end: 3px;
+  color: var(--text-primary);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-sm);
+  font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--text-primary);
-  margin-block-end: 3px;
 }
 
 /* ---- Tones ---- */
-:where(.batos [role="alert"]:not([class*="batos-"])),
+:where(.batos [role='alert']:not([class*='batos-'])),
 .batos-alert--threat,
-:where(.batos-alert[data-tone="threat"]) {
+:where(.batos-alert[data-tone='threat']) {
   --_c: var(--red-500);
-  --_glyph: "\2B22"; /* ⬢ */
+  --_glyph: '\2B22'; /* ⬢ */
 }
 .batos-alert--warn,
-:where(.batos-alert[data-tone="warn"]) {
+:where(.batos-alert[data-tone='warn']) {
   --_c: var(--amber-500);
-  --_glyph: "\25B2"; /* ▲ */
+  --_glyph: '\25B2'; /* ▲ */
 }
 .batos-alert--secure,
-:where(.batos-alert[data-tone="secure"]) {
+:where(.batos-alert[data-tone='secure']) {
   --_c: var(--green-500);
-  --_glyph: "\25C9"; /* ◉ */
+  --_glyph: '\25C9'; /* ◉ */
 }
 .batos-alert--info,
-:where(.batos-alert[data-tone="info"]) {
+:where(.batos-alert[data-tone='info']) {
   --_c: var(--cyan-400);
-  --_glyph: "\25C8"; /* ◈ */
+  --_glyph: '\25C8'; /* ◈ */
 }

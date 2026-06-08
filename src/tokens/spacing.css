@@ -27,7 +27,7 @@
   /* ---- Radii (mostly sharp — this is a hard-edged system) ---- */
   --radius-none: 0px;
   --radius-xs: 1px;
-  --radius-sm: 2px;     /* the most rounding you should ever see */
+  --radius-sm: 2px; /* the most rounding you should ever see */
   --radius-pill: 999px; /* status dots / rare capsules only */
 
   /* ---- Bevel sizes (diagonal corner cuts via clip-path) ---- */
@@ -39,14 +39,23 @@
   /* Ready-made clip paths for chamfered corners.
      Cut top-left + bottom-right (the BatOS default asymmetric cut). */
   --clip-chamfer: polygon(
-    var(--bevel-md) 0, 100% 0, 100% calc(100% - var(--bevel-md)),
-    calc(100% - var(--bevel-md)) 100%, 0 100%, 0 var(--bevel-md)
+    var(--bevel-md) 0,
+    100% 0,
+    100% calc(100% - var(--bevel-md)),
+    calc(100% - var(--bevel-md)) 100%,
+    0 100%,
+    0 var(--bevel-md)
   );
   /* Cut all four corners (notched plate) */
   --clip-notch: polygon(
-    var(--bevel-sm) 0, calc(100% - var(--bevel-sm)) 0, 100% var(--bevel-sm),
-    100% calc(100% - var(--bevel-sm)), calc(100% - var(--bevel-sm)) 100%,
-    var(--bevel-sm) 100%, 0 calc(100% - var(--bevel-sm)), 0 var(--bevel-sm)
+    var(--bevel-sm) 0,
+    calc(100% - var(--bevel-sm)) 0,
+    100% var(--bevel-sm),
+    100% calc(100% - var(--bevel-sm)),
+    calc(100% - var(--bevel-sm)) 100%,
+    var(--bevel-sm) 100%,
+    0 calc(100% - var(--bevel-sm)),
+    0 var(--bevel-sm)
   );
 
   /* ---- Border widths ---- */
@@ -55,17 +64,17 @@
   --border-bold: 2px;
 
   /* ---- Layout ---- */
-  --container-max: 82.5rem;          /* 1320px */
-  --container-narrow: 48rem;         /* 768px reading measure */
-  --container-pad: clamp(1rem, 0.6rem + 2vw, 2rem);  /* fluid gutter */
+  --container-max: 82.5rem; /* 1320px */
+  --container-narrow: 48rem; /* 768px reading measure */
+  --container-pad: clamp(1rem, 0.6rem + 2vw, 2rem); /* fluid gutter */
   --gutter: var(--space-7);
-  --hud-edge: clamp(1rem, 0.5rem + 2.5vw, 2rem);     /* fluid HUD inset */
+  --hud-edge: clamp(1rem, 0.5rem + 2.5vw, 2rem); /* fluid HUD inset */
 
   /* ---- Responsive breakpoints (mobile-first, min-width).
           Exposed as tokens for reference; media queries below
           inline the values since CSS media can't read custom props. ---- */
-  --bp-s: 36rem;   /* 576px  — large phone / small tablet */
-  --bp-m: 48rem;   /* 768px  — tablet */
-  --bp-l: 64rem;   /* 1024px — laptop */
-  --bp-xl: 80rem;  /* 1280px — desktop */
+  --bp-s: 36rem; /* 576px  — large phone / small tablet */
+  --bp-m: 48rem; /* 768px  — tablet */
+  --bp-l: 64rem; /* 1024px — laptop */
+  --bp-xl: 80rem; /* 1280px — desktop */
 }

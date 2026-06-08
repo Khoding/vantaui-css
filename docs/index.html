@@ -1,234 +1,457 @@
-<!DOCTYPE html>
-<html lang="en" class="batos">
+<!doctype html>
+<html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BatOS CSS — Tactical Design System</title>
-
-  <!-- The whole library in one file (fonts load via its @import) -->
-  <link rel="stylesheet" href="../dist/batos.min.css" />
-  <!-- Icons: Tabler webfont (line icons read as HUD glyphs) -->
+  <title>BatOS CSS — Tactical HUD design system</title>
+  <meta name="description"
+    content="BatOS CSS — a dark, angular, military-telemetry tactical HUD design system. Semantic-first CSS library; framework-agnostic with Vue & Nuxt adapters." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
-
+  <link rel="stylesheet" href="../dist/batos.css" />
   <style>
-    /* page-local layout only — everything tactical comes from BatOS */
-    body { min-block-size: 100vh; }
-    .wrap { padding-block: var(--space-7) var(--space-12); }
-    .demo-head {
-      display: flex; align-items: center; gap: var(--space-4);
-      flex-wrap: wrap;
-      padding-block: var(--space-5); margin-block-end: var(--space-8);
-      border-block-end: 1px solid var(--hairline);
+    /* ---- Docs chrome (unlayered → always wins over the framework) ---- */
+    html {
+      scroll-behavior: smooth;
     }
-    .emblem { inline-size: 40px; block-size: 40px; color: var(--cyan-400); filter: drop-shadow(var(--glow-cyan-md)); }
-    .wordmark { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xl); letter-spacing: .12em; text-transform: uppercase; }
-    .wordmark span { color: var(--cyan-400); text-shadow: var(--text-glow-cyan); }
-    section { margin-block-end: var(--space-11); scroll-margin-block-start: var(--space-7); }
-    .sec-label { margin-block-end: var(--space-5); }
-    .swatch { block-size: 64px; display: grid; place-items: end start; padding: 8px; font-family: var(--font-mono); font-size: 10px; color: var(--ink-1000); }
+
+    body {
+      margin: 0;
+    }
+
+    .doc-shell {
+      display: grid;
+      grid-template-columns: 264px minmax(0, 1fr);
+      align-items: start;
+    }
+
+    /* ---------- Sidebar ---------- */
+    .doc-side {
+      position: sticky;
+      top: 0;
+      block-size: 100dvh;
+      overflow-y: auto;
+      padding: var(--space-7) var(--space-5) var(--space-9);
+      border-inline-end: 1px solid var(--hairline);
+      background: var(--bg-void);
+    }
+
+    .doc-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-block-end: var(--space-7);
+    }
+
+    .doc-brand__mark {
+      inline-size: 40px;
+      block-size: 40px;
+      color: var(--cyan-400);
+      filter: drop-shadow(var(--glow-cyan-md));
+    }
+
+    .doc-brand__mark img {
+      inline-size: 100%;
+      block-size: 100%;
+      display: block;
+    }
+
+    .doc-brand__word {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--text-primary);
+    }
+
+    .doc-brand__word b {
+      color: var(--cyan-400);
+      text-shadow: var(--text-glow-cyan);
+      font-weight: 700;
+    }
+
+    .doc-brand__tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-block-start: 4px;
+    }
+
+    .doc-nav__group {
+      margin-block-end: var(--space-6);
+    }
+
+    .doc-nav__label {
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin: 0 0 8px;
+    }
+
+    .doc-nav__link {
+      display: block;
+      padding: 6px 12px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-inline-start: 2px solid transparent;
+      transition: color var(--dur-fast) var(--ease-hud), border-color var(--dur-fast) var(--ease-hud), background-color var(--dur-fast) var(--ease-hud);
+    }
+
+    .doc-nav__link:hover {
+      color: var(--text-secondary);
+      background: rgba(120, 196, 240, 0.04);
+    }
+
+    .doc-nav__link.is-active {
+      color: var(--cyan-400);
+      border-inline-start-color: var(--cyan-400);
+      background: color-mix(in srgb, var(--cyan-400) 8%, transparent);
+    }
+
+    /* ---------- Main column ---------- */
+    .doc-main {
+      padding: var(--space-8) clamp(20px, 4vw, 64px) var(--space-13);
+      max-inline-size: 1080px;
+    }
+
+    /* ---------- Hero ---------- */
+    .doc-hero {
+      position: relative;
+      overflow: hidden;
+      padding: var(--space-11) var(--space-8) var(--space-10);
+      border: 1px solid var(--hairline);
+      clip-path: var(--clip-chamfer);
+      --bevel-md: 16px;
+      margin-block-end: var(--space-9);
+      background-color: var(--bg-void);
+      background-image: var(--grid-fine);
+      background-size: var(--grid-fine-size);
+    }
+
+    .doc-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--vignette);
+      pointer-events: none;
+    }
+
+    .doc-hero__in {
+      position: relative;
+      z-index: 1;
+    }
+
+    .doc-hero h1 {
+      font-size: var(--fs-5xl);
+      margin: 0 0 16px;
+    }
+
+    .doc-hero h1 b {
+      color: var(--cyan-400);
+      text-shadow: var(--text-glow-cyan);
+    }
+
+    .doc-hero p {
+      max-inline-size: 56ch;
+      font-size: var(--fs-md);
+      color: var(--text-secondary);
+      margin: 0 0 24px;
+    }
+
+    .doc-hero__meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ---------- Sections ---------- */
+    .doc-section {
+      padding-block: var(--space-9);
+      border-block-start: 1px solid var(--hairline);
+      scroll-margin-top: 16px;
+    }
+
+    .doc-section:first-of-type {
+      border-block-start: 0;
+    }
+
+    .doc-section__title {
+      font-size: var(--fs-2xl);
+      margin: 0 0 10px;
+    }
+
+    .doc-section__blurb {
+      max-inline-size: 70ch;
+      color: var(--text-secondary);
+      margin: 0 0 var(--space-6);
+      font-size: var(--fs-base);
+    }
+
+    .doc-section__blurb code {
+      font-size: 0.85em;
+    }
+
+    /* ---------- Example: live demo + code ---------- */
+    .doc-example {
+      margin-block-end: var(--space-6);
+      border: 1px solid var(--hairline);
+      clip-path: var(--clip-chamfer);
+      overflow: hidden;
+    }
+
+    .doc-demo {
+      padding: var(--space-7);
+      background-color: var(--bg-base);
+      background-image: var(--scanlines);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .doc-demo>* {
+      max-inline-size: 100%;
+    }
+
+    .doc-demo--frame {
+      padding: 0;
+      display: block;
+    }
+
+    .doc-demo--frame .batos-app {
+      block-size: 440px;
+      min-block-size: 0;
+    }
+
+    .doc-code {
+      position: relative;
+      border-block-start: 1px solid var(--hairline);
+    }
+
+    .doc-code pre {
+      margin: 0;
+      border: 0;
+      clip-path: none;
+      border-radius: 0;
+      background: var(--ink-1000);
+      max-block-size: 360px;
+    }
+
+    .doc-copy {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      inline-size: 32px;
+      block-size: 32px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-panel);
+      color: var(--text-muted);
+      border: 1px solid var(--hairline-strong);
+      cursor: pointer;
+      clip-path: var(--clip-notch);
+      --bevel-sm: 5px;
+      transition: all var(--dur-fast) var(--ease-hud);
+    }
+
+    .doc-copy:hover {
+      color: var(--cyan-400);
+      border-color: var(--hairline-accent);
+    }
+
+    .doc-copy.is-copied {
+      color: var(--green-500);
+      border-color: var(--green-500);
+    }
+
+    /* ---------- Token galleries ---------- */
+    .doc-tok-h {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: var(--space-6) 0 10px;
+    }
+
+    .doc-tokens .doc-tok-h:first-child {
+      margin-block-start: 0;
+    }
+
+    .doc-swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+    }
+
+    .doc-swatch {
+      block-size: 72px;
+      border: 1px solid var(--hairline);
+      display: flex;
+      align-items: flex-end;
+      padding: 8px;
+      clip-path: var(--clip-chamfer);
+      --bevel-md: 7px;
+    }
+
+    .doc-swatch__name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .doc-spaces {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-block-end: var(--space-7);
+    }
+
+    .doc-space {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .doc-space__bar {
+      block-size: 14px;
+      background: var(--cyan-400);
+      box-shadow: var(--glow-cyan-sm);
+      flex: none;
+    }
+
+    .doc-space__tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .doc-geo {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .doc-geo__plate {
+      inline-size: 150px;
+      block-size: 84px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-panel);
+      border: 1px solid var(--hairline-strong);
+      font-family: var(--font-display);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      color: var(--cyan-400);
+    }
+
+    /* ---------- Mobile ---------- */
+    .doc-menu-btn {
+      display: none;
+    }
+
+    @media (max-width: 64rem) {
+      .doc-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .doc-side {
+        position: fixed;
+        z-index: 40;
+        inset-block: 0;
+        inset-inline-start: 0;
+        inline-size: 264px;
+        transform: translateX(-100%);
+        transition: transform var(--dur-base) var(--ease-hud);
+      }
+
+      .doc-side.is-open {
+        transform: translateX(0);
+      }
+
+      .doc-menu-btn {
+        display: inline-grid;
+        place-items: center;
+        position: fixed;
+        z-index: 41;
+        top: 14px;
+        inset-inline-start: 14px;
+        inline-size: 44px;
+        block-size: 44px;
+        background: var(--surface-panel);
+        color: var(--cyan-400);
+        border: 1px solid var(--hairline-accent);
+        clip-path: var(--clip-notch);
+        --bevel-sm: 6px;
+        cursor: pointer;
+        font-size: 20px;
+      }
+
+      .doc-main {
+        padding-top: var(--space-11);
+      }
+    }
   </style>
 </head>
 
-<body class="batos-bg-hud">
-  <div class="batos-container wrap">
+<body class="batos">
+  <button class="doc-menu-btn" id="doc-menu" aria-label="Toggle navigation"><i class="ti ti-menu-2"></i></button>
 
-    <!-- ============ MASTHEAD ============ -->
-    <div class="demo-head">
-      <img class="emblem" src="../assets/emblem.svg" alt="" />
-      <div class="wordmark">Bat<span>OS</span></div>
-      <span class="batos-badge batos-badge--green batos-badge--dot">Online</span>
-      <div class="batos-spacer"></div>
-      <span class="batos-mono batos-text-muted">// WAYNETECH OS · SECURE UPLINK</span>
-      <span class="batos-topbar__clock" data-batos-clock>00:00:00</span>
-    </div>
-
-    <p class="batos-mono batos-text-muted batos-mbe-6" style="max-inline-size: 60ch">
-      ›  This entire page is styled by one stylesheet. Most of it is plain semantic
-      HTML inside <code>class="batos"</code> — buttons, inputs, articles, tables and
-      meters with <strong>zero classes</strong>. Classes only refine.
-    </p>
-
-    <!-- ============ COLOR ============ -->
-    <section id="color">
-      <p class="batos-eyebrow sec-label">Signal palette</p>
-      <div class="batos-autogrid" style="--batos-min: 9rem">
-        <div class="batos-panel batos-p-0"><div class="swatch" style="background:var(--cyan-400)">cyan-400</div></div>
-        <div class="batos-panel batos-p-0"><div class="swatch" style="background:var(--amber-500)">amber-500</div></div>
-        <div class="batos-panel batos-p-0"><div class="swatch" style="background:var(--red-500)">red-500</div></div>
-        <div class="batos-panel batos-p-0"><div class="swatch" style="background:var(--green-500)">green-500</div></div>
-        <div class="batos-panel batos-p-0"><div class="swatch" style="background:var(--ink-700);color:var(--text-secondary)">ink-700</div></div>
+  <div class="doc-shell">
+    <aside class="doc-side" id="doc-side">
+      <div class="doc-brand">
+        <span class="doc-brand__mark"><img src="../assets/emblem.svg" alt="" /></span>
+        <span>
+          <span class="doc-brand__word">Bat<b>OS</b></span>
+          <span class="doc-brand__tag">CSS · v1.0</span>
+        </span>
       </div>
-    </section>
+      <nav id="doc-nav" aria-label="Documentation"></nav>
+    </aside>
 
-    <!-- ============ BUTTONS ============ -->
-    <section id="buttons">
-      <p class="batos-eyebrow sec-label">Buttons — bare &lt;button&gt; + refinements</p>
-      <div class="batos-cluster batos-mbe-5">
-        <button>Override</button>
-        <button class="batos-btn--primary">Engage</button>
-        <button type="submit">Authorize (submit)</button>
-        <button class="batos-btn--ghost">Dismiss</button>
-        <button data-tone="amber">Caution</button>
-        <button data-tone="danger" class="batos-btn--primary">Abort</button>
-        <button disabled>Locked</button>
-      </div>
-      <div class="batos-cluster">
-        <button data-size="sm">Small</button>
-        <button>Medium</button>
-        <button data-size="lg">Large</button>
-        <!-- icon-only: a lone <i> collapses to a square via :has() -->
-        <button aria-label="Search"><i class="ti ti-search"></i></button>
-        <button aria-label="Scan" aria-pressed="true" class="batos-btn--icon"><i class="ti ti-radar-2"></i></button>
-        <button aria-label="Settings" class="batos-iconbtn--lg"><i class="ti ti-settings"></i></button>
-        <button class="batos-btn--primary"><i class="ti ti-download"></i> Install Upgrade</button>
-      </div>
-    </section>
-
-    <!-- ============ PANELS ============ -->
-    <section id="panels">
-      <p class="batos-eyebrow sec-label">Panels — semantic &lt;article&gt;</p>
-      <div class="batos-grid">
-        <article class="batos-s12 batos-m6 batos-l4">
-          <header>
-            <span class="batos-panel__eyebrow">Diagnostics</span>
-            <span class="batos-panel__aside">0x4F2A</span>
-          </header>
-          <p>Bare <code>&lt;article&gt;</code> with a <code>&lt;header&gt;</code>. The header
-          spans edge-to-edge with a hairline divider — no classes needed.</p>
-          <footer><button data-size="sm" class="batos-btn--ghost">Details</button><button data-size="sm" class="batos-btn--primary">Run</button></footer>
-        </article>
-
-        <article class="batos-s12 batos-m6 batos-l4 batos-panel--raised batos-panel--brackets">
-          <h4>Raised + brackets</h4>
-          <p>Corner brackets and a lifted surface via <code>batos-panel--raised</code>
-          and <code>batos-panel--brackets</code>.</p>
-        </article>
-
-        <article class="batos-s12 batos-m12 batos-l4 batos-panel--glow">
-          <h4>Glow rim</h4>
-          <div class="batos-kv"><span>Threat level</span><span class="batos-signal">CONTESTED</span></div>
-          <div class="batos-kv"><span>Grid ref</span><span>14-C</span></div>
-          <div class="batos-kv" style="border:0"><span>Confidence</span><span>0.998</span></div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ============ FORMS ============ -->
-    <section id="forms">
-      <p class="batos-eyebrow sec-label">Forms — native elements, no wrappers</p>
-      <div class="batos-grid">
-        <form class="batos-s12 batos-m6 batos-stack">
-          <label>
-            <span>Operator ID</span>
-            <input type="text" placeholder="WE-SUIT-08" />
-          </label>
-          <label>
-            <span>Clearance</span>
-            <select><option>Tier 1 — Field</option><option>Tier 2 — Command</option><option>Tier 3 — Knightfall</option></select>
-          </label>
-          <label>
-            <span>Briefing</span>
-            <textarea placeholder="› enter mission notes"></textarea>
-          </label>
-          <input type="range" min="0" max="100" value="64" />
-        </form>
-
-        <article class="batos-s12 batos-m6 batos-stack">
-          <label><input type="checkbox" checked /> Encrypt uplink</label>
-          <label><input type="checkbox" /> Silent running</label>
-          <label><input type="radio" name="mode" checked /> Detective mode</label>
-          <label><input type="radio" name="mode" /> Combat mode</label>
-          <label><input type="checkbox" role="switch" checked /> Active camo</label>
-          <label><input type="checkbox" role="switch" /> Auto-pilot</label>
-        </article>
-      </div>
-    </section>
-
-    <!-- ============ FEEDBACK ============ -->
-    <section id="feedback">
-      <p class="batos-eyebrow sec-label">Telemetry — meters, gauges, alerts</p>
-      <div class="batos-grid">
-        <article class="batos-s12 batos-m7 batos-stack">
-          <div class="batos-meter" style="--value:86" data-value="86" data-animate>
-            <div class="batos-meter__top"><span class="batos-meter__label">Suit integrity</span><span class="batos-meter__val"></span></div>
-            <div class="batos-meter__track"><div class="batos-meter__fill"></div></div>
+    <main class="doc-main">
+      <header class="doc-hero">
+        <div class="doc-hero__in">
+          <p class="batos-eyebrow">WayneTech Tactical Interface</p>
+          <h1>Bat<b>OS</b> CSS</h1>
+          <p>A dark, angular, military-telemetry <strong>tactical HUD</strong> design system — as a semantic-first CSS
+            library. Write proper HTML, get a HUD. Framework-agnostic, with first-class Vue &amp; Nuxt adapters and a
+            zero-dependency JS layer.</p>
+          <div class="doc-hero__meta">
+            <span class="batos-badge batos-badge--green batos-badge--dot">Zero-CLS fonts</span>
+            <span class="batos-badge batos-badge--cyan">Cascade layers</span>
+            <span class="batos-badge batos-badge--neutral">No build required</span>
           </div>
-          <div class="batos-meter batos-meter--amber batos-meter--segmented" style="--value:54" data-value="54" data-animate>
-            <div class="batos-meter__top"><span class="batos-meter__label">Power cell</span><span class="batos-meter__val"></span></div>
-            <div class="batos-meter__track"><div class="batos-meter__fill"></div></div>
-          </div>
-          <div class="batos-meter batos-meter--red" style="--value:22" data-value="22" data-animate>
-            <div class="batos-meter__top"><span class="batos-meter__label">Hull breach</span><span class="batos-meter__val"></span></div>
-            <div class="batos-meter__track"><div class="batos-meter__fill"></div></div>
-          </div>
-          <label class="batos-text-muted batos-text-2xs batos-upper batos-tracked">Native &lt;progress&gt;</label>
-          <progress value="70" max="100"></progress>
-        </article>
-
-        <article class="batos-s12 batos-m5 batos-row batos-justify-center batos-gap-6" style="flex-wrap:wrap">
-          <div class="batos-gauge" style="--value:72" data-value="72" data-animate>
-            <b class="batos-gauge__value"></b><small>%</small>
-            <span class="batos-gauge__label">Integrity</span>
-          </div>
-          <div class="batos-gauge batos-gauge--amber batos-gauge--sm" style="--value:48" data-value="48" data-animate>
-            <b class="batos-gauge__value"></b><small>%</small>
-            <span class="batos-gauge__label">Power</span>
-          </div>
-        </article>
-
-        <div class="batos-s12 batos-stack">
-          <div role="status">Crypto handshake 0x4F2A…9C1B — <strong>OK</strong></div>
-          <div class="batos-alert batos-alert--warn">Militia convoy — 3 APCs · inbound grid 14-C · ETA 2m</div>
-          <div role="alert"><strong>Breach detected</strong>Sector 7 perimeter compromised — lock down recommended.</div>
-          <div class="batos-alert batos-alert--secure">Uplink secured · all systems nominal.</div>
         </div>
-      </div>
-    </section>
+      </header>
 
-    <!-- ============ DATA ============ -->
-    <section id="data">
-      <p class="batos-eyebrow sec-label">Dossier — semantic &lt;table&gt;</p>
-      <div class="batos-table-scroll">
-        <table>
-          <caption>Active contacts</caption>
-          <thead><tr><th>Codename</th><th>Status</th><th>Grid</th><th data-num>Confidence</th></tr></thead>
-          <tbody>
-            <tr><td>SENTINEL</td><td><span class="batos-badge batos-badge--green batos-badge--dot">Online</span></td><td>09-A</td><td data-num>0.991</td></tr>
-            <tr><td>WIDOW</td><td><span class="batos-badge batos-badge--amber">At large</span></td><td>14-C</td><td data-num>0.870</td></tr>
-            <tr><td>REVENANT</td><td><span class="batos-badge batos-badge--red batos-badge--dot">Hostile</span></td><td>22-F</td><td data-num>0.998</td></tr>
-            <tr><td>ORACLE</td><td><span class="batos-badge batos-badge--cyan">In custody</span></td><td>—</td><td data-num>1.000</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ============ TABS + DISCLOSURE ============ -->
-    <section id="tabs">
-      <p class="batos-eyebrow sec-label">Navigation — tabs &amp; disclosures</p>
-      <div class="batos-grid">
-        <div class="batos-s12 batos-m7">
-          <nav role="tablist">
-            <button role="tab" aria-controls="tp1" aria-selected="true">Overview</button>
-            <button role="tab" aria-controls="tp2">Threats <span class="batos-tab__count">3</span></button>
-            <button role="tab" aria-controls="tp3">Loadout</button>
-          </nav>
-          <article id="tp1" role="tabpanel"><p>Mission overview. Use ◀ ▶ to switch tabs (managed by the optional JS helper).</p></article>
-          <article id="tp2" role="tabpanel" hidden><p>3 active threats across grid sectors 14-C, 22-F, 09-A.</p></article>
-          <article id="tp3" role="tabpanel" hidden><p>WE-SUIT-08 · grapnel · cryptographic sequencer · remote hacking device.</p></article>
-        </div>
-
-        <div class="batos-s12 batos-m5">
-          <details open><summary>What is BatOS?</summary><div>An original tactical-HUD design language — zero-JS disclosures via native &lt;details&gt;.</div></details>
-          <details><summary>Secure protocol</summary><div>Handshake → key exchange → encrypted uplink.</div></details>
-          <details><summary>Knightfall</summary><div>Restricted. Tier-3 clearance required.</div></details>
-        </div>
-      </div>
-    </section>
-
+      <div id="doc-main"></div>
+    </main>
   </div>
 
-  <!-- Optional behaviours: tabs, animated meters/gauges, clock.
-       Classic global build so it works even on file:// (double-click). -->
-  <script src="../js/batos.global.js"></script>
+  <script type="module" src="../js/batos.js"></script>
+  <script type="module" src="gallery.js"></script>
+  <script>
+    (function () {
+      var btn = document.getElementById("doc-menu");
+      var side = document.getElementById("doc-side");
+      btn.addEventListener("click", function () { side.classList.toggle("is-open"); });
+      side.addEventListener("click", function (e) {
+        if (e.target.closest(".doc-nav__link")) side.classList.remove("is-open");
+      });
+    })();
+  </script>
 </body>
+
 </html>

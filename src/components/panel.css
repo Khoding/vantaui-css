@@ -9,66 +9,66 @@
 /* Base applies to: bare <article> in .batos, the .batos-panel class, AND any
    lone batos-panel--* modifier — so a bordered/raised/bracketed plate always
    carries its padding + surface, never just the decoration. */
-:where(.batos article:not([class*="batos-"])),
+:where(.batos article:not([class*='batos-'])),
 .batos-panel,
-:where([class*="batos-panel--"]:not([class*="batos-panel__"])) {
+:where([class*='batos-panel--']:not([class*='batos-panel__'])) {
   --bevel-md: 10px;
-  position: relative;
   display: block;
+  position: relative;
   padding: var(--space-5);
-  background-color: var(--surface-panel);
   border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-panel);
   box-shadow: var(--shadow-panel);
-  clip-path: var(--clip-chamfer);
   color: var(--text-primary);
+  clip-path: var(--clip-chamfer);
 }
 
 /* Header / footer span the full plate width with a hairline divider */
-:where(.batos article:not([class*="batos-"]) > header),
+:where(.batos article:not([class*='batos-']) > header),
 .batos-panel__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
   margin: calc(-1 * var(--space-5));
   margin-block-end: var(--space-5);
-  padding-block: 12px;
   padding-inline: var(--space-5);
+  padding-block: 12px;
+  gap: var(--space-4);
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-:where(.batos article:not([class*="batos-"]) > footer),
+:where(.batos article:not([class*='batos-']) > footer),
 .batos-panel__foot {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--space-3);
   margin: calc(-1 * var(--space-5));
   margin-block-start: var(--space-5);
-  padding-block: 12px;
   padding-inline: var(--space-5);
+  padding-block: 12px;
+  gap: var(--space-3);
   border-block-start: var(--border-hair) solid var(--hairline);
 }
 
 /* `//`-prefixed system eyebrow inside a panel header */
 .batos-panel__eyebrow {
-  font-family: var(--font-display);
-  font-size: var(--fs-2xs);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-wider);
-  text-transform: uppercase;
-  color: var(--text-muted);
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
 }
 .batos-panel__eyebrow::before {
-  content: "//";
+  content: '//';
   color: var(--accent);
 }
 .batos-panel__aside {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
   color: var(--text-faint);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
 }
 /* Explicit body wrapper (optional; only needed when you can't rely on
    the article's own padding, e.g. a flush media area). */
@@ -100,7 +100,9 @@
 .batos-panel--glow,
 :where(.batos article[data-glow]) {
   border-color: var(--hairline-accent);
-  box-shadow: var(--shadow-panel), 0 0 24px -6px var(--accent-glow);
+  box-shadow:
+    var(--shadow-panel),
+    0 0 24px -6px var(--accent-glow);
 }
 
 /* ---- Notched plate variant ---- */
@@ -114,13 +116,13 @@
 .batos-panel--brackets::after,
 :where(.batos article[data-brackets])::before,
 :where(.batos article[data-brackets])::after {
-  content: "";
   position: absolute;
   inline-size: 14px;
   block-size: 14px;
   border: var(--border-bold) solid var(--accent);
-  pointer-events: none;
+  content: '';
   filter: drop-shadow(var(--glow-cyan-sm));
+  pointer-events: none;
 }
 .batos-panel--brackets::before,
 :where(.batos article[data-brackets])::before {

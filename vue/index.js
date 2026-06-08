@@ -11,18 +11,18 @@
      app.use(BatOS, { root: el, behaviours: false, bodyClass: false })
    ============================================================ */
 
-import "../dist/batos.min.css";
-import BatOSBehaviours from "../js/batos.js";
+import '../dist/batos.min.css';
+import BatOSBehaviours from '../js/batos.js';
 
 const plugin = {
   install(app, options = {}) {
-    if (typeof document === "undefined") return; // SSR: nothing to do server-side
-    const { root, behaviours = true, bodyClass = true } = options;
-    if (bodyClass) (root || document.body).classList.add("batos");
+    if (typeof document === 'undefined') return; // SSR: nothing to do server-side
+    const {root, behaviours = true, bodyClass = true} = options;
+    if (bodyClass) (root || document.body).classList.add('batos');
     if (behaviours) BatOSBehaviours.init(root || document);
     app.config.globalProperties.$batos = BatOSBehaviours;
   },
 };
 
 export default plugin;
-export { BatOSBehaviours as BatOS };
+export {BatOSBehaviours as BatOS};

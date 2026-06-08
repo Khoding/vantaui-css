@@ -14,45 +14,45 @@
   --bevel-md: 10px;
 }
 
-:where(.batos table:not([class*="batos-"])),
+:where(.batos table:not([class*='batos-'])),
 .batos-table {
   inline-size: 100%;
   border-collapse: collapse;
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
   color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-family: var(--font-mono);
 }
 :where(.batos table caption),
 .batos-table caption {
-  caption-side: top;
-  text-align: start;
-  padding-block: 10px;
   padding-inline: 14px;
-  font-family: var(--font-display);
-  font-size: var(--fs-2xs);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-widest);
-  text-transform: uppercase;
+  padding-block: 10px;
   color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-widest);
+  text-align: start;
+  text-transform: uppercase;
+  caption-side: top;
 }
 :where(.batos table th),
 .batos-table th {
-  text-align: start;
-  font-family: var(--font-display);
-  font-size: var(--fs-2xs);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding-block: 10px;
   padding-inline: 14px;
+  padding-block: 10px;
   border-block-end: var(--border-hair) solid var(--hairline-strong);
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-align: start;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 :where(.batos table td),
 .batos-table td {
-  padding-block: 10px;
   padding-inline: 14px;
+  padding-block: 10px;
   border-block-end: var(--border-hair) solid var(--hairline);
 }
 :where(.batos table tbody tr),
@@ -70,8 +70,8 @@
 /* numeric columns read better right-aligned via [data-num] */
 :where(.batos table [data-num]),
 .batos-table [data-num] {
-  text-align: end;
-  font-family: var(--font-hud);
-  font-weight: var(--fw-semibold);
   color: var(--text-primary);
+  font-weight: var(--fw-semibold);
+  font-family: var(--font-hud);
+  text-align: end;
 }

@@ -22,13 +22,13 @@ body {
   margin: 0;
   background-color: var(--bg-base);
   color: var(--text-primary);
-  font-family: var(--font-ui);
   font-size: var(--fs-base);
   line-height: var(--lh-normal);
+  font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
   min-block-size: 100vh;
+  text-rendering: optimizeLegibility;
 }
 
 /* Media + form elements behave predictably */
@@ -46,8 +46,8 @@ input,
 button,
 textarea,
 select {
-  font: inherit;
   color: inherit;
+  font: inherit;
 }
 
 button {
@@ -78,8 +78,8 @@ a:hover {
 
 /* Scrollbars in the tactical idiom */
 * {
-  scrollbar-width: thin;
   scrollbar-color: var(--ink-400) transparent;
+  scrollbar-width: thin;
 }
 *::-webkit-scrollbar {
   inline-size: 8px;

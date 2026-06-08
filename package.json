@@ -57,7 +57,9 @@
     "prepublishOnly": "node scripts/build.mjs"
   },
   "devDependencies": {
-    "lightningcss": "^1.29.1"
+    "lightningcss": "^1.29.1",
+    "prettier": "^3.8.3",
+    "prettier-plugin-css-order": "^2.2.0"
   },
   "browserslist": [
     "Chrome >= 105",
