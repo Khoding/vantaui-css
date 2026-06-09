@@ -6,7 +6,7 @@
      raised · inset · flat · glow · notch · brackets
    ============================================================ */
 
-:where(.vui article) {
+:where(.vui article:not(.vui-prose):not(.prose)) {
   --bevel-md: 10px;
   display: block;
   position: relative;

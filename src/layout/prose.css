@@ -6,13 +6,14 @@
 
 :where(.vui-prose) {
   --prose-width: 65ch;
+  --bleed-width: 85ch;
 
   display: grid;
   grid-template-columns:
     [viewport-start] minmax(var(--space-5), 1fr)
-    [bleed-start] minmax(0, var(--space-8))
+    [bleed-start] minmax(0, calc((var(--bleed-width) - var(--prose-width)) / 2))
     [content-start] min(var(--prose-width), 100% - var(--space-5) * 2)
-    [content-end] minmax(0, var(--space-8))
+    [content-end] minmax(0, calc((var(--bleed-width) - var(--prose-width)) / 2))
     [bleed-end] minmax(var(--space-5), 1fr)
     [viewport-end];
   row-gap: 0;
@@ -45,7 +46,7 @@
 }
 
 /* Bleed classes & semantic elements (Images, blockquotes, pre, figure) */
-:where(.vui-prose > .vui-bleed, .vui-prose > .bleed, .vui-prose > img, .vui-prose > figure, .vui-prose > blockquote, .vui-prose > pre) {
+:where(.vui-prose > .vui-bleed, .vui-prose > .bleed, .vui-prose > .half-bleed, .vui-prose > img, .vui-prose > figure, .vui-prose > blockquote, .vui-prose > pre) {
   grid-column: bleed;
   inline-size: 100%;
 }

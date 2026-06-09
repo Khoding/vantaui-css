@@ -50,6 +50,7 @@
   position: relative;
   grid-area: main;
   overflow-y: auto;
+  padding: var(--hud-edge);
 }
 /* footer, an explicit bottom bar, AND a side rail all live along the bottom
    on phones (use a footer OR a rail/bottom-nav on small screens, not both). */
@@ -129,4 +130,10 @@
   :where(.vui:has(> main)) > :is(footer, nav.bottom) {
     grid-area: foot;
   }
+}
+
+/* ---------- Bleed overrides for the stage padding ---------- */
+:where(.vui:has(> main)) > main :is(.vui-bleed-full, .bleed-full):not(.vui-prose *),
+:where(.vui:has(> main)) > main :is(.vui-prose, .vui-container) {
+  margin-inline: calc(-1 * var(--hud-edge));
 }

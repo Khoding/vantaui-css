@@ -986,10 +986,11 @@
 
   :where(.vui-prose) {
     --prose-width: 65ch;
+    --bleed-width: 85ch;
     grid-template-columns: [viewport-start] minmax(var(--space-5), 1fr)
-    [bleed-start] minmax(0, var(--space-8))
+    [bleed-start] minmax(0, calc((var(--bleed-width) - var(--prose-width)) / 2))
     [content-start] min(var(--prose-width), 100% - var(--space-5) * 2)
-    [content-end] minmax(0, var(--space-8))
+    [content-end] minmax(0, calc((var(--bleed-width) - var(--prose-width)) / 2))
     [bleed-end] minmax(var(--space-5), 1fr)
     [viewport-end];
     row-gap: 0;
@@ -1018,7 +1019,7 @@
     margin-block-end: var(--space-4);
   }
 
-  :where(.vui-prose > .vui-bleed, .vui-prose > .bleed, .vui-prose > img, .vui-prose > figure, .vui-prose > blockquote, .vui-prose > pre) {
+  :where(.vui-prose > .vui-bleed, .vui-prose > .bleed, .vui-prose > .half-bleed, .vui-prose > img, .vui-prose > figure, .vui-prose > blockquote, .vui-prose > pre) {
     grid-column: bleed;
     inline-size: 100%;
   }
@@ -1229,7 +1230,7 @@
     display: inline-flex;
   }
 
-  :where(.vui article) {
+  :where(.vui article:not(.vui-prose):not(.prose)) {
     --bevel-md: 10px;
     padding: var(--space-5);
     border: var(--border-hair) solid var(--hairline);
@@ -1241,7 +1242,7 @@
     position: relative;
   }
 
-  :where(.vui article) > :where(header) {
+  :where(.vui article:not(.vui-prose):not(.prose)) > :where(header) {
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
@@ -1253,7 +1254,7 @@
     display: flex;
   }
 
-  :where(.vui article) > :where(footer) {
+  :where(.vui article:not(.vui-prose):not(.prose)) > :where(footer) {
     justify-content: flex-end;
     align-items: center;
     gap: var(--space-3);
@@ -1265,7 +1266,7 @@
     display: flex;
   }
 
-  :where(.vui article) > :where(header) small {
+  :where(.vui article:not(.vui-prose):not(.prose)) > :where(header) small {
     color: var(--text-faint);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
@@ -2333,6 +2334,7 @@
   }
 
   :where(.vui:has( > main)) > main {
+    padding: var(--hud-edge);
     grid-area: main;
     position: relative;
     overflow-y: auto;
@@ -2405,6 +2407,10 @@
     :where(.vui:has( > main)) > :is(footer, nav.bottom) {
       grid-area: foot;
     }
+  }
+
+  :where(.vui:has( > main)) > main :is(.vui-bleed-full, .bleed-full):not(.vui-prose *), :where(.vui:has( > main)) > main :is(.vui-prose, .vui-container) {
+    margin-inline: calc(-1 * var(--hud-edge));
   }
 
   :where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header) {
