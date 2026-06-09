@@ -51,6 +51,7 @@
   padding-inline: 14px;
   padding-block: 10px;
   border-block-end: var(--border-hair) solid var(--hairline);
+  white-space: nowrap;
 }
 :where(.vui table tbody tr) {
   transition: background-color var(--dur-fast) var(--ease-hud);

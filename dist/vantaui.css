@@ -2129,6 +2129,7 @@
 
   :where(.vui table td) {
     border-block-end: var(--border-hair) solid var(--hairline);
+    white-space: nowrap;
     padding-block: 10px;
     padding-inline: 14px;
   }
