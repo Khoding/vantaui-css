@@ -29,6 +29,7 @@
 
 /* Layout system */
 @import url('./layout/layout.css') layer(vui.layout);
+@import url('./layout/prose.css') layer(vui.layout);
 
 /* Components */
 @import url('./components/button.css') layer(vui.components);
