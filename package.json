@@ -38,7 +38,6 @@
     "./vue": "./vue/index.js",
     "./nuxt": "./nuxt/module.mjs",
     "./src/*": "./src/*",
-    "./assets/*": "./assets/*",
     "./package.json": "./package.json"
   },
   "files": [
@@ -47,7 +46,6 @@
     "js",
     "vue",
     "nuxt",
-    "assets",
     "README.md",
     "LICENSE"
   ],
