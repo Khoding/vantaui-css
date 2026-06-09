@@ -56,7 +56,9 @@ Add **`class="vui"`** to a root element (usually `<body>`). Inside it, plain sem
   <header>
     <a href="/">VANTA<b>UI</b></a>
     <nav><a aria-current="page">Overview</a><a>Units</a></nav>
-    <menu><button><i>settings</i></button></menu>
+    <menu>
+      <button><i>settings</i></button>
+    </menu>
   </header>
 
   <main>
@@ -225,7 +227,7 @@ npm run build     # bundle src/ → dist/vantaui.css + dist/vantaui.min.css (Lig
 npm run palette   # regenerate the OKLCH palette from the source hex values
 ```
 
-Source lives in `src/` (tokens → reset → base → layout → components → utilities), wired into cascade layers by `src/vantaui.css`. Open `docs/index.html` for the full gallery, `docs/nav-system.html` for the chrome & navigation patterns.
+Source lives in `src/` (tokens → reset → base → layout → components → utilities), wired into cascade layers by `src/vantaui.css`. Open `docs/index.html` for the full gallery.
 
 ## Browser support
 

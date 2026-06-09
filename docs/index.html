@@ -25,19 +25,17 @@
       background: var(--bg-void);
     }
 
-    /* box-sizing + body margin:0 come from the framework reset (body.vui),
-     so they aren't repeated here. */
-    body {
-      min-block-size: 100dvh;
-    }
 
     /* ---------- Main column ----------
      Horizontal padding is the page gutter. It never drops below 20px, so on the
      smallest phone the content always keeps a margin from the screen edge. */
     .doc-main {
       padding: var(--space-8) clamp(20px, 4vw, 64px) var(--space-13);
-      max-inline-size: 1080px;
       min-inline-size: 0;
+    }
+
+    .doc-main > * {
+      max-inline-size: 1080px;
     }
 
     /* ---------- Hero ---------- */
