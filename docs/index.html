@@ -90,11 +90,30 @@
       flex-wrap: wrap;
     }
 
-    /* ---------- Sections ---------- */
+    /* ---------- Sections ----------
+     Each section is a .vui-prose article (see gallery.js): the heading + blurb
+     read at a comfortable measure while demos and token galleries bleed wider.
+     We drive the measure with the prose tokens and use the grid's row-gap for a
+     uniform vertical rhythm, so individual children don't need block margins. */
     .doc-section {
+      --prose-width: 72ch;
+      --bleed-width: 1100px;
       padding-block: var(--space-9);
       border-block-start: 1px solid var(--hairline);
       scroll-margin-top: 16px;
+      row-gap: var(--space-7);
+    }
+
+    .doc-section.vui-prose > * {
+      margin-block: 0;
+    }
+
+    /* This page's main IS the app-frame stage, so the framework would bleed any
+     .vui-prose past the (custom) stage padding. We pad the stage ourselves, so
+     keep doc prose within it. */
+    .doc-main .vui-prose,
+    .doc-main .vui-container {
+      margin-inline: 0;
     }
 
     .doc-section:first-of-type {
@@ -107,9 +126,8 @@
     }
 
     .doc-section__blurb {
-      max-inline-size: 70ch;
       color: var(--text-secondary);
-      margin: 0 0 var(--space-6);
+      margin: 0;
       font-size: var(--fs-base);
     }
 
@@ -208,6 +226,37 @@
     .doc-copy.is-copied {
       color: var(--green-500);
       border-color: var(--green-500);
+    }
+
+    /* ---------- Syntax highlight (tactical palette) ---------- */
+    .doc-code .tk-tag {
+      color: var(--cyan-400);
+    }
+
+    .doc-code .tk-attr {
+      color: var(--amber-400);
+    }
+
+    .doc-code .tk-str {
+      color: var(--green-400);
+    }
+
+    .doc-code .tk-com {
+      color: var(--text-faint);
+      font-style: italic;
+    }
+
+    .doc-code .tk-pun {
+      color: var(--text-muted);
+    }
+
+    .doc-code .tk-kw {
+      color: var(--cyan-400);
+      font-weight: 600;
+    }
+
+    .doc-code .tk-num {
+      color: var(--amber-400);
     }
 
     /* ---------- Token galleries ---------- */

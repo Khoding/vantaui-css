@@ -57,8 +57,11 @@
   inline-size: 100%;
 }
 
-/* Internal styling for images/figures within prose */
-:where(.vui-prose img) {
+/* Internal styling for images/figures within prose.
+   Scoped to *direct* children (and a direct figure's image) so that prose
+   never restyles images, figures or quotes that belong to a live component
+   nested inside the article — only the article's own long-form assets. */
+:where(.vui-prose > img, .vui-prose > figure img) {
   display: block;
   max-inline-size: 100%;
   block-size: auto;
@@ -66,25 +69,25 @@
   background-color: var(--surface-inset);
 }
 
-:where(.vui-prose figure) {
+:where(.vui-prose > figure) {
   margin: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
 }
 
-:where(.vui-prose figure img) {
+:where(.vui-prose > figure img) {
   inline-size: 100%;
 }
 
-:where(.vui-prose figure figcaption) {
+:where(.vui-prose > figure figcaption) {
   font-family: var(--font-mono);
   font-size: var(--fs-2xs);
   color: var(--text-muted);
   text-align: center;
 }
 
-:where(.vui-prose blockquote) {
+:where(.vui-prose > blockquote) {
   padding-block: var(--space-4);
   padding-inline-start: var(--space-5);
   border-inline-start: var(--border-bold) solid var(--accent);

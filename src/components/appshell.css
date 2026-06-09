@@ -58,8 +58,12 @@
 }
 /* footer, an explicit bottom bar, AND a side rail all live along the bottom
    on phones (use a footer OR a rail/bottom-nav on small screens, not both).
-   Excluded: any side drawer, which stays off-canvas. */
-:where(.vui:has(> main)) > :is(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
+   Excluded: any side drawer, which stays off-canvas.
+   NB: these landmark→slot selectors must use :where() (not :is()) for the
+   child list. :is() would inherit the specificity of its most specific arg
+   (here nav.left:not(.drawer) → (0,2,1)), which would then outweigh the
+   desktop `grid-area: rail` rule below and trap every side rail in `foot`. */
+:where(.vui:has(> main)) > :where(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
   z-index: 3;
   grid-area: foot;
 }
@@ -118,7 +122,7 @@
       'rail main'
       'rail foot';
   }
-  :where(.vui:has(> main)) > :is(nav.left, aside:not(.right)) {
+  :where(.vui:has(> main)) > :where(nav.left, aside:not(.right)) {
     grid-area: rail;
   }
 
@@ -131,7 +135,7 @@
       'main railend'
       'foot railend';
   }
-  :where(.vui:has(> main)) > :is(aside.right, nav.right) {
+  :where(.vui:has(> main)) > :where(aside.right, nav.right) {
     grid-area: railend;
   }
 
@@ -146,7 +150,7 @@
   }
 
   /* footer / bottom-nav return to the bottom row beside the rail(s) */
-  :where(.vui:has(> main)) > :is(footer, nav.bottom) {
+  :where(.vui:has(> main)) > :where(footer, nav.bottom) {
     grid-area: foot;
   }
 }

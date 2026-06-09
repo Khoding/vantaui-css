@@ -153,10 +153,21 @@ export function drawers(root = document) {
       return;
     }
 
-    // 3. Dialog Backdrop click closes it
-    if (e.target.matches('dialog.left, dialog.right')) {
-      e.target.close();
-      return;
+    // 3. Backdrop click closes the dialog (modals + edge drawers alike).
+    //    A click on the ::backdrop reports the <dialog> itself as the target;
+    //    we confirm the pointer fell outside the dialog's box so clicks on
+    //    inner padding never dismiss it. Opt out with [data-no-dismiss].
+    if (e.target.tagName === 'DIALOG' && e.target.open && !e.target.hasAttribute('data-no-dismiss')) {
+      const r = e.target.getBoundingClientRect();
+      const inside =
+        e.clientX >= r.left &&
+        e.clientX <= r.right &&
+        e.clientY >= r.top &&
+        e.clientY <= r.bottom;
+      if (!inside) {
+        e.target.close();
+        return;
+      }
     }
 
     // 4. Click outside non-dialog drawer closes it

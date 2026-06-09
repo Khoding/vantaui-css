@@ -248,6 +248,24 @@
       ],
     },
 
+    {
+      group: 'Chrome',
+      id: 'sidebar',
+      title: 'Drawer sidebar',
+      blurb:
+        'A semantic <code>&lt;aside class="drawer"&gt;</code> (or <code>&lt;nav class="drawer"&gt;</code>) placed in an app frame is a wide, text-labelled sidebar — <strong>persistent on desktop, off-canvas on mobile</strong>, no media queries to write. Structure it like any drawer: a <code>&lt;header&gt;</code> (brand + a <code>data-close</code> button), a <code>&lt;nav&gt;</code> of <code>&lt;a&gt;</code> links with <code>&lt;i&gt;</code> glyphs and <code>&lt;h5&gt;/&lt;h6&gt;</code> group headings, and an optional <code>&lt;footer&gt;</code> for actions. On phones it slides off-canvas; a <code>&lt;button data-open="id"&gt;</code> toggles it (optional JS) and a <code>data-close</code> button, the backdrop, or a link tap dismisses it. Add <code>right</code> to dock it to the trailing edge. Distinct from the narrow icon <code>&lt;nav class="left"&gt;</code> rail — and from the <code>&lt;dialog&gt;</code> off-canvas drawer above, which is always modal. <em>This page&rsquo;s own sidebar is one.</em>',
+      examples: [
+        {
+          frame: true,
+          code: '<div class="vui" style="block-size:440px">\n  <aside class="drawer" id="demoDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <a><i>map</i>City Map</a>\n      <h6>System</h6>\n      <a><i>handyman</i>Loadout</a>\n      <a><i>settings</i>Setup</a>\n    </nav>\n    <footer>\n      <button class="ghost block"><i>logout</i>Sign out</button>\n    </footer>\n  </aside>\n  <header>\n    <button class="icon vui-until-m" data-open="demoDrawer" aria-label="Open menu"><i>menu</i></button>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button aria-label="Profile"><i>account_circle</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Command Center</h1>\n      <p>The sidebar is pinned on desktop and collapses to an off-canvas drawer on phones — resize to see it switch.</p>\n    </div>\n  </main>\n</div>',
+        },
+        {
+          frame: true,
+          code: '<div class="vui" style="block-size:440px">\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button class="icon vui-until-m" data-open="filtersDrawer" aria-label="Filters"><i>tune</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Case Files</h1>\n      <p>A trailing sidebar with <code>aside class="drawer right"</code> — useful for filters or inspectors.</p>\n    </div>\n  </main>\n  <aside class="drawer right" id="filtersDrawer">\n    <header>\n      <span>Filters</span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h5>Status</h5>\n      <a class="active"><i>check_circle</i>Active</a>\n      <a><i>cancel</i>Closed</a>\n      <h5>Threat</h5>\n      <a><i>bolt</i>High</a>\n      <a><i>warning</i>Medium</a>\n    </nav>\n  </aside>\n</div>',
+        },
+      ],
+    },
+
     /* ---------------- LAYOUT ---------------- */
     {
       group: 'Layout',
@@ -456,11 +474,15 @@
       id: 'appshell',
       title: 'App shell',
       blurb:
-        'Any <code>.vui</code> element holding a <code>&lt;main&gt;</code> becomes an app frame and places its landmarks by element. Add a <code>&lt;nav class="left"&gt;</code> for a side rail — a vertical column ≥768px, a bottom command bar below. Shown here boxed.',
+        'Any <code>.vui</code> element holding a <code>&lt;main&gt;</code> becomes an app frame and places its landmarks by element. Add a <code>&lt;nav class="left"&gt;</code> for a narrow side rail, or a semantic <code>&lt;aside class="drawer"&gt;</code> / <code>&lt;nav class="drawer"&gt;</code> for a wide text-based sidebar (persistent on desktop, collapsible on mobile). Shown here boxed.',
       examples: [
         {
           frame: true,
           code: '<div class="vui" style="block-size:440px">\n  <nav class="left" aria-label="Rail">\n    <img src="assets/emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</div>',
+        },
+        {
+          frame: true,
+          code: '<div class="vui" style="block-size:440px">\n  <aside class="drawer" id="shellDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <h6>Settings</h6>\n      <a><i>settings</i>Setup</a>\n    </nav>\n  </aside>\n  <header>\n    <button class="doc-menu-btn vui-until-m" data-open="shellDrawer" aria-label="Open menu" style="position:absolute;top:8px;left:8px;inline-size:32px;block-size:32px;display:grid;place-items:center;background:var(--surface-panel);border:1px solid var(--hairline-accent);clip-path:var(--clip-notch);--bevel-sm:5px;font-size:16px;cursor:pointer"><i>menu</i></button>\n    <a style="margin-inline-start:44px">WAYNE<b>TECH</b></a>\n    <menu>\n      <button aria-label="Profile"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Documentation</h1>\n      <p>This layout uses a persistent drawer on desktop, which collapses into an off-canvas drawer on mobile. Use a <code>vui-container</code> inside <code>main</code> to keep content readable and scrollbars on the screen edge.</p>\n    </div>\n  </main>\n</div>',
         },
       ],
     },
@@ -499,9 +521,58 @@
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  /* ---- tiny zero-dependency syntax highlighter (HTML + JS) ----
+     Tokenises the raw source and emits escaped text wrapped in .tk-* spans,
+     themed via the docs stylesheet. textContent of the result is still the
+     plain code, so the copy button keeps working. */
+  function tk(cls, text) {
+    return '<span class="tk-' + cls + '">' + esc(text) + '</span>';
+  }
+  function hlAttrs(s) {
+    return s.replace(/([\w-]+)(?:(=)("[^"]*"|'[^']*'|[^\s"'=<>`]+))?/g, function (_, name, eq, val) {
+      var o = tk('attr', name);
+      if (eq) o += tk('pun', '=');
+      if (val) o += tk('str', val);
+      return o;
+    });
+  }
+  function hlHTML(code) {
+    var re = /(<!--[\s\S]*?-->)|(<\/?)([a-zA-Z][\w-]*)((?:"[^"]*"|'[^']*'|[^<>])*?)(\/?>)/g;
+    var out = '',
+      last = 0,
+      m;
+    while ((m = re.exec(code))) {
+      out += esc(code.slice(last, m.index));
+      last = re.lastIndex;
+      if (m[1]) out += tk('com', m[1]);
+      else out += tk('pun', m[2]) + tk('tag', m[3]) + hlAttrs(m[4]) + tk('pun', m[5]);
+    }
+    return out + esc(code.slice(last));
+  }
+  function hlJS(code) {
+    var re =
+      /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)|\b(import|from|export|default|const|let|var|function|return|new|if|else|for|while|class|extends|async|await|true|false|null|undefined|this)\b|(\b\d+(?:\.\d+)?\b)/g;
+    var out = '',
+      last = 0,
+      m;
+    while ((m = re.exec(code))) {
+      out += esc(code.slice(last, m.index));
+      last = re.lastIndex;
+      if (m[1]) out += tk('com', m[1]);
+      else if (m[2]) out += tk('str', m[2]);
+      else if (m[3]) out += tk('kw', m[3]);
+      else out += tk('num', m[4]);
+    }
+    return out + esc(code.slice(last));
+  }
+  function highlight(code) {
+    return /<[a-z!/]/i.test(code) ? hlHTML(code) : hlJS(code);
+  }
+
   function exampleNode(ex) {
     var wrap = document.createElement('div');
-    wrap.className = 'doc-example';
+    /* `bleed` lets the live demo + code widen past the prose reading column */
+    wrap.className = 'doc-example bleed';
     var demo = '';
     if (!ex.noDemo) {
       demo =
@@ -512,7 +583,7 @@
       '<div class="doc-code">' +
       '<button class="doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
       '<pre><code>' +
-      esc(ex.code) +
+      highlight(ex.code) +
       '</code></pre>' +
       '</div>';
     return wrap;
@@ -526,7 +597,9 @@
 
     SECTIONS.forEach(function (sec) {
       var s = document.createElement('section');
-      s.className = 'doc-section';
+      /* each section is a prose article: the heading + blurb sit in the
+         readable measure, demos/code/token galleries bleed wider */
+      s.className = 'doc-section vui-prose';
       s.id = sec.id;
       var head =
         '<div class="doc-section__head">' +
@@ -539,7 +612,7 @@
 
       if (sec.render) {
         var custom = document.createElement('div');
-        custom.className = 'doc-tokens';
+        custom.className = 'doc-tokens bleed';
         custom.innerHTML = sec.render();
         s.appendChild(custom);
       }

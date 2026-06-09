@@ -125,6 +125,9 @@
   outline: none;
   box-shadow: var(--focus-ring);
 }
+/* Fallback content padding (element children) for browsers without
+   ::details-content. Modern browsers move padding onto ::details-content
+   below so that bare text nodes are padded too and the panel can animate. */
 :where(.vui details > :not(summary)) {
   padding-inline: var(--space-5);
   padding-block: var(--space-4);
@@ -132,4 +135,37 @@
   font-size: var(--fs-sm);
   line-height: var(--lh-mono);
   font-family: var(--font-mono);
+}
+
+/* ---- Animated disclosure (Chrome/Edge 131+, progressively enhanced) ----
+   ::details-content wraps *everything* after the summary — including bare
+   text nodes — so it can both carry the default padding and animate height.
+   interpolate-size lets block-size animate to/from `auto`. */
+@supports selector(::details-content) {
+  :where(.vui details) {
+    interpolate-size: allow-keywords;
+  }
+  :where(.vui details)::details-content {
+    overflow: clip;
+    block-size: 0;
+    padding-inline: var(--space-5);
+    padding-block: 0;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-mono);
+    font-family: var(--font-mono);
+    transition:
+      block-size var(--dur-base) var(--ease-hud),
+      padding-block var(--dur-base) var(--ease-hud),
+      content-visibility var(--dur-base) allow-discrete;
+  }
+  :where(.vui details[open])::details-content {
+    block-size: auto;
+    padding-block: var(--space-4);
+  }
+  /* padding now lives on ::details-content — don't double it on element children */
+  :where(.vui details > :not(summary)) {
+    padding-inline: 0;
+    padding-block: 0;
+  }
 }
