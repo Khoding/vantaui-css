@@ -53,8 +53,9 @@
   padding: var(--hud-edge);
 }
 /* footer, an explicit bottom bar, AND a side rail all live along the bottom
-   on phones (use a footer OR a rail/bottom-nav on small screens, not both). */
-:where(.vui:has(> main)) > :is(footer, nav.bottom, nav.left, nav.right, aside) {
+   on phones (use a footer OR a rail/bottom-nav on small screens, not both).
+   Excluded: any side drawer, which stays off-canvas. */
+:where(.vui:has(> main)) > :is(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
   z-index: 3;
   grid-area: foot;
 }
@@ -89,11 +90,25 @@
 
 /* ---------- Tablet and up: side rail becomes a vertical column ---------- */
 @media (min-width: 48rem) {
-  /* Left rail (a <nav class="left"> or a bare <aside>) */
+  :where(.vui:has(> main)) {
+    --rail-left-width: auto;
+    --rail-right-width: auto;
+  }
+  /* Set column widths to drawer width if it's a drawer sidebar */
+  :where(.vui:has(> main):has(> nav.left.drawer)),
+  :where(.vui:has(> main):has(> aside.drawer:not(.right))) {
+    --rail-left-width: var(--drawer-width, 16.5rem);
+  }
+  :where(.vui:has(> main):has(> nav.right.drawer)),
+  :where(.vui:has(> main):has(> aside.drawer.right)) {
+    --rail-right-width: var(--drawer-width, 16.5rem);
+  }
+
+  /* Left rail / drawer (a <nav class="left"> or a bare <aside>) */
   :where(.vui:has(> main):has(> nav.left)),
   :where(.vui:has(> main):has(> aside:not(.right))) {
     grid-template-rows: auto 1fr auto;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: var(--rail-left-width) 1fr;
     grid-template-areas:
       'rail top'
       'rail main'
@@ -103,10 +118,10 @@
     grid-area: rail;
   }
 
-  /* Right rail (<aside class="right"> / <nav class="right">) */
+  /* Right rail / drawer (<aside class="right"> / <nav class="right">) */
   :where(.vui:has(> main):has(> aside.right)),
   :where(.vui:has(> main):has(> nav.right)) {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr var(--rail-right-width);
     grid-template-areas:
       'top railend'
       'main railend'
@@ -116,10 +131,10 @@
     grid-area: railend;
   }
 
-  /* Both rails at once */
+  /* Both rails / drawers at once */
   :where(.vui:has(> main):has(> nav.left):has(> aside.right)),
   :where(.vui:has(> main):has(> aside:not(.right)):has(> aside.right)) {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: var(--rail-left-width) 1fr var(--rail-right-width);
     grid-template-areas:
       'rail top railend'
       'rail main railend'

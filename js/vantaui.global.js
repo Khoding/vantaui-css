@@ -111,13 +111,84 @@
     window.__vuiClock = setInterval(tick, 1000);
   }
 
+  function drawers(root) {
+    root = root || document;
+    var targetEl = root.documentElement || root;
+    if (targetEl.dataset.vuiDrawersReady) return;
+    targetEl.dataset.vuiDrawersReady = '1';
+
+    root.addEventListener('click', function (e) {
+      // 1. Trigger Open
+      var opener = e.target.closest('[data-open]');
+      if (opener) {
+        var targetId = opener.getAttribute('data-open');
+        var target = document.getElementById(targetId);
+        if (target) {
+          e.preventDefault();
+          if (typeof target.showModal === 'function') {
+            target.showModal();
+          } else {
+            target.classList.add('active', 'open');
+          }
+        }
+        return;
+      }
+
+      // 2. Trigger Close
+      var closer = e.target.closest('[data-close]');
+      if (closer) {
+        var dlg = closer.closest('dialog');
+        if (dlg) {
+          e.preventDefault();
+          dlg.close();
+        } else {
+          var drawer = closer.closest('.drawer');
+          if (drawer) {
+            e.preventDefault();
+            drawer.classList.remove('active', 'open');
+          }
+        }
+        return;
+      }
+
+      // 3. Dialog Backdrop click closes it
+      if (e.target.matches('dialog.left, dialog.right')) {
+        e.target.close();
+        return;
+      }
+
+      // 4. Click outside non-dialog drawer closes it
+      if (!e.target.closest('.drawer')) {
+        var activeDrawers = document.querySelectorAll('.drawer.active, .drawer.open');
+        for (var i = 0; i < activeDrawers.length; i++) {
+          activeDrawers[i].classList.remove('active', 'open');
+        }
+      }
+
+      // 5. Drawer/Dialog link click closes the drawer
+      var link = e.target.closest('.drawer a, dialog.left nav a, dialog.right nav a');
+      if (link) {
+        var dlgElement = link.closest('dialog');
+        if (dlgElement) {
+          setTimeout(function () { dlgElement.close(); }, 80);
+        } else {
+          var drawerElement = link.closest('.drawer');
+          if (drawerElement) {
+            setTimeout(function () { drawerElement.classList.remove('active', 'open'); }, 80);
+          }
+        }
+      }
+    });
+  }
+
   function init(root) {
     tabs(root);
     animateOnView(root);
     clocks(root);
+    drawers(root);
   }
 
-  window.vui = {init: init, tabs: tabs, setValue: setValue};
+  window.vui = {init: init, tabs: tabs, setValue: setValue, drawers: drawers};
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {

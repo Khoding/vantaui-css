@@ -557,18 +557,16 @@
 
     /* nav */
     order.forEach(function (g) {
-      var blk = document.createElement('div');
-      blk.className = 'doc-nav__group';
-      blk.innerHTML = '<p class="doc-nav__label">' + g + '</p>';
+      var h6 = document.createElement('h6');
+      h6.textContent = g;
+      nav.appendChild(h6);
       groups[g].forEach(function (sec) {
         var a = document.createElement('a');
         a.href = '#' + sec.id;
-        a.className = 'doc-nav__link';
         a.dataset.target = sec.id;
         a.textContent = sec.title;
-        blk.appendChild(a);
+        nav.appendChild(a);
       });
-      nav.appendChild(blk);
     });
   }
 
@@ -592,7 +590,7 @@
 
   /* scrollspy — highlight active nav link */
   function wireSpy() {
-    var links = [].slice.call(document.querySelectorAll('.doc-nav__link'));
+    var links = [].slice.call(document.querySelectorAll('aside.drawer nav a'));
     var map = {};
     links.forEach(function (l) {
       map[l.dataset.target] = l;
@@ -602,10 +600,10 @@
         entries.forEach(function (en) {
           if (en.isIntersecting) {
             links.forEach(function (l) {
-              l.classList.remove('is-active');
+              l.classList.remove('active');
             });
             var active = map[en.target.id];
-            if (active) active.classList.add('is-active');
+            if (active) active.classList.add('active');
           }
         });
       },

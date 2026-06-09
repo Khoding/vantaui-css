@@ -2341,7 +2341,7 @@
     overflow-y: auto;
   }
 
-  :where(.vui:has( > main)) > :is(footer, nav.bottom, nav.left, nav.right, aside) {
+  :where(.vui:has( > main)) > :is(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
     z-index: 3;
     grid-area: foot;
   }
@@ -2376,11 +2376,25 @@
   }
 
   @media (width >= 48rem) {
+    :where(.vui:has( > main)) {
+      --rail-left-width: auto;
+      --rail-right-width: auto;
+    }
+
+    :where(.vui:has( > main):has( > nav.left.drawer)), :where(.vui:has( > main):has( > aside.drawer:not(.right))) {
+      --rail-left-width: var(--drawer-width, 16.5rem);
+    }
+
+    :where(.vui:has( > main):has( > nav.right.drawer)), :where(.vui:has( > main):has( > aside.drawer.right)) {
+      --rail-right-width: var(--drawer-width, 16.5rem);
+    }
+
     :where(.vui:has( > main):has( > nav.left)), :where(.vui:has( > main):has( > aside:not(.right))) {
-      grid-template: "rail top"
-                     "rail main" 1fr
-                     "rail foot"
-                     / auto 1fr;
+      grid-template-rows: auto 1fr auto;
+      grid-template-columns: var(--rail-left-width) 1fr;
+      grid-template-areas: "rail top"
+                           "rail main"
+                           "rail foot";
     }
 
     :where(.vui:has( > main)) > :is(nav.left, aside:not(.right)) {
@@ -2388,7 +2402,7 @@
     }
 
     :where(.vui:has( > main):has( > aside.right)), :where(.vui:has( > main):has( > nav.right)) {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr var(--rail-right-width);
       grid-template-areas: "top railend"
                            "main railend"
                            "foot railend";
@@ -2399,7 +2413,7 @@
     }
 
     :where(.vui:has( > main):has( > nav.left):has( > aside.right)), :where(.vui:has( > main):has( > aside:not(.right)):has( > aside.right)) {
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: var(--rail-left-width) 1fr var(--rail-right-width);
       grid-template-areas: "rail top railend"
                            "rail main railend"
                            "rail foot railend";
@@ -2852,7 +2866,7 @@
     background-color: var(--bg-base);
   }
 
-  :where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right) {
+  :where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer)) {
     z-index: 20;
     border-block-start: var(--border-hair) solid var(--hairline);
     background-color: var(--bg-void);
@@ -2865,7 +2879,7 @@
     display: flex;
   }
 
-  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a, button) {
+  :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer))) > :where(a, button) {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -2890,20 +2904,20 @@
     position: relative;
   }
 
-  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a, button) i {
+  :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer))) > :where(a, button) i {
     font-size: var(--fs-xl);
     line-height: 1;
   }
 
-  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a:hover, button:hover) {
+  :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer))) > :where(a:hover, button:hover) {
     color: var(--text-secondary);
   }
 
-  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a[aria-current="page"], button[aria-current="page"], .active) {
+  :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer))) > :where(a[aria-current="page"], button[aria-current="page"], .active) {
     color: var(--accent);
   }
 
-  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a[aria-current="page"], button[aria-current="page"], .active):before {
+  :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer))) > :where(a[aria-current="page"], button[aria-current="page"], .active):before {
     background-color: var(--accent);
     block-size: 3px;
     box-shadow: var(--glow-cyan-md);
@@ -2913,19 +2927,19 @@
     inset-inline: 22%;
   }
 
-  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a:focus-visible, button:focus-visible) {
+  :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer))) > :where(a:focus-visible, button:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(img, svg) {
+  :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer))) > :where(img, svg) {
     block-size: 34px;
     inline-size: 34px;
     color: var(--accent);
     filter: drop-shadow(var(--glow-cyan-md));
   }
 
-  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(.max) {
+  :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right):not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer))) > :where(.max) {
     flex: 1;
   }
 
@@ -2937,7 +2951,7 @@
   }
 
   @media (width >= 48rem) {
-    :where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside) {
+    :where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui:has( > main) > aside:not(.drawer)) {
       border-block-start: 0;
       border-inline-end: var(--border-hair) solid var(--hairline);
       flex-direction: column;
@@ -2947,29 +2961,29 @@
       padding-inline: 0;
     }
 
-    :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside)) > :where(a, button) {
+    :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui:has( > main) > aside:not(.drawer))) > :where(a, button) {
       flex: none;
       gap: 5px;
       margin-inline: 8px;
       padding-inline: 0;
     }
 
-    :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside)) > :where(a[aria-current="page"], button[aria-current="page"], .active):before {
+    :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui:has( > main) > aside:not(.drawer))) > :where(a[aria-current="page"], button[aria-current="page"], .active):before {
       block-size: auto;
       inline-size: 3px;
       inset-block: 8px;
       inset-inline: -8px auto;
     }
 
-    :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside)) > :where(img, svg) {
+    :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui:has( > main) > aside:not(.drawer))) > :where(img, svg) {
       margin-block-end: 8px;
     }
 
-    :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside)) > :where(.max) {
+    :is(:where(.vui nav.left:not(.drawer)), :where(.vui nav.right:not(.drawer)), :where(.vui:has( > main) > aside:not(.drawer))) > :where(.max) {
       flex: 1;
     }
 
-    :where(.vui nav.right), :where(.vui:has( > main) > aside.right) {
+    :where(.vui nav.right:not(.drawer)), :where(.vui:has( > main) > aside.right:not(.drawer)) {
       border-inline: var(--border-hair) solid var(--hairline) 0;
     }
   }
@@ -3044,7 +3058,7 @@
     }
   }
 
-  :where(.vui dialog.left) > header, :where(.vui dialog.right) > header {
+  :where(.vui dialog.left) > header, :where(.vui dialog.right) > header, :where(.vui :is(aside, nav).drawer) > header {
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
@@ -3054,7 +3068,7 @@
     display: flex;
   }
 
-  :where(.vui dialog.left) > header > :where(a, span, b, strong), :where(.vui dialog.right) > header > :where(a, span, b, strong) {
+  :where(.vui dialog.left) > header > :where(a, span, b, strong), :where(.vui dialog.right) > header > :where(a, span, b, strong), :where(.vui :is(aside, nav).drawer) > header > :where(a, span, b, strong) {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-sm);
@@ -3066,14 +3080,14 @@
     display: inline-flex;
   }
 
-  :where(.vui dialog.left) > header :where(img, svg), :where(.vui dialog.right) > header :where(img, svg) {
+  :where(.vui dialog.left) > header :where(img, svg), :where(.vui dialog.right) > header :where(img, svg), :where(.vui :is(aside, nav).drawer) > header :where(img, svg) {
     block-size: 26px;
     inline-size: 26px;
     color: var(--accent);
     filter: drop-shadow(var(--glow-cyan-md));
   }
 
-  :where(.vui dialog.left) > nav, :where(.vui dialog.right) > nav {
+  :where(.vui dialog.left) > nav, :where(.vui dialog.right) > nav, :where(.vui :is(aside, nav).drawer) > nav {
     padding-block: var(--space-4);
     flex-direction: column;
     padding-inline: 0;
@@ -3081,7 +3095,7 @@
     overflow-y: auto;
   }
 
-  :where(.vui dialog.left) nav :where(a, button), :where(.vui dialog.right) nav :where(a, button) {
+  :where(.vui dialog.left) nav :where(a, button), :where(.vui dialog.right) nav :where(a, button), :where(.vui :is(aside, nav).drawer) nav :where(a, button), :where(.vui nav.drawer) > :where(a, button) {
     inline-size: 100%;
     padding-inline: var(--space-5);
     color: var(--text-muted);
@@ -3105,7 +3119,7 @@
     position: relative;
   }
 
-  :where(.vui dialog.left) nav :where(a, button) i, :where(.vui dialog.right) nav :where(a, button) i {
+  :where(.vui dialog.left) nav :where(a, button) i, :where(.vui dialog.right) nav :where(a, button) i, :where(.vui :is(aside, nav).drawer) nav :where(a, button) i, :where(.vui nav.drawer) > :where(a, button) i {
     inline-size: 20px;
     color: var(--text-faint);
     font-size: var(--fs-lg);
@@ -3113,21 +3127,21 @@
     flex: none;
   }
 
-  :where(.vui dialog.left) nav :where(a:hover, button:hover), :where(.vui dialog.right) nav :where(a:hover, button:hover) {
+  :where(.vui dialog.left) nav :where(a:hover, button:hover), :where(.vui dialog.right) nav :where(a:hover, button:hover), :where(.vui :is(aside, nav).drawer) nav :where(a:hover, button:hover), :where(.vui nav.drawer) > :where(a:hover, button:hover) {
     background-color: color-mix(in srgb, var(--accent) 5%, transparent);
     color: var(--text-secondary);
   }
 
-  :where(.vui dialog.left) nav :where([aria-current="page"], .active), :where(.vui dialog.right) nav :where([aria-current="page"], .active) {
+  :where(.vui dialog.left) nav :where([aria-current="page"], .active), :where(.vui dialog.right) nav :where([aria-current="page"], .active), :where(.vui :is(aside, nav).drawer) nav :where([aria-current="page"], .active), :where(.vui nav.drawer) > :where([aria-current="page"], .active) {
     background-color: color-mix(in srgb, var(--cyan-400) 10%, transparent);
     color: var(--accent);
   }
 
-  :where(.vui dialog.left) nav :where([aria-current="page"], .active) i, :where(.vui dialog.right) nav :where([aria-current="page"], .active) i {
+  :where(.vui dialog.left) nav :where([aria-current="page"], .active) i, :where(.vui dialog.right) nav :where([aria-current="page"], .active) i, :where(.vui :is(aside, nav).drawer) nav :where([aria-current="page"], .active) i, :where(.vui nav.drawer) > :where([aria-current="page"], .active) i {
     color: var(--accent);
   }
 
-  :where(.vui dialog.left) nav :where([aria-current="page"], .active):before, :where(.vui dialog.right) nav :where([aria-current="page"], .active):before {
+  :where(.vui dialog.left) nav :where([aria-current="page"], .active):before, :where(.vui dialog.right) nav :where([aria-current="page"], .active):before, :where(.vui :is(aside, nav).drawer) nav :where([aria-current="page"], .active):before, :where(.vui nav.drawer) > :where([aria-current="page"], .active):before {
     background-color: var(--accent);
     inline-size: 3px;
     box-shadow: var(--glow-cyan-md);
@@ -3137,12 +3151,12 @@
     inset-inline-start: 0;
   }
 
-  :where(.vui dialog.left) nav :where(a:focus-visible, button:focus-visible), :where(.vui dialog.right) nav :where(a:focus-visible, button:focus-visible) {
+  :where(.vui dialog.left) nav :where(a:focus-visible, button:focus-visible), :where(.vui dialog.right) nav :where(a:focus-visible, button:focus-visible), :where(.vui :is(aside, nav).drawer) nav :where(a:focus-visible, button:focus-visible), :where(.vui nav.drawer) > :where(a:focus-visible, button:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.vui dialog.left) nav :where(h4, h5, h6, .label), :where(.vui dialog.right) nav :where(h4, h5, h6, .label) {
+  :where(.vui dialog.left) nav :where(h4, h5, h6, .label), :where(.vui dialog.right) nav :where(h4, h5, h6, .label), :where(.vui :is(aside, nav).drawer) nav :where(h4, h5, h6, .label), :where(.vui nav.drawer) > :where(h4, h5, h6, .label) {
     margin-block: var(--space-4) 6px;
     padding-inline: var(--space-5);
     color: var(--text-faint);
@@ -3153,12 +3167,74 @@
     text-transform: uppercase;
   }
 
-  :where(.vui dialog.left) > footer, :where(.vui dialog.right) > footer {
+  :where(.vui dialog.left) > footer, :where(.vui dialog.right) > footer, :where(.vui :is(aside, nav).drawer) > footer {
     padding-inline: var(--space-5);
     padding-block: var(--space-4);
     border-block-start: var(--border-hair) solid var(--hairline);
     border-block-end: 0;
     margin-block-start: auto;
+  }
+
+  @media (width <= 47.999rem) {
+    :where(.vui :is(aside, nav).drawer) {
+      z-index: 40;
+      inline-size: var(--drawer-width, 16.5rem);
+      border: 0;
+      border-inline-end: var(--border-hair) solid var(--hairline-accent);
+      background-color: var(--bg-void);
+      block-size: auto;
+      max-block-size: none;
+      max-inline-size: none;
+      box-shadow: var(--shadow-raised),
+      0 0 60px -10px var(--accent-glow);
+      color: var(--text-primary);
+      clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+      opacity: 0;
+      transition: translate var(--dur-base) var(--ease-hud),
+      opacity var(--dur-base) var(--ease-hud);
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      position: fixed;
+      inset-block: 0;
+      inset-inline-start: 0;
+      translate: -101%;
+    }
+
+    :where(.vui :is(aside, nav).drawer.right) {
+      border-inline-start: var(--border-hair) solid var(--hairline-accent);
+      clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
+      border-inline-end: 0;
+      inset-inline: auto 0;
+      translate: 101%;
+    }
+
+    :where(.vui :is(aside, nav).drawer:is(.active, .open)) {
+      opacity: 1;
+      translate: 0;
+    }
+  }
+
+  @media (width >= 48rem) {
+    :where(.vui :is(aside, nav).drawer) {
+      z-index: 20;
+      inline-size: var(--drawer-width, 16.5rem);
+      background-color: var(--bg-void);
+      border-inline-end: var(--border-hair) solid var(--hairline);
+      flex-direction: column;
+      block-size: 100%;
+      display: flex;
+    }
+
+    :where(.vui :is(aside, nav).drawer.right) {
+      border-inline-start: var(--border-hair) solid var(--hairline);
+      border-inline-end: 0;
+    }
+  }
+
+  :where(.vui nav.drawer) {
+    overflow-y: auto;
   }
 
   :where(.vui nav:has( > ol)) ol, :where(.vui ol.breadcrumb) {

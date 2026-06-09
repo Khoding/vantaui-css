@@ -263,7 +263,7 @@
         </div>
 
         <div class="demo-grid">
-          <!-- Drawer -->
+          <!-- Off-canvas drawer -->
           <article>
             <header><b>Off-canvas drawer</b></header>
             <p class="demo-note">A native <code>&lt;dialog class="left"&gt;</code> (or <code>right</code>). Opens with
@@ -272,6 +272,15 @@
             <menu style="display:flex;gap:8px;flex-wrap:wrap;margin:0;padding:0;list-style:none">
               <button type="button" data-open="navDrawer"><i>view_sidebar</i> Open drawer</button>
               <button type="button" data-open="navDrawerEnd"><i>dock_to_left</i> From end</button>
+            </menu>
+          </article>
+
+          <!-- Responsive sidebar drawer -->
+          <article>
+            <header><b>Responsive drawer sidebar</b></header>
+            <p class="demo-note">A semantic <code>&lt;aside class="drawer"&gt;</code> (or <code>nav class="drawer"</code>). Persistent column on desktop (width: 16.5rem), off-canvas menu on mobile. Toggles via the <code>active</code>/<code>open</code> class.</p>
+            <menu style="display:flex;gap:8px;flex-wrap:wrap;margin:0;padding:0;list-style:none">
+              <button type="button" data-open="demoAsideDrawer"><i>menu_open</i> Open aside drawer</button>
             </menu>
           </article>
 
@@ -477,6 +486,21 @@
     </div>
   </footer>
 
+  <!-- ===== DEMO ASIDE DRAWER (responsive) ===== -->
+  <aside class="drawer" id="demoAsideDrawer">
+    <header>
+      <span><img src="assets/emblem.svg" alt="" />VANTA<b>UI</b></span>
+      <button type="button" data-close aria-label="Close"><i>close</i></button>
+    </header>
+    <nav>
+      <h6>Telemetry</h6>
+      <a class="active"><i>space_dashboard</i>Overview</a>
+      <a><i>radar</i>Tactical scan</a>
+      <h6>Settings</h6>
+      <a><i>tune</i>Parameters</a>
+    </nav>
+  </aside>
+
   <!-- ===== GLOBAL DRAWERS (open at viewport scale) ===== -->
   <dialog class="left" id="navDrawer" aria-label="Menu">
     <header>
@@ -508,6 +532,7 @@
     </nav>
   </dialog>
 
+  <script src="../js/vantaui.global.js"></script>
   <script>
     // ---- Clock ----
     function tick() {
@@ -518,27 +543,6 @@
       const c2 = document.getElementById('clock2'); if (c2) c2.textContent = hms.slice(0, 5);
     }
     tick(); setInterval(tick, 1000);
-
-    // ---- Drawer open/close (progressive enhancement over the native dialog) ----
-    document.addEventListener('click', (e) => {
-      const opener = e.target.closest('[data-open]');
-      if (opener) {
-        const dlg = document.getElementById(opener.getAttribute('data-open'));
-        if (dlg && typeof dlg.showModal === 'function') { e.preventDefault(); dlg.showModal(); }
-        return;
-      }
-      const closer = e.target.closest('[data-close]');
-      if (closer) {
-        const dlg = closer.closest('dialog');
-        if (dlg) { e.preventDefault(); dlg.close(); }
-        return;
-      }
-      // backdrop click closes an edge drawer
-      if (e.target.matches('dialog.left, dialog.right')) e.target.close();
-      // a drawer link closes the drawer after navigating
-      const link = e.target.closest('dialog.left nav a, dialog.right nav a');
-      if (link) { const dlg = link.closest('dialog'); if (dlg) setTimeout(() => dlg.close(), 80); }
-    });
 
     // ---- Demo: clicking a nav item moves the active marker within its group ----
     function wireActive(selector) {
@@ -551,7 +555,7 @@
         });
       });
     }
-    wireActive('header > nav'); wireActive('nav.bottom'); wireActive('dialog nav');
+    wireActive('header > nav'); wireActive('nav.bottom'); wireActive('dialog nav'); wireActive('aside.drawer nav');
   </script>
 </body>
 

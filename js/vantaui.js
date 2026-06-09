@@ -113,15 +113,85 @@ function clocks(root = document) {
   window.__vuiClock = setInterval(tick, 1000);
 }
 
+/* ---------- Dialogs & Drawer Toggles ---------- */
+export function drawers(root = document) {
+  const targetEl = root.documentElement || root;
+  if (targetEl.dataset.vuiDrawersReady) return;
+  targetEl.dataset.vuiDrawersReady = '1';
+
+  root.addEventListener('click', e => {
+    // 1. Trigger Open
+    const opener = e.target.closest('[data-open]');
+    if (opener) {
+      const targetId = opener.getAttribute('data-open');
+      const target = document.getElementById(targetId);
+      if (target) {
+        e.preventDefault();
+        if (typeof target.showModal === 'function') {
+          target.showModal();
+        } else {
+          target.classList.add('active', 'open');
+        }
+      }
+      return;
+    }
+
+    // 2. Trigger Close
+    const closer = e.target.closest('[data-close]');
+    if (closer) {
+      const dlg = closer.closest('dialog');
+      if (dlg) {
+        e.preventDefault();
+        dlg.close();
+      } else {
+        const drawer = closer.closest('.drawer');
+        if (drawer) {
+          e.preventDefault();
+          drawer.classList.remove('active', 'open');
+        }
+      }
+      return;
+    }
+
+    // 3. Dialog Backdrop click closes it
+    if (e.target.matches('dialog.left, dialog.right')) {
+      e.target.close();
+      return;
+    }
+
+    // 4. Click outside non-dialog drawer closes it
+    if (!e.target.closest('.drawer')) {
+      document.querySelectorAll('.drawer.active, .drawer.open').forEach(drawer => {
+        drawer.classList.remove('active', 'open');
+      });
+    }
+
+    // 5. Drawer/Dialog link click closes the drawer
+    const link = e.target.closest('.drawer a, dialog.left nav a, dialog.right nav a');
+    if (link) {
+      const dlg = link.closest('dialog');
+      if (dlg) {
+        setTimeout(() => dlg.close(), 80);
+      } else {
+        const drawer = link.closest('.drawer');
+        if (drawer) {
+          setTimeout(() => drawer.classList.remove('active', 'open'), 80);
+        }
+      }
+    }
+  });
+}
+
 /* ---------- Init everything ---------- */
 export function init(root = document) {
   if (!isBrowser) return;
   tabs(root);
   animateOnView(root);
   clocks(root);
+  drawers(root);
 }
 
-const VantaUI = {init, tabs, setValue};
+const VantaUI = {init, tabs, setValue, drawers};
 export default VantaUI;
 
 if (isBrowser) {

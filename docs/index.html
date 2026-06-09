@@ -31,103 +31,6 @@
       min-block-size: 100dvh;
     }
 
-    .doc-shell {
-      display: grid;
-      grid-template-columns: 264px minmax(0, 1fr);
-      align-items: start;
-    }
-
-    /* ---------- Sidebar ---------- */
-    .doc-side {
-      position: sticky;
-      top: 0;
-      block-size: 100dvh;
-      overflow-y: auto;
-      padding: var(--space-7) var(--space-5) var(--space-9);
-      border-inline-end: 1px solid var(--hairline);
-      background: var(--bg-void);
-    }
-
-    .doc-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-block-end: var(--space-7);
-    }
-
-    .doc-brand__mark {
-      inline-size: 40px;
-      block-size: 40px;
-      color: var(--cyan-400);
-      filter: drop-shadow(var(--glow-cyan-md));
-    }
-
-    .doc-brand__mark img {
-      inline-size: 100%;
-      block-size: 100%;
-      display: block;
-    }
-
-    .doc-brand__word {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 22px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1;
-      color: var(--text-primary);
-    }
-
-    .doc-brand__word b {
-      color: var(--cyan-400);
-      text-shadow: var(--text-glow-cyan);
-      font-weight: 700;
-    }
-
-    .doc-brand__tag {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-block-start: 4px;
-    }
-
-    .doc-nav__group {
-      margin-block-end: var(--space-6);
-    }
-
-    .doc-nav__label {
-      font-family: var(--font-display);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      margin: 0 0 8px;
-    }
-
-    .doc-nav__link {
-      display: block;
-      padding: 6px 12px;
-      font-family: var(--font-ui);
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
-      text-decoration: none;
-      border-inline-start: 2px solid transparent;
-      transition: color var(--dur-fast) var(--ease-hud), border-color var(--dur-fast) var(--ease-hud), background-color var(--dur-fast) var(--ease-hud);
-    }
-
-    .doc-nav__link:hover {
-      color: var(--text-secondary);
-      background: rgba(120, 196, 240, 0.04);
-    }
-
-    .doc-nav__link.is-active {
-      color: var(--cyan-400);
-      border-inline-start-color: var(--cyan-400);
-      background: color-mix(in srgb, var(--cyan-400) 8%, transparent);
-    }
-
     /* ---------- Main column ----------
      Horizontal padding is the page gutter. It never drops below 20px, so on the
      smallest phone the content always keeps a margin from the screen edge. */
@@ -396,25 +299,7 @@
       display: none;
     }
 
-    @media (max-width: 64rem) {
-      .doc-shell {
-        grid-template-columns: 1fr;
-      }
-
-      .doc-side {
-        position: fixed;
-        z-index: 40;
-        inset-block: 0;
-        inset-inline-start: 0;
-        inline-size: 264px;
-        transform: translateX(-100%);
-        transition: transform var(--dur-base) var(--ease-hud);
-      }
-
-      .doc-side.is-open {
-        transform: translateX(0);
-      }
-
+    @media (max-width: 47.999rem) {
       .doc-menu-btn {
         display: inline-grid;
         place-items: center;
@@ -462,52 +347,37 @@
 </head>
 
 <body class="vui">
-  <button class="doc-menu-btn" id="doc-menu" aria-label="Toggle navigation"><i>menu</i></button>
+  <button class="doc-menu-btn" data-open="doc-side" aria-label="Toggle navigation"><i>menu</i></button>
 
-  <div class="doc-shell">
-    <aside class="doc-side" id="doc-side">
-      <div class="doc-brand">
-        <span class="doc-brand__mark"><img src="assets/emblem.svg" alt="" /></span>
-        <span>
-          <span class="doc-brand__word">Bat<b>OS</b></span>
-          <span class="doc-brand__tag">CSS · v1.0</span>
-        </span>
-      </div>
-      <nav id="doc-nav" aria-label="Documentation"></nav>
-    </aside>
+  <aside class="drawer" id="doc-side">
+    <header>
+      <span><img src="assets/emblem.svg" alt="" />Bat<b>OS</b></span>
+      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>
+    </header>
+    <nav id="doc-nav" aria-label="Documentation"></nav>
+  </aside>
 
-    <main class="doc-main">
-      <header class="doc-hero">
-        <div class="doc-hero__in">
-          <p class="vui-eyebrow">WayneTech Tactical Interface</p>
-          <h1>Bat<b>OS</b> CSS</h1>
-          <p>A dark, angular, military-telemetry <strong>tactical HUD</strong> design system — as a semantic-first CSS
-            library. Write proper HTML, get a HUD. Framework-agnostic, with first-class Vue &amp; Nuxt adapters and a
-            zero-dependency JS layer.</p>
-          <div class="doc-hero__meta">
-            <span class="badge green dot">Zero-CLS fonts</span>
-            <span class="badge cyan">Cascade layers</span>
-            <span class="badge neutral">No build required</span>
-          </div>
+  <main class="doc-main">
+    <header class="doc-hero">
+      <div class="doc-hero__in">
+        <p class="vui-eyebrow">WayneTech Tactical Interface</p>
+        <h1>Bat<b>OS</b> CSS</h1>
+        <p>A dark, angular, military-telemetry <strong>tactical HUD</strong> design system — as a semantic-first CSS
+          library. Write proper HTML, get a HUD. Framework-agnostic, with first-class Vue &amp; Nuxt adapters and a
+          zero-dependency JS layer.</p>
+        <div class="doc-hero__meta">
+          <span class="badge green dot">Zero-CLS fonts</span>
+          <span class="badge cyan">Cascade layers</span>
+          <span class="badge neutral">No build required</span>
         </div>
-      </header>
+      </div>
+    </header>
 
-      <div id="doc-main"></div>
-    </main>
-  </div>
+    <div id="doc-main"></div>
+  </main>
 
   <script type="module" src="../js/vantaui.js"></script>
   <script type="module" src="gallery.js"></script>
-  <script>
-    (function () {
-      var btn = document.getElementById("doc-menu");
-      var side = document.getElementById("doc-side");
-      btn.addEventListener("click", function () { side.classList.toggle("is-open"); });
-      side.addEventListener("click", function (e) {
-        if (e.target.closest(".doc-nav__link")) side.classList.remove("is-open");
-      });
-    })();
-  </script>
 </body>
 
 </html>

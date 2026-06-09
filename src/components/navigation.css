@@ -20,11 +20,11 @@
 /* ============================================================
    1 — Command bar: side rail (phones) + bottom tab bar
    ============================================================ */
-:where(.vui nav.left),
-:where(.vui nav.right),
+:where(.vui nav.left:not(.drawer)),
+:where(.vui nav.right:not(.drawer)),
 :where(.vui nav.bottom),
-:where(.vui:has(> main) > aside:not(.right)),
-:where(.vui:has(> main) > aside.right) {
+:where(.vui:has(> main) > aside:not(.right):not(.drawer)),
+:where(.vui:has(> main) > aside.right:not(.drawer)) {
   display: flex;
   z-index: 20;
   flex-direction: row;
@@ -107,9 +107,9 @@
 
 /* ---------- Tablet and up: the side rail becomes a vertical column ---------- */
 @media (min-width: 48rem) {
-  :where(.vui nav.left),
-  :where(.vui nav.right),
-  :where(.vui:has(> main) > aside) {
+  :where(.vui nav.left:not(.drawer)),
+  :where(.vui nav.right:not(.drawer)),
+  :where(.vui:has(> main) > aside:not(.drawer)) {
     flex-direction: column;
     justify-content: flex-start;
     gap: 6px;
@@ -140,8 +140,8 @@
     }
   }
   /* a right rail divides on its leading edge instead */
-  :where(.vui nav.right),
-  :where(.vui:has(> main) > aside.right) {
+  :where(.vui nav.right:not(.drawer)),
+  :where(.vui:has(> main) > aside.right:not(.drawer)) {
     border-inline: var(--border-hair) solid var(--hairline) 0;
   }
 }
@@ -223,7 +223,8 @@
 
 /* drawer head: brand + close */
 :where(.vui dialog.left) > header,
-:where(.vui dialog.right) > header {
+:where(.vui dialog.right) > header,
+:where(.vui :is(aside, nav).drawer) > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -233,7 +234,8 @@
   border-block-end: var(--border-hair) solid var(--hairline);
 }
 :where(.vui dialog.left) > header > :where(a, span, b, strong),
-:where(.vui dialog.right) > header > :where(a, span, b, strong) {
+:where(.vui dialog.right) > header > :where(a, span, b, strong),
+:where(.vui :is(aside, nav).drawer) > header > :where(a, span, b, strong) {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -245,7 +247,8 @@
   text-transform: uppercase;
 }
 :where(.vui dialog.left) > header :where(img, svg),
-:where(.vui dialog.right) > header :where(img, svg) {
+:where(.vui dialog.right) > header :where(img, svg),
+:where(.vui :is(aside, nav).drawer) > header :where(img, svg) {
   inline-size: 26px;
   block-size: 26px;
   color: var(--accent);
@@ -254,7 +257,8 @@
 
 /* drawer nav: a vertical stack of links */
 :where(.vui dialog.left) > nav,
-:where(.vui dialog.right) > nav {
+:where(.vui dialog.right) > nav,
+:where(.vui :is(aside, nav).drawer) > nav {
   display: flex;
   flex-direction: column;
   padding-block: var(--space-4);
@@ -262,7 +266,9 @@
   overflow-y: auto;
 }
 :where(.vui dialog.left) nav :where(a, button),
-:where(.vui dialog.right) nav :where(a, button) {
+:where(.vui dialog.right) nav :where(a, button),
+:where(.vui :is(aside, nav).drawer) nav :where(a, button),
+:where(.vui nav.drawer) > :where(a, button) {
   display: flex;
   position: relative;
   align-items: center;
@@ -287,7 +293,9 @@
     background-color var(--dur-fast) var(--ease-hud);
 }
 :where(.vui dialog.left) nav :where(a, button) i,
-:where(.vui dialog.right) nav :where(a, button) i {
+:where(.vui dialog.right) nav :where(a, button) i,
+:where(.vui :is(aside, nav).drawer) nav :where(a, button) i,
+:where(.vui nav.drawer) > :where(a, button) i {
   flex: none;
   inline-size: 20px;
   color: var(--text-faint);
@@ -295,22 +303,30 @@
   transition: color var(--dur-fast) var(--ease-hud);
 }
 :where(.vui dialog.left) nav :where(a:hover, button:hover),
-:where(.vui dialog.right) nav :where(a:hover, button:hover) {
+:where(.vui dialog.right) nav :where(a:hover, button:hover),
+:where(.vui :is(aside, nav).drawer) nav :where(a:hover, button:hover),
+:where(.vui nav.drawer) > :where(a:hover, button:hover) {
   background-color: color-mix(in srgb, var(--accent) 5%, transparent);
   color: var(--text-secondary);
 }
 :where(.vui dialog.left) nav :where([aria-current='page'], .active),
-:where(.vui dialog.right) nav :where([aria-current='page'], .active) {
+:where(.vui dialog.right) nav :where([aria-current='page'], .active),
+:where(.vui :is(aside, nav).drawer) nav :where([aria-current='page'], .active),
+:where(.vui nav.drawer) > :where([aria-current='page'], .active) {
   background-color: color-mix(in srgb, var(--cyan-400) 10%, transparent);
   color: var(--accent);
 }
 :where(.vui dialog.left) nav :where([aria-current='page'], .active) i,
-:where(.vui dialog.right) nav :where([aria-current='page'], .active) i {
+:where(.vui dialog.right) nav :where([aria-current='page'], .active) i,
+:where(.vui :is(aside, nav).drawer) nav :where([aria-current='page'], .active) i,
+:where(.vui nav.drawer) > :where([aria-current='page'], .active) i {
   color: var(--accent);
 }
 /* glowing edge marker on the active item */
 :where(.vui dialog.left) nav :where([aria-current='page'], .active)::before,
-:where(.vui dialog.right) nav :where([aria-current='page'], .active)::before {
+:where(.vui dialog.right) nav :where([aria-current='page'], .active)::before,
+:where(.vui :is(aside, nav).drawer) nav :where([aria-current='page'], .active)::before,
+:where(.vui nav.drawer) > :where([aria-current='page'], .active)::before {
   position: absolute;
   inline-size: 3px;
   inset-block: 8px;
@@ -320,13 +336,17 @@
   content: '';
 }
 :where(.vui dialog.left) nav :where(a:focus-visible, button:focus-visible),
-:where(.vui dialog.right) nav :where(a:focus-visible, button:focus-visible) {
+:where(.vui dialog.right) nav :where(a:focus-visible, button:focus-visible),
+:where(.vui :is(aside, nav).drawer) nav :where(a:focus-visible, button:focus-visible),
+:where(.vui nav.drawer) > :where(a:focus-visible, button:focus-visible) {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 /* group label inside the drawer (a heading or .label) */
 :where(.vui dialog.left) nav :where(h4, h5, h6, .label),
-:where(.vui dialog.right) nav :where(h4, h5, h6, .label) {
+:where(.vui dialog.right) nav :where(h4, h5, h6, .label),
+:where(.vui :is(aside, nav).drawer) nav :where(h4, h5, h6, .label),
+:where(.vui nav.drawer) > :where(h4, h5, h6, .label) {
   margin-block: var(--space-4) 6px;
   padding-inline: var(--space-5);
   color: var(--text-faint);
@@ -337,12 +357,90 @@
   text-transform: uppercase;
 }
 :where(.vui dialog.left) > footer,
-:where(.vui dialog.right) > footer {
+:where(.vui dialog.right) > footer,
+:where(.vui :is(aside, nav).drawer) > footer {
   margin-block-start: auto;
   padding-inline: var(--space-5);
   padding-block: var(--space-4);
   border-block-start: var(--border-hair) solid var(--hairline);
   border-block-end: 0;
+}
+
+/* ============================================================
+   2.5 — Drawer sidebars  <aside class="drawer"> / <nav class="drawer">
+   Persistent vertical column on desktop, off-canvas on mobile.
+   ============================================================ */
+
+/* Mobile / default off-canvas drawer */
+@media (max-width: 47.999rem) {
+  :where(.vui :is(aside, nav).drawer) {
+    position: fixed;
+    z-index: 40;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--drawer-width, 16.5rem);
+    max-inline-size: none;
+    max-block-size: none;
+    block-size: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-inline-end: var(--border-hair) solid var(--hairline-accent);
+    background-color: var(--bg-void);
+    box-shadow:
+      var(--shadow-raised),
+      0 0 60px -10px var(--accent-glow);
+    color: var(--text-primary);
+    
+    /* chamfered trailing edge */
+    clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+    
+    /* closed state */
+    translate: -101% 0;
+    opacity: 0;
+    transition:
+      translate var(--dur-base) var(--ease-hud),
+      opacity var(--dur-base) var(--ease-hud);
+      
+    display: flex;
+    flex-direction: column;
+  }
+
+  :where(.vui :is(aside, nav).drawer.right) {
+    inset-inline: auto 0;
+    border-inline-start: var(--border-hair) solid var(--hairline-accent);
+    border-inline-end: 0;
+    clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
+    translate: 101% 0;
+  }
+
+  /* open state */
+  :where(.vui :is(aside, nav).drawer:is(.active, .open)) {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+/* Desktop persistent drawer */
+@media (min-width: 48rem) {
+  :where(.vui :is(aside, nav).drawer) {
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+    inline-size: var(--drawer-width, 16.5rem);
+    block-size: 100%;
+    background-color: var(--bg-void);
+    border-inline-end: var(--border-hair) solid var(--hairline);
+  }
+  :where(.vui :is(aside, nav).drawer.right) {
+    border-inline-start: var(--border-hair) solid var(--hairline);
+    border-inline-end: 0;
+  }
+}
+
+/* Ensure a direct <nav class="drawer"> can scroll when it's the drawer itself */
+:where(.vui nav.drawer) {
+  overflow-y: auto;
 }
 
 /* ============================================================
