@@ -4,6 +4,10 @@
    Mobile-first: on phones the rail drops to a bottom command bar and
    the bars stack; from the `m` breakpoint up it becomes the classic
    vertical rail beside a scrolling stage. Fills the viewport.
+
+   PLUS a railless `--stacked` shell variant (header / stage / footer)
+   — the home for the top-nav and drawer navigation patterns, so the
+   side rail is no longer the only way to lay out an app.
    ============================================================ */
 
 .vui-app {
@@ -205,6 +209,34 @@
   font-family: var(--font-mono);
 }
 
+/* ---------- Railless stacked shell: header / stage / footer ----------
+   For top-nav and drawer-driven apps. Single column at every width — the
+   <header> (or .vui-header) sits on top, the stage scrolls, an optional
+   <footer> (or .vui-footer) pins to the bottom. Drop a .vui-tabbar in as
+   the last child on phones and it takes the footer slot automatically. */
+.vui-app--stacked {
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'header'
+    'stage'
+    'footer';
+}
+.vui-app--stacked > header,
+.vui-app--stacked > .vui-header {
+  grid-area: header;
+}
+.vui-app--stacked > .vui-stage,
+.vui-app--stacked > main {
+  grid-area: stage;
+  overflow-y: auto;
+}
+.vui-app--stacked > footer,
+.vui-app--stacked > .vui-footer,
+.vui-app--stacked > .vui-tabbar {
+  grid-area: footer;
+}
+
 /* ---------- Tablet and up: classic vertical rail ---------- */
 @media (min-width: 48rem) {
   .vui-app {
@@ -241,5 +273,19 @@
   }
   .vui-stage {
     padding: var(--space-7);
+  }
+
+  /* The stacked shell stays single-column at every width — it never
+     becomes a rail layout. Re-assert here so the base rail media query
+     above can't reshape it. */
+  .vui-app--stacked {
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'header'
+      'stage'
+      'footer';
+    block-size: 100dvh;
+    min-block-size: 0;
   }
 }

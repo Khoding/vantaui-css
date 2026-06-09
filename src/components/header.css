@@ -1,0 +1,272 @@
+/* ============================================================
+   VantaUI — Header / app bar + inline top-nav  (responsive)
+   Semantic-first: a top-level <header> in a .vui scope becomes a
+   tactical app bar; the .vui-header class does the same anywhere.
+   Carries a brand block, an inline primary nav (the FIRST of the
+   rail's alternatives — horizontal nav lives here), an actions
+   cluster, and a burger that drives the off-canvas drawer below the
+   `l` breakpoint. Nested <header>s inside panels / dialogs are left
+   alone — those are styled by panel.css / overlay.css.
+   ============================================================ */
+
+/* Base — only top-level app/page headers, never panel/dialog headers */
+:where(.vui > header:not([class*='vui-'])),
+:where(.vui-app > header:not([class*='vui-'])),
+.vui-header {
+  display: flex;
+  z-index: 20;
+  align-items: center;
+  gap: var(--space-5);
+  min-block-size: 60px;
+  padding-inline: var(--hud-edge);
+  padding-block: 0;
+  border-block-end: var(--border-hair) solid var(--hairline);
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+}
+
+/* ---------- Brand block ---------- */
+.vui-header__brand {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+.vui-header__brand:hover {
+  color: var(--text-primary);
+}
+.vui-header__emblem {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 30px;
+  block-size: 30px;
+  color: var(--accent);
+  filter: drop-shadow(var(--glow-cyan-md));
+}
+.vui-header__emblem img,
+.vui-header__emblem svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+.vui-header__brand b {
+  color: var(--accent);
+  font-weight: var(--fw-bold);
+}
+/* Optional system tag beside the wordmark */
+.vui-header__tag {
+  padding-inline: 7px;
+  padding-block: 2px;
+  border: var(--border-hair) solid var(--hairline-strong);
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  letter-spacing: var(--ls-wide);
+  clip-path: var(--clip-notch);
+  --bevel-sm: 4px;
+}
+
+/* ---------- Inline primary nav (rail alternative #1) ---------- */
+/* Usable inside a header or standalone: <nav class="vui-nav"> with
+   <a class="vui-nav__link"> children; mark the current one with
+   aria-current="page" or .vui-nav__link--active. */
+:where(.vui nav.vui-nav),
+.vui-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.vui-nav__link {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 14px;
+  padding-block: 9px;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+.vui-nav__link:hover {
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+  color: var(--text-secondary);
+}
+.vui-nav__link[aria-current='page'],
+.vui-nav__link--active {
+  color: var(--accent);
+}
+/* glowing underline marker on the active link */
+.vui-nav__link[aria-current='page']::after,
+.vui-nav__link--active::after {
+  position: absolute;
+  block-size: 2px;
+  inset-block-end: -1px;
+  inset-inline: 10px;
+  background-color: var(--accent);
+  box-shadow: var(--glow-cyan-md);
+  content: '';
+}
+.vui-nav__link:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+/* count / status chip riding a nav link */
+.vui-nav__link .vui-nav__count {
+  padding-inline: 5px;
+  padding-block: 1px;
+  border: var(--border-hair) solid var(--hairline-strong);
+  color: var(--text-faint);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+}
+
+/* ---------- Slots ---------- */
+.vui-header__spacer {
+  flex: 1 1 auto;
+}
+.vui-header__actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+}
+/* vertical hairline divider between header regions */
+.vui-header__sep {
+  align-self: stretch;
+  inline-size: var(--border-hair);
+  margin-block: 14px;
+  background-color: var(--hairline);
+}
+
+/* ---------- Inline search (optional) ---------- */
+.vui-header__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  inline-size: min(22rem, 30vw);
+  padding-inline: 12px;
+  padding-block: 8px;
+  border: var(--border-hair) solid var(--hairline-strong);
+  background-color: var(--surface-inset);
+  box-shadow: var(--shadow-inset);
+  color: var(--text-muted);
+  clip-path: var(--clip-chamfer);
+  --bevel-md: 8px;
+}
+.vui-header__search input {
+  flex: 1;
+  min-inline-size: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: var(--fs-sm);
+  font-family: var(--font-mono);
+}
+.vui-header__search input::placeholder {
+  color: var(--text-faint);
+}
+.vui-header__search input:focus {
+  outline: none;
+}
+.vui-header__search:focus-within {
+  border-color: var(--hairline-accent);
+  box-shadow:
+    var(--shadow-inset),
+    0 0 18px -4px var(--accent-glow);
+}
+
+/* ---------- Burger (shows below `m`, drives the drawer) ---------- */
+.vui-header__burger {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 40px;
+  block-size: 40px;
+  border: var(--border-hair) solid var(--hairline-strong);
+  background-color: color-mix(in srgb, var(--accent) 6%, transparent);
+  color: var(--text-secondary);
+  font-size: var(--fs-md);
+  clip-path: var(--clip-notch);
+  --bevel-sm: 6px;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-hud);
+}
+.vui-header__burger:hover {
+  border-color: var(--hairline-accent);
+  color: var(--accent);
+}
+.vui-header__burger:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ---------- Variants ---------- */
+.vui-header--sticky {
+  position: sticky;
+  inset-block-start: 0;
+}
+.vui-header--glow {
+  border-block-end-color: var(--hairline-accent);
+  box-shadow: 0 1px 0 var(--accent-glow), 0 12px 30px -22px var(--accent-glow);
+}
+.vui-header--bare {
+  border-block-end: 0;
+  background-color: transparent;
+}
+.vui-header--tall {
+  min-block-size: 76px;
+}
+/* detached, fully chamfered bar that floats over the stage */
+.vui-header--float {
+  margin: var(--space-5);
+  border: var(--border-hair) solid var(--hairline);
+  box-shadow: var(--shadow-raised);
+  clip-path: var(--clip-chamfer);
+  --bevel-md: 12px;
+}
+/* center the nav between brand and actions */
+.vui-header--center .vui-nav {
+  margin-inline: auto;
+}
+
+/* ---------- Responsive ---------- */
+/* The inline nav + search are a desktop affordance: below `l` they give
+   way to the burger, which opens the off-canvas drawer. That keeps the bar
+   from ever overflowing on tablets — and makes the drawer the primary nav
+   on smaller surfaces (the whole point of offering rail alternatives). */
+.vui-header .vui-nav,
+.vui-header .vui-header__search {
+  display: none;
+}
+.vui-header__burger {
+  order: -1;
+}
+@media (min-width: 64rem) {
+  .vui-header .vui-nav {
+    display: flex;
+  }
+  .vui-header .vui-header__search {
+    display: flex;
+  }
+  .vui-header__burger {
+    display: none;
+  }
+}

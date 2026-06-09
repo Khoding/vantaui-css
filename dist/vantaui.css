@@ -2566,6 +2566,26 @@
     margin-block-start: 8px;
   }
 
+  .vui-app--stacked {
+    grid-template: "header"
+                   "stage" 1fr
+                   "footer"
+                   / 1fr;
+  }
+
+  .vui-app--stacked > header, .vui-app--stacked > .vui-header {
+    grid-area: header;
+  }
+
+  .vui-app--stacked > .vui-stage, .vui-app--stacked > main {
+    grid-area: stage;
+    overflow-y: auto;
+  }
+
+  .vui-app--stacked > footer, .vui-app--stacked > .vui-footer, .vui-app--stacked > .vui-tabbar {
+    grid-area: footer;
+  }
+
   @media (width >= 48rem) {
     .vui-app {
       grid-template: "rail topbar" 56px
@@ -2604,6 +2624,757 @@
     .vui-stage {
       padding: var(--space-7);
     }
+
+    .vui-app--stacked {
+      grid-template: "header"
+                     "stage" 1fr
+                     "footer"
+                     / 1fr;
+      block-size: 100dvh;
+      min-block-size: 0;
+    }
+  }
+
+  :where(.vui > header:not([class*="vui-"])), :where(.vui-app > header:not([class*="vui-"])), .vui-header {
+    z-index: 20;
+    align-items: center;
+    gap: var(--space-5);
+    min-block-size: 60px;
+    padding-inline: var(--hud-edge);
+    border-block-end: var(--border-hair) solid var(--hairline);
+    background-color: var(--bg-void);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    padding-block: 0;
+    display: flex;
+  }
+
+  .vui-header__brand {
+    color: var(--text-primary);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-md);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    flex: none;
+    align-items: center;
+    gap: 12px;
+    display: inline-flex;
+  }
+
+  .vui-header__brand:hover {
+    color: var(--text-primary);
+  }
+
+  .vui-header__emblem {
+    block-size: 30px;
+    inline-size: 30px;
+    color: var(--accent);
+    filter: drop-shadow(var(--glow-cyan-md));
+    flex: none;
+    place-items: center;
+    display: grid;
+  }
+
+  .vui-header__emblem img, .vui-header__emblem svg {
+    block-size: 100%;
+    inline-size: 100%;
+  }
+
+  .vui-header__brand b {
+    color: var(--accent);
+    font-weight: var(--fw-bold);
+  }
+
+  .vui-header__tag {
+    border: var(--border-hair) solid var(--hairline-strong);
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-mono);
+    letter-spacing: var(--ls-wide);
+    clip-path: var(--clip-notch);
+    --bevel-sm: 4px;
+    padding-block: 2px;
+    padding-inline: 7px;
+  }
+
+  :where(.vui nav.vui-nav), .vui-nav {
+    align-items: center;
+    gap: 2px;
+    display: flex;
+  }
+
+  .vui-nav__link {
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+    background: none;
+    border: 0;
+    align-items: center;
+    gap: 8px;
+    padding-block: 9px;
+    padding-inline: 14px;
+    display: inline-flex;
+    position: relative;
+  }
+
+  .vui-nav__link:hover {
+    background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+    color: var(--text-secondary);
+  }
+
+  .vui-nav__link[aria-current="page"], .vui-nav__link--active {
+    color: var(--accent);
+  }
+
+  .vui-nav__link[aria-current="page"]:after, .vui-nav__link--active:after {
+    background-color: var(--accent);
+    block-size: 2px;
+    box-shadow: var(--glow-cyan-md);
+    content: "";
+    position: absolute;
+    inset-block-end: -1px;
+    inset-inline: 10px;
+  }
+
+  .vui-nav__link:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  .vui-nav__link .vui-nav__count {
+    border: var(--border-hair) solid var(--hairline-strong);
+    color: var(--text-faint);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-mono);
+    padding-block: 1px;
+    padding-inline: 5px;
+  }
+
+  .vui-header__spacer {
+    flex: auto;
+  }
+
+  .vui-header__actions {
+    align-items: center;
+    gap: var(--space-3);
+    flex: none;
+    display: flex;
+  }
+
+  .vui-header__sep {
+    inline-size: var(--border-hair);
+    background-color: var(--hairline);
+    align-self: stretch;
+    margin-block: 14px;
+  }
+
+  .vui-header__search {
+    border: var(--border-hair) solid var(--hairline-strong);
+    background-color: var(--surface-inset);
+    inline-size: min(22rem, 30vw);
+    box-shadow: var(--shadow-inset);
+    color: var(--text-muted);
+    clip-path: var(--clip-chamfer);
+    --bevel-md: 8px;
+    align-items: center;
+    gap: 8px;
+    padding-block: 8px;
+    padding-inline: 12px;
+    display: flex;
+  }
+
+  .vui-header__search input {
+    min-inline-size: 0;
+    color: var(--text-primary);
+    font-size: var(--fs-sm);
+    font-family: var(--font-mono);
+    background: none;
+    border: 0;
+    flex: 1;
+  }
+
+  .vui-header__search input::placeholder {
+    color: var(--text-faint);
+  }
+
+  .vui-header__search input:focus {
+    outline: none;
+  }
+
+  .vui-header__search:focus-within {
+    border-color: var(--hairline-accent);
+    box-shadow: var(--shadow-inset),
+    0 0 18px -4px var(--accent-glow);
+  }
+
+  .vui-header__burger {
+    border: var(--border-hair) solid var(--hairline-strong);
+    background-color: color-mix(in srgb, var(--accent) 6%, transparent);
+    block-size: 40px;
+    inline-size: 40px;
+    color: var(--text-secondary);
+    font-size: var(--fs-md);
+    clip-path: var(--clip-notch);
+    --bevel-sm: 6px;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-hud);
+    flex: none;
+    place-items: center;
+    display: grid;
+  }
+
+  .vui-header__burger:hover {
+    border-color: var(--hairline-accent);
+    color: var(--accent);
+  }
+
+  .vui-header__burger:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  .vui-header--sticky {
+    position: sticky;
+    inset-block-start: 0;
+  }
+
+  .vui-header--glow {
+    border-block-end-color: var(--hairline-accent);
+    box-shadow: 0 1px 0 var(--accent-glow), 0 12px 30px -22px var(--accent-glow);
+  }
+
+  .vui-header--bare {
+    background-color: #0000;
+    border-block-end: 0;
+  }
+
+  .vui-header--tall {
+    min-block-size: 76px;
+  }
+
+  .vui-header--float {
+    margin: var(--space-5);
+    border: var(--border-hair) solid var(--hairline);
+    box-shadow: var(--shadow-raised);
+    clip-path: var(--clip-chamfer);
+    --bevel-md: 12px;
+  }
+
+  .vui-header--center .vui-nav {
+    margin-inline: auto;
+  }
+
+  .vui-header .vui-nav, .vui-header .vui-header__search {
+    display: none;
+  }
+
+  .vui-header__burger {
+    order: -1;
+  }
+
+  @media (width >= 64rem) {
+    .vui-header .vui-nav, .vui-header .vui-header__search {
+      display: flex;
+    }
+
+    .vui-header__burger {
+      display: none;
+    }
+  }
+
+  :where(.vui > footer:not([class*="vui-"])), :where(.vui-app > footer:not([class*="vui-"])), .vui-footer {
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    padding-inline: var(--hud-edge);
+    padding-block: var(--space-5);
+    border-block-start: var(--border-hair) solid var(--hairline);
+    background-color: var(--bg-void);
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    font-family: var(--font-mono);
+    flex-wrap: wrap;
+    display: flex;
+  }
+
+  .vui-footer__brand {
+    color: var(--text-secondary);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-sm);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+  }
+
+  .vui-footer__brand b {
+    color: var(--accent);
+  }
+
+  .vui-footer__emblem {
+    block-size: 26px;
+    inline-size: 26px;
+    color: var(--accent);
+    filter: drop-shadow(var(--glow-cyan-sm));
+    flex: none;
+    place-items: center;
+    display: grid;
+  }
+
+  .vui-footer__emblem img, .vui-footer__emblem svg {
+    block-size: 100%;
+    inline-size: 100%;
+  }
+
+  .vui-footer__spacer {
+    flex: auto;
+  }
+
+  .vui-footer__legal {
+    color: var(--text-faint);
+    font-size: var(--fs-2xs);
+    letter-spacing: var(--ls-wide);
+  }
+
+  .vui-footer__links {
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+    flex-wrap: wrap;
+    display: flex;
+  }
+
+  .vui-footer__links a {
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    transition: color var(--dur-fast) var(--ease-hud);
+  }
+
+  .vui-footer__links a:hover {
+    color: var(--accent);
+  }
+
+  .vui-footer--status {
+    min-block-size: 30px;
+    font-family: var(--font-mono);
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    gap: 0;
+    padding-block: 0;
+    overflow-x: auto;
+  }
+
+  .vui-footer--status::-webkit-scrollbar {
+    display: none;
+  }
+
+  .vui-footer--status .vui-footer__item {
+    border-inline-end: var(--border-hair) solid var(--hairline);
+    color: var(--text-secondary);
+    font-size: var(--fs-2xs);
+    white-space: nowrap;
+    align-items: center;
+    gap: 8px;
+    padding-block: 7px;
+    padding-inline: 14px;
+    display: inline-flex;
+  }
+
+  .vui-footer--status .vui-footer__item b {
+    color: var(--text-primary);
+    font-weight: var(--fw-regular);
+  }
+
+  .vui-footer--status .vui-footer__item--signal {
+    color: var(--accent);
+  }
+
+  .vui-footer--status .vui-footer__item--signal b {
+    color: var(--accent);
+    text-shadow: var(--text-glow-cyan);
+  }
+
+  .vui-footer--status .vui-footer__item:last-child, .vui-footer--status .vui-footer__spacer {
+    border-inline-end: 0;
+  }
+
+  .vui-footer--columns {
+    align-items: start;
+    gap: var(--space-8);
+    padding-block: var(--space-9);
+    grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+    display: grid;
+  }
+
+  .vui-footer--columns .vui-footer__col {
+    flex-direction: column;
+    gap: 10px;
+    display: flex;
+  }
+
+  .vui-footer--columns .vui-footer__col h6, .vui-footer--columns .vui-footer__col .vui-footer__title {
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .vui-footer--columns .vui-footer__col a {
+    color: var(--text-secondary);
+    font-size: var(--fs-sm);
+    font-family: var(--font-mono);
+    transition: color var(--dur-fast) var(--ease-hud);
+  }
+
+  .vui-footer--columns .vui-footer__col a:hover {
+    color: var(--accent);
+  }
+
+  .vui-footer--columns .vui-footer__col--brand {
+    gap: 14px;
+  }
+
+  .vui-footer--columns .vui-footer__col--brand p {
+    max-inline-size: 30ch;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-mono);
+  }
+
+  .vui-footer--columns .vui-footer__base {
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    border-block-start: var(--border-hair) solid var(--hairline);
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    margin-block-start: var(--space-5);
+    padding-block-start: var(--space-5);
+    display: flex;
+  }
+
+  .vui-footer--glow {
+    border-block-start-color: var(--hairline-accent);
+    box-shadow: 0 -1px 0 var(--accent-glow);
+  }
+
+  .vui-footer--base {
+    background-color: var(--bg-base);
+  }
+
+  :where(.vui dialog.vui-drawer), .vui-drawer {
+    border: 0;
+    border-inline-end: var(--border-hair) solid var(--hairline-accent);
+    background-color: var(--bg-void);
+    block-size: auto;
+    max-block-size: none;
+    inline-size: min(86vw, 19rem);
+    max-inline-size: none;
+    box-shadow: var(--shadow-raised),
+    0 0 60px -10px var(--accent-glow);
+    color: var(--text-primary);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+    opacity: 0;
+    transition: translate var(--dur-base) var(--ease-hud),
+    opacity var(--dur-base) var(--ease-hud),
+    overlay var(--dur-base) allow-discrete,
+    display var(--dur-base) allow-discrete;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    translate: -101%;
+  }
+
+  .vui-drawer--end {
+    border-inline: var(--border-hair) solid var(--hairline-accent) 0;
+    clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
+    inset-inline: auto 0;
+    translate: 101%;
+  }
+
+  :where(.vui dialog.vui-drawer)[open], .vui-drawer[open] {
+    opacity: 1;
+    translate: 0;
+  }
+
+  @starting-style {
+    :where(.vui dialog.vui-drawer)[open], .vui-drawer[open] {
+      opacity: 0;
+      translate: -101%;
+    }
+
+    .vui-drawer--end[open] {
+      translate: 101%;
+    }
+  }
+
+  :where(.vui dialog.vui-drawer)::backdrop, .vui-drawer::backdrop {
+    background-color: var(--scrim);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-hud),
+    overlay var(--dur-base) allow-discrete,
+    display var(--dur-base) allow-discrete;
+  }
+
+  .vui-drawer[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .vui-drawer[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  .vui-drawer__head {
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    padding-inline: var(--space-5);
+    border-block-end: var(--border-hair) solid var(--hairline);
+    padding-block: 16px;
+    display: flex;
+  }
+
+  .vui-drawer__brand {
+    color: var(--text-primary);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-sm);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+  }
+
+  .vui-drawer__emblem {
+    block-size: 26px;
+    inline-size: 26px;
+    color: var(--accent);
+    filter: drop-shadow(var(--glow-cyan-md));
+    place-items: center;
+    display: grid;
+  }
+
+  .vui-drawer__emblem img, .vui-drawer__emblem svg {
+    block-size: 100%;
+    inline-size: 100%;
+  }
+
+  .vui-drawer__nav {
+    padding-block: var(--space-4);
+    flex-direction: column;
+    display: flex;
+    overflow-y: auto;
+  }
+
+  .vui-drawer__link {
+    padding-inline: var(--space-5);
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    text-align: start;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+    background: none;
+    border: 0;
+    align-items: center;
+    gap: 14px;
+    padding-block: 13px;
+    display: flex;
+    position: relative;
+  }
+
+  .vui-drawer__link > :where(svg, i) {
+    inline-size: 20px;
+    font-size: var(--fs-lg);
+    color: var(--text-faint);
+    transition: color var(--dur-fast) var(--ease-hud);
+    flex: none;
+  }
+
+  .vui-drawer__link:hover {
+    background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+    color: var(--text-secondary);
+  }
+
+  .vui-drawer__link[aria-current="page"], .vui-drawer__link--active {
+    background-color: color-mix(in srgb, var(--cyan-400) 10%, transparent);
+    color: var(--accent);
+  }
+
+  .vui-drawer__link[aria-current="page"] > :where(svg, i), .vui-drawer__link--active > :where(svg, i) {
+    color: var(--accent);
+  }
+
+  .vui-drawer__link[aria-current="page"]:before, .vui-drawer__link--active:before {
+    background-color: var(--accent);
+    inline-size: 3px;
+    box-shadow: var(--glow-cyan-md);
+    content: "";
+    position: absolute;
+    inset-block: 8px;
+    inset-inline-start: 0;
+  }
+
+  .vui-drawer__link:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  .vui-drawer__group {
+    margin-block: var(--space-4) 6px;
+    padding-inline: var(--space-5);
+    color: var(--text-faint);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+  }
+
+  .vui-drawer__foot {
+    padding-inline: var(--space-5);
+    padding-block: var(--space-4);
+    border-block-start: var(--border-hair) solid var(--hairline);
+    margin-block-start: auto;
+  }
+
+  :where(.vui nav.vui-tabbar), .vui-tabbar {
+    z-index: 20;
+    border-block-start: var(--border-hair) solid var(--hairline);
+    background-color: var(--bg-void);
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 4px;
+    padding-block: 6px;
+    padding-inline: 6px;
+    display: flex;
+  }
+
+  .vui-tabbar--fixed {
+    padding-block-end: max(6px, env(safe-area-inset-bottom));
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline: 0;
+  }
+
+  .vui-tabbar__item {
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-hud);
+    background: none;
+    border: 0;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding-block: 8px;
+    display: flex;
+    position: relative;
+  }
+
+  .vui-tabbar__item > :where(svg, i) {
+    font-size: var(--fs-xl);
+    line-height: 1;
+  }
+
+  .vui-tabbar__item:hover {
+    color: var(--text-secondary);
+  }
+
+  .vui-tabbar__item[aria-current="page"], .vui-tabbar__item--active {
+    color: var(--accent);
+  }
+
+  .vui-tabbar__item[aria-current="page"]:before, .vui-tabbar__item--active:before {
+    background-color: var(--accent);
+    block-size: 3px;
+    box-shadow: var(--glow-cyan-md);
+    content: "";
+    position: absolute;
+    inset-block-start: -6px;
+    inset-inline: 22%;
+  }
+
+  .vui-tabbar__item:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  :where(.vui nav.vui-breadcrumb) ol, .vui-breadcrumb ol, ol.vui-breadcrumb, ul.vui-breadcrumb {
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    font-family: var(--font-mono);
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+  }
+
+  .vui-breadcrumb li {
+    white-space: nowrap;
+    flex: none;
+    align-items: center;
+    gap: 8px;
+    display: inline-flex;
+  }
+
+  .vui-breadcrumb li:before {
+    color: var(--text-faint);
+    content: "/";
+  }
+
+  .vui-breadcrumb li:first-child:before {
+    content: none;
+  }
+
+  .vui-breadcrumb a {
+    color: var(--text-muted);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    transition: color var(--dur-fast) var(--ease-hud);
+  }
+
+  .vui-breadcrumb a:hover {
+    color: var(--accent);
+  }
+
+  .vui-breadcrumb [aria-current="page"] {
+    color: var(--accent);
+    text-shadow: var(--text-glow-cyan);
   }
 }
 

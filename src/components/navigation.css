@@ -1,0 +1,316 @@
+/* ============================================================
+   VantaUI — Navigation alternatives to the side rail
+   Three more ways to navigate, all semantic + zero-to-light JS:
+     • .vui-drawer   off-canvas nav in a native <dialog> (rail alt #2).
+                     Opens with showModal() or an invoker command
+                     (button[command="show-modal"]); animates in with
+                     @starting-style + allow-discrete — the modern
+                     dialog system, no library.
+     • .vui-tabbar   a bottom command bar for phones (rail alt #3).
+     • .vui-breadcrumb   a location trail for deep hierarchies.
+   ============================================================ */
+
+/* ============================================================
+   1 — Off-canvas drawer  <dialog class="vui-drawer">
+   ============================================================ */
+:where(.vui dialog.vui-drawer),
+.vui-drawer {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: min(86vw, 19rem);
+  max-inline-size: none;
+  max-block-size: none;
+  block-size: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-inline-end: var(--border-hair) solid var(--hairline-accent);
+  background-color: var(--bg-void);
+  box-shadow:
+    var(--shadow-raised),
+    0 0 60px -10px var(--accent-glow);
+  color: var(--text-primary);
+  /* clip the trailing edge for the chamfered tactical silhouette */
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+
+  /* modern open/close transition (closed state) */
+  translate: -101% 0;
+  opacity: 0;
+  transition:
+    translate var(--dur-base) var(--ease-hud),
+    opacity var(--dur-base) var(--ease-hud),
+    overlay var(--dur-base) allow-discrete,
+    display var(--dur-base) allow-discrete;
+}
+.vui-drawer--end {
+  inset-inline: auto 0;
+  border-inline: var(--border-hair) solid var(--hairline-accent) 0;
+  clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
+  translate: 101% 0;
+}
+/* open state */
+:where(.vui dialog.vui-drawer)[open],
+.vui-drawer[open] {
+  translate: 0 0;
+  opacity: 1;
+}
+/* entry start state — animate FROM here when [open] is added */
+@starting-style {
+  :where(.vui dialog.vui-drawer)[open],
+  .vui-drawer[open] {
+    translate: -101% 0;
+    opacity: 0;
+  }
+  .vui-drawer--end[open] {
+    translate: 101% 0;
+  }
+}
+:where(.vui dialog.vui-drawer)::backdrop,
+.vui-drawer::backdrop {
+  background-color: var(--scrim);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition:
+    opacity var(--dur-base) var(--ease-hud),
+    overlay var(--dur-base) allow-discrete,
+    display var(--dur-base) allow-discrete;
+}
+.vui-drawer[open]::backdrop {
+  opacity: 1;
+}
+@starting-style {
+  .vui-drawer[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* drawer header: brand + close */
+.vui-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-inline: var(--space-5);
+  padding-block: 16px;
+  border-block-end: var(--border-hair) solid var(--hairline);
+}
+.vui-drawer__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+.vui-drawer__emblem {
+  display: grid;
+  place-items: center;
+  inline-size: 26px;
+  block-size: 26px;
+  color: var(--accent);
+  filter: drop-shadow(var(--glow-cyan-md));
+}
+.vui-drawer__emblem img,
+.vui-drawer__emblem svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+/* drawer nav: vertical stack of links */
+.vui-drawer__nav {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--space-4);
+  overflow-y: auto;
+}
+.vui-drawer__link {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 14px;
+  padding-inline: var(--space-5);
+  padding-block: 13px;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+.vui-drawer__link > :where(svg, i) {
+  flex: none;
+  inline-size: 20px;
+  font-size: var(--fs-lg);
+  color: var(--text-faint);
+  transition: color var(--dur-fast) var(--ease-hud);
+}
+.vui-drawer__link:hover {
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+  color: var(--text-secondary);
+}
+.vui-drawer__link[aria-current='page'],
+.vui-drawer__link--active {
+  background-color: color-mix(in srgb, var(--cyan-400) 10%, transparent);
+  color: var(--accent);
+}
+.vui-drawer__link[aria-current='page'] > :where(svg, i),
+.vui-drawer__link--active > :where(svg, i) {
+  color: var(--accent);
+}
+/* glowing edge marker on the active item */
+.vui-drawer__link[aria-current='page']::before,
+.vui-drawer__link--active::before {
+  position: absolute;
+  inline-size: 3px;
+  inset-block: 8px;
+  inset-inline-start: 0;
+  background-color: var(--accent);
+  box-shadow: var(--glow-cyan-md);
+  content: '';
+}
+.vui-drawer__link:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+/* group label inside the drawer */
+.vui-drawer__group {
+  margin-block: var(--space-4) 6px;
+  padding-inline: var(--space-5);
+  color: var(--text-faint);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+}
+.vui-drawer__foot {
+  margin-block-start: auto;
+  padding-inline: var(--space-5);
+  padding-block: var(--space-4);
+  border-block-start: var(--border-hair) solid var(--hairline);
+}
+
+/* ============================================================
+   2 — Bottom command bar  <nav class="vui-tabbar">
+   ============================================================ */
+:where(.vui nav.vui-tabbar),
+.vui-tabbar {
+  display: flex;
+  z-index: 20;
+  align-items: stretch;
+  justify-content: space-around;
+  gap: 4px;
+  padding-inline: 6px;
+  padding-block: 6px;
+  border-block-start: var(--border-hair) solid var(--hairline);
+  background-color: var(--bg-void);
+}
+.vui-tabbar--fixed {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  padding-block-end: max(6px, env(safe-area-inset-bottom));
+}
+.vui-tabbar__item {
+  display: flex;
+  position: relative;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding-block: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-hud);
+}
+.vui-tabbar__item > :where(svg, i) {
+  font-size: var(--fs-xl);
+  line-height: 1;
+}
+.vui-tabbar__item:hover {
+  color: var(--text-secondary);
+}
+.vui-tabbar__item[aria-current='page'],
+.vui-tabbar__item--active {
+  color: var(--accent);
+}
+/* glowing top marker on the active tab */
+.vui-tabbar__item[aria-current='page']::before,
+.vui-tabbar__item--active::before {
+  position: absolute;
+  block-size: 3px;
+  inset-block-start: -6px;
+  inset-inline: 22%;
+  background-color: var(--accent);
+  box-shadow: var(--glow-cyan-md);
+  content: '';
+}
+.vui-tabbar__item:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ============================================================
+   3 — Breadcrumb  <nav class="vui-breadcrumb"><ol>…</ol></nav>
+   ============================================================ */
+:where(.vui nav.vui-breadcrumb) ol,
+.vui-breadcrumb ol,
+ol.vui-breadcrumb,
+ul.vui-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+}
+.vui-breadcrumb li {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.vui-breadcrumb li::before {
+  color: var(--text-faint);
+  content: '/';
+}
+.vui-breadcrumb li:first-child::before {
+  content: none;
+}
+.vui-breadcrumb a {
+  color: var(--text-muted);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  transition: color var(--dur-fast) var(--ease-hud);
+}
+.vui-breadcrumb a:hover {
+  color: var(--accent);
+}
+.vui-breadcrumb [aria-current='page'] {
+  color: var(--accent);
+  text-shadow: var(--text-glow-cyan);
+}

@@ -43,5 +43,10 @@
 @import url('./components/overlay.css') layer(vui.components);
 @import url('./components/appshell.css') layer(vui.components);
 
+/* Chrome & navigation system */
+@import url('./components/header.css') layer(vui.components);
+@import url('./components/footer.css') layer(vui.components);
+@import url('./components/navigation.css') layer(vui.components);
+
 /* Utilities (win on ties) */
 @import url('./utilities/utilities.css') layer(vui.utilities);
