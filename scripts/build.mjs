@@ -12,7 +12,7 @@
    ============================================================ */
 
 import {bundle} from 'lightningcss';
-import {mkdirSync, writeFileSync, readFileSync, rmSync} from 'node:fs';
+import {mkdirSync, writeFileSync, readFileSync, rmSync, copyFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {dirname, resolve} from 'node:path';
 
@@ -22,6 +22,7 @@ const srcDir = resolve(root, 'src');
 const entry = resolve(srcDir, 'vantaui.css');
 const tmpEntry = resolve(srcDir, '__vantaui_build_entry.css');
 const outDir = resolve(root, 'dist');
+const docsDistDir = resolve(root, 'docs', 'dist');
 
 // LightningCSS targets (major << 16 | minor << 8). This is the real feature
 // floor for the library: oklch, color-mix, :has(), cascade layers, mask and
@@ -73,6 +74,9 @@ console.log('VantaUI — building dist/ …');
 try {
   build({minify: false, outFile: 'vantaui.css'});
   build({minify: true, outFile: 'vantaui.min.css'});
+  mkdirSync(docsDistDir, {recursive: true});
+  copyFileSync(resolve(outDir, 'vantaui.min.css'), resolve(docsDistDir, 'vantaui.min.css'));
+  console.log('✔ docs/dist/vantaui.min.css');
   console.log('Done.');
 } finally {
   rmSync(tmpEntry, {force: true});
