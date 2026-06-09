@@ -25,15 +25,10 @@
       background: var(--bg-void);
     }
 
+    /* box-sizing + body margin:0 come from the framework reset (body.vui),
+     so they aren't repeated here. */
     body {
-      margin: 0;
       min-block-size: 100dvh;
-    }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
     }
 
     .doc-shell {
@@ -241,6 +236,16 @@
 
     .doc-demo>* {
       max-inline-size: 100%;
+    }
+
+    /* Full-bleed chrome (header/footer) must stretch to a definite width:
+     the demo column is align-items:flex-start, and a header is a size
+     container (container-type:inline-size), so without a definite width it
+     would collapse while its content overflows. Stretch fixes both. */
+    .doc-demo>header,
+    .doc-demo>footer {
+      align-self: stretch;
+      inline-size: auto;
     }
 
     /* Any bare card cluster a demo drops in flows responsively by default:

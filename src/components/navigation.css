@@ -55,6 +55,7 @@
     font-family: var(--font-display);
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
+    text-decoration: none;
     white-space: nowrap;
     clip-path: none;
     cursor: pointer;
@@ -277,6 +278,7 @@
   font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
+  text-decoration: none;
   text-align: start;
   clip-path: none;
   cursor: pointer;

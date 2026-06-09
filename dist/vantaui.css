@@ -2398,6 +2398,7 @@
     gap: 8px;
     padding-block: 9px;
     padding-inline: 14px;
+    text-decoration: none;
     display: inline-flex;
     position: relative;
   }
@@ -2797,6 +2798,7 @@
     gap: 4px;
     padding-block: 8px;
     padding-inline: 4px;
+    text-decoration: none;
     display: flex;
     position: relative;
   }
@@ -3011,6 +3013,7 @@
     align-items: center;
     gap: 14px;
     padding-block: 13px;
+    text-decoration: none;
     display: flex;
     position: relative;
   }

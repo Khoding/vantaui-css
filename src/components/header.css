@@ -94,6 +94,7 @@
     font-family: var(--font-display);
     letter-spacing: var(--ls-wider);
     text-transform: uppercase;
+    text-decoration: none;
     white-space: nowrap;
     clip-path: none;
     cursor: pointer;

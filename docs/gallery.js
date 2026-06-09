@@ -176,6 +176,78 @@
       ],
     },
 
+    /* ---------------- CHROME ---------------- */
+    {
+      group: 'Chrome',
+      id: 'header',
+      title: 'Header / app bar',
+      blurb:
+        'A <code>&lt;header&gt;</code> containing a <code>&lt;nav&gt;</code> becomes an app bar — no class required. The first <code>&lt;a&gt;</code> is the brand; the first <code>&lt;nav&gt;</code> gets <code>margin-inline-end:auto</code> so trailing actions push right automatically. A <code>&lt;form role="search"&gt;</code> is the search shell; a <code>&lt;menu&gt;</code> is the trailing cluster; a bare <code>&lt;hr&gt;</code> is a vertical divider. A container query collapses the nav to a burger when the header itself is narrow (not the viewport).<br><b>Helpers:</b> <code>glow</code> (emissive border) · <code>center</code> (centred nav) · <code>tall</code> (larger block) · <code>sticky</code> (scroll-pinned) · <code>float</code> (detached, chamfered) · <code>bare</code> (transparent surface).',
+      examples: [
+        {
+          code: '<header>\n  <a>VANTA<b>UI</b></a>\n  <nav>\n    <a aria-current="page">Overview</a>\n    <a>Cases</a>\n    <a>Archive</a>\n  </nav>\n  <menu>\n    <button aria-label="Notifications"><i>notifications</i></button>\n    <button aria-label="Account"><i>account_circle</i></button>\n  </menu>\n</header>',
+        },
+        {
+          code: '<header class="glow">\n  <a>VANTA<b>UI</b></a>\n  <nav>\n    <a aria-current="page">Command</a>\n    <a>Intel</a>\n    <a>Comms</a>\n  </nav>\n  <form role="search">\n    <i>search</i>\n    <input type="search" placeholder="Search sectors…">\n  </form>\n  <hr>\n  <menu>\n    <span class="badge green dot">Online</span>\n    <button aria-label="Account"><i>account_circle</i></button>\n  </menu>\n</header>',
+        },
+        {
+          code: '<header class="float">\n  <a>VANTA<b>UI</b></a>\n  <nav>\n    <a aria-current="page">Live</a>\n    <a>Logs</a>\n    <a>Units</a>\n  </nav>\n  <menu>\n    <button type="submit">Deploy</button>\n    <button aria-label="Power"><i>power_settings_new</i></button>\n  </menu>\n</header>',
+        },
+        {
+          code: '<header class="center glow">\n  <a>VANTA<b>UI</b></a>\n  <nav>\n    <a aria-current="page">Overview</a>\n    <a>Cases</a>\n    <a>Map</a>\n    <a>Settings</a>\n  </nav>\n</header>',
+        },
+      ],
+    },
+    {
+      group: 'Chrome',
+      id: 'footer',
+      title: 'Footer',
+      blurb:
+        'A bare <code>&lt;footer&gt;</code> (outside an <code>&lt;article&gt;</code> or <code>&lt;dialog&gt;</code>) is the page footer. The first <code>&lt;a&gt;</code>/heading is the brand; a <code>&lt;nav&gt;</code> or loose <code>&lt;a&gt;</code> elements are links; <code>&lt;small&gt;</code> is the legal line.<br><b>Helpers:</b> <code>status</code> — dense telemetry strip where each direct child is a labelled cell; add <code>signal</code> to a cell for the accent tone. <code>columns</code> — auto-fit sitemap grid of <code>&lt;nav&gt;</code>/<code>&lt;section&gt;</code> columns; a <code>.bottom</code> child spans full width as the base bar.',
+      examples: [
+        {
+          code: '<footer>\n  <a><b>VANTA</b>UI</a>\n  <nav>\n    <a>Docs</a>\n    <a>GitHub</a>\n    <a>Changelog</a>\n  </nav>\n  <span class="max"></span>\n  <small>© 2025 · MIT License</small>\n</footer>',
+        },
+        {
+          code: '<footer class="status">\n  <span><small>UPLINK</small>04:18:22</span>\n  <span class="signal"><small>THREAT</small>HIGH</span>\n  <span><small>SECTOR</small>14-C</span>\n  <span><small>STATUS</small><span class="badge green dot">Online</span></span>\n  <span class="max"></span>\n  <span><small>BUILD</small>1.0.1</span>\n</footer>',
+        },
+        {
+          code: '<footer class="columns">\n  <section>\n    <h6>Framework</h6>\n    <nav><a>Install</a><a>Vue</a><a>Nuxt</a></nav>\n  </section>\n  <section>\n    <h6>Components</h6>\n    <nav><a>Buttons</a><a>Panels</a><a>Forms</a></nav>\n  </section>\n  <section>\n    <h6>Resources</h6>\n    <nav><a>GitHub</a><a>Changelog</a><a>License</a></nav>\n  </section>\n  <div class="bottom">\n    <small>© 2025 VantaUI · MIT</small>\n  </div>\n</footer>',
+        },
+      ],
+    },
+    {
+      group: 'Chrome',
+      id: 'navigation',
+      title: 'Navigation',
+      blurb:
+        'Three navigation patterns, all from bare semantics.<br><b>Breadcrumb:</b> any <code>&lt;nav&gt;</code> with a direct-child <code>&lt;ol&gt;</code> — detected by <code>:has()</code>, zero classes, auto <code>/</code> separators, current item via <code>aria-current="page"</code>.<br><b>Bottom tabbar:</b> <code>&lt;nav class="bottom"&gt;</code> sits in the frame foot slot; add <code>fixed</code> to pin it to the viewport independent of the app frame. Items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> with an <code>&lt;i&gt;</code> + text label.<br><b>Side rail:</b> shown in the App shell example.',
+      examples: [
+        {
+          code: '<nav aria-label="Breadcrumb">\n  <ol>\n    <li><a href="/">Home</a></li>\n    <li><a href="/cases">Cases</a></li>\n    <li><a href="/cases/active">Active</a></li>\n    <li aria-current="page">Bleake Island</li>\n  </ol>\n</nav>',
+        },
+        {
+          frame: true,
+          code: '<div class="vui" style="block-size:260px">\n  <main style="padding:20px">\n    <h3>Screen content</h3>\n    <p>The tabbar is in the foot slot of the app frame.</p>\n  </main>\n  <nav class="bottom">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>map</i>Map</a>\n    <a><i>settings</i>Setup</a>\n  </nav>\n</div>',
+        },
+      ],
+    },
+    {
+      group: 'Chrome',
+      id: 'drawer',
+      title: 'Off-canvas drawer',
+      blurb:
+        '<code>&lt;dialog class="left"&gt;</code> or <code>&lt;dialog class="right"&gt;</code> is an edge drawer that slides in with a <code>@starting-style</code> transition. Open with <code>el.showModal()</code>; close with <code>el.close()</code>, <code>Esc</code>, or clicking the backdrop. Structure inside: <code>&lt;header&gt;</code> (brand + close button), <code>&lt;nav&gt;</code> (links with <code>&lt;i&gt;</code> glyphs and optional group headings), <code>&lt;footer&gt;</code> (actions). To wire a burger button: <code>&lt;button data-open="id" aria-controls="id"&gt;</code> (handled by the optional JS) or a plain <code>onclick</code>.',
+      examples: [
+        {
+          code: '<button onclick="this.nextElementSibling.showModal()">Open left drawer</button>\n\n<dialog class="left">\n  <header>\n    <a>VANTA<b>UI</b></a>\n    <button class="icon" aria-label="Close"\n      onclick="this.closest(\'dialog\').close()"><i>close</i></button>\n  </header>\n  <nav>\n    <a class="active"><i>space_dashboard</i>Overview</a>\n    <a><i>folder</i>Case Files</a>\n    <a><i>map</i>City Map</a>\n    <a><i>handyman</i>Loadout</a>\n    <span class="max"></span>\n  </nav>\n  <footer>\n    <button class="ghost block"\n      onclick="this.closest(\'dialog\').close()">Sign out</button>\n  </footer>\n</dialog>',
+        },
+        {
+          code: '<button onclick="this.nextElementSibling.showModal()">Open right drawer</button>\n\n<dialog class="right">\n  <header>\n    <a>Filters</a>\n    <button class="icon" aria-label="Close"\n      onclick="this.closest(\'dialog\').close()"><i>close</i></button>\n  </header>\n  <nav>\n    <h5>Status</h5>\n    <a><i>circle</i>All</a>\n    <a class="active"><i>check_circle</i>Active</a>\n    <a><i>cancel</i>Closed</a>\n    <h5>Threat</h5>\n    <a><i>bolt</i>High</a>\n    <a><i>warning</i>Medium</a>\n  </nav>\n  <footer>\n    <button type="submit" class="block">Apply</button>\n  </footer>\n</dialog>',
+        },
+      ],
+    },
+
     /* ---------------- LAYOUT ---------------- */
     {
       group: 'Layout',
