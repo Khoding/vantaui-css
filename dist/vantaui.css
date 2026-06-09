@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block');
 @layer vui.tokens {
   :root {
     --ink-1000: oklch(12.5% .016 245.5);
@@ -63,6 +64,7 @@
     --font-ui: "Chakra Petch", "Chakra Petch Fallback", system-ui, sans-serif;
     --font-hud: "Rajdhani", "Rajdhani Fallback", "Chakra Petch", system-ui, sans-serif;
     --font-mono: "Share Tech Mono", "Share Tech Mono Fallback", ui-monospace, monospace;
+    --font-icon: "Material Symbols Outlined";
     --fw-light: 300;
     --fw-regular: 400;
     --fw-medium: 500;
@@ -476,6 +478,35 @@
     color: var(--accent);
     margin-inline-start: calc(-1 * var(--space-4));
     margin-inline-end: var(--space-3);
+  }
+
+  :where(.vui i:not([class]), .vui i.fill) {
+    font-weight: var(--fw-regular);
+    font-size: 1.25em;
+    font-style: normal;
+    font-family: var(--font-icon);
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    vertical-align: middle;
+    font-variation-settings: "FILL" var(--vui-icon-fill, 0),
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+    -webkit-font-feature-settings: "liga";
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    direction: ltr;
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    display: inline-flex;
+  }
+
+  :where(.vui i.fill) {
+    --vui-icon-fill: 1;
   }
 
   :where() {
@@ -2358,284 +2389,104 @@
     text-transform: uppercase;
   }
 
-  .vui-app {
+  :where(.vui:has( > main)) {
     background-color: var(--bg-base);
-    min-block-size: 100dvh;
+    block-size: 100%;
     color: var(--text-primary);
     font-family: var(--font-ui);
-    grid-template: "topbar"
-                   "stage" 1fr
-                   "rail"
+    grid-template: "top"
+                   "main" 1fr
+                   "foot"
                    / 1fr;
     display: grid;
     overflow: hidden;
   }
 
-  .vui-rail {
+  :where(body.vui:has( > main)) {
+    min-block-size: 100dvh;
+  }
+
+  :where(.vui:has( > main)) > header {
     z-index: 3;
-    border-block-start: var(--border-hair) solid var(--hairline);
-    background-color: var(--bg-void);
-    flex-direction: row;
-    grid-area: rail;
-    justify-content: space-around;
-    align-items: center;
-    gap: 6px;
-    padding-block: 8px;
-    padding-inline: 8px;
-    display: flex;
+    grid-area: top;
   }
 
-  .vui-rail__emblem {
-    block-size: 38px;
-    inline-size: 38px;
-    color: var(--accent);
-    filter: drop-shadow(var(--glow-cyan-md));
-    display: none;
-  }
-
-  .vui-rail__emblem img, .vui-rail__emblem svg {
-    block-size: 100%;
-    inline-size: 100%;
-  }
-
-  .vui-rail__spacer {
-    flex: 1;
-    display: none;
-  }
-
-  .vui-rail__item {
-    --bevel-sm: 6px;
-    block-size: 46px;
-    inline-size: 46px;
-    color: var(--text-muted);
-    font-size: var(--fs-lg);
-    clip-path: var(--clip-notch);
-    cursor: pointer;
-    transition: color var(--dur-fast) var(--ease-hud),
-    background-color var(--dur-fast) var(--ease-hud);
-    background: none;
-    border: 0;
-    place-items: center;
-    display: grid;
-    position: relative;
-  }
-
-  .vui-rail__item:hover {
-    background-color: color-mix(in srgb, var(--accent) 5%, transparent);
-    color: var(--text-secondary);
-  }
-
-  .vui-rail__item--active {
-    background-color: color-mix(in srgb, var(--cyan-400) 12%, transparent);
-    color: var(--accent);
-  }
-
-  .vui-rail__item--active:before {
-    background-color: var(--accent);
-    block-size: 3px;
-    box-shadow: var(--glow-cyan-md);
-    content: "";
-    position: absolute;
-    inset-block-start: -8px;
-    inset-inline: 10px;
-  }
-
-  .vui-topbar {
-    z-index: 3;
-    min-block-size: 56px;
-    padding-inline: var(--space-5);
-    align-items: center;
-    gap: var(--space-4);
-    border-block-end: var(--border-hair) solid var(--hairline);
-    background-color: var(--bg-void);
-    grid-area: topbar;
-    padding-block: 0;
-    display: flex;
-  }
-
-  .vui-topbar__eyebrow {
-    color: var(--text-muted);
-    font-weight: var(--fw-semibold);
-    font-size: var(--fs-xs);
-    font-family: var(--font-display);
-    letter-spacing: var(--ls-wider);
-    text-transform: uppercase;
-    align-items: center;
-    gap: 10px;
-    display: flex;
-  }
-
-  .vui-topbar__eyebrow b {
-    color: var(--accent);
-    font-weight: var(--fw-semibold);
-  }
-
-  .vui-topbar__spacer {
-    flex: 1;
-  }
-
-  .vui-topbar__stat {
-    color: var(--text-secondary);
-    font-size: var(--fs-xs);
-    font-family: var(--font-mono);
-    align-items: center;
-    gap: 8px;
-    display: flex;
-  }
-
-  .vui-topbar__clock {
-    color: var(--text-primary);
-    font-weight: var(--fw-semibold);
-    font-size: var(--fs-md);
-    font-family: var(--font-hud);
-    letter-spacing: .04em;
-  }
-
-  .vui-topbar__user {
-    --bevel-sm: 5px;
-    border: var(--border-hair) solid var(--hairline-strong);
-    background-color: var(--surface-panel);
-    block-size: 34px;
-    inline-size: 34px;
-    color: var(--accent);
-    font-weight: var(--fw-bold);
-    font-size: var(--fs-sm);
-    font-family: var(--font-display);
-    clip-path: var(--clip-notch);
-    place-items: center;
-    display: grid;
-  }
-
-  .vui-stage {
-    padding: var(--space-7);
-    background-image: var(--grid-fine);
-    background-size: var(--grid-fine-size);
-    background-color: var(--bg-base);
-    grid-area: stage;
+  :where(.vui:has( > main)) > main {
+    grid-area: main;
     position: relative;
     overflow-y: auto;
   }
 
-  .vui-stage:before, .vui-stage:after {
+  :where(.vui:has( > main)) > :is(footer, nav.bottom, nav.left, nav.right, aside) {
+    z-index: 3;
+    grid-area: foot;
+  }
+
+  :where(.vui:has( > main)) > main {
+    background-color: var(--bg-base);
+    background-image: var(--grid-fine);
+    background-size: var(--grid-fine-size);
+  }
+
+  :where(.vui:has( > main)) > main:before, :where(.vui:has( > main)) > main:after {
     content: "";
     pointer-events: none;
     position: absolute;
     inset: 0;
   }
 
-  .vui-stage:before {
+  :where(.vui:has( > main)) > main:before {
+    z-index: 0;
     background-image: var(--vignette);
   }
 
-  .vui-stage:after {
+  :where(.vui:has( > main)) > main:after {
+    z-index: 0;
     background-image: var(--scanlines);
     opacity: .6;
   }
 
-  .vui-stage__inner {
+  :where(.vui:has( > main)) > main > * {
     z-index: 1;
-    max-inline-size: 74rem;
-    margin-inline: auto;
     position: relative;
   }
 
-  .vui-screen-head {
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: var(--space-4);
-    flex-wrap: wrap;
-    margin-block-end: var(--space-6);
-    display: flex;
-  }
-
-  .vui-screen-title {
-    color: var(--text-primary);
-    font-weight: var(--fw-bold);
-    font-size: var(--fs-2xl);
-    line-height: 1;
-    font-family: var(--font-display);
-    letter-spacing: var(--ls-wide);
-    text-transform: uppercase;
-    margin: 0;
-  }
-
-  .vui-screen-sub {
-    color: var(--text-muted);
-    font-size: var(--fs-xs);
-    font-family: var(--font-mono);
-    margin-block-start: 8px;
-  }
-
-  .vui-app--stacked {
-    grid-template: "header"
-                   "stage" 1fr
-                   "footer"
-                   / 1fr;
-  }
-
-  .vui-app--stacked > header, .vui-app--stacked > .vui-header {
-    grid-area: header;
-  }
-
-  .vui-app--stacked > .vui-stage, .vui-app--stacked > main {
-    grid-area: stage;
-    overflow-y: auto;
-  }
-
-  .vui-app--stacked > footer, .vui-app--stacked > .vui-footer, .vui-app--stacked > .vui-tabbar {
-    grid-area: footer;
-  }
-
   @media (width >= 48rem) {
-    .vui-app {
-      grid-template: "rail topbar" 56px
-                     "rail stage" 1fr
-                     / 76px 1fr;
-      block-size: 100dvh;
-      min-block-size: 0;
+    :where(.vui:has( > main):has( > nav.left)), :where(.vui:has( > main):has( > aside:not(.right))) {
+      grid-template: "rail top"
+                     "rail main" 1fr
+                     "rail foot"
+                     / auto 1fr;
     }
 
-    .vui-rail {
-      border-inline-end: var(--border-hair) solid var(--hairline);
-      border-block-start: 0;
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: 6px;
-      padding-block: 14px;
-      padding-inline: 0;
+    :where(.vui:has( > main)) > :is(nav.left, aside:not(.right)) {
+      grid-area: rail;
     }
 
-    .vui-rail__emblem {
-      margin-block-end: 12px;
-      display: block;
+    :where(.vui:has( > main):has( > aside.right)), :where(.vui:has( > main):has( > nav.right)) {
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "top railend"
+                           "main railend"
+                           "foot railend";
     }
 
-    .vui-rail__spacer {
-      display: block;
+    :where(.vui:has( > main)) > :is(aside.right, nav.right) {
+      grid-area: railend;
     }
 
-    .vui-rail__item--active:before {
-      block-size: auto;
-      inline-size: 3px;
-      inset-block: 10px;
-      inset-inline: -14px auto;
+    :where(.vui:has( > main):has( > nav.left):has( > aside.right)), :where(.vui:has( > main):has( > aside:not(.right)):has( > aside.right)) {
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: "rail top railend"
+                           "rail main railend"
+                           "rail foot railend";
     }
 
-    .vui-stage {
-      padding: var(--space-7);
-    }
-
-    .vui-app--stacked {
-      grid-template: "header"
-                     "stage" 1fr
-                     "footer"
-                     / 1fr;
-      block-size: 100dvh;
-      min-block-size: 0;
+    :where(.vui:has( > main)) > :is(footer, nav.bottom) {
+      grid-area: foot;
     }
   }
 
-  :where(.vui > header:not([class*="vui-"])), :where(.vui-app > header:not([class*="vui-"])), .vui-header {
+  :where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header) {
     z-index: 20;
     align-items: center;
     gap: var(--space-5);
@@ -2647,65 +2498,48 @@
     font-family: var(--font-ui);
     padding-block: 0;
     display: flex;
+    container: vui-header / inline-size;
   }
 
-  .vui-header__brand {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(a:first-of-type), :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(:is(h1, h2, h3, h4, h5, h6):first-of-type) {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-md);
     font-family: var(--font-display);
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
+    white-space: nowrap;
     flex: none;
     align-items: center;
     gap: 12px;
+    margin: 0;
     display: inline-flex;
   }
 
-  .vui-header__brand:hover {
-    color: var(--text-primary);
-  }
-
-  .vui-header__emblem {
-    block-size: 30px;
-    inline-size: 30px;
-    color: var(--accent);
-    filter: drop-shadow(var(--glow-cyan-md));
-    flex: none;
-    place-items: center;
-    display: grid;
-  }
-
-  .vui-header__emblem img, .vui-header__emblem svg {
-    block-size: 100%;
-    inline-size: 100%;
-  }
-
-  .vui-header__brand b {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(a:first-of-type) b {
     color: var(--accent);
     font-weight: var(--fw-bold);
   }
 
-  .vui-header__tag {
-    border: var(--border-hair) solid var(--hairline-strong);
-    color: var(--text-muted);
-    font-weight: var(--fw-semibold);
-    font-size: var(--fs-2xs);
-    font-family: var(--font-mono);
-    letter-spacing: var(--ls-wide);
-    clip-path: var(--clip-notch);
-    --bevel-sm: 4px;
-    padding-block: 2px;
-    padding-inline: 7px;
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(a:first-of-type) :where(img, svg) {
+    block-size: 30px;
+    inline-size: 30px;
+    color: var(--accent);
+    filter: drop-shadow(var(--glow-cyan-md));
   }
 
-  :where(.vui nav.vui-nav), .vui-nav {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(nav) {
+    flex: none;
     align-items: center;
     gap: 2px;
     display: flex;
   }
 
-  .vui-nav__link {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(nav:first-of-type) {
+    margin-inline-end: auto;
+  }
+
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) :where(nav a, nav button) {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-sm);
@@ -2713,9 +2547,10 @@
     letter-spacing: var(--ls-wider);
     text-transform: uppercase;
     white-space: nowrap;
+    clip-path: none;
     cursor: pointer;
     transition: color var(--dur-fast) var(--ease-hud),
-    background-color var(--dur-fast) var(--ease-hud);
+      background-color var(--dur-fast) var(--ease-hud);
     background: none;
     border: 0;
     align-items: center;
@@ -2726,16 +2561,16 @@
     position: relative;
   }
 
-  .vui-nav__link:hover {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) :where(nav a:hover, nav button:hover) {
     background-color: color-mix(in srgb, var(--accent) 5%, transparent);
     color: var(--text-secondary);
   }
 
-  .vui-nav__link[aria-current="page"], .vui-nav__link--active {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) :where(nav a[aria-current="page"], nav a.active, nav button[aria-current="page"], nav .active) {
     color: var(--accent);
   }
 
-  .vui-nav__link[aria-current="page"]:after, .vui-nav__link--active:after {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) :where(nav a[aria-current="page"], nav a.active, nav .active):after {
     background-color: var(--accent);
     block-size: 2px;
     box-shadow: var(--glow-cyan-md);
@@ -2745,12 +2580,12 @@
     inset-inline: 10px;
   }
 
-  .vui-nav__link:focus-visible {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) :where(nav a:focus-visible, nav button:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  .vui-nav__link .vui-nav__count {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) :where(nav a small, nav button small) {
     border: var(--border-hair) solid var(--hairline-strong);
     color: var(--text-faint);
     font-size: var(--fs-2xs);
@@ -2759,32 +2594,27 @@
     padding-inline: 5px;
   }
 
-  .vui-header__spacer {
-    flex: auto;
-  }
-
-  .vui-header__actions {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(menu) {
     align-items: center;
     gap: var(--space-3);
     flex: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: flex;
   }
 
-  .vui-header__sep {
-    inline-size: var(--border-hair);
-    background-color: var(--hairline);
-    align-self: stretch;
-    margin-block: 14px;
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(form, input[type="search"]) {
+    inline-size: min(22rem, 30cqi);
   }
 
-  .vui-header__search {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(form) {
+    --bevel-md: 8px;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: var(--surface-inset);
-    inline-size: min(22rem, 30vw);
     box-shadow: var(--shadow-inset);
-    color: var(--text-muted);
     clip-path: var(--clip-chamfer);
-    --bevel-md: 8px;
+    flex: none;
     align-items: center;
     gap: 8px;
     padding-block: 8px;
@@ -2792,106 +2622,97 @@
     display: flex;
   }
 
-  .vui-header__search input {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) :where(form) i {
+    color: var(--text-muted);
+  }
+
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) :where(form input) {
     min-inline-size: 0;
-    color: var(--text-primary);
-    font-size: var(--fs-sm);
+    box-shadow: none;
+    clip-path: none;
     font-family: var(--font-mono);
     background: none;
     border: 0;
     flex: 1;
+    padding: 0;
   }
 
-  .vui-header__search input::placeholder {
-    color: var(--text-faint);
-  }
-
-  .vui-header__search input:focus {
-    outline: none;
-  }
-
-  .vui-header__search:focus-within {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(form):focus-within {
     border-color: var(--hairline-accent);
     box-shadow: var(--shadow-inset),
-    0 0 18px -4px var(--accent-glow);
+      0 0 18px -4px var(--accent-glow);
   }
 
-  .vui-header__burger {
-    border: var(--border-hair) solid var(--hairline-strong);
-    background-color: color-mix(in srgb, var(--accent) 6%, transparent);
-    block-size: 40px;
-    inline-size: 40px;
-    color: var(--text-secondary);
-    font-size: var(--fs-md);
-    clip-path: var(--clip-notch);
-    --bevel-sm: 6px;
-    cursor: pointer;
-    transition: all var(--dur-fast) var(--ease-hud);
-    flex: none;
-    place-items: center;
-    display: grid;
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(.max) {
+    flex: auto;
   }
 
-  .vui-header__burger:hover {
-    border-color: var(--hairline-accent);
-    color: var(--accent);
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(.right) {
+    margin-inline-start: auto;
   }
 
-  .vui-header__burger:focus-visible {
-    box-shadow: var(--focus-ring);
-    outline: none;
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(.left) {
+    margin-inline-end: auto;
   }
 
-  .vui-header--sticky {
+  :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(button[aria-controls], button[commandfor], button[command], button[data-open]) {
+    order: -1;
+    display: none;
+  }
+
+  @container vui-header (width < 52rem) {
+    :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(nav), :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(form, input[type="search"]) {
+      display: none;
+    }
+
+    :is(:where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header)) > :where(button[aria-controls], button[commandfor], button[command], button[data-open]) {
+      display: inline-flex;
+    }
+  }
+
+  :where(.vui header.sticky) {
     position: sticky;
     inset-block-start: 0;
   }
 
-  .vui-header--glow {
+  :where(.vui header.glow) {
     border-block-end-color: var(--hairline-accent);
-    box-shadow: 0 1px 0 var(--accent-glow), 0 12px 30px -22px var(--accent-glow);
+    box-shadow: 0 1px 0 var(--accent-glow),
+    0 12px 30px -22px var(--accent-glow);
   }
 
-  .vui-header--bare {
+  :where(.vui header.bare) {
     background-color: #0000;
     border-block-end: 0;
   }
 
-  .vui-header--tall {
+  :where(.vui header.tall) {
     min-block-size: 76px;
   }
 
-  .vui-header--float {
+  :where(.vui header.center) > nav:first-of-type {
+    margin-inline: auto;
+  }
+
+  :where(.vui header.float) {
+    --bevel-md: 12px;
     margin: var(--space-5);
     border: var(--border-hair) solid var(--hairline);
     box-shadow: var(--shadow-raised);
     clip-path: var(--clip-chamfer);
-    --bevel-md: 12px;
   }
 
-  .vui-header--center .vui-nav {
-    margin-inline: auto;
+  :where(.vui header hr) {
+    inline-size: var(--border-hair);
+    background-color: var(--hairline);
+    border: 0;
+    align-self: stretch;
+    block-size: auto;
+    margin-block: 14px;
+    margin-inline: 0;
   }
 
-  .vui-header .vui-nav, .vui-header .vui-header__search {
-    display: none;
-  }
-
-  .vui-header__burger {
-    order: -1;
-  }
-
-  @media (width >= 64rem) {
-    .vui-header .vui-nav, .vui-header .vui-header__search {
-      display: flex;
-    }
-
-    .vui-header__burger {
-      display: none;
-    }
-  }
-
-  :where(.vui > footer:not([class*="vui-"])), :where(.vui-app > footer:not([class*="vui-"])), .vui-footer {
+  :where(.vui footer:not(article footer):not(dialog footer)) {
     align-items: center;
     gap: var(--space-4) var(--space-6);
     padding-inline: var(--hud-edge);
@@ -2905,55 +2726,39 @@
     display: flex;
   }
 
-  .vui-footer__brand {
+  :where(.vui footer:not(article footer):not(dialog footer)) > :where(a:first-of-type), :where(.vui footer:not(article footer):not(dialog footer)) > :where(:is(h1, h2, h3, h4, h5, h6):first-of-type) {
     color: var(--text-secondary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-sm);
     font-family: var(--font-display);
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
+    flex: none;
     align-items: center;
     gap: 10px;
+    margin: 0;
     display: inline-flex;
   }
 
-  .vui-footer__brand b {
+  :where(.vui footer:not(article footer):not(dialog footer)) > :where(a:first-of-type) b {
     color: var(--accent);
   }
 
-  .vui-footer__emblem {
+  :where(.vui footer:not(article footer):not(dialog footer)) > :where(a:first-of-type) :where(img, svg) {
     block-size: 26px;
     inline-size: 26px;
     color: var(--accent);
     filter: drop-shadow(var(--glow-cyan-sm));
-    flex: none;
-    place-items: center;
-    display: grid;
   }
 
-  .vui-footer__emblem img, .vui-footer__emblem svg {
-    block-size: 100%;
-    inline-size: 100%;
-  }
-
-  .vui-footer__spacer {
-    flex: auto;
-  }
-
-  .vui-footer__legal {
-    color: var(--text-faint);
-    font-size: var(--fs-2xs);
-    letter-spacing: var(--ls-wide);
-  }
-
-  .vui-footer__links {
+  :where(.vui footer:not(article footer):not(dialog footer)) :where(nav) {
     align-items: center;
     gap: var(--space-3) var(--space-5);
     flex-wrap: wrap;
     display: flex;
   }
 
-  .vui-footer__links a {
+  :where(.vui footer:not(article footer):not(dialog footer)) :where(nav a), :where(.vui footer:not(article footer):not(dialog footer)) > :where(a:not(:first-of-type)) {
     color: var(--text-muted);
     font-size: var(--fs-xs);
     font-family: var(--font-display);
@@ -2962,11 +2767,25 @@
     transition: color var(--dur-fast) var(--ease-hud);
   }
 
-  .vui-footer__links a:hover {
+  :where(.vui footer:not(article footer):not(dialog footer)) :where(nav a:hover), :where(.vui footer:not(article footer):not(dialog footer)) > :where(a:not(:first-of-type):hover) {
     color: var(--accent);
   }
 
-  .vui-footer--status {
+  :where(.vui footer:not(article footer):not(dialog footer)) :where(small) {
+    color: var(--text-faint);
+    font-size: var(--fs-2xs);
+    letter-spacing: var(--ls-wide);
+  }
+
+  :where(.vui footer:not(article footer):not(dialog footer)) > :where(.max) {
+    flex: auto;
+  }
+
+  :where(.vui footer:not(article footer):not(dialog footer)) > :where(.right) {
+    margin-inline-start: auto;
+  }
+
+  :where(.vui footer.status) {
     min-block-size: 30px;
     font-family: var(--font-mono);
     scrollbar-width: none;
@@ -2976,15 +2795,16 @@
     overflow-x: auto;
   }
 
-  .vui-footer--status::-webkit-scrollbar {
+  :where(.vui footer.status)::-webkit-scrollbar {
     display: none;
   }
 
-  .vui-footer--status .vui-footer__item {
+  :where(.vui footer.status) > * {
     border-inline-end: var(--border-hair) solid var(--hairline);
     color: var(--text-secondary);
     font-size: var(--fs-2xs);
     white-space: nowrap;
+    flex: none;
     align-items: center;
     gap: 8px;
     padding-block: 7px;
@@ -2992,39 +2812,67 @@
     display: inline-flex;
   }
 
-  .vui-footer--status .vui-footer__item b {
+  :where(.vui footer.status) :where(b) {
     color: var(--text-primary);
     font-weight: var(--fw-regular);
   }
 
-  .vui-footer--status .vui-footer__item--signal {
+  :where(.vui footer.status) > :where(.signal) {
     color: var(--accent);
   }
 
-  .vui-footer--status .vui-footer__item--signal b {
+  :where(.vui footer.status) > :where(.signal) b {
     color: var(--accent);
     text-shadow: var(--text-glow-cyan);
   }
 
-  .vui-footer--status .vui-footer__item:last-child, .vui-footer--status .vui-footer__spacer {
+  :where(.vui footer.status) > :last-child, :where(.vui footer.status) > :where(.max) {
     border-inline-end: 0;
   }
 
-  .vui-footer--columns {
-    align-items: start;
+  :where(.vui footer.status) > :where(.max) {
+    flex: auto;
+  }
+
+  :where(.vui footer.columns) {
+    place-items: start;
     gap: var(--space-8);
     padding-block: var(--space-9);
+    text-align: start;
     grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
     display: grid;
   }
 
-  .vui-footer--columns .vui-footer__col {
+  :where(.vui footer.columns) > :where(nav, section, div):not(.bottom) {
     flex-direction: column;
+    align-items: start;
     gap: 10px;
     display: flex;
   }
 
-  .vui-footer--columns .vui-footer__col h6, .vui-footer--columns .vui-footer__col .vui-footer__title {
+  :where(.vui footer.columns) :where(section > a:first-child) {
+    color: var(--text-secondary);
+    font-weight: var(--fw-bold);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+  }
+
+  :where(.vui footer.columns) :where(section > a:first-child) b {
+    color: var(--accent);
+  }
+
+  :where(.vui footer.columns) :where(img, svg) {
+    block-size: 26px;
+    inline-size: 26px;
+    color: var(--accent);
+    filter: drop-shadow(var(--glow-cyan-sm));
+  }
+
+  :where(.vui footer.columns) :where(h4, h5, h6, .label) {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -3034,29 +2882,28 @@
     margin: 0;
   }
 
-  .vui-footer--columns .vui-footer__col a {
+  :where(.vui footer.columns) :where(nav a, section a) {
     color: var(--text-secondary);
     font-size: var(--fs-sm);
     font-family: var(--font-mono);
+    text-transform: none;
+    letter-spacing: normal;
     transition: color var(--dur-fast) var(--ease-hud);
   }
 
-  .vui-footer--columns .vui-footer__col a:hover {
+  :where(.vui footer.columns) :where(nav a:hover, section a:hover) {
     color: var(--accent);
   }
 
-  .vui-footer--columns .vui-footer__col--brand {
-    gap: 14px;
-  }
-
-  .vui-footer--columns .vui-footer__col--brand p {
+  :where(.vui footer.columns) :where(p) {
     max-inline-size: 30ch;
     color: var(--text-muted);
     font-size: var(--fs-sm);
     line-height: var(--lh-mono);
+    margin: 0;
   }
 
-  .vui-footer--columns .vui-footer__base {
+  :where(.vui footer.columns) > :where(.bottom) {
     align-items: center;
     gap: var(--space-4) var(--space-6);
     border-block-start: var(--border-hair) solid var(--hairline);
@@ -3067,16 +2914,137 @@
     display: flex;
   }
 
-  .vui-footer--glow {
+  :where(.vui footer.glow) {
     border-block-start-color: var(--hairline-accent);
     box-shadow: 0 -1px 0 var(--accent-glow);
   }
 
-  .vui-footer--base {
+  :where(.vui footer.base) {
     background-color: var(--bg-base);
   }
 
-  :where(.vui dialog.vui-drawer), .vui-drawer {
+  :where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right) {
+    z-index: 20;
+    border-block-start: var(--border-hair) solid var(--hairline);
+    background-color: var(--bg-void);
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 4px;
+    padding-block: 6px;
+    padding-inline: 6px;
+    display: flex;
+  }
+
+  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a, button) {
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    white-space: nowrap;
+    clip-path: none;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-hud);
+    background: none;
+    border: 0;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding-block: 8px;
+    padding-inline: 4px;
+    display: flex;
+    position: relative;
+  }
+
+  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a, button) i {
+    font-size: var(--fs-xl);
+    line-height: 1;
+  }
+
+  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a:hover, button:hover) {
+    color: var(--text-secondary);
+  }
+
+  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a[aria-current="page"], button[aria-current="page"], .active) {
+    color: var(--accent);
+  }
+
+  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a[aria-current="page"], button[aria-current="page"], .active):before {
+    background-color: var(--accent);
+    block-size: 3px;
+    box-shadow: var(--glow-cyan-md);
+    content: "";
+    position: absolute;
+    inset-block-start: -6px;
+    inset-inline: 22%;
+  }
+
+  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(a:focus-visible, button:focus-visible) {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(img, svg) {
+    block-size: 34px;
+    inline-size: 34px;
+    color: var(--accent);
+    filter: drop-shadow(var(--glow-cyan-md));
+  }
+
+  :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui nav.bottom), :where(.vui:has( > main) > aside:not(.right)), :where(.vui:has( > main) > aside.right)) > :where(.max) {
+    flex: 1;
+  }
+
+  :where(.vui nav.bottom.fixed) {
+    padding-block-end: max(6px, env(safe-area-inset-bottom));
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline: 0;
+  }
+
+  @media (width >= 48rem) {
+    :where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside) {
+      border-block-start: 0;
+      border-inline-end: var(--border-hair) solid var(--hairline);
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 6px;
+      padding-block: 14px;
+      padding-inline: 0;
+    }
+
+    :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside)) > :where(a, button) {
+      flex: none;
+      gap: 5px;
+      margin-inline: 8px;
+      padding-inline: 0;
+    }
+
+    :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside)) > :where(a[aria-current="page"], button[aria-current="page"], .active):before {
+      block-size: auto;
+      inline-size: 3px;
+      inset-block: 8px;
+      inset-inline: -8px auto;
+    }
+
+    :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside)) > :where(img, svg) {
+      margin-block-end: 8px;
+    }
+
+    :is(:where(.vui nav.left), :where(.vui nav.right), :where(.vui:has( > main) > aside)) > :where(.max) {
+      flex: 1;
+    }
+
+    :where(.vui nav.right), :where(.vui:has( > main) > aside.right) {
+      border-inline: var(--border-hair) solid var(--hairline) 0;
+    }
+  }
+
+  :where(.vui dialog.left), :where(.vui dialog.right) {
     border: 0;
     border-inline-end: var(--border-hair) solid var(--hairline-accent);
     background-color: var(--bg-void);
@@ -3101,30 +3069,32 @@
     translate: -101%;
   }
 
-  .vui-drawer--end {
-    border-inline: var(--border-hair) solid var(--hairline-accent) 0;
+  :where(.vui dialog.right) {
+    border-inline-start: var(--border-hair) solid var(--hairline-accent);
     clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
+    border-inline-end: 0;
     inset-inline: auto 0;
     translate: 101%;
   }
 
-  :where(.vui dialog.vui-drawer)[open], .vui-drawer[open] {
+  :where(.vui dialog.left)[open], :where(.vui dialog.right)[open] {
     opacity: 1;
     translate: 0;
   }
 
   @starting-style {
-    :where(.vui dialog.vui-drawer)[open], .vui-drawer[open] {
+    :where(.vui dialog.left)[open] {
       opacity: 0;
       translate: -101%;
     }
 
-    .vui-drawer--end[open] {
+    :where(.vui dialog.right)[open] {
+      opacity: 0;
       translate: 101%;
     }
   }
 
-  :where(.vui dialog.vui-drawer)::backdrop, .vui-drawer::backdrop {
+  :where(.vui dialog.left)::backdrop, :where(.vui dialog.right)::backdrop {
     background-color: var(--scrim);
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
@@ -3134,17 +3104,17 @@
     display var(--dur-base) allow-discrete;
   }
 
-  .vui-drawer[open]::backdrop {
+  :where(.vui dialog.left)[open]::backdrop, :where(.vui dialog.right)[open]::backdrop {
     opacity: 1;
   }
 
   @starting-style {
-    .vui-drawer[open]::backdrop {
+    :where(.vui dialog.left)[open]::backdrop, :where(.vui dialog.right)[open]::backdrop {
       opacity: 0;
     }
   }
 
-  .vui-drawer__head {
+  :where(.vui dialog.left) > header, :where(.vui dialog.right) > header {
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
@@ -3154,7 +3124,7 @@
     display: flex;
   }
 
-  .vui-drawer__brand {
+  :where(.vui dialog.left) > header > :where(a, span, b, strong), :where(.vui dialog.right) > header > :where(a, span, b, strong) {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-sm);
@@ -3166,28 +3136,23 @@
     display: inline-flex;
   }
 
-  .vui-drawer__emblem {
+  :where(.vui dialog.left) > header :where(img, svg), :where(.vui dialog.right) > header :where(img, svg) {
     block-size: 26px;
     inline-size: 26px;
     color: var(--accent);
     filter: drop-shadow(var(--glow-cyan-md));
-    place-items: center;
-    display: grid;
   }
 
-  .vui-drawer__emblem img, .vui-drawer__emblem svg {
-    block-size: 100%;
-    inline-size: 100%;
-  }
-
-  .vui-drawer__nav {
+  :where(.vui dialog.left) > nav, :where(.vui dialog.right) > nav {
     padding-block: var(--space-4);
     flex-direction: column;
+    padding-inline: 0;
     display: flex;
     overflow-y: auto;
   }
 
-  .vui-drawer__link {
+  :where(.vui dialog.left) nav :where(a, button), :where(.vui dialog.right) nav :where(a, button) {
+    inline-size: 100%;
     padding-inline: var(--space-5);
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
@@ -3196,6 +3161,7 @@
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
     text-align: start;
+    clip-path: none;
     cursor: pointer;
     transition: color var(--dur-fast) var(--ease-hud),
     background-color var(--dur-fast) var(--ease-hud);
@@ -3208,29 +3174,29 @@
     position: relative;
   }
 
-  .vui-drawer__link > :where(svg, i) {
+  :where(.vui dialog.left) nav :where(a, button) i, :where(.vui dialog.right) nav :where(a, button) i {
     inline-size: 20px;
-    font-size: var(--fs-lg);
     color: var(--text-faint);
+    font-size: var(--fs-lg);
     transition: color var(--dur-fast) var(--ease-hud);
     flex: none;
   }
 
-  .vui-drawer__link:hover {
+  :where(.vui dialog.left) nav :where(a:hover, button:hover), :where(.vui dialog.right) nav :where(a:hover, button:hover) {
     background-color: color-mix(in srgb, var(--accent) 5%, transparent);
     color: var(--text-secondary);
   }
 
-  .vui-drawer__link[aria-current="page"], .vui-drawer__link--active {
+  :where(.vui dialog.left) nav :where([aria-current="page"], .active), :where(.vui dialog.right) nav :where([aria-current="page"], .active) {
     background-color: color-mix(in srgb, var(--cyan-400) 10%, transparent);
     color: var(--accent);
   }
 
-  .vui-drawer__link[aria-current="page"] > :where(svg, i), .vui-drawer__link--active > :where(svg, i) {
+  :where(.vui dialog.left) nav :where([aria-current="page"], .active) i, :where(.vui dialog.right) nav :where([aria-current="page"], .active) i {
     color: var(--accent);
   }
 
-  .vui-drawer__link[aria-current="page"]:before, .vui-drawer__link--active:before {
+  :where(.vui dialog.left) nav :where([aria-current="page"], .active):before, :where(.vui dialog.right) nav :where([aria-current="page"], .active):before {
     background-color: var(--accent);
     inline-size: 3px;
     box-shadow: var(--glow-cyan-md);
@@ -3240,12 +3206,12 @@
     inset-inline-start: 0;
   }
 
-  .vui-drawer__link:focus-visible {
+  :where(.vui dialog.left) nav :where(a:focus-visible, button:focus-visible), :where(.vui dialog.right) nav :where(a:focus-visible, button:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  .vui-drawer__group {
+  :where(.vui dialog.left) nav :where(h4, h5, h6, .label), :where(.vui dialog.right) nav :where(h4, h5, h6, .label) {
     margin-block: var(--space-4) 6px;
     padding-inline: var(--space-5);
     color: var(--text-faint);
@@ -3256,82 +3222,15 @@
     text-transform: uppercase;
   }
 
-  .vui-drawer__foot {
+  :where(.vui dialog.left) > footer, :where(.vui dialog.right) > footer {
     padding-inline: var(--space-5);
     padding-block: var(--space-4);
     border-block-start: var(--border-hair) solid var(--hairline);
+    border-block-end: 0;
     margin-block-start: auto;
   }
 
-  :where(.vui nav.vui-tabbar), .vui-tabbar {
-    z-index: 20;
-    border-block-start: var(--border-hair) solid var(--hairline);
-    background-color: var(--bg-void);
-    justify-content: space-around;
-    align-items: stretch;
-    gap: 4px;
-    padding-block: 6px;
-    padding-inline: 6px;
-    display: flex;
-  }
-
-  .vui-tabbar--fixed {
-    padding-block-end: max(6px, env(safe-area-inset-bottom));
-    position: fixed;
-    inset-block-end: 0;
-    inset-inline: 0;
-  }
-
-  .vui-tabbar__item {
-    color: var(--text-muted);
-    font-weight: var(--fw-semibold);
-    font-size: var(--fs-2xs);
-    font-family: var(--font-display);
-    letter-spacing: var(--ls-wide);
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: color var(--dur-fast) var(--ease-hud);
-    background: none;
-    border: 0;
-    flex-direction: column;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    padding-block: 8px;
-    display: flex;
-    position: relative;
-  }
-
-  .vui-tabbar__item > :where(svg, i) {
-    font-size: var(--fs-xl);
-    line-height: 1;
-  }
-
-  .vui-tabbar__item:hover {
-    color: var(--text-secondary);
-  }
-
-  .vui-tabbar__item[aria-current="page"], .vui-tabbar__item--active {
-    color: var(--accent);
-  }
-
-  .vui-tabbar__item[aria-current="page"]:before, .vui-tabbar__item--active:before {
-    background-color: var(--accent);
-    block-size: 3px;
-    box-shadow: var(--glow-cyan-md);
-    content: "";
-    position: absolute;
-    inset-block-start: -6px;
-    inset-inline: 22%;
-  }
-
-  .vui-tabbar__item:focus-visible {
-    box-shadow: var(--focus-ring);
-    outline: none;
-  }
-
-  :where(.vui nav.vui-breadcrumb) ol, .vui-breadcrumb ol, ol.vui-breadcrumb, ul.vui-breadcrumb {
+  :where(.vui nav:has( > ol)) ol, :where(.vui ol.breadcrumb) {
     color: var(--text-muted);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
@@ -3344,35 +3243,37 @@
     display: flex;
   }
 
-  .vui-breadcrumb li {
+  :is(:where(.vui nav:has( > ol)) ol, :where(.vui ol.breadcrumb)) > li {
     white-space: nowrap;
     flex: none;
     align-items: center;
     gap: 8px;
+    margin: 0;
     display: inline-flex;
   }
 
-  .vui-breadcrumb li:before {
+  :is(:where(.vui nav:has( > ol)) ol, :where(.vui ol.breadcrumb)) > li:before {
     color: var(--text-faint);
     content: "/";
+    margin: 0;
   }
 
-  .vui-breadcrumb li:first-child:before {
+  :is(:where(.vui nav:has( > ol)) ol, :where(.vui ol.breadcrumb)) > li:first-child:before {
     content: none;
   }
 
-  .vui-breadcrumb a {
+  :is(:where(.vui nav:has( > ol)) ol, :where(.vui ol.breadcrumb)) a {
     color: var(--text-muted);
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
     transition: color var(--dur-fast) var(--ease-hud);
   }
 
-  .vui-breadcrumb a:hover {
+  :is(:where(.vui nav:has( > ol)) ol, :where(.vui ol.breadcrumb)) a:hover {
     color: var(--accent);
   }
 
-  .vui-breadcrumb [aria-current="page"] {
+  :is(:where(.vui nav:has( > ol)) ol, :where(.vui ol.breadcrumb)) :where([aria-current="page"]) {
     color: var(--accent);
     text-shadow: var(--text-glow-cyan);
   }

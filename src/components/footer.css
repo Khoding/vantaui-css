@@ -1,18 +1,16 @@
 /* ============================================================
-   VantaUI — Footer system  (responsive)
-   Semantic-first: a top-level <footer> in a .vui scope becomes a
-   tactical footer; .vui-footer does the same anywhere. Three shapes,
-   one component:
-     • default / --bar   a single hairline strip: brand · links · legal
-     • --status          a dense HUD telemetry bar (IDE-style readouts)
-     • --columns         a multi-column sitemap footer
-   Nested <footer>s inside panels / dialogs are untouched (panel.css /
-   overlay.css own those).
+   VantaUI — Footer (semantic, zero-class)
+   A <footer> in a .vui scope becomes a tactical footer. Three shapes,
+   one element — pick with a single helper:
+     • default            a hairline strip: brand · links · legal
+     • footer.status      a dense HUD telemetry bar (IDE-style readouts)
+     • footer.columns     a multi-column sitemap footer
+
+   Panel footers (<article> > footer) and dialog footers are excluded —
+   panel.css / overlay.css own those.
    ============================================================ */
 
-:where(.vui > footer:not([class*='vui-'])),
-:where(.vui-app > footer:not([class*='vui-'])),
-.vui-footer {
+:where(.vui footer:not(article footer):not(dialog footer)) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -24,66 +22,75 @@
   color: var(--text-muted);
   font-size: var(--fs-xs);
   font-family: var(--font-mono);
+
+  /* ---------- Brand: first link or heading ---------- */
+  & > :where(a:first-of-type),
+  & > :where(:is(h1, h2, h3, h4, h5, h6):first-of-type) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-sm);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+  & > :where(a:first-of-type) b {
+    color: var(--accent);
+  }
+  & > :where(a:first-of-type) :where(img, svg) {
+    inline-size: 26px;
+    block-size: 26px;
+    color: var(--accent);
+    filter: drop-shadow(var(--glow-cyan-sm));
+  }
+
+  /* ---------- Links: a <nav> of <a>s, or loose trailing <a>s ---------- */
+  & :where(nav) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+  }
+  & :where(nav a),
+  & > :where(a:not(:first-of-type)) {
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    transition: color var(--dur-fast) var(--ease-hud);
+  }
+  & :where(nav a:hover),
+  & > :where(a:not(:first-of-type):hover) {
+    color: var(--accent);
+  }
+
+  /* ---------- Legal line ---------- */
+  & :where(small) {
+    color: var(--text-faint);
+    font-size: var(--fs-2xs);
+    letter-spacing: var(--ls-wide);
+  }
+
+  /* ---------- Spacer helpers ---------- */
+  & > :where(.max) {
+    flex: 1 1 auto;
+  }
+  & > :where(.right) {
+    margin-inline-start: auto;
+  }
 }
 
-/* ---------- Shared slots ---------- */
-.vui-footer__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-secondary);
-  font-weight: var(--fw-bold);
-  font-size: var(--fs-sm);
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-}
-.vui-footer__brand b {
-  color: var(--accent);
-}
-.vui-footer__emblem {
-  display: grid;
-  flex: none;
-  place-items: center;
-  inline-size: 26px;
-  block-size: 26px;
-  color: var(--accent);
-  filter: drop-shadow(var(--glow-cyan-sm));
-}
-.vui-footer__emblem img,
-.vui-footer__emblem svg {
-  inline-size: 100%;
-  block-size: 100%;
-}
-.vui-footer__spacer {
-  flex: 1 1 auto;
-}
-.vui-footer__legal {
-  color: var(--text-faint);
-  font-size: var(--fs-2xs);
-  letter-spacing: var(--ls-wide);
-}
-/* a row of footer links */
-.vui-footer__links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3) var(--space-5);
-}
-.vui-footer__links a {
-  color: var(--text-muted);
-  font-size: var(--fs-xs);
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-  transition: color var(--dur-fast) var(--ease-hud);
-}
-.vui-footer__links a:hover {
-  color: var(--accent);
-}
-
-/* ---------- Variant: --status (HUD telemetry bar) ---------- */
-.vui-footer--status {
+/* ============================================================
+   Variant: footer.status — HUD telemetry bar
+   Each direct child is a readout cell with a hairline divider; mark an
+   accent-lit reading with .signal, push cells apart with .max.
+   ============================================================ */
+:where(.vui footer.status) {
   flex-wrap: nowrap;
   gap: 0;
   padding-block: 0;
@@ -91,99 +98,128 @@
   overflow-x: auto;
   font-family: var(--font-mono);
   scrollbar-width: none;
-}
-.vui-footer--status::-webkit-scrollbar {
-  display: none;
-}
-.vui-footer--status .vui-footer__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding-inline: 14px;
-  padding-block: 7px;
-  border-inline-end: var(--border-hair) solid var(--hairline);
-  color: var(--text-secondary);
-  font-size: var(--fs-2xs);
-  white-space: nowrap;
-}
-.vui-footer--status .vui-footer__item b {
-  color: var(--text-primary);
-  font-weight: var(--fw-regular);
-}
-/* an accent-lit reading inside a status item */
-.vui-footer--status .vui-footer__item--signal {
-  color: var(--accent);
-}
-.vui-footer--status .vui-footer__item--signal b {
-  color: var(--accent);
-  text-shadow: var(--text-glow-cyan);
-}
-.vui-footer--status .vui-footer__item:last-child {
-  border-inline-end: 0;
-}
-.vui-footer--status .vui-footer__spacer {
-  border-inline-end: 0;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  & > * {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 8px;
+    padding-inline: 14px;
+    padding-block: 7px;
+    border-inline-end: var(--border-hair) solid var(--hairline);
+    color: var(--text-secondary);
+    font-size: var(--fs-2xs);
+    white-space: nowrap;
+  }
+  & :where(b) {
+    color: var(--text-primary);
+    font-weight: var(--fw-regular);
+  }
+  & > :where(.signal) {
+    color: var(--accent);
+  }
+  & > :where(.signal) b {
+    color: var(--accent);
+    text-shadow: var(--text-glow-cyan);
+  }
+  & > *:last-child,
+  & > :where(.max) {
+    border-inline-end: 0;
+  }
+  & > :where(.max) {
+    flex: 1 1 auto;
+  }
 }
 
-/* ---------- Variant: --columns (sitemap) ---------- */
-.vui-footer--columns {
+/* ============================================================
+   Variant: footer.columns — sitemap
+   Columns are <nav>/<section> blocks with a heading + links. A child
+   marked .bottom spans the full width as a base bar under the columns.
+   ============================================================ */
+:where(.vui footer.columns) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
   align-items: start;
+  justify-items: start;
   gap: var(--space-8);
   padding-block: var(--space-9);
-}
-.vui-footer--columns .vui-footer__col {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.vui-footer--columns .vui-footer__col h6,
-.vui-footer--columns .vui-footer__col .vui-footer__title {
-  margin: 0;
-  color: var(--text-muted);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-2xs);
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-widest);
-  text-transform: uppercase;
-}
-.vui-footer--columns .vui-footer__col a {
-  color: var(--text-secondary);
-  font-size: var(--fs-sm);
-  font-family: var(--font-mono);
-  transition: color var(--dur-fast) var(--ease-hud);
-}
-.vui-footer--columns .vui-footer__col a:hover {
-  color: var(--accent);
-}
-/* the lead column carries the brand + a short blurb */
-.vui-footer--columns .vui-footer__col--brand {
-  gap: 14px;
-}
-.vui-footer--columns .vui-footer__col--brand p {
-  max-inline-size: 30ch;
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-  line-height: var(--lh-mono);
-}
-/* a full-width bottom bar under the columns */
-.vui-footer--columns .vui-footer__base {
-  display: flex;
-  flex-wrap: wrap;
-  grid-column: 1 / -1;
-  align-items: center;
-  gap: var(--space-4) var(--space-6);
-  margin-block-start: var(--space-5);
-  padding-block-start: var(--space-5);
-  border-block-start: var(--border-hair) solid var(--hairline);
+  text-align: start;
+
+  & > :where(nav, section, div):not(.bottom) {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+  /* a brand block in the lead column (first link + its emblem) */
+  & :where(section > a:first-child) {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-weight: var(--fw-bold);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+  & :where(section > a:first-child) b {
+    color: var(--accent);
+  }
+  & :where(img, svg) {
+    inline-size: 26px;
+    block-size: 26px;
+    color: var(--accent);
+    filter: drop-shadow(var(--glow-cyan-sm));
+  }
+  & :where(h4, h5, h6, .label) {
+    margin: 0;
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+  }
+  & :where(nav a, section a) {
+    color: var(--text-secondary);
+    font-size: var(--fs-sm);
+    font-family: var(--font-mono);
+    text-transform: none;
+    letter-spacing: normal;
+    transition: color var(--dur-fast) var(--ease-hud);
+  }
+  & :where(nav a:hover, section a:hover) {
+    color: var(--accent);
+  }
+  /* lead column blurb */
+  & :where(p) {
+    max-inline-size: 30ch;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-mono);
+  }
+  /* full-width base bar under the columns */
+  & > :where(.bottom) {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    margin-block-start: var(--space-5);
+    padding-block-start: var(--space-5);
+    border-block-start: var(--border-hair) solid var(--hairline);
+  }
 }
 
-/* ---------- Tone variants ---------- */
-.vui-footer--glow {
+/* ---------- Tone helpers ---------- */
+:where(.vui footer.glow) {
   border-block-start-color: var(--hairline-accent);
   box-shadow: 0 -1px 0 var(--accent-glow);
 }
-.vui-footer--base {
+:where(.vui footer.base) {
   background-color: var(--bg-base);
 }

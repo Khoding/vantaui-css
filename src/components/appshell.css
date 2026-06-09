@@ -1,291 +1,132 @@
 /* ============================================================
-   VantaUI — App shell (responsive)
-   The tactical desktop layout: left rail + top bar + content stage.
-   Mobile-first: on phones the rail drops to a bottom command bar and
-   the bars stack; from the `m` breakpoint up it becomes the classic
-   vertical rail beside a scrolling stage. Fills the viewport.
+   VantaUI — App frame (semantic, zero-class)
+   "Write the landmarks, get the layout." Any .vui element that
+   directly holds a <main> becomes a tactical app frame. The frame
+   places its landmarks by element — no wrapper classes:
 
-   PLUS a railless `--stacked` shell variant (header / stage / footer)
-   — the home for the top-nav and drawer navigation patterns, so the
-   side rail is no longer the only way to lay out an app.
+     <body class="vui">
+       <header> … </header>          → top bar
+       <nav class="left"> … </nav>   → side rail (a bare <aside> works too)
+       <main> … </main>              → the scrolling stage
+       <footer> … </footer>          → bottom bar (or <nav class="bottom">)
+     </body>
+
+   Mobile-first: everything stacks; a side rail drops to a bottom
+   command bar. From the `m` breakpoint up the rail becomes a vertical
+   column beside a scrolling stage. The frame fills its container, and
+   the viewport when it sits on <body>.
+
+   What the rail / bar LOOKS like lives in navigation.css; this file
+   only decides WHERE each landmark goes.
    ============================================================ */
 
-.vui-app {
+/* ---------- The frame ---------- */
+:where(.vui:has(> main)) {
   display: grid;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: 1fr;
   grid-template-areas:
-    'topbar'
-    'stage'
-    'rail';
-  min-block-size: 100dvh;
+    'top'
+    'main'
+    'foot';
+  block-size: 100%;
   overflow: hidden;
   background-color: var(--bg-base);
   color: var(--text-primary);
   font-family: var(--font-ui);
 }
+/* Only a frame sitting on <body> claims the whole viewport. Nested frames
+   (e.g. a demo box) are sized by their own box via block-size:100% above. */
+:where(body.vui:has(> main)) {
+  min-block-size: 100dvh;
+}
 
-/* ---------- Rail ---------- */
-.vui-rail {
-  display: flex;
+/* ---------- Landmark → slot (mobile / default) ---------- */
+:where(.vui:has(> main)) > header {
   z-index: 3;
-  grid-area: rail;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  padding-inline: 8px;
-  padding-block: 8px;
-  gap: 6px;
-  border-block-start: var(--border-hair) solid var(--hairline);
-  background-color: var(--bg-void);
+  grid-area: top;
 }
-.vui-rail__emblem {
-  display: none;
-  inline-size: 38px;
-  block-size: 38px;
-  color: var(--accent);
-  filter: drop-shadow(var(--glow-cyan-md));
-}
-.vui-rail__emblem img,
-.vui-rail__emblem svg {
-  inline-size: 100%;
-  block-size: 100%;
-}
-.vui-rail__spacer {
-  display: none;
-  flex: 1;
-}
-.vui-rail__item {
-  --bevel-sm: 6px;
-  display: grid;
+:where(.vui:has(> main)) > main {
   position: relative;
-  place-items: center;
-  inline-size: 46px;
-  block-size: 46px;
-  border: 0;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: var(--fs-lg);
-  clip-path: var(--clip-notch);
-  cursor: pointer;
-  transition:
-    color var(--dur-fast) var(--ease-hud),
-    background-color var(--dur-fast) var(--ease-hud);
-}
-.vui-rail__item:hover {
-  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
-  color: var(--text-secondary);
-}
-.vui-rail__item--active {
-  background-color: color-mix(in srgb, var(--cyan-400) 12%, transparent);
-  color: var(--accent);
-}
-.vui-rail__item--active::before {
-  position: absolute;
-  block-size: 3px;
-  inset-block-start: -8px;
-  /* mobile: active marker is a top bar */
-  inset-inline: 10px;
-  background-color: var(--accent);
-  box-shadow: var(--glow-cyan-md);
-  content: '';
-}
-
-/* ---------- Top bar ---------- */
-.vui-topbar {
-  display: flex;
-  z-index: 3;
-  grid-area: topbar;
-  align-items: center;
-  min-block-size: 56px;
-  padding-inline: var(--space-5);
-  padding-block: 0;
-  gap: var(--space-4);
-  border-block-end: var(--border-hair) solid var(--hairline);
-  background-color: var(--bg-void);
-}
-.vui-topbar__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-muted);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-xs);
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-wider);
-  text-transform: uppercase;
-}
-.vui-topbar__eyebrow b {
-  color: var(--accent);
-  font-weight: var(--fw-semibold);
-}
-.vui-topbar__spacer {
-  flex: 1;
-}
-.vui-topbar__stat {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-secondary);
-  font-size: var(--fs-xs);
-  font-family: var(--font-mono);
-}
-.vui-topbar__clock {
-  color: var(--text-primary);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-md);
-  font-family: var(--font-hud);
-  letter-spacing: 0.04em;
-}
-.vui-topbar__user {
-  --bevel-sm: 5px;
-  display: grid;
-  place-items: center;
-  inline-size: 34px;
-  block-size: 34px;
-  border: var(--border-hair) solid var(--hairline-strong);
-  background-color: var(--surface-panel);
-  color: var(--accent);
-  font-weight: var(--fw-bold);
-  font-size: var(--fs-sm);
-  font-family: var(--font-display);
-  clip-path: var(--clip-notch);
-}
-
-/* ---------- Stage ---------- */
-.vui-stage {
-  position: relative;
-  grid-area: stage;
-  padding: var(--space-7);
+  grid-area: main;
   overflow-y: auto;
+}
+/* footer, an explicit bottom bar, AND a side rail all live along the bottom
+   on phones (use a footer OR a rail/bottom-nav on small screens, not both). */
+:where(.vui:has(> main)) > :is(footer, nav.bottom, nav.left, nav.right, aside) {
+  z-index: 3;
+  grid-area: foot;
+}
+
+/* ---------- Stage backdrop (hex grid · scanlines · vignette) ---------- */
+:where(.vui:has(> main)) > main {
+  background-color: var(--bg-base);
   background-image: var(--grid-fine);
   background-size: var(--grid-fine-size);
-  background-color: var(--bg-base);
 }
-.vui-stage::before,
-.vui-stage::after {
+:where(.vui:has(> main)) > main::before,
+:where(.vui:has(> main)) > main::after {
   position: absolute;
   inset: 0;
   content: '';
   pointer-events: none;
 }
-.vui-stage::before {
+:where(.vui:has(> main)) > main::before {
+  z-index: 0;
   background-image: var(--vignette);
 }
-.vui-stage::after {
+:where(.vui:has(> main)) > main::after {
+  z-index: 0;
   background-image: var(--scanlines);
   opacity: 0.6;
 }
-.vui-stage__inner {
-  z-index: 1;
+/* keep real content above the texture layers */
+:where(.vui:has(> main)) > main > * {
   position: relative;
-  max-inline-size: 74rem;
-  margin-inline: auto;
+  z-index: 1;
 }
 
-/* ---------- Screen header composite ---------- */
-.vui-screen-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-block-end: var(--space-6);
-  gap: var(--space-4);
-}
-.vui-screen-title {
-  margin: 0;
-  color: var(--text-primary);
-  font-weight: var(--fw-bold);
-  font-size: var(--fs-2xl);
-  line-height: 1;
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-}
-.vui-screen-sub {
-  margin-block-start: 8px;
-  color: var(--text-muted);
-  font-size: var(--fs-xs);
-  font-family: var(--font-mono);
-}
-
-/* ---------- Railless stacked shell: header / stage / footer ----------
-   For top-nav and drawer-driven apps. Single column at every width — the
-   <header> (or .vui-header) sits on top, the stage scrolls, an optional
-   <footer> (or .vui-footer) pins to the bottom. Drop a .vui-tabbar in as
-   the last child on phones and it takes the footer slot automatically. */
-.vui-app--stacked {
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    'header'
-    'stage'
-    'footer';
-}
-.vui-app--stacked > header,
-.vui-app--stacked > .vui-header {
-  grid-area: header;
-}
-.vui-app--stacked > .vui-stage,
-.vui-app--stacked > main {
-  grid-area: stage;
-  overflow-y: auto;
-}
-.vui-app--stacked > footer,
-.vui-app--stacked > .vui-footer,
-.vui-app--stacked > .vui-tabbar {
-  grid-area: footer;
-}
-
-/* ---------- Tablet and up: classic vertical rail ---------- */
+/* ---------- Tablet and up: side rail becomes a vertical column ---------- */
 @media (min-width: 48rem) {
-  .vui-app {
-    grid-template-rows: 56px 1fr;
-    grid-template-columns: 76px 1fr;
+  /* Left rail (a <nav class="left"> or a bare <aside>) */
+  :where(.vui:has(> main):has(> nav.left)),
+  :where(.vui:has(> main):has(> aside:not(.right))) {
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: auto 1fr;
     grid-template-areas:
-      'rail topbar'
-      'rail stage';
-    block-size: 100dvh;
-    min-block-size: 0;
+      'rail top'
+      'rail main'
+      'rail foot';
   }
-  .vui-rail {
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-inline: 0;
-    padding-block: 14px;
-    gap: 6px;
-    border-inline-end: var(--border-hair) solid var(--hairline);
-    border-block-start: 0;
-  }
-  .vui-rail__emblem {
-    display: block;
-    margin-block-end: 12px;
-  }
-  .vui-rail__spacer {
-    display: block;
-  }
-  .vui-rail__item--active::before {
-    inline-size: 3px;
-    block-size: auto;
-    inset-block: 10px;
-    inset-inline: auto;
-    inset-inline-start: -14px;
-  }
-  .vui-stage {
-    padding: var(--space-7);
+  :where(.vui:has(> main)) > :is(nav.left, aside:not(.right)) {
+    grid-area: rail;
   }
 
-  /* The stacked shell stays single-column at every width — it never
-     becomes a rail layout. Re-assert here so the base rail media query
-     above can't reshape it. */
-  .vui-app--stacked {
-    grid-template-rows: auto 1fr auto;
-    grid-template-columns: 1fr;
+  /* Right rail (<aside class="right"> / <nav class="right">) */
+  :where(.vui:has(> main):has(> aside.right)),
+  :where(.vui:has(> main):has(> nav.right)) {
+    grid-template-columns: 1fr auto;
     grid-template-areas:
-      'header'
-      'stage'
-      'footer';
-    block-size: 100dvh;
-    min-block-size: 0;
+      'top railend'
+      'main railend'
+      'foot railend';
+  }
+  :where(.vui:has(> main)) > :is(aside.right, nav.right) {
+    grid-area: railend;
+  }
+
+  /* Both rails at once */
+  :where(.vui:has(> main):has(> nav.left):has(> aside.right)),
+  :where(.vui:has(> main):has(> aside:not(.right)):has(> aside.right)) {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      'rail top railend'
+      'rail main railend'
+      'rail foot railend';
+  }
+
+  /* footer / bottom-nav return to the bottom row beside the rail(s) */
+  :where(.vui:has(> main)) > :is(footer, nav.bottom) {
+    grid-area: foot;
   }
 }

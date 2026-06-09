@@ -20,6 +20,8 @@
   --font-hud:
     'Rajdhani', 'Rajdhani Fallback', 'Chakra Petch', system-ui, sans-serif; /* big numerics */
   --font-mono: 'Share Tech Mono', 'Share Tech Mono Fallback', ui-monospace, monospace;
+  /* Icon ligature font: inside .vui, <i>home</i> renders the "home" glyph */
+  --font-icon: 'Material Symbols Outlined';
 
   /* ---- Weights ---- */
   --fw-light: 300;

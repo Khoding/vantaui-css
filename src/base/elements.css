@@ -159,6 +159,41 @@
   color: var(--accent);
 }
 
+/* ---------- Icons: <i> is the icon element ----------
+   Inside .vui, a bare <i> renders from the Material Symbols ligature font, so
+   <i>home</i> draws the home glyph (the BeerCSS convention). Use <em> for
+   italic emphasis. The rule is scoped to a CLASSLESS <i> (plus the .fill
+   modifier), so an icon-font glyph like <i class="ti ti-x"> keeps its own font. */
+:where(.vui i:not([class]), .vui i.fill) {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-regular);
+  font-size: 1.25em;
+  font-style: normal;
+  font-family: var(--font-icon);
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  vertical-align: middle;
+  font-variation-settings:
+    'FILL' var(--vui-icon-fill, 0),
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+/* filled-glyph variant */
+:where(.vui i.fill) {
+  --vui-icon-fill: 1;
+}
+
 /* ---------- Selection within a tactical surface ---------- */
 :where(.vui ::selection) {
   background-color: rgba(66, 227, 255, 0.28);

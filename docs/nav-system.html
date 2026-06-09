@@ -1,341 +1,510 @@
-<!-- @startingPoint section="BatOS App" subtitle="Header, footer & nav alternatives to the side rail" viewport="1320x900" -->
+<!-- @startingPoint section="VantaUI App" subtitle="Semantic-first header, footer & navigation" viewport="1320x900" -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VantaUI — Chrome &amp; Navigation</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
-<!-- Compiled framework (tokens/reset/base/layout/components) -->
-<link rel="stylesheet" href="../dist/vantaui.min.css" />
-<!-- The new source files this patch adds (linked unlayered → they win over the bundle) -->
-<link rel="stylesheet" href="../src/components/appshell.css" />
-<link rel="stylesheet" href="../src/components/header.css" />
-<link rel="stylesheet" href="../src/components/footer.css" />
-<link rel="stylesheet" href="../src/components/navigation.css" />
-<style>
-  /* ---- page-local demo chrome only (NOT part of VantaUI) ---- */
-  html, body { margin: 0; }
-  body { background-color: var(--bg-base); min-block-size: 100dvh; }
-  .demo-main { padding-block: var(--space-9) var(--space-12); }
-  .demo-sec { margin-block-start: var(--space-11); }
-  .demo-sec > .demo-sec__head { margin-block-end: var(--space-6); }
-  .demo-eyebrow { color: var(--text-muted); font-family: var(--font-display); font-size: var(--fs-2xs);
-    letter-spacing: var(--ls-widest); text-transform: uppercase; }
-  .demo-eyebrow::before { content: '// '; color: var(--accent); }
-  .demo-h { margin: 6px 0 0; color: var(--text-primary); font-family: var(--font-display);
-    font-weight: var(--fw-bold); font-size: var(--fs-2xl); letter-spacing: var(--ls-wide);
-    text-transform: uppercase; line-height: 1; }
-  .demo-lede { margin-block-start: 12px; max-inline-size: 60ch; color: var(--text-secondary);
-    font-family: var(--font-mono); font-size: var(--fs-sm); line-height: var(--lh-mono); }
-  /* a labelled frame around each live example */
-  .demo-frame { position: relative; margin-block-start: var(--space-5);
-    border: var(--border-hair) solid var(--hairline); background-color: var(--bg-void);
-    background-image: var(--grid-fine); background-size: var(--grid-fine-size); overflow: clip; }
-  .demo-frame--pad { padding: var(--space-7); }
-  .demo-label { display: inline-flex; align-items: center; gap: 8px; margin-block-start: var(--space-5);
-    color: var(--text-faint); font-family: var(--font-mono); font-size: var(--fs-2xs);
-    letter-spacing: var(--ls-wide); text-transform: uppercase; }
-  .demo-label::before { content: ''; inline-size: 18px; block-size: var(--border-hair);
-    background-color: var(--hairline-accent); }
-  .demo-grid { display: grid; gap: var(--space-7); grid-template-columns: repeat(auto-fit, minmax(min(20rem,100%), 1fr)); }
-  .demo-shell { block-size: 460px; }
-  .demo-phone { inline-size: 320px; max-inline-size: 100%; block-size: 460px; margin-inline: auto;
-    display: grid; grid-template-rows: 1fr auto; border: var(--border-hair) solid var(--hairline-strong);
-    background-color: var(--bg-base); overflow: hidden; }
-  .demo-phone__screen { padding: var(--space-6); overflow-y: auto; }
-  /* drawer demos are scoped inside a frame, not the whole viewport */
-  .demo-frame dialog.vui-drawer { position: absolute; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VantaUI — Chrome &amp; Navigation (semantic-first)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Icon ligature font: inside .vui, <i>home</i> renders the home glyph -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" />
+  <!-- The whole framework, one file -->
+  <link rel="stylesheet" href="../dist/vantaui.min.css" />
+  <style>
+    /* ---- page-local demo chrome only (NOT part of VantaUI) ---- */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html,
+    body {
+      margin: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      min-block-size: 100dvh;
+    }
+
+    .demo-main {
+      max-inline-size: 72rem;
+      margin-inline: auto;
+      padding-inline: var(--container-pad);
+      padding-block: var(--space-9) var(--space-12);
+    }
+
+    .demo-sec {
+      margin-block-start: var(--space-11);
+    }
+
+    .demo-sec>.demo-sec__head {
+      margin-block-end: var(--space-6);
+    }
+
+    .demo-eyebrow {
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-size: var(--fs-2xs);
+      letter-spacing: var(--ls-widest);
+      text-transform: uppercase;
+    }
+
+    .demo-eyebrow::before {
+      content: '// ';
+      color: var(--accent);
+    }
+
+    .demo-h {
+      margin: 6px 0 0;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-weight: var(--fw-bold);
+      font-size: var(--fs-2xl);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .demo-lede {
+      margin-block-start: 12px;
+      max-inline-size: 64ch;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      line-height: var(--lh-mono);
+    }
+
+    /* a labelled frame around each live example */
+    .demo-frame {
+      position: relative;
+      margin-block-start: var(--space-5);
+      border: var(--border-hair) solid var(--hairline);
+      background-color: var(--bg-void);
+      background-image: var(--grid-fine);
+      background-size: var(--grid-fine-size);
+      overflow: clip;
+    }
+
+    .demo-frame--pad {
+      padding: var(--space-7);
+    }
+
+    .demo-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-block-start: var(--space-6);
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-size: var(--fs-2xs);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .demo-label::before {
+      content: '';
+      inline-size: 18px;
+      block-size: var(--border-hair);
+      background-color: var(--hairline-accent);
+    }
+
+    .demo-grid {
+      display: grid;
+      gap: var(--space-7);
+      grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    }
+
+    /* a sized box so a nested .vui frame can demo the app shell at small scale */
+    .demo-shell {
+      block-size: 460px;
+    }
+
+    .demo-phone {
+      inline-size: 320px;
+      max-inline-size: 100%;
+      block-size: 420px;
+      margin-inline: auto;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      border: var(--border-hair) solid var(--hairline-strong);
+      background-color: var(--bg-base);
+      overflow: hidden;
+    }
+
+    .demo-phone__screen {
+      padding: var(--space-6);
+      overflow-y: auto;
+    }
+
+    .demo-note {
+      margin: 0 0 var(--space-5);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      line-height: var(--lh-mono);
+    }
+  </style>
 </head>
+
+<!-- .vui turns on the system. Note: the page CONTENT is wrapped in a div so <body>
+     doesn't itself become an app frame (that only happens when a .vui element holds
+     a direct <main> — see the App Shell section below). The top <header> and bottom
+     <footer> are still direct children of body.vui, so they come alive on their own. -->
+
 <body class="vui">
 
-  <!-- ===== LIVE HEADER — top-nav pattern (rail alternative #1) ===== -->
-  <header class="vui-header vui-header--sticky vui-header--glow">
-    <button class="vui-header__burger" type="button" data-open="navDrawer" aria-label="Open menu">
-      <i class="ti ti-menu-2"></i>
-    </button>
-    <a class="vui-header__brand" href="#top">
-      <span class="vui-header__emblem"><img src="../../assets/emblem.svg" alt="" /></span>
-      VANTA<b>UI</b>
-      <span class="vui-header__tag vui-from-m">CHROME</span>
-    </a>
-    <nav class="vui-nav" aria-label="Primary">
-      <a class="vui-nav__link" href="#headers" aria-current="page">Headers</a>
-      <a class="vui-nav__link" href="#nav">Navigation</a>
-      <a class="vui-nav__link" href="#footers">Footers</a>
-      <a class="vui-nav__link" href="#shell">App&nbsp;Shell <span class="vui-nav__count">4</span></a>
+  <!-- ===== LIVE TOP BAR — a bare <header> with a <nav> becomes the app bar ===== -->
+  <header class="sticky glow" id="top">
+    <a href="#top"><img src="../assets/emblem.svg" alt="" />VANTA<b>UI</b></a>
+    <nav aria-label="Primary">
+      <a href="#headers" aria-current="page">Headers</a>
+      <a href="#nav">Navigation</a>
+      <a href="#footers">Footers</a>
+      <a href="#shell">Shell <small>4</small></a>
     </nav>
-    <span class="vui-header__spacer"></span>
-    <label class="vui-header__search">
-      <i class="ti ti-search"></i>
+    <form role="search" aria-label="Search" onsubmit="return false">
+      <i>search</i>
       <input type="search" placeholder="Search components…" />
-    </label>
-    <!-- Action items are user-managed: tag the optional ones with the breakpoint
-         utilities (.vui-from-* / .vui-until-*) so they collapse before the bar does.
-         The bell stays at every size; the clock & user chip earn their place higher up. -->
-    <div class="vui-header__actions">
-      <span class="vui-topbar__clock vui-from-m" id="clock">--:--:--</span>
-      <button class="vui-iconbtn" type="button" aria-label="Alerts"><i class="ti ti-bell"></i></button>
-      <span class="vui-topbar__user vui-from-s">VK</span>
-    </div>
+    </form>
+    <menu>
+      <span class="vui-from-m" id="clock">--:--:--</span>
+      <button type="button" aria-label="Alerts"><i>notifications</i></button>
+    </menu>
+    <!-- the burger: a header <button> that controls a dialog. Hidden until the bar
+         gets narrow (container query), then it reveals & opens the drawer. -->
+    <button type="button" data-open="navDrawer" aria-controls="navDrawer" aria-label="Open menu"><i>menu</i></button>
   </header>
 
-  <main class="vui-container demo-main" id="top">
+  <div class="page-body">
+    <main class="demo-main">
 
-    <p class="demo-eyebrow">VantaUI · Patch</p>
-    <h1 class="demo-h">Chrome &amp; Navigation System</h1>
-    <p class="demo-lede">A header and footer system, plus three alternatives to the side rail —
-      a horizontal top-nav, an off-canvas drawer on the native <code>&lt;dialog&gt;</code>, and a
-      bottom command bar. Semantic HTML first, <code>vui-*</code> variants on top, responsive by default.
-      The bar above is the live top-nav; resize the window to watch it collapse into the burger + drawer.</p>
+      <p class="demo-eyebrow">VantaUI · Semantic-first</p>
+      <h1 class="demo-h">Chrome &amp; Navigation</h1>
+      <p class="demo-lede">Write the landmarks, get the layout. A <code>&lt;header&gt;</code> with a
+        <code>&lt;nav&gt;</code> becomes the app bar; a <code>&lt;footer&gt;</code> becomes the footer; a
+        <code>&lt;dialog class="left"&gt;</code> is an off-canvas drawer; a <code>.vui</code> element holding a
+        <code>&lt;main&gt;</code> becomes the whole app frame. One-word helpers tune the rest. Resize the window and
+        watch the bar above collapse into the burger — that's a container query on the header itself.</p>
 
-    <nav class="vui-breadcrumb" aria-label="Breadcrumb" style="margin-block-start:var(--space-7)">
-      <ol>
-        <li><a href="#top">System</a></li>
-        <li><a href="#nav">Navigation</a></li>
-        <li><a href="#" aria-current="page">Patterns</a></li>
-      </ol>
-    </nav>
+      <nav aria-label="Breadcrumb" style="margin-block-start:var(--space-7)">
+        <ol>
+          <li><a href="#top">System</a></li>
+          <li><a href="#nav">Navigation</a></li>
+          <li><a href="#" aria-current="page">Patterns</a></li>
+        </ol>
+      </nav>
 
-    <!-- ===== HEADERS ===== -->
-    <section class="demo-sec" id="headers">
-      <div class="demo-sec__head">
-        <p class="demo-eyebrow">Component</p>
-        <h2 class="demo-h">Header</h2>
-        <p class="demo-lede">A semantic <code>&lt;header&gt;</code> inside a <code>.vui</code> scope becomes the app bar;
-          the <code>.vui-header</code> class works anywhere. Compose a brand, an inline <code>.vui-nav</code>, a search field,
-          and an actions cluster — then layer variants.</p>
-      </div>
-
-      <p class="demo-label">Default</p>
-      <div class="demo-frame">
-        <header class="vui-header" style="position:static">
-          <a class="vui-header__brand" href="#"><span class="vui-header__emblem"><img src="../../assets/emblem.svg" alt="" /></span>VANTA<b>UI</b></a>
-          <nav class="vui-nav"><a class="vui-nav__link" aria-current="page">Overview</a><a class="vui-nav__link">Units</a><a class="vui-nav__link">Map</a></nav>
-          <span class="vui-header__spacer"></span>
-          <div class="vui-header__actions"><button class="vui-iconbtn" aria-label="Settings"><i class="ti ti-settings"></i></button><span class="vui-topbar__user">VK</span></div>
-        </header>
-      </div>
-
-      <p class="demo-label">--glow · accent rim &amp; centred nav (--center)</p>
-      <div class="demo-frame">
-        <header class="vui-header vui-header--glow vui-header--center" style="position:static">
-          <a class="vui-header__brand" href="#"><span class="vui-header__emblem"><img src="../../assets/emblem.svg" alt="" /></span>VANTA<b>UI</b></a>
-          <nav class="vui-nav"><a class="vui-nav__link" aria-current="page">Command</a><a class="vui-nav__link">Intel</a><a class="vui-nav__link">Comms</a></nav>
-          <div class="vui-header__actions"><button class="vui-btn vui-btn--sm vui-btn--primary">Deploy</button></div>
-        </header>
-      </div>
-
-      <p class="demo-label">--float · detached, fully chamfered</p>
-      <div class="demo-frame demo-frame--pad">
-        <header class="vui-header vui-header--float" style="position:static;margin:0">
-          <a class="vui-header__brand" href="#"><span class="vui-header__emblem"><img src="../../assets/emblem.svg" alt="" /></span>VANTA<b>UI</b></a>
-          <span class="vui-header__spacer"></span>
-          <nav class="vui-nav"><a class="vui-nav__link" aria-current="page">Live</a><a class="vui-nav__link">Logs</a></nav>
-          <span class="vui-header__sep"></span>
-          <div class="vui-header__actions"><button class="vui-iconbtn" aria-label="Power"><i class="ti ti-power"></i></button></div>
-        </header>
-      </div>
-    </section>
-
-    <!-- ===== NAVIGATION ALTERNATIVES ===== -->
-    <section class="demo-sec" id="nav">
-      <div class="demo-sec__head">
-        <p class="demo-eyebrow">Rail alternatives</p>
-        <h2 class="demo-h">Navigation</h2>
-        <p class="demo-lede">The side rail is one option. Here are three more — pick the one that fits the surface.</p>
-      </div>
-
-      <div class="demo-grid">
-        <!-- Drawer -->
-        <article>
-          <header><span class="vui-panel__eyebrow">Off-canvas drawer</span><span class="vui-panel__aside">&lt;dialog&gt;</span></header>
-          <p class="muted-mono" style="font-family:var(--font-mono);font-size:var(--fs-sm);color:var(--text-muted);line-height:var(--lh-mono);margin:0 0 var(--space-5)">
-            A native modal <code>&lt;dialog class="vui-drawer"&gt;</code>. Opens with <code>showModal()</code> or an invoker
-            command; animates in with <code>@starting-style</code> + <code>allow-discrete</code>. Esc and backdrop-click close it.</p>
-          <button class="vui-btn vui-btn--primary" type="button" data-open="navDrawer"><i class="ti ti-layout-sidebar"></i> Open drawer</button>
-          <button class="vui-btn" type="button" data-open="navDrawerEnd" style="margin-inline-start:8px"><i class="ti ti-layout-sidebar-right"></i> From end</button>
-        </article>
-
-        <!-- Bottom tabbar -->
-        <article style="padding:0">
-          <header style="padding-inline:var(--space-5);padding-block:12px"><span class="vui-panel__eyebrow">Bottom command bar</span><span class="vui-panel__aside">phones</span></header>
-          <div class="demo-phone" style="border:0;block-size:300px">
-            <div class="demo-phone__screen">
-              <p class="demo-eyebrow">Sector 7</p>
-              <h3 style="margin:6px 0 0">Patrol</h3>
-              <p style="font-family:var(--font-mono);font-size:var(--fs-sm);color:var(--text-muted);line-height:var(--lh-mono)">Content scrolls above a fixed command bar. The active tab carries a glowing top marker.</p>
-            </div>
-            <nav class="vui-tabbar" aria-label="Sections">
-              <button class="vui-tabbar__item" aria-current="page"><i class="ti ti-radar-2"></i>Scan</button>
-              <button class="vui-tabbar__item"><i class="ti ti-map-2"></i>Map</button>
-              <button class="vui-tabbar__item"><i class="ti ti-users"></i>Units</button>
-              <button class="vui-tabbar__item"><i class="ti ti-file-text"></i>Logs</button>
-            </nav>
-          </div>
-        </article>
-
-        <!-- Top nav reference -->
-        <article>
-          <header><span class="vui-panel__eyebrow">Horizontal top-nav</span><span class="vui-panel__aside">.vui-nav</span></header>
-          <p style="font-family:var(--font-mono);font-size:var(--fs-sm);color:var(--text-muted);line-height:var(--lh-mono);margin:0 0 var(--space-5)">
-            Inline links inside a header — the pattern driving the live bar at the top of this page. Mark the
-            current item with <code>aria-current="page"</code>.</p>
-          <nav class="vui-nav" style="flex-wrap:wrap">
-            <a class="vui-nav__link" aria-current="page">Dashboard</a>
-            <a class="vui-nav__link">Roster</a>
-            <a class="vui-nav__link">Evidence <span class="vui-nav__count">12</span></a>
-            <a class="vui-nav__link">Settings</a>
-          </nav>
-        </article>
-      </div>
-    </section>
-
-    <!-- ===== FOOTERS ===== -->
-    <section class="demo-sec" id="footers">
-      <div class="demo-sec__head">
-        <p class="demo-eyebrow">Component</p>
-        <h2 class="demo-h">Footer</h2>
-        <p class="demo-lede">One <code>&lt;footer&gt;</code>, three shapes: a HUD status strip, a multi-column sitemap, and a simple legal bar.</p>
-      </div>
-
-      <p class="demo-label">--status · telemetry strip</p>
-      <div class="demo-frame">
-        <footer class="vui-footer vui-footer--status">
-          <span class="vui-footer__item"><span class="vui-dot"></span> LINK SECURE</span>
-          <span class="vui-footer__item">LAT <b>40.7128</b></span>
-          <span class="vui-footer__item">LON <b>-74.0060</b></span>
-          <span class="vui-footer__item vui-footer__item--signal">UPLINK <b>98.6%</b></span>
-          <span class="vui-footer__spacer"></span>
-          <span class="vui-footer__item">BUILD <b>2.4.0</b></span>
-          <span class="vui-footer__item">UTC <b id="clock2">--:--</b></span>
-        </footer>
-      </div>
-
-      <p class="demo-label">--columns · sitemap</p>
-      <div class="demo-frame">
-        <footer class="vui-footer vui-footer--columns">
-          <div class="vui-footer__col vui-footer__col--brand">
-            <span class="vui-footer__brand"><span class="vui-footer__emblem"><img src="../../assets/emblem.svg" alt="" /></span>VANTA<b>UI</b></span>
-            <p>A cold tactical CSS framework lit by a single electric cyan. Semantic-first, zero-runtime.</p>
-          </div>
-          <div class="vui-footer__col"><h6>System</h6><a href="#">Tokens</a><a href="#">Layout</a><a href="#">Components</a></div>
-          <div class="vui-footer__col"><h6>Navigation</h6><a href="#">Header</a><a href="#">Drawer</a><a href="#">Tab bar</a></div>
-          <div class="vui-footer__col"><h6>Resources</h6><a href="#">Docs</a><a href="#">Changelog</a><a href="#">License</a></div>
-          <div class="vui-footer__base">
-            <span class="vui-footer__legal">© 2026 VantaUI · MIT</span>
-            <span class="vui-footer__spacer"></span>
-            <span class="vui-footer__links"><a href="#">Status</a><a href="#">Privacy</a><a href="#">Contact</a></span>
-          </div>
-        </footer>
-      </div>
-
-      <p class="demo-label">Default · simple bar</p>
-      <div class="demo-frame">
-        <footer class="vui-footer">
-          <span class="vui-footer__brand"><span class="vui-footer__emblem"><img src="../../assets/emblem.svg" alt="" /></span>VANTA<b>UI</b></span>
-          <span class="vui-footer__spacer"></span>
-          <span class="vui-footer__links"><a href="#">Docs</a><a href="#">GitHub</a><a href="#">License</a></span>
-          <span class="vui-footer__legal">v2.4.0</span>
-        </footer>
-      </div>
-    </section>
-
-    <!-- ===== STACKED APP SHELL ===== -->
-    <section class="demo-sec" id="shell">
-      <div class="demo-sec__head">
-        <p class="demo-eyebrow">Layout</p>
-        <h2 class="demo-h">Stacked App Shell</h2>
-        <p class="demo-lede">A railless <code>.vui-app--stacked</code> — header on top, scrolling stage, footer pinned to the bottom.
-          The home for top-nav and drawer apps. Resize: the inline nav collapses into the burger, which opens the in-shell drawer.</p>
-      </div>
-
-      <div class="demo-frame">
-        <div class="vui-app vui-app--stacked demo-shell">
-          <header class="vui-header">
-            <button class="vui-header__burger" type="button" data-open="shellDrawer" aria-label="Open menu"><i class="ti ti-menu-2"></i></button>
-            <a class="vui-header__brand"><span class="vui-header__emblem"><img src="../../assets/emblem.svg" alt="" /></span>BAT<b>OS</b></a>
-            <nav class="vui-nav"><a class="vui-nav__link" aria-current="page">Command</a><a class="vui-nav__link">Database</a><a class="vui-nav__link">Loadout</a></nav>
-            <span class="vui-header__spacer"></span>
-            <div class="vui-header__actions"><button class="vui-iconbtn" aria-label="Alerts"><i class="ti ti-bell"></i></button></div>
-          </header>
-          <div class="vui-stage">
-            <div class="vui-stage__inner">
-              <div class="vui-screen-head"><div><h3 class="vui-screen-title">Command</h3><p class="vui-screen-sub">// stacked shell · live</p></div><span class="vui-badge vui-badge--green vui-badge--dot">Online</span></div>
-              <div class="vui-autogrid" style="--vui-min:13rem">
-                <article data-glow><span class="vui-panel__eyebrow">Integrity</span><div class="vui-stat vui-stat--signal" style="margin-block-start:10px"><b>98.6</b><span>Hull</span></div></article>
-                <article><span class="vui-panel__eyebrow">Units</span><div class="vui-stat" style="margin-block-start:10px"><b>14</b><span>Active</span></div></article>
-                <article><span class="vui-panel__eyebrow">Threats</span><div class="vui-stat vui-stat--amber" style="margin-block-start:10px"><b>03</b><span>Tracked</span></div></article>
-              </div>
-            </div>
-          </div>
-          <footer class="vui-footer vui-footer--status">
-            <span class="vui-footer__item"><span class="vui-dot"></span> SECURE</span>
-            <span class="vui-footer__item vui-footer__item--signal">UPLINK <b>98.6%</b></span>
-            <span class="vui-footer__spacer"></span>
-            <span class="vui-footer__item">v2.4.0</span>
-          </footer>
-
-          <!-- in-shell drawer -->
-          <dialog class="vui-drawer" id="shellDrawer" aria-label="Menu">
-            <div class="vui-drawer__head">
-              <span class="vui-drawer__brand"><span class="vui-drawer__emblem"><img src="../../assets/emblem.svg" alt="" /></span>BAT<b>OS</b></span>
-              <button class="vui-iconbtn vui-iconbtn--sm" type="button" data-close aria-label="Close"><i class="ti ti-x"></i></button>
-            </div>
-            <nav class="vui-drawer__nav">
-              <a class="vui-drawer__link" aria-current="page"><i class="ti ti-layout-dashboard"></i> Command</a>
-              <a class="vui-drawer__link"><i class="ti ti-database"></i> Database</a>
-              <a class="vui-drawer__link"><i class="ti ti-shield-bolt"></i> Loadout</a>
-            </nav>
-          </dialog>
+      <!-- ===== HEADERS ===== -->
+      <section class="demo-sec" id="headers">
+        <div class="demo-sec__head">
+          <p class="demo-eyebrow">Element</p>
+          <h2 class="demo-h">Header</h2>
+          <p class="demo-lede">A <code>&lt;header&gt;</code> with a <code>&lt;nav&gt;</code> is an app bar. The first
+            link is the brand; the first nav pushes the trailing <code>&lt;menu&gt;</code> to the end — no spacer
+            element. Shapes are one word: <code>glow · center · float · bare · tall</code>.</p>
         </div>
-      </div>
-    </section>
-  </main>
 
-  <!-- ===== PAGE FOOTER (dogfood --columns) ===== -->
-  <footer class="vui-footer vui-footer--columns vui-footer--glow">
-    <div class="vui-footer__col vui-footer__col--brand">
-      <span class="vui-footer__brand"><span class="vui-footer__emblem"><img src="../../assets/emblem.svg" alt="" /></span>VANTA<b>UI</b></span>
-      <p>Chrome &amp; navigation patch — header, footer, drawer, tab bar &amp; breadcrumb.</p>
-    </div>
-    <div class="vui-footer__col"><h6>Patch</h6><a href="#headers">Header</a><a href="#footers">Footer</a><a href="#nav">Navigation</a></div>
-    <div class="vui-footer__col"><h6>Shell</h6><a href="#shell">Stacked</a><a href="#nav">Drawer</a><a href="#nav">Tab bar</a></div>
-    <div class="vui-footer__base">
-      <span class="vui-footer__legal">© 2026 VantaUI · drop into src/components/</span>
+        <p class="demo-label">Default — brand · nav · actions</p>
+        <div class="demo-frame">
+          <header>
+            <a href="#"><img src="../assets/emblem.svg" alt="" />VANTA<b>UI</b></a>
+            <nav>
+              <a aria-current="page">Overview</a>
+              <a>Units</a>
+              <a>Map</a>
+            </nav>
+            <menu>
+              <button type="button" aria-label="Settings"><i>settings</i></button>
+            </menu>
+          </header>
+        </div>
+
+        <p class="demo-label">glow · center — accent rim &amp; centred nav</p>
+        <div class="demo-frame">
+          <header class="glow center">
+            <a href="#"><img src="../assets/emblem.svg" alt="" />VANTA<b>UI</b></a>
+            <nav>
+              <a aria-current="page">Command</a>
+              <a>Intel</a>
+              <a>Comms</a>
+            </nav>
+            <menu>
+              <button type="submit">Deploy</button>
+            </menu>
+          </header>
+        </div>
+
+        <p class="demo-label">float — detached, fully chamfered (an &lt;hr&gt; divides regions)</p>
+        <div class="demo-frame demo-frame--pad">
+          <header class="float" style="margin:0">
+            <a href="#"><img src="../assets/emblem.svg" alt="" />VANTA<b>UI</b></a>
+            <nav>
+              <a aria-current="page">Live</a>
+              <a>Logs</a>
+            </nav>
+            <hr />
+            <menu>
+              <button type="button" aria-label="Power"><i>power_settings_new</i></button>
+            </menu>
+          </header>
+        </div>
+      </section>
+
+      <!-- ===== NAVIGATION ===== -->
+      <section class="demo-sec" id="nav">
+        <div class="demo-sec__head">
+          <p class="demo-eyebrow">Elements + one helper</p>
+          <h2 class="demo-h">Navigation</h2>
+          <p class="demo-lede">Four ways to move around, all from semantics: an off-canvas drawer, a phone command
+            bar, a breadcrumb, and the side rail (shown in the App Shell below).</p>
+        </div>
+
+        <div class="demo-grid">
+          <!-- Drawer -->
+          <article>
+            <header><b>Off-canvas drawer</b></header>
+            <p class="demo-note">A native <code>&lt;dialog class="left"&gt;</code> (or <code>right</code>). Opens with
+              <code>showModal()</code>; animates in with <code>@starting-style</code> + <code>allow-discrete</code>.
+              Esc and backdrop-click close it.</p>
+            <menu style="display:flex;gap:8px;flex-wrap:wrap;margin:0;padding:0;list-style:none">
+              <button type="button" data-open="navDrawer"><i>view_sidebar</i> Open drawer</button>
+              <button type="button" data-open="navDrawerEnd"><i>dock_to_left</i> From end</button>
+            </menu>
+          </article>
+
+          <!-- Bottom command bar -->
+          <article style="padding:0">
+            <header style="padding-inline:var(--space-5);padding-block:12px"><b>Bottom command bar</b></header>
+            <div class="demo-phone" style="border:0">
+              <div class="demo-phone__screen">
+                <p class="demo-eyebrow">Sector 7</p>
+                <h3 style="margin:6px 0 0">Patrol</h3>
+                <p class="demo-note" style="margin-block-start:8px">Content scrolls above a
+                  <code>&lt;nav class="bottom"&gt;</code>. The active tab carries a glowing top marker.</p>
+              </div>
+              <nav class="bottom" aria-label="Sections">
+                <a aria-current="page"><i>radar</i>Scan</a>
+                <a><i>map</i>Map</a>
+                <a><i>group</i>Units</a>
+                <a><i>description</i>Logs</a>
+              </nav>
+            </div>
+          </article>
+
+          <!-- Breadcrumb -->
+          <article>
+            <header><b>Breadcrumb</b></header>
+            <p class="demo-note">Just <code>&lt;nav&gt;&lt;ol&gt;…&lt;/ol&gt;&lt;/nav&gt;</code> — detected by
+              <code>:has()</code>, zero classes. Mark the leaf with <code>aria-current="page"</code>.</p>
+            <nav aria-label="Trail">
+              <ol>
+                <li><a href="#">Command</a></li>
+                <li><a href="#">Sector 7</a></li>
+                <li><a href="#">Patrol</a></li>
+                <li><a aria-current="page">Unit 14</a></li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== FOOTERS ===== -->
+      <section class="demo-sec" id="footers">
+        <div class="demo-sec__head">
+          <p class="demo-eyebrow">Element</p>
+          <h2 class="demo-h">Footer</h2>
+          <p class="demo-lede">One <code>&lt;footer&gt;</code>, three shapes — pick with a word:
+            <code>status</code>, <code>columns</code>, or the default bar.</p>
+        </div>
+
+        <p class="demo-label">status — telemetry strip</p>
+        <div class="demo-frame">
+          <footer class="status">
+            <span><span class="vui-dot"></span> LINK SECURE</span>
+            <span>LAT <b>40.7128</b></span>
+            <span>LON <b>-74.0060</b></span>
+            <span class="signal">UPLINK <b>98.6%</b></span>
+            <span class="max"></span>
+            <span>BUILD <b>2.4.0</b></span>
+            <span>UTC <b id="clock2">--:--</b></span>
+          </footer>
+        </div>
+
+        <p class="demo-label">columns — sitemap</p>
+        <div class="demo-frame">
+          <footer class="columns">
+            <section>
+              <a href="#"><img src="../assets/emblem.svg" alt="" />VANTA<b>UI</b></a>
+              <p>A cold tactical CSS framework lit by a single electric cyan. Semantic-first, zero-runtime.</p>
+            </section>
+            <nav>
+              <h6>System</h6>
+              <a href="#">Tokens</a>
+              <a href="#">Layout</a>
+              <a href="#">Components</a>
+            </nav>
+            <nav>
+              <h6>Navigation</h6>
+              <a href="#">Header</a>
+              <a href="#">Drawer</a>
+              <a href="#">Tab bar</a>
+            </nav>
+            <nav>
+              <h6>Resources</h6>
+              <a href="#">Docs</a>
+              <a href="#">Changelog</a>
+              <a href="#">License</a>
+            </nav>
+            <div class="bottom">
+              <small>© 2026 VantaUI · MIT</small>
+              <span class="max"></span>
+              <nav><a href="#">Status</a><a href="#">Privacy</a><a href="#">Contact</a></nav>
+            </div>
+          </footer>
+        </div>
+
+        <p class="demo-label">Default — simple bar</p>
+        <div class="demo-frame">
+          <footer>
+            <a href="#"><img src="../assets/emblem.svg" alt="" />VANTA<b>UI</b></a>
+            <span class="max"></span>
+            <nav><a href="#">Docs</a><a href="#">GitHub</a><a href="#">License</a></nav>
+            <small>v2.4.0</small>
+          </footer>
+        </div>
+      </section>
+
+      <!-- ===== APP SHELL ===== -->
+      <section class="demo-sec" id="shell">
+        <div class="demo-sec__head">
+          <p class="demo-eyebrow">Layout</p>
+          <h2 class="demo-h">App Shell</h2>
+          <p class="demo-lede">Any <code>.vui</code> element that directly holds a <code>&lt;main&gt;</code> becomes an
+            app frame and places its landmarks by element — no wrapper classes. Add a
+            <code>&lt;nav class="left"&gt;</code> and it grows a side rail (a vertical column ≥768px, a bottom bar
+            below). On <code>&lt;body&gt;</code> it fills the viewport; here it's scaled inside a box.</p>
+        </div>
+
+        <div class="demo-grid">
+
+          <!-- Stacked shell: header / main / footer -->
+          <div>
+            <p class="demo-label">Stacked — header · main · footer</p>
+            <div class="vui demo-shell">
+              <header>
+                <a><img src="../assets/emblem.svg" alt="" />BAT<b>OS</b></a>
+                <nav>
+                  <a aria-current="page">Command</a>
+                  <a>Database</a>
+                </nav>
+                <menu><button type="button" aria-label="Alerts"><i>notifications</i></button></menu>
+              </header>
+              <main>
+                <p class="demo-eyebrow">Stacked shell · live</p>
+                <h3 style="margin:6px 0 var(--space-5)">Command</h3>
+                <div class="vui-autogrid" style="--vui-min:9rem">
+                  <article><small class="vui-eyebrow">Hull</small>
+                    <div class="vui-stat vui-stat--signal" style="margin-block-start:8px"><b>98.6</b><span>Integrity</span></div>
+                  </article>
+                  <article><small class="vui-eyebrow">Units</small>
+                    <div class="vui-stat" style="margin-block-start:8px"><b>14</b><span>Active</span></div>
+                  </article>
+                </div>
+              </main>
+              <footer class="status">
+                <span><span class="vui-dot"></span> SECURE</span>
+                <span class="signal">UPLINK <b>98.6%</b></span>
+                <span class="max"></span>
+                <span>v2.4.0</span>
+              </footer>
+            </div>
+          </div>
+
+          <!-- Rail shell: rail / header / main -->
+          <div>
+            <p class="demo-label">Rail — &lt;nav class="left"&gt; · header · main</p>
+            <div class="vui demo-shell">
+              <nav class="left" aria-label="Rail">
+                <img src="../assets/emblem.svg" alt="" />
+                <a aria-current="page"><i>space_dashboard</i>Ops</a>
+                <a><i>radar</i>Scan</a>
+                <a><i>group</i>Units</a>
+                <span class="max"></span>
+                <a><i>settings</i>Setup</a>
+              </nav>
+              <header>
+                <a>SECTOR<b>7</b></a>
+                <menu><button type="button" aria-label="Profile"><i>account_circle</i></button></menu>
+              </header>
+              <main>
+                <p class="demo-eyebrow">Rail shell · live</p>
+                <h3 style="margin:6px 0 var(--space-5)">Operations</h3>
+                <p class="demo-note">The rail is a vertical column on this desktop viewport; on a phone it drops to a
+                  bottom command bar. Same markup, both shapes.</p>
+              </main>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== PAGE FOOTER (dogfood the columns shape) ===== -->
+  <footer class="columns glow">
+    <section>
+      <a href="#top"><img src="../assets/emblem.svg" alt="" />VANTA<b>UI</b></a>
+      <p>Semantic-first chrome — header, footer, drawer, tab bar, breadcrumb &amp; the app frame.</p>
+    </section>
+    <nav>
+      <h6>Build</h6>
+      <a href="#headers">Header</a>
+      <a href="#footers">Footer</a>
+      <a href="#nav">Navigation</a>
+    </nav>
+    <nav>
+      <h6>Shell</h6>
+      <a href="#shell">App frame</a>
+      <a href="#nav">Drawer</a>
+      <a href="#nav">Tab bar</a>
+    </nav>
+    <div class="bottom">
+      <small>© 2026 VantaUI · MIT · write semantic HTML, get a tactical UI</small>
     </div>
   </footer>
 
-  <!-- ===== GLOBAL DRAWERS (page-level) ===== -->
-  <dialog class="vui-drawer" id="navDrawer" aria-label="Menu">
-    <div class="vui-drawer__head">
-      <span class="vui-drawer__brand"><span class="vui-drawer__emblem"><img src="../../assets/emblem.svg" alt="" /></span>VANTA<b>UI</b></span>
-      <button class="vui-iconbtn vui-iconbtn--sm" type="button" data-close aria-label="Close"><i class="ti ti-x"></i></button>
-    </div>
-    <nav class="vui-drawer__nav">
-      <p class="vui-drawer__group">Build</p>
-      <a class="vui-drawer__link" href="#headers"><i class="ti ti-layout-navbar"></i> Headers</a>
-      <a class="vui-drawer__link" href="#nav" aria-current="page"><i class="ti ti-direction-sign"></i> Navigation</a>
-      <a class="vui-drawer__link" href="#footers"><i class="ti ti-layout-bottombar"></i> Footers</a>
-      <p class="vui-drawer__group">Layout</p>
-      <a class="vui-drawer__link" href="#shell"><i class="ti ti-layout-dashboard"></i> App Shell</a>
+  <!-- ===== GLOBAL DRAWERS (open at viewport scale) ===== -->
+  <dialog class="left" id="navDrawer" aria-label="Menu">
+    <header>
+      <span><img src="../assets/emblem.svg" alt="" />VANTA<b>UI</b></span>
+      <button type="button" data-close aria-label="Close"><i>close</i></button>
+    </header>
+    <nav>
+      <h6>Build</h6>
+      <a href="#headers"><i>view_agenda</i> Headers</a>
+      <a href="#nav" aria-current="page"><i>directions</i> Navigation</a>
+      <a href="#footers"><i>bottom_navigation</i> Footers</a>
+      <h6>Layout</h6>
+      <a href="#shell"><i>space_dashboard</i> App Shell</a>
     </nav>
-    <div class="vui-drawer__foot">
-      <button class="vui-btn vui-btn--block vui-btn--primary" type="button" data-close>Close</button>
-    </div>
+    <footer>
+      <button type="submit" data-close style="inline-size:100%">Close</button>
+    </footer>
   </dialog>
 
-  <dialog class="vui-drawer vui-drawer--end" id="navDrawerEnd" aria-label="Details">
-    <div class="vui-drawer__head">
-      <span class="vui-drawer__brand"><i class="ti ti-adjustments"></i> Filters</span>
-      <button class="vui-iconbtn vui-iconbtn--sm" type="button" data-close aria-label="Close"><i class="ti ti-x"></i></button>
-    </div>
-    <nav class="vui-drawer__nav">
-      <a class="vui-drawer__link" aria-current="page"><i class="ti ti-circle-check"></i> All units</a>
-      <a class="vui-drawer__link"><i class="ti ti-circle"></i> Active only</a>
-      <a class="vui-drawer__link"><i class="ti ti-circle"></i> Hostile</a>
+  <dialog class="right" id="navDrawerEnd" aria-label="Filters">
+    <header>
+      <span><i>tune</i> Filters</span>
+      <button type="button" data-close aria-label="Close"><i>close</i></button>
+    </header>
+    <nav>
+      <a aria-current="page"><i>check_circle</i> All units</a>
+      <a><i>radio_button_unchecked</i> Active only</a>
+      <a><i>radio_button_unchecked</i> Hostile</a>
     </nav>
   </dialog>
 
@@ -350,7 +519,7 @@
     }
     tick(); setInterval(tick, 1000);
 
-    // ---- Drawer open/close (progressive enhancement over invoker commands) ----
+    // ---- Drawer open/close (progressive enhancement over the native dialog) ----
     document.addEventListener('click', (e) => {
       const opener = e.target.closest('[data-open]');
       if (opener) {
@@ -364,25 +533,26 @@
         if (dlg) { e.preventDefault(); dlg.close(); }
         return;
       }
-      // backdrop click closes the drawer
-      if (e.target.matches('dialog.vui-drawer')) e.target.close();
+      // backdrop click closes an edge drawer
+      if (e.target.matches('dialog.left, dialog.right')) e.target.close();
       // a drawer link closes the drawer after navigating
-      const link = e.target.closest('.vui-drawer__link');
+      const link = e.target.closest('dialog.left nav a, dialog.right nav a');
       if (link) { const dlg = link.closest('dialog'); if (dlg) setTimeout(() => dlg.close(), 80); }
     });
 
-    // ---- Demo: clicking nav / tab items moves the active marker ----
+    // ---- Demo: clicking a nav item moves the active marker within its group ----
     function wireActive(selector) {
       document.querySelectorAll(selector).forEach((group) => {
         group.addEventListener('click', (e) => {
-          const item = e.target.closest('.vui-nav__link, .vui-tabbar__item, .vui-drawer__link');
-          if (!item || !group.contains(item)) return;
+          const item = e.target.closest('a, button');
+          if (!item || !group.contains(item) || item.hasAttribute('data-open') || item.hasAttribute('data-close')) return;
           group.querySelectorAll('[aria-current="page"]').forEach((el) => el.removeAttribute('aria-current'));
           item.setAttribute('aria-current', 'page');
         });
       });
     }
-    wireActive('.vui-nav'); wireActive('.vui-tabbar'); wireActive('.vui-drawer__nav');
+    wireActive('header > nav'); wireActive('nav.bottom'); wireActive('dialog nav');
   </script>
 </body>
+
 </html>
