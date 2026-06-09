@@ -61,14 +61,14 @@
       id: 'philosophy',
       title: 'Philosophy',
       blurb:
-        'Write proper, semantic HTML — get a tactical HUD. Add <code>class="vui"</code> to a root element and bare elements (<code>button</code>, <code>article</code>, <code>input</code>, <code>table</code>, <code>meter</code>, <code>dialog</code>…) come alive with zero classes. Opt into variants with <code>data-*</code> attributes or terse <code>vui-*</code> classes. Everything ships inside <code>@layer</code>s, so your own unlayered styles always win.',
+        'Three ingredients — <strong>Settings, Elements, Helpers</strong>. Add <code>class="vui"</code> to a root element and bare, semantic HTML (<code>header</code>, <code>nav</code>, <code>article</code>, <code>button</code>, <code>input</code>, <code>table</code>, <code>meter</code>, <code>dialog</code>…) comes alive with zero classes. Deviate from a default with one short <em>helper</em> word (<code>glow</code>, <code>danger</code>, <code>small</code>, <code>left</code>). Icons are <code>&lt;i&gt;home&lt;/i&gt;</code>. Everything ships inside <code>@layer</code>s at zero specificity, so your own styles always win.',
     },
     {
       group: 'Getting started',
       id: 'install',
       title: 'Install',
       blurb:
-        'One stylesheet. The optional JS adds tabs, the live clock, and meter/gauge animation — the CSS is fully usable without it.',
+        'One stylesheet, one icon font. The optional JS adds tabs, the live clock, and meter/gauge animation — the CSS is fully usable without it.',
       examples: [
         {
           label: 'Drop-in (CDN-built file or local copy)',
@@ -150,6 +150,18 @@
     },
     {
       group: 'Foundations',
+      id: 'icons',
+      title: 'Icons',
+      blurb:
+        'Inside <code>.vui</code>, a bare <code>&lt;i&gt;</code> is an icon: write <code>&lt;i&gt;home&lt;/i&gt;</code> and the Material Symbols ligature draws the glyph. Use <code>&lt;em&gt;</code> for italic text. Add <code>fill</code> for the filled weight. Components space a leading <code>&lt;i&gt;</code> automatically.',
+      examples: [
+        {
+          code: '<div class="vui-cluster" style="font-size:1.6rem">\n  <i>radar</i>\n  <i>shield</i>\n  <i>map</i>\n  <i>bolt</i>\n  <i class="fill">favorite</i>\n  <i>lock</i>\n</div>',
+        },
+      ],
+    },
+    {
+      group: 'Foundations',
       id: 'effects',
       title: 'Glows & effects',
       blurb:
@@ -159,7 +171,7 @@
           code: '<div class="vui-row">\n  <span class="vui-dot"></span>\n  <span class="vui-dot vui-dot--warn"></span>\n  <span class="vui-dot vui-dot--threat"></span>\n  <span class="vui-dot vui-dot--cyan"></span>\n  <span class="vui-dot vui-dot--idle"></span>\n</div>',
         },
         {
-          code: '<div class="vui-cluster">\n  <span class="vui-badge vui-glow-cyan">glow-cyan</span>\n  <span class="vui-badge vui-badge--amber vui-glow-amber">glow-amber</span>\n  <span class="vui-badge vui-badge--red vui-glow-red">glow-red</span>\n</div>',
+          code: '<div class="vui-cluster">\n  <span class="badge cyan vui-glow-cyan">glow-cyan</span>\n  <span class="badge amber vui-glow-amber">glow-amber</span>\n  <span class="badge red vui-glow-red">glow-red</span>\n</div>',
         },
       ],
     },
@@ -188,7 +200,7 @@
           code: '<div class="vui-autogrid vui-autogrid--fit" style="--vui-min:13rem">\n  <article>Sector 14-C</article>\n  <article>Sector 22-A</article>\n  <article>Sector 09-F</article>\n  <article>Sector 31-B</article>\n</div>',
         },
         {
-          code: '<div class="vui-between">\n  <span class="vui-eyebrow">Sector 14-C</span>\n  <span class="vui-badge vui-badge--green vui-badge--dot">Online</span>\n</div>',
+          code: '<div class="vui-between">\n  <span class="vui-eyebrow">Sector 14-C</span>\n  <span class="badge green dot">Online</span>\n</div>',
         },
       ],
     },
@@ -199,13 +211,13 @@
       id: 'buttons',
       title: 'Buttons',
       blurb:
-        'A bare <code>&lt;button&gt;</code> is a chamfered outline control; <code>type="submit"</code> auto-promotes to the filled primary. Tone via <code>data-tone</code>, size via <code>data-size</code>. A lone icon collapses to a square.',
+        'A bare <code>&lt;button&gt;</code> is a chamfered outline control; <code>type="submit"</code> auto-promotes to the filled primary. Re-tone or resize with one word; a lone <code>&lt;i&gt;</code> collapses it to a square.',
       examples: [
         {
-          code: '<div class="vui-cluster">\n  <button>Override</button>\n  <button type="submit">Authorize</button>\n  <button data-tone="amber">Caution</button>\n  <button data-tone="danger">Abort</button>\n  <button data-tone="secure">Confirm</button>\n  <button class="vui-btn--ghost">Dismiss</button>\n  <button disabled>Locked</button>\n</div>',
+          code: '<div class="vui-cluster">\n  <button>Override</button>\n  <button type="submit">Authorize</button>\n  <button class="amber">Caution</button>\n  <button class="danger">Abort</button>\n  <button class="secure">Confirm</button>\n  <button class="ghost">Dismiss</button>\n  <button disabled>Locked</button>\n</div>',
         },
         {
-          code: '<div class="vui-cluster">\n  <button data-size="sm">Small</button>\n  <button>Medium</button>\n  <button data-size="lg">Large</button>\n  <button><i class="ti ti-settings"></i></button>\n  <button class="vui-btn--icon" aria-pressed="true"><i class="ti ti-radar-2"></i></button>\n</div>',
+          code: '<div class="vui-cluster">\n  <button class="small">Small</button>\n  <button>Medium</button>\n  <button class="large">Large</button>\n  <button aria-label="Settings"><i>settings</i></button>\n  <button class="icon" aria-pressed="true" aria-label="Radar"><i>radar</i></button>\n</div>',
         },
       ],
     },
@@ -214,13 +226,13 @@
       id: 'panels',
       title: 'Panels',
       blurb:
-        'A bare <code>&lt;article&gt;</code> is a chamfered plate; a nested <code>&lt;header&gt;</code>/<code>&lt;footer&gt;</code> auto-spans with a hairline divider. Add <code>data-brackets</code> or <code>data-glow</code>, or the depth classes.',
+        'A bare <code>&lt;article&gt;</code> is a chamfered plate; a nested <code>&lt;header&gt;</code>/<code>&lt;footer&gt;</code> auto-spans with a hairline divider. Tune the surface with one word: <code>raised · inset · flat · glow · notch · brackets</code>.',
       examples: [
         {
-          code: '<article data-brackets>\n  <header>\n    <span class="vui-panel__eyebrow">Case File</span>\n    <span class="vui-panel__aside">14-C</span>\n  </header>\n  <p>Recovered intel from the broker drop. Chain of custody verified.</p>\n  <footer><button data-size="sm">Open</button></footer>\n</article>',
+          code: '<article class="brackets">\n  <header>\n    <small class="vui-eyebrow">Case File</small>\n    <small>14-C</small>\n  </header>\n  <p>Recovered intel from the broker drop. Chain of custody verified.</p>\n  <footer><button class="small">Open</button></footer>\n</article>',
         },
         {
-          code: '<div class="vui-grid">\n  <div class="vui-panel vui-panel--inset vui-s12 vui-m6">Inset well</div>\n  <div class="vui-panel vui-panel--glow vui-s12 vui-m6">Accent glow</div>\n</div>',
+          code: '<div class="vui-grid">\n  <article class="inset vui-s12 vui-m6">Inset well</article>\n  <article class="glow vui-s12 vui-m6">Accent glow</article>\n</div>',
         },
       ],
     },
@@ -229,10 +241,10 @@
       id: 'badges',
       title: 'Badges',
       blurb:
-        'Notched status tags. Tone via class or <code>data-tone</code>; add <code>--dot</code> for a live indicator or <code>--solid</code> to fill.',
+        'Notched status tags. Tone with one word; add <code>dot</code> for a live indicator or <code>solid</code> to fill.',
       examples: [
         {
-          code: '<div class="vui-cluster">\n  <span class="vui-badge vui-badge--green vui-badge--dot">Online</span>\n  <span class="vui-badge vui-badge--cyan">Encrypted</span>\n  <span class="vui-badge vui-badge--amber vui-badge--solid">Caution</span>\n  <span class="vui-badge vui-badge--red vui-badge--dot">Threat</span>\n  <span class="vui-badge vui-badge--neutral">Idle</span>\n</div>',
+          code: '<div class="vui-cluster">\n  <span class="badge green dot">Online</span>\n  <span class="badge cyan">Encrypted</span>\n  <span class="badge amber solid">Caution</span>\n  <span class="badge red dot">Threat</span>\n  <span class="badge neutral">Idle</span>\n</div>',
         },
       ],
     },
@@ -241,22 +253,19 @@
       id: 'forms',
       title: 'Forms',
       blurb:
-        'Native controls are styled directly — no wrappers. A <code>&lt;label&gt;</code> wrapping a field stacks it; <code>input[role=switch]</code> becomes a toggle; checkboxes/radios draw their own notched marks.',
+        'Native controls are styled directly — no wrappers. A <code>&lt;label&gt;</code> wrapping a field stacks it (with a leading <code>&lt;span&gt;</code> label and a trailing <code>&lt;small&gt;</code> hint); <code>input[role=switch]</code> becomes a toggle; checkboxes/radios draw their own notched marks.',
       examples: [
         {
-          code: '<label>\n  <span class="vui-field__label">Access code</span>\n  <input type="password" placeholder="••••••••" value="wayne">\n</label>',
+          code: '<label>\n  <span>Access code</span>\n  <input type="password" placeholder="••••••••" value="wayne">\n  <small>8–32 characters.</small>\n</label>',
         },
         {
-          code: '<div class="vui-input-wrap">\n  <i class="ti ti-search"></i>\n  <input placeholder="Search dossier…">\n</div>',
-        },
-        {
-          code: '<label>\n  <span class="vui-field__label">Sector</span>\n  <select>\n    <option>Bleake Island</option>\n    <option>Miagani</option>\n    <option>Founders\'</option>\n  </select>\n</label>',
+          code: '<label>\n  <span>Sector</span>\n  <select>\n    <option>Bleake Island</option>\n    <option>Miagani</option>\n    <option>Founders\'</option>\n  </select>\n</label>',
         },
         {
           code: '<label><input type="checkbox" role="switch" checked> Detective Mode</label>\n<label><input type="checkbox" checked> Mark case solved</label>\n<label><input type="radio" name="d" checked> Normal</label>\n<label><input type="radio" name="d"> Knightmare</label>',
         },
         {
-          code: '<label>\n  <span class="vui-field__label">Frequency</span>\n  <input type="range" min="0" max="100" value="62">\n</label>\n<label>\n  <span class="vui-field__label">Notes</span>\n  <textarea placeholder="Field report…"></textarea>\n</label>',
+          code: '<label>\n  <span>Frequency</span>\n  <input type="range" min="0" max="100" value="62">\n</label>\n<label>\n  <span>Notes</span>\n  <textarea placeholder="Field report…"></textarea>\n</label>',
         },
       ],
     },
@@ -265,13 +274,13 @@
       id: 'alerts',
       title: 'Alerts',
       blurb:
-        'Inline system notices with an accent rail + glyph. <code>[role=status]</code> reads as info, <code>[role=alert]</code> as threat. Tone via <code>data-tone</code>; a nested <code>&lt;strong&gt;</code> becomes the title.',
+        'Inline system notices with an accent rail + glyph. <code>[role=status]</code> reads as info, <code>[role=alert]</code> as threat. Re-tone with one word (<code>warn · secure · info</code>); a nested <code>&lt;strong&gt;</code> becomes the title.',
       examples: [
         {
           code: '<div role="alert">\n  <strong>Hostiles inbound</strong>\n  12 contacts · grid 14-C · ETA 2m\n</div>',
         },
         {
-          code: '<div class="vui-alert" data-tone="secure">\n  <strong>Uplink secure</strong>\n  Channel encrypted end-to-end.\n</div>\n<div class="vui-alert" data-tone="warn" style="margin-block-start:12px">\n  <strong>Drone sweep</strong>\n  Aerial recon over Founders\' Island.\n</div>',
+          code: '<div role="status" class="secure">\n  <strong>Uplink secure</strong>\n  Channel encrypted end-to-end.\n</div>\n<div role="status" class="warn" style="margin-block-start:12px">\n  <strong>Drone sweep</strong>\n  Aerial recon over Founders\' Island.\n</div>',
         },
       ],
     },
@@ -280,16 +289,16 @@
       id: 'meters',
       title: 'Meters & progress',
       blurb:
-        'Native <code>&lt;meter&gt;</code> and <code>&lt;progress&gt;</code> become telemetry bars. The <code>.vui-meter</code> composite adds a label + auto value readout, driven purely by <code>--value</code>. Add <code>data-animate</code> (with the JS helper) to count up on view.',
+        'Native <code>&lt;meter&gt;</code> and <code>&lt;progress&gt;</code> become telemetry bars. The <code>.meter</code> helper adds a label + auto value readout, driven purely by <code>--value</code>. Add <code>data-animate</code> (with the JS helper) to count up on view.',
       examples: [
         {
           code: '<meter min="0" max="100" low="30" high="70" optimum="100" value="86"></meter>\n<progress max="100" value="62"></progress>',
         },
         {
-          code: '<div class="vui-meter vui-meter--segmented" style="--value:73">\n  <div class="vui-meter__top">\n    <span class="vui-meter__label">Suit Integrity</span>\n    <span class="vui-meter__val"></span>\n  </div>\n  <div class="vui-meter__track"><div class="vui-meter__fill"></div></div>\n</div>',
+          code: '<div class="meter segmented" style="--value:73">\n  <span>Suit Integrity</span>\n  <b></b>\n</div>',
         },
         {
-          code: '<div class="vui-meter vui-meter--amber" data-value="62" data-animate style="--value:0">\n  <div class="vui-meter__top">\n    <span class="vui-meter__label">Threat Level</span>\n    <span class="vui-meter__val"></span>\n  </div>\n  <div class="vui-meter__track"><div class="vui-meter__fill"></div></div>\n</div>',
+          code: '<div class="meter amber" data-value="62" data-animate style="--value:0">\n  <span>Threat Level</span>\n  <b></b>\n</div>',
         },
       ],
     },
@@ -298,10 +307,10 @@
       id: 'gauge',
       title: 'Radial gauge',
       blurb:
-        'A 270° arc readout built from a single conic-gradient — no SVG, no JS. Value renders from <code>--value</code>; tones and sizes via modifier classes.',
+        'A 270° arc readout built from a single conic-gradient — no SVG, no JS. Value renders from <code>--value</code>; size with <code>small · large</code>, tone with <code>amber · red · green</code>.',
       examples: [
         {
-          code: '<div class="vui-cluster">\n  <div class="vui-gauge" style="--value:87">\n    <b class="vui-gauge__value"></b><small>%</small>\n    <span class="vui-gauge__label">Integrity</span>\n  </div>\n  <div class="vui-gauge vui-gauge--amber vui-gauge--sm" style="--value:42">\n    <b class="vui-gauge__value"></b><small>%</small>\n    <span class="vui-gauge__label">Threat</span>\n  </div>\n</div>',
+          code: '<div class="vui-cluster">\n  <div class="gauge" style="--value:87">\n    <b></b><small>%</small>\n    <span>Integrity</span>\n  </div>\n  <div class="gauge amber small" style="--value:42">\n    <b></b><small>%</small>\n    <span>Threat</span>\n  </div>\n</div>',
         },
       ],
     },
@@ -310,10 +319,10 @@
       id: 'tabs',
       title: 'Tabs',
       blurb:
-        'Semantic <code>nav[role=tablist]</code> + <code>button[role=tab]</code>. The optional JS wires clicks, arrow keys, and panel visibility via <code>aria-controls</code>.',
+        'Semantic <code>nav[role=tablist]</code> + <code>button[role=tab]</code>. The optional JS wires clicks, arrow keys, and panel visibility via <code>aria-controls</code>. A trailing <code>&lt;small&gt;</code> is a count chip.',
       examples: [
         {
-          code: '<nav role="tablist">\n  <button role="tab" aria-controls="t-cases" aria-selected="true">Case Files <span class="vui-tab__count">7</span></button>\n  <button role="tab" aria-controls="t-map">City Map</button>\n  <button role="tab" aria-controls="t-gear">Loadout</button>\n</nav>\n<div role="tabpanel" id="t-cases">Seven open cases in the active sweep.</div>\n<div role="tabpanel" id="t-map" hidden>City map module offline.</div>\n<div role="tabpanel" id="t-gear" hidden>Three gadgets equipped.</div>',
+          code: '<nav role="tablist">\n  <button role="tab" aria-controls="t-cases" aria-selected="true">Case Files <small>7</small></button>\n  <button role="tab" aria-controls="t-map">City Map</button>\n  <button role="tab" aria-controls="t-gear">Loadout</button>\n</nav>\n<div role="tabpanel" id="t-cases">Seven open cases in the active sweep.</div>\n<div role="tabpanel" id="t-map" hidden>City map module offline.</div>\n<div role="tabpanel" id="t-gear" hidden>Three gadgets equipped.</div>',
         },
       ],
     },
@@ -334,10 +343,10 @@
       id: 'table',
       title: 'Tables',
       blurb:
-        'A semantic <code>&lt;table&gt;</code> becomes a telemetry grid: uppercase eyebrow headers, hairline rows, cyan hover. Mark numeric cells with <code>data-num</code>.',
+        'A semantic <code>&lt;table&gt;</code> becomes a telemetry grid: uppercase eyebrow headers, hairline rows, cyan hover. Mark numeric cells with <code>data-num</code>. Wrap in a <code>.scroll</code> for overflow on phones.',
       examples: [
         {
-          code: '<div class="vui-table-scroll">\n<table>\n  <caption>District status</caption>\n  <thead><tr><th>Sector</th><th>Status</th><th data-num>Threat</th></tr></thead>\n  <tbody>\n    <tr><td>Bleake Island</td><td>Contested</td><td data-num>64</td></tr>\n    <tr><td>Miagani</td><td>Hostile</td><td data-num>86</td></tr>\n    <tr><td>Founders\'</td><td>Secure</td><td data-num>38</td></tr>\n  </tbody>\n</table>\n</div>',
+          code: '<div class="scroll">\n<table>\n  <caption>District status</caption>\n  <thead><tr><th>Sector</th><th>Status</th><th data-num>Threat</th></tr></thead>\n  <tbody>\n    <tr><td>Bleake Island</td><td>Contested</td><td data-num>64</td></tr>\n    <tr><td>Miagani</td><td>Hostile</td><td data-num>86</td></tr>\n    <tr><td>Founders\'</td><td>Secure</td><td data-num>38</td></tr>\n  </tbody>\n</table>\n</div>',
         },
       ],
     },
@@ -346,13 +355,13 @@
       id: 'overlays',
       title: 'Dialog, tooltip, divider',
       blurb:
-        'Native <code>&lt;dialog&gt;</code> as a chamfered modal with a scrim, a hover tooltip, a labelled divider, and key/value + stat readouts.',
+        'Native <code>&lt;dialog&gt;</code> as a chamfered modal with a scrim, a hover tooltip (<code>[data-tip]</code>), a labelled <code>.divider</code>, and <code>.kv</code> / <code>.stat</code> readouts.',
       examples: [
         {
-          code: '<button onclick="this.nextElementSibling.showModal()">Open dialog</button>\n<dialog>\n  <header>\n    <span class="vui-panel__eyebrow">Confirm</span>\n    <button class="vui-btn--icon" onclick="this.closest(\'dialog\').close()"><i class="ti ti-x"></i></button>\n  </header>\n  <div class="vui-dialog__body">Engage the Knightfall protocol?</div>\n  <footer>\n    <button class="vui-btn--ghost" onclick="this.closest(\'dialog\').close()">Cancel</button>\n    <button type="submit" data-tone="danger" onclick="this.closest(\'dialog\').close()">Engage</button>\n  </footer>\n</dialog>',
+          code: '<button onclick="this.nextElementSibling.showModal()">Open dialog</button>\n<dialog>\n  <header>\n    <small class="vui-eyebrow">Confirm</small>\n    <button class="icon" aria-label="Close" onclick="this.closest(\'dialog\').close()"><i>close</i></button>\n  </header>\n  <div>Engage the Knightfall protocol?</div>\n  <footer>\n    <button class="ghost" onclick="this.closest(\'dialog\').close()">Cancel</button>\n    <button type="submit" class="danger" onclick="this.closest(\'dialog\').close()">Engage</button>\n  </footer>\n</dialog>',
         },
         {
-          code: '<span class="vui-tooltip" data-tip="Decryption in progress" tabindex="0">\n  <button class="vui-btn--icon"><i class="ti ti-lock"></i></button>\n</span>\n<div class="vui-divider" data-label="Sector 14-C" style="margin-block:16px"></div>\n<div class="vui-kv"><span>Operator</span><span>B. Wayne</span></div>\n<div class="vui-stat vui-stat--signal"><b>98.6</b><span>Integrity</span></div>',
+          code: '<span data-tip="Decryption in progress" tabindex="0">\n  <button class="icon" aria-label="Locked"><i>lock</i></button>\n</span>\n<div class="divider" data-label="Sector 14-C" style="margin-block:16px"></div>\n<div class="kv"><span>Operator</span><span>B. Wayne</span></div>\n<div class="stat signal"><b>98.6</b><span>Integrity</span></div>',
         },
       ],
     },
@@ -363,11 +372,11 @@
       id: 'appshell',
       title: 'App shell',
       blurb:
-        'The tactical desktop layout — left rail + top bar + scrolling stage. Responsive: the rail drops to a bottom command bar on phones. Shown here boxed.',
+        'Any <code>.vui</code> element holding a <code>&lt;main&gt;</code> becomes an app frame and places its landmarks by element. Add a <code>&lt;nav class="left"&gt;</code> for a side rail — a vertical column ≥768px, a bottom command bar below. Shown here boxed.',
       examples: [
         {
           frame: true,
-          code: '<div class="vui-app">\n  <nav class="vui-rail">\n    <div class="vui-rail__emblem"><img src="../assets/emblem.svg" alt="VantaUI"></div>\n    <button class="vui-rail__item vui-rail__item--active"><i class="ti ti-layout-dashboard"></i></button>\n    <button class="vui-rail__item"><i class="ti ti-files"></i></button>\n    <button class="vui-rail__item"><i class="ti ti-tools"></i></button>\n    <div class="vui-rail__spacer"></div>\n    <button class="vui-rail__item"><i class="ti ti-settings"></i></button>\n  </nav>\n  <header class="vui-topbar">\n    <span class="vui-topbar__eyebrow"><b>//</b> WayneTech OS</span>\n    <div class="vui-topbar__spacer"></div>\n    <span class="vui-topbar__stat"><span class="vui-dot"></span> Online</span>\n    <span class="vui-topbar__user">BW</span>\n  </header>\n  <main class="vui-stage">\n    <div class="vui-stage__inner">\n      <div class="vui-screen-head">\n        <div>\n          <h1 class="vui-screen-title">Command Center</h1>\n          <p class="vui-screen-sub">Operational overview · night cycle 02:14</p>\n        </div>\n        <button data-tone="amber">Knightfall</button>\n      </div>\n      <div class="vui-grid">\n        <article class="vui-s12 vui-m4"><div class="vui-stat vui-stat--signal"><b>07</b><span>Active cases</span></div></article>\n        <article class="vui-s12 vui-m4"><div class="vui-stat vui-stat--amber"><b>12</b><span>Hostiles</span></div></article>\n        <article class="vui-s12 vui-m4"><div class="vui-stat"><b>04:18</b><span>Elapsed</span></div></article>\n      </div>\n    </div>\n  </main>\n</div>',
+          code: '<div class="vui" style="block-size:440px">\n  <nav class="left" aria-label="Rail">\n    <img src="../assets/emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</div>',
         },
       ],
     },
@@ -380,7 +389,7 @@
       examples: [
         {
           noDemo: true,
-          code: 'import VantaUI from "./js/vantaui.js";\n\n// re-scan after you inject DOM (frameworks, htmx, etc.)\nVantaUI.init(document);\n\n// animate a meter or gauge to a value\nVantaUI.setValue(document.querySelector(".vui-gauge"), 87);\n\n// live clock — any element:\n// <span data-vui-clock>00:00:00</span>',
+          code: 'import VantaUI from "./js/vantaui.js";\n\n// re-scan after you inject DOM (frameworks, htmx, etc.)\nVantaUI.init(document);\n\n// animate a meter or gauge to a value\nVantaUI.setValue(document.querySelector(".gauge"), 87);\n\n// live clock — any element:\n// <span data-vui-clock>00:00:00</span>',
         },
       ],
     },
@@ -417,7 +426,7 @@
     wrap.innerHTML =
       demo +
       '<div class="doc-code">' +
-      '<button class="doc-copy" type="button" aria-label="Copy code"><i class="ti ti-copy"></i></button>' +
+      '<button class="doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
       '<pre><code>' +
       esc(ex.code) +
       '</code></pre>' +
@@ -487,11 +496,11 @@
       var code = btn.parentNode.querySelector('code').textContent;
       navigator.clipboard && navigator.clipboard.writeText(code);
       var i = btn.querySelector('i');
-      var prev = i.className;
-      i.className = 'ti ti-check';
+      var prev = i.textContent;
+      i.textContent = 'check';
       btn.classList.add('is-copied');
       setTimeout(function () {
-        i.className = prev;
+        i.textContent = prev;
         btn.classList.remove('is-copied');
       }, 1200);
     });

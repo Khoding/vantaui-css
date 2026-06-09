@@ -1,13 +1,13 @@
 /* ============================================================
-   VantaUI — Forms
-   Native elements are styled directly, so semantic markup needs no
-   wrappers: <input>, <textarea>, <select> become inset terminal
-   fields; <input type=checkbox|radio> draw their own notched marks;
-   <input type=checkbox role=switch> becomes an angled toggle.
+   VantaUI — Forms (semantic, zero-class)
+   Native elements are styled directly: <input>, <textarea>, <select>
+   become inset terminal fields; <input type=checkbox|radio> draw their
+   own notched marks; <input type=checkbox role=switch> becomes an angled
+   toggle; <input type=range> a tactical slider.
 
-   A <label> that wraps a control (label :has(> input)) lays out as a
-   stacked field; an inline label (checkbox/radio) lays out as a row.
-   Add a leading icon with .vui-field:has(svg).
+   A <label> wrapping a text control lays out as a stacked field (label
+   text on top, control below, a trailing <small> as the hint). A <label>
+   wrapping a checkbox/radio lays out as an inline row.
    ============================================================ */
 
 /* ---------- Text-like fields ---------- */
@@ -15,11 +15,10 @@
   .vui
     input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='submit']):not(
       [type='button']
-    ):not([type='reset']):not([type='image']):not([type='color']):not([class*='vui-'])
+    ):not([type='reset']):not([type='image']):not([type='color'])
 ),
-:where(.vui textarea:not([class*='vui-'])),
-:where(.vui select:not([class*='vui-'])),
-.vui-input {
+:where(.vui textarea),
+:where(.vui select) {
   --bevel-md: 8px;
   appearance: none;
   inline-size: 100%;
@@ -44,24 +43,20 @@
   line-height: var(--lh-mono);
   resize: vertical;
 }
-:where(.vui input::placeholder, .vui textarea::placeholder),
-.vui-input::placeholder {
+:where(.vui input::placeholder, .vui textarea::placeholder) {
   color: var(--text-faint);
 }
-:where(.vui input:focus, .vui textarea:focus, .vui select:focus),
-.vui-input:focus {
+:where(.vui input:focus, .vui textarea:focus, .vui select:focus) {
   border-color: var(--hairline-accent);
   box-shadow:
     var(--shadow-inset),
     0 0 18px -4px var(--accent-glow);
 }
-:where(.vui input:disabled, .vui textarea:disabled, .vui select:disabled),
-.vui-input:disabled {
+:where(.vui input:disabled, .vui textarea:disabled, .vui select:disabled) {
   cursor: not-allowed;
   opacity: 0.45;
 }
-:where(.vui input[aria-invalid='true'], .vui textarea[aria-invalid='true']),
-.vui-input--invalid {
+:where(.vui input[aria-invalid='true'], .vui textarea[aria-invalid='true'], .vui select[aria-invalid='true']) {
   border-color: var(--red-500);
   box-shadow:
     var(--shadow-inset),
@@ -69,77 +64,44 @@
 }
 
 /* Custom select chevron (cyan) */
-:where(.vui select:not([multiple])),
-.vui-select {
+:where(.vui select:not([multiple])) {
   padding-inline-end: 34px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2342e3ff' stroke-width='1.5'/%3E%3C/svg%3E");
   background-position: right 14px center;
   background-repeat: no-repeat;
 }
 
-/* ---------- Field wrapper (label + control + hint) ---------- */
+/* ---------- Field wrapper: <label> wrapping a text control ---------- */
 :where(.vui label:has(> input:not([type='checkbox']):not([type='radio']))),
 :where(.vui label:has(> textarea)),
-:where(.vui label:has(> select)),
-.vui-field {
+:where(.vui label:has(> select)) {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-:where(.vui .vui-field__label),
-.vui-field > :where(span, .vui-field__label):first-child {
-  color: var(--text-muted);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-2xs);
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-}
-.vui-field__hint {
-  color: var(--text-faint);
-  font-size: var(--fs-xs);
-  font-family: var(--font-mono);
-}
-.vui-field__hint--err {
-  color: var(--red-400);
-}
 
-/* Input shell with a leading icon (detected via :has) */
-.vui-input-wrap {
-  --bevel-md: 8px;
-  display: flex;
-  position: relative;
-  align-items: center;
-  border: var(--border-hair) solid var(--hairline-strong);
-  background-color: var(--surface-inset);
-  box-shadow: var(--shadow-inset);
-  clip-path: var(--clip-chamfer);
-  transition:
-    border-color var(--dur-base) var(--ease-hud),
-    box-shadow var(--dur-base) var(--ease-hud);
-}
-.vui-input-wrap:focus-within {
-  border-color: var(--hairline-accent);
-  box-shadow:
-    var(--shadow-inset),
-    0 0 18px -4px var(--accent-glow);
-}
-.vui-input-wrap > :where(svg, i, .vui-input-wrap__icon) {
-  flex: none;
-  margin-inline-start: 12px;
-  color: var(--text-muted);
-}
-.vui-input-wrap > input {
-  border: 0;
-  background: none;
-  box-shadow: none;
-  clip-path: none;
+  /* the leading label text (a bare text node usually sits in a <span>) */
+  & > :where(span):first-child {
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+  /* a trailing hint */
+  & > :where(small) {
+    color: var(--text-faint);
+    font-size: var(--fs-xs);
+    font-family: var(--font-mono);
+  }
+  & > :where(small.error) {
+    color: var(--red-400);
+  }
 }
 
 /* ---------- Checkbox & radio (drawn on the element) ---------- */
-:where(.vui input[type='checkbox']:not([role='switch']):not([class*='vui-'])),
-:where(.vui input[type='radio']:not([class*='vui-'])),
-.vui-check {
+:where(.vui input[type='checkbox']:not([role='switch'])),
+:where(.vui input[type='radio']) {
   --bevel-sm: 4px;
   display: inline-grid;
   appearance: none;
@@ -155,8 +117,7 @@
   transition: all var(--dur-fast) var(--ease-hud);
 }
 :where(.vui input[type='checkbox']:not([role='switch']))::before,
-:where(.vui input[type='radio'])::before,
-.vui-check::before {
+:where(.vui input[type='radio'])::before {
   content: '';
   --bevel-sm: 2px;
   inline-size: 10px;
@@ -168,37 +129,31 @@
   opacity: 0;
   transition: all var(--dur-fast) var(--ease-hud);
 }
-:where(.vui input[type='radio']),
-.vui-check--radio {
+:where(.vui input[type='radio']) {
   border-radius: var(--radius-pill);
   clip-path: none;
 }
-:where(.vui input[type='radio'])::before,
-.vui-check--radio::before {
+:where(.vui input[type='radio'])::before {
   inline-size: 8px;
   block-size: 8px;
   border-radius: var(--radius-pill);
   clip-path: none;
 }
-:where(.vui input[type='checkbox']:checked, .vui input[type='radio']:checked),
-.vui-check:checked {
+:where(.vui input[type='checkbox']:checked, .vui input[type='radio']:checked) {
   border-color: var(--hairline-accent);
 }
-:where(.vui input[type='checkbox']:checked, .vui input[type='radio']:checked)::before,
-.vui-check:checked::before {
+:where(.vui input[type='checkbox']:checked, .vui input[type='radio']:checked)::before {
   transform: scale(1);
   opacity: 1;
 }
-:where(.vui input[type='checkbox']:focus-visible, .vui input[type='radio']:focus-visible),
-.vui-check:focus-visible {
+:where(.vui input[type='checkbox']:focus-visible, .vui input[type='radio']:focus-visible) {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
 /* Inline control labels: <label><input type=checkbox> Text</label> */
 :where(.vui label:has(> input[type='checkbox'])),
-:where(.vui label:has(> input[type='radio'])),
-.vui-check-label {
+:where(.vui label:has(> input[type='radio'])) {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -210,8 +165,7 @@
 }
 
 /* ---------- Switch: <input type=checkbox role=switch> ---------- */
-:where(.vui input[type='checkbox'][role='switch']),
-.vui-switch {
+:where(.vui input[type='checkbox'][role='switch']) {
   appearance: none;
   position: relative;
   flex: none;
@@ -224,8 +178,7 @@
   cursor: pointer;
   transition: all var(--dur-base) var(--ease-hud);
 }
-:where(.vui input[type='checkbox'][role='switch'])::before,
-.vui-switch::before {
+:where(.vui input[type='checkbox'][role='switch'])::before {
   position: absolute;
   inline-size: 16px;
   block-size: 16px;
@@ -236,40 +189,34 @@
   clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
   transition: all var(--dur-base) var(--ease-hud);
 }
-:where(.vui input[type='checkbox'][role='switch']:checked),
-.vui-switch:checked {
+:where(.vui input[type='checkbox'][role='switch']:checked) {
   border-color: var(--hairline-accent);
   background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
   box-shadow: inset 0 0 12px -2px var(--accent-glow);
 }
-:where(.vui input[type='checkbox'][role='switch']:checked)::before,
-.vui-switch:checked::before {
+:where(.vui input[type='checkbox'][role='switch']:checked)::before {
   inset-inline-start: 26px;
   background-color: var(--cyan-400);
   box-shadow: var(--glow-cyan-md);
 }
-:where(.vui input[type='checkbox'][role='switch']:focus-visible),
-.vui-switch:focus-visible {
+:where(.vui input[type='checkbox'][role='switch']:focus-visible) {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
 /* ---------- Range slider ---------- */
-:where(.vui input[type='range']),
-.vui-range {
+:where(.vui input[type='range']) {
   appearance: none;
   inline-size: 100%;
   background: none;
   cursor: pointer;
 }
-:where(.vui input[type='range'])::-webkit-slider-runnable-track,
-.vui-range::-webkit-slider-runnable-track {
+:where(.vui input[type='range'])::-webkit-slider-runnable-track {
   block-size: 6px;
   border: var(--border-hair) solid var(--hairline);
   background-color: var(--surface-inset);
 }
-:where(.vui input[type='range'])::-webkit-slider-thumb,
-.vui-range::-webkit-slider-thumb {
+:where(.vui input[type='range'])::-webkit-slider-thumb {
   appearance: none;
   inline-size: 14px;
   block-size: 16px;
@@ -278,14 +225,12 @@
   box-shadow: var(--glow-cyan-sm);
   clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
 }
-:where(.vui input[type='range'])::-moz-range-track,
-.vui-range::-moz-range-track {
+:where(.vui input[type='range'])::-moz-range-track {
   block-size: 6px;
   border: var(--border-hair) solid var(--hairline);
   background-color: var(--surface-inset);
 }
-:where(.vui input[type='range'])::-moz-range-thumb,
-.vui-range::-moz-range-thumb {
+:where(.vui input[type='range'])::-moz-range-thumb {
   inline-size: 14px;
   block-size: 16px;
   border: 0;

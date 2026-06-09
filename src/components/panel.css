@@ -1,17 +1,12 @@
 /* ============================================================
-   VantaUI — Panels / surfaces
-   Semantic: a bare <article> inside .vui becomes a chamfered plate.
-   A <header>/<footer> inside it auto-spans edge-to-edge with a hairline
-   divider (detected via :has, laid out with negative margins). The
-   .vui-panel class does the same anywhere, with depth + accent variants.
+   VantaUI — Panels / surfaces (semantic, zero-class)
+   A bare <article> is a chamfered plate. A <header>/<footer> inside it
+   auto-spans edge-to-edge with a hairline divider (detected via :has,
+   laid out with negative margins). Tune the surface with one word:
+     raised · inset · flat · glow · notch · brackets
    ============================================================ */
 
-/* Base applies to: bare <article> in .vui, the .vui-panel class, AND any
-   lone vui-panel--* modifier — so a bordered/raised/bracketed plate always
-   carries its padding + surface, never just the decoration. */
-:where(.vui article:not([class*='vui-'])),
-.vui-panel,
-:where([class*='vui-panel--']:not([class*='vui-panel__'])) {
+:where(.vui article) {
   --bevel-md: 10px;
   display: block;
   position: relative;
@@ -21,101 +16,68 @@
   box-shadow: var(--shadow-panel);
   color: var(--text-primary);
   clip-path: var(--clip-chamfer);
-}
 
-/* Header / footer span the full plate width with a hairline divider */
-:where(.vui article:not([class*='vui-']) > header),
-.vui-panel__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: calc(-1 * var(--space-5));
-  margin-block-end: var(--space-5);
-  padding-inline: var(--space-5);
-  padding-block: 12px;
-  gap: var(--space-4);
-  border-block-end: var(--border-hair) solid var(--hairline);
-}
-:where(.vui article:not([class*='vui-']) > footer),
-.vui-panel__foot {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin: calc(-1 * var(--space-5));
-  margin-block-start: var(--space-5);
-  padding-inline: var(--space-5);
-  padding-block: 12px;
-  gap: var(--space-3);
-  border-block-start: var(--border-hair) solid var(--hairline);
-}
-
-/* `//`-prefixed system eyebrow inside a panel header */
-.vui-panel__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-muted);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-2xs);
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-wider);
-  text-transform: uppercase;
-}
-.vui-panel__eyebrow::before {
-  content: '//';
-  color: var(--accent);
-}
-.vui-panel__aside {
-  color: var(--text-faint);
-  font-size: var(--fs-xs);
-  font-family: var(--font-mono);
-}
-/* Explicit body wrapper (optional; only needed when you can't rely on
-   the article's own padding, e.g. a flush media area). */
-.vui-panel__body {
-  padding: var(--space-5);
-}
-.vui-panel:has(> .vui-panel__head),
-.vui-panel:has(> .vui-panel__body) {
-  padding: 0;
-}
-.vui-panel:has(> .vui-panel__head) > .vui-panel__head {
-  margin: 0;
+  /* Header / footer span the full plate with a hairline divider */
+  & > :where(header) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin: calc(-1 * var(--space-5));
+    margin-block-end: var(--space-5);
+    padding-inline: var(--space-5);
+    padding-block: 12px;
+    border-block-end: var(--border-hair) solid var(--hairline);
+  }
+  & > :where(footer) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    margin: calc(-1 * var(--space-5));
+    margin-block-start: var(--space-5);
+    padding-inline: var(--space-5);
+    padding-block: 12px;
+    border-block-start: var(--border-hair) solid var(--hairline);
+  }
+  /* meta note in a panel header (a trailing <small>) */
+  & > :where(header) small {
+    color: var(--text-faint);
+    font-size: var(--fs-xs);
+    font-family: var(--font-mono);
+  }
 }
 
 /* ---- Depth variants ---- */
-.vui-panel--raised {
+:where(.vui article.raised) {
   background-color: var(--surface-panel-2);
   box-shadow: var(--shadow-raised);
 }
-.vui-panel--inset {
+:where(.vui article.inset) {
   background-color: var(--surface-inset);
   box-shadow: var(--shadow-inset);
 }
-.vui-panel--flat {
+:where(.vui article.flat) {
   box-shadow: none;
 }
 
 /* ---- Accent rim glow ---- */
-.vui-panel--glow,
-:where(.vui article[data-glow]) {
+:where(.vui article.glow) {
   border-color: var(--hairline-accent);
   box-shadow:
     var(--shadow-panel),
     0 0 24px -6px var(--accent-glow);
 }
 
-/* ---- Notched plate variant ---- */
-.vui-panel--notch {
+/* ---- Notched plate ---- */
+:where(.vui article.notch) {
   --bevel-sm: 8px;
   clip-path: var(--clip-notch);
 }
 
 /* ---- Corner brackets ---- */
-.vui-panel--brackets::before,
-.vui-panel--brackets::after,
-:where(.vui article[data-brackets])::before,
-:where(.vui article[data-brackets])::after {
+:where(.vui article.brackets)::before,
+:where(.vui article.brackets)::after {
   position: absolute;
   inline-size: 14px;
   block-size: 14px;
@@ -124,15 +86,13 @@
   filter: drop-shadow(var(--glow-cyan-sm));
   pointer-events: none;
 }
-.vui-panel--brackets::before,
-:where(.vui article[data-brackets])::before {
+:where(.vui article.brackets)::before {
   inset-block-start: 6px;
   inset-inline-start: 6px;
   border-inline-end: 0;
   border-block-end: 0;
 }
-.vui-panel--brackets::after,
-:where(.vui article[data-brackets])::after {
+:where(.vui article.brackets)::after {
   inset-block-end: 6px;
   inset-inline-end: 6px;
   border-inline-start: 0;

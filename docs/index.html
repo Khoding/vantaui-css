@@ -7,9 +7,11 @@
   <title>VantaUI CSS — Tactical HUD design system</title>
   <meta name="description"
     content="VantaUI CSS — a dark, angular, military-telemetry tactical HUD design system. Semantic-first CSS library; framework-agnostic with Vue & Nuxt adapters." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
-  <link rel="stylesheet" href="vantaui.min.css" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" />
+  <link rel="stylesheet" href="../dist/vantaui.min.css" />
   <style>
     /* ---- Docs chrome (unlayered → always wins over the framework) ---- */
     html {
@@ -253,7 +255,7 @@
       display: block;
     }
 
-    .doc-demo--frame .vui-app {
+    .doc-demo--frame .vui {
       block-size: 440px;
       min-block-size: 0;
     }
@@ -454,7 +456,7 @@
 </head>
 
 <body class="vui">
-  <button class="doc-menu-btn" id="doc-menu" aria-label="Toggle navigation"><i class="ti ti-menu-2"></i></button>
+  <button class="doc-menu-btn" id="doc-menu" aria-label="Toggle navigation"><i>menu</i></button>
 
   <div class="doc-shell">
     <aside class="doc-side" id="doc-side">
@@ -477,9 +479,9 @@
             library. Write proper HTML, get a HUD. Framework-agnostic, with first-class Vue &amp; Nuxt adapters and a
             zero-dependency JS layer.</p>
           <div class="doc-hero__meta">
-            <span class="vui-badge vui-badge--green vui-badge--dot">Zero-CLS fonts</span>
-            <span class="vui-badge vui-badge--cyan">Cascade layers</span>
-            <span class="vui-badge vui-badge--neutral">No build required</span>
+            <span class="badge green dot">Zero-CLS fonts</span>
+            <span class="badge cyan">Cascade layers</span>
+            <span class="badge neutral">No build required</span>
           </div>
         </div>
       </header>

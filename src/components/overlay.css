@@ -1,13 +1,13 @@
 /* ============================================================
-   VantaUI — Overlays & misc surfaces
-   Native <dialog> as a chamfered modal with a scrim backdrop, a
-   labelled divider, a tooltip, and a key/value readout row — small
-   pieces that round out a HUD.
+   VantaUI — Overlays & misc surfaces (semantic, zero-class)
+   A native <dialog> is a chamfered modal with a scrim backdrop; a
+   <header>/<footer> inside it divides automatically. Plus small HUD
+   pieces: a labelled divider, a tooltip, a key/value row, a big stat.
+   (Edge drawers are <dialog class="left|right"> — see navigation.css.)
    ============================================================ */
 
 /* ---------- Modal: native <dialog> ---------- */
-:where(.vui dialog),
-.vui-dialog {
+:where(.vui dialog:not(.left):not(.right)) {
   --bevel-md: 12px;
   max-inline-size: min(92vw, 34rem);
   padding: 0;
@@ -19,69 +19,65 @@
   color: var(--text-primary);
   clip-path: var(--clip-chamfer);
 }
-:where(.vui dialog)::backdrop,
-.vui-dialog::backdrop {
+:where(.vui dialog:not(.left):not(.right))::backdrop {
   backdrop-filter: blur(2px);
   background-color: var(--scrim);
 }
-:where(.vui dialog > header),
-.vui-dialog__head {
+:where(.vui dialog:not(.left):not(.right) > header) {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-4);
   padding-inline: var(--space-6);
   padding-block: 14px;
-  gap: var(--space-4);
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-:where(.vui dialog > :not(header):not(footer)),
-.vui-dialog__body {
+:where(.vui dialog:not(.left):not(.right) > :not(header):not(footer)) {
   padding-inline: var(--space-6);
   padding-block: var(--space-5);
 }
-:where(.vui dialog > footer),
-.vui-dialog__foot {
+:where(.vui dialog:not(.left):not(.right) > footer) {
   display: flex;
   justify-content: flex-end;
+  gap: var(--space-3);
   padding-inline: var(--space-6);
   padding-block: 14px;
-  gap: var(--space-3);
   border-block-start: var(--border-hair) solid var(--hairline);
 }
 
-/* ---------- Labelled divider: <div class="vui-divider" data-label="SECTOR"> ---------- */
-.vui-divider {
+/* ---------- Labelled divider: <div class="divider" data-label="SECTOR"> ---------- */
+:where(.vui .divider) {
   display: flex;
   align-items: center;
   gap: var(--space-4);
   color: var(--text-faint);
 }
-.vui-divider::before,
-.vui-divider::after {
+:where(.vui .divider)::before,
+:where(.vui .divider)::after {
   flex: 1;
   block-size: 1px;
   background-image: linear-gradient(90deg, transparent, var(--hairline-strong));
   content: '';
 }
-.vui-divider::after {
+:where(.vui .divider)::after {
   background-image: linear-gradient(90deg, var(--hairline-strong), transparent);
 }
-.vui-divider[data-label]::before {
-  content: none;
-}
-.vui-divider[data-label] {
+:where(.vui .divider[data-label]) {
   font-weight: var(--fw-semibold);
   font-size: var(--fs-2xs);
   font-family: var(--font-display);
   letter-spacing: var(--ls-widest);
   text-transform: uppercase;
 }
+:where(.vui .divider[data-label])::before {
+  content: none;
+}
 
-/* ---------- Tooltip: any element + .vui-tooltip[data-tip] ---------- */
-.vui-tooltip {
+/* ---------- Tooltip: any element + [data-tip] ---------- */
+:where(.vui [data-tip]) {
   position: relative;
 }
-.vui-tooltip::after {
+:where(.vui [data-tip])::after {
   z-index: 50;
   position: absolute;
   inline-size: max-content;
@@ -104,55 +100,55 @@
   pointer-events: none;
   transition: opacity var(--dur-fast) var(--ease-hud);
 }
-.vui-tooltip:hover::after,
-.vui-tooltip:focus-visible::after {
+:where(.vui [data-tip]:hover)::after,
+:where(.vui [data-tip]:focus-visible)::after {
   opacity: 1;
 }
 
 /* ---------- Key/value readout row ---------- */
-.vui-kv {
+:where(.vui .kv) {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding-block: 6px;
   gap: var(--space-4);
+  padding-block: 6px;
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-.vui-kv > :first-child {
+:where(.vui .kv) > :first-child {
   color: var(--text-muted);
   font-size: var(--fs-2xs);
   font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
 }
-.vui-kv > :last-child {
+:where(.vui .kv) > :last-child {
   color: var(--text-primary);
   font-size: var(--fs-sm);
   font-family: var(--font-mono);
 }
 
-/* big stat readout: <div class="vui-stat"><b>98.6</b><span>Integrity</span></div> */
-.vui-stat {
+/* ---------- Big stat readout: <div class="stat"><b>98.6</b><span>Integrity</span></div> ---------- */
+:where(.vui .stat) {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-.vui-stat > b {
+:where(.vui .stat) > b {
   color: var(--text-primary);
   font-weight: var(--fw-bold);
   font-size: var(--fs-3xl);
   line-height: 1;
   font-family: var(--font-hud);
 }
-.vui-stat--signal > b {
+:where(.vui .stat.signal) > b {
   color: var(--accent);
   text-shadow: var(--text-glow-cyan);
 }
-.vui-stat--amber > b {
+:where(.vui .stat.amber) > b {
   color: var(--amber-500);
   text-shadow: var(--text-glow-amber);
 }
-.vui-stat > span {
+:where(.vui .stat) > span {
   color: var(--text-muted);
   font-size: var(--fs-2xs);
   font-family: var(--font-display);

@@ -1,16 +1,16 @@
 /* ============================================================
    VantaUI — Meters & progress
    Native <meter> and <progress> are restyled into telemetry bars
-   (no classes needed). The .vui-meter composite adds a label +
-   value readout and is driven entirely by CSS custom properties:
-     <div class="vui-meter" style="--value:72">…</div>
-   The value text auto-renders from --value via a counter, so no JS
-   is required — though the optional JS helper can animate it.
+   (no classes, <meter> colours itself by threshold). The .meter helper
+   is a labelled, accent-toned bar driven by a custom property — the
+   track is one element (a hard-stop gradient), the value text renders
+   from --value via a counter, so no JS is required:
+     <div class="meter" style="--value:72"><span>Power</span><b></b></div>
+   Tone with one word: cyan · amber · red · green.  Add .segmented.
    ============================================================ */
 
 /* ---------- Native <progress> ---------- */
-:where(.vui progress),
-.vui-progress {
+:where(.vui progress) {
   appearance: none;
   inline-size: 100%;
   block-size: 8px;
@@ -20,23 +20,19 @@
   color: var(--cyan-400);
   clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
 }
-:where(.vui progress)::-webkit-progress-bar,
-.vui-progress::-webkit-progress-bar {
+:where(.vui progress)::-webkit-progress-bar {
   background-color: var(--surface-inset);
 }
-:where(.vui progress)::-webkit-progress-value,
-.vui-progress::-webkit-progress-value {
+:where(.vui progress)::-webkit-progress-value {
   background-color: var(--cyan-400);
   box-shadow: 0 0 10px color-mix(in srgb, var(--cyan-400) 70%, transparent);
 }
-:where(.vui progress)::-moz-progress-bar,
-.vui-progress::-moz-progress-bar {
+:where(.vui progress)::-moz-progress-bar {
   background-color: var(--cyan-400);
 }
 
 /* ---------- Native <meter> (coloured by threshold) ---------- */
-:where(.vui meter),
-.vui-meter-el {
+:where(.vui meter) {
   appearance: none;
   inline-size: 100%;
   block-size: 8px;
@@ -68,85 +64,79 @@
   background-color: var(--red-500);
 }
 
-/* ---------- .vui-meter composite (CSS-driven) ---------- */
-.vui-meter {
+/* ---------- .meter helper (CSS-driven, accent-toned) ---------- */
+:where(.vui .meter) {
   --value: 0;
   --max: 100;
   --_c: var(--cyan-400);
   display: flex;
-  flex-direction: column;
-  inline-size: 100%;
-  gap: 6px;
-}
-.vui-meter__top {
-  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 8px;
-}
-.vui-meter__label {
-  color: var(--text-muted);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-2xs);
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-}
-.vui-meter__val {
-  color: var(--_c);
-  font-weight: var(--fw-bold);
-  font-size: var(--fs-base);
-  font-family: var(--font-hud);
-  letter-spacing: 0.02em;
-  text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
-}
-/* auto value text from --value when the span is left empty */
-.vui-meter__val:empty {
-  counter-reset: vui-meter var(--value);
-}
-.vui-meter__val:empty::after {
-  content: counter(vui-meter) '%';
-}
-.vui-meter__track {
-  position: relative;
-  block-size: 8px;
-  overflow: hidden;
-  border: var(--border-hair) solid var(--hairline);
-  background-color: var(--surface-inset);
-  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
-}
-.vui-meter__fill {
-  inline-size: clamp(0%, calc(var(--value) / var(--max) * 100%), 100%);
-  block-size: 100%;
-  background-color: var(--_c);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 70%, transparent);
-  transition: inline-size var(--dur-slow) var(--ease-hud);
-}
-/* segmented ticks overlay */
-.vui-meter--segmented .vui-meter__track::after {
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent 0,
-    transparent 10px,
-    var(--bg-base) 10px,
-    var(--bg-base) 12px
-  );
-  content: '';
-  pointer-events: none;
+  inline-size: 100%;
+  gap: 6px 8px;
+
+  /* label */
+  & > :where(span, label) {
+    flex: 1 1 auto;
+    color: var(--text-muted);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xs);
+    font-family: var(--font-display);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+  /* value readout */
+  & > :where(b) {
+    color: var(--_c);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-base);
+    font-family: var(--font-hud);
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
+  }
+  & > :where(b):empty {
+    counter-reset: vui-meter var(--value);
+  }
+  & > :where(b):empty::after {
+    content: counter(vui-meter) '%';
+  }
+  /* track + fill, baked into one hard-stop gradient on a full-width row */
+  &::after {
+    --_fill: clamp(0%, calc(var(--value) / var(--max) * 100%), 100%);
+    content: '';
+    flex: 0 0 100%;
+    block-size: 8px;
+    border: var(--border-hair) solid var(--hairline);
+    background-color: var(--surface-inset);
+    background-image: linear-gradient(90deg, var(--_c) 0 var(--_fill), transparent var(--_fill));
+    box-shadow: inset 0 0 10px -4px color-mix(in srgb, var(--_c) 80%, transparent);
+    clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  }
+  /* segmented ticks overlaid on the fill */
+  &.segmented::after {
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 10px,
+        var(--bg-base) 10px,
+        var(--bg-base) 12px
+      ),
+      linear-gradient(90deg, var(--_c) 0 var(--_fill), transparent var(--_fill));
+  }
 }
 
 /* ---- Tones ---- */
-.vui-meter--amber {
+:where(.vui .meter.amber) {
   --_c: var(--amber-500);
 }
-.vui-meter--red {
+:where(.vui .meter.red) {
   --_c: var(--red-500);
 }
-.vui-meter--green {
+:where(.vui .meter.green) {
   --_c: var(--green-500);
 }
-.vui-meter--cyan {
+:where(.vui .meter.cyan) {
   --_c: var(--cyan-400);
 }

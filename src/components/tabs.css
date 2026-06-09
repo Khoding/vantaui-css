@@ -1,28 +1,26 @@
 /* ============================================================
-   VantaUI — Tabs & disclosures
-   Tab strip: semantic <nav role="tablist"> with <button role="tab">,
-   active state read from [aria-selected="true"] (the optional JS helper
-   or your framework manages it), or forced with .vui-tab--active.
-   Disclosure: native <details>/<summary> styled as a chamfered, zero-JS
-   accordion — great for FAQ / collapsible telemetry.
+   VantaUI — Tabs & disclosures (semantic, zero-class)
+   Tab strip: a [role="tablist"] of [role="tab"] buttons; the active tab
+   is read from [aria-selected="true"] (the optional JS helper or your
+   framework manages it) or forced with .active. Panels are [role="tabpanel"]
+   (toggle [hidden]). A trailing <small> in a tab is a count chip.
+   Disclosure: native <details>/<summary> as a chamfered, zero-JS accordion.
    ============================================================ */
 
 /* ---------- Tab strip ---------- */
-:where(.vui nav[role='tablist']),
-.vui-tabs {
+:where(.vui [role='tablist']) {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-:where(.vui [role='tab']),
-.vui-tab {
+:where(.vui [role='tab']) {
   display: inline-flex;
   position: relative;
   align-items: center;
+  gap: 8px;
   padding-inline: 18px;
   padding-block: 11px 13px;
-  gap: 8px;
   border: 0;
   background: transparent;
   color: var(--text-muted);
@@ -37,18 +35,15 @@
     color var(--dur-fast) var(--ease-hud),
     background-color var(--dur-fast) var(--ease-hud);
 }
-:where(.vui [role='tab']:hover),
-.vui-tab:hover {
+:where(.vui [role='tab']:hover) {
   background-color: color-mix(in srgb, var(--accent) 4%, transparent);
   color: var(--text-secondary);
 }
-:where(.vui [role='tab'][aria-selected='true']),
-.vui-tab--active {
+:where(.vui [role='tab'][aria-selected='true'], .vui [role='tab'].active) {
   background-color: color-mix(in srgb, var(--cyan-400) 8%, transparent);
   color: var(--accent);
 }
-:where(.vui [role='tab'][aria-selected='true'])::after,
-.vui-tab--active::after {
+:where(.vui [role='tab'][aria-selected='true'], .vui [role='tab'].active)::after {
   position: absolute;
   block-size: 2px;
   inset-block-end: -1px;
@@ -57,13 +52,12 @@
   box-shadow: var(--glow-cyan-md);
   content: '';
 }
-:where(.vui [role='tab']:focus-visible),
-.vui-tab:focus-visible {
+:where(.vui [role='tab']:focus-visible) {
   outline: none;
   box-shadow: var(--focus-ring);
 }
-/* count chip */
-.vui-tab__count {
+/* count chip (a trailing <small>) */
+:where(.vui [role='tab']) small {
   padding-inline: 5px;
   padding-block: 1px;
   border: var(--border-hair) solid var(--hairline-strong);
@@ -71,42 +65,36 @@
   font-size: var(--fs-2xs);
   font-family: var(--font-mono);
 }
-:where(.vui [role='tab'][aria-selected='true']) .vui-tab__count,
-.vui-tab--active .vui-tab__count {
+:where(.vui [role='tab'][aria-selected='true'], .vui [role='tab'].active) small {
   border-color: var(--hairline-accent);
   color: var(--accent);
 }
 
-/* tab panels: hide the inactive ones (JS toggles [hidden]) */
-:where(.vui [role='tabpanel']),
-.vui-tab-panel {
+/* tab panels: hide the inactive ones (toggle [hidden]) */
+:where(.vui [role='tabpanel']) {
   padding-block-start: var(--space-5);
 }
-:where(.vui [role='tabpanel'][hidden]),
-.vui-tab-panel[hidden] {
+:where(.vui [role='tabpanel'][hidden]) {
   display: none;
 }
 
 /* ---------- Disclosure: <details> / <summary> (zero JS) ---------- */
-:where(.vui details),
-.vui-details {
+:where(.vui details) {
   --bevel-md: 8px;
   border: var(--border-hair) solid var(--hairline);
   background-color: var(--surface-panel);
   box-shadow: var(--shadow-panel);
   clip-path: var(--clip-chamfer);
 }
-:where(.vui details + details),
-.vui-details + .vui-details {
+:where(.vui details + details) {
   margin-block-start: var(--space-3);
 }
-:where(.vui details > summary),
-.vui-details > summary {
+:where(.vui details > summary) {
   display: flex;
   align-items: center;
+  gap: 10px;
   padding-inline: var(--space-5);
   padding-block: 12px;
-  gap: 10px;
   color: var(--text-secondary);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-xs);
@@ -120,29 +108,24 @@
 :where(.vui details > summary)::-webkit-details-marker {
   display: none;
 }
-:where(.vui details > summary)::before,
-.vui-details > summary::before {
-  content: '›';
+:where(.vui details > summary)::before {
+  content: '\203A'; /* › */
   color: var(--accent);
   font-size: 1.1em;
   transition: transform var(--dur-fast) var(--ease-hud);
 }
-:where(.vui details[open] > summary)::before,
-.vui-details[open] > summary::before {
+:where(.vui details[open] > summary)::before {
   transform: rotate(90deg);
 }
-:where(.vui details[open] > summary),
-.vui-details[open] > summary {
+:where(.vui details[open] > summary) {
   border-block-end: var(--border-hair) solid var(--hairline);
   color: var(--accent);
 }
-:where(.vui details > summary:focus-visible),
-.vui-details > summary:focus-visible {
+:where(.vui details > summary:focus-visible) {
   outline: none;
   box-shadow: var(--focus-ring);
 }
-:where(.vui details > :not(summary)),
-.vui-details > :not(summary) {
+:where(.vui details > :not(summary)) {
   padding-inline: var(--space-5);
   padding-block: var(--space-4);
   color: var(--text-muted);

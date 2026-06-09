@@ -1,16 +1,16 @@
 /* ============================================================
    VantaUI — Radial gauge (pure CSS)
    A 270° arc readout built from a conic-gradient ring (masked to a
-   ring, glow follows the arc). Driven entirely by custom properties —
-   no SVG, no JS:
-     <div class="vui-gauge" style="--value:72">
-       <b class="vui-gauge__value"></b><small>%</small>
-       <span class="vui-gauge__label">Integrity</span>
+   ring, glow follows the arc). Driven entirely by --value — no SVG,
+   no JS:
+     <div class="gauge" style="--value:72">
+       <b></b><small>%</small><span>Integrity</span>
      </div>
-   Leave .vui-gauge__value empty and it renders --value via a counter.
+   Leave <b> empty and it renders --value via a counter.
+   Size with small · large; tone with cyan · amber · red · green.
    ============================================================ */
 
-.vui-gauge {
+:where(.vui .gauge) {
   --value: 0;
   --max: 100;
   --size: 8rem;
@@ -28,7 +28,7 @@
   gap: 2px;
   font-family: var(--font-hud);
 }
-.vui-gauge::before {
+:where(.vui .gauge)::before {
   position: absolute;
   inset: 0;
   border-radius: 50%;
@@ -60,9 +60,8 @@
   );
   transition: background var(--dur-slow) var(--ease-hud);
 }
-/* Rounded end-cap: a lit dot on the ring centre-line, rotated to the arc tip,
-   turning the flat butt edge into a clean rounded terminal. */
-.vui-gauge::after {
+/* Rounded end-cap on the arc tip */
+:where(.vui .gauge)::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -78,8 +77,7 @@
   transition: transform var(--dur-slow) var(--ease-hud);
   pointer-events: none;
 }
-.vui-gauge__value,
-.vui-gauge > b {
+:where(.vui .gauge) > b {
   position: relative;
   color: var(--_c);
   font-weight: var(--fw-bold);
@@ -87,18 +85,18 @@
   line-height: 1;
   text-shadow: 0 0 12px color-mix(in srgb, var(--_c) 55%, transparent);
 }
-.vui-gauge__value:empty {
+:where(.vui .gauge) > b:empty {
   counter-reset: vui-gauge var(--value);
 }
-.vui-gauge__value:empty::after {
+:where(.vui .gauge) > b:empty::after {
   content: counter(vui-gauge);
 }
-.vui-gauge small {
+:where(.vui .gauge) small {
   position: relative;
   color: var(--text-muted);
   font-size: calc(var(--size) * 0.1);
 }
-.vui-gauge__label {
+:where(.vui .gauge) > span {
   position: relative;
   margin-block-start: 2px;
   color: var(--text-muted);
@@ -109,23 +107,23 @@
 }
 
 /* ---- Sizes ---- */
-.vui-gauge--sm {
+:where(.vui .gauge.small) {
   --size: 6rem;
 }
-.vui-gauge--lg {
+:where(.vui .gauge.large) {
   --size: 11rem;
 }
 
 /* ---- Tones ---- */
-.vui-gauge--amber {
+:where(.vui .gauge.amber) {
   --_c: var(--amber-500);
 }
-.vui-gauge--red {
+:where(.vui .gauge.red) {
   --_c: var(--red-500);
 }
-.vui-gauge--green {
+:where(.vui .gauge.green) {
   --_c: var(--green-500);
 }
-.vui-gauge--cyan {
+:where(.vui .gauge.cyan) {
   --_c: var(--cyan-400);
 }

@@ -986,7 +986,7 @@
 }
 
 @layer vui.components {
-  :where(.vui button:not([class*="vui-"]):not([role="tab"]):not([role="switch"])), .vui-btn, :where([class*="vui-btn--"]:not(.vui-btn--icon)) {
+  :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button)), :where(.vui .button) {
     --_accent: var(--cyan-400);
     --_glow: var(--glow-cyan-md);
     --bevel-md: 10px;
@@ -1017,145 +1017,122 @@
     position: relative;
   }
 
-  :where(.vui button:not([class*="vui-"]):hover), .vui-btn:hover, :where([class*="vui-btn--"]:not(.vui-btn--icon):hover) {
+  :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):hover), :where(.vui .button:hover) {
     background-color: color-mix(in srgb, var(--_accent) 18%, transparent);
     box-shadow: var(--_glow);
     color: var(--cyan-200);
   }
 
-  :where(.vui button:not([class*="vui-"]):active), .vui-btn:active, :where([class*="vui-btn--"]:not(.vui-btn--icon):active) {
+  :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):active), :where(.vui .button:active) {
     transform: translateY(1px);
   }
 
-  :where(.vui button:not([class*="vui-"]):focus-visible), .vui-btn:focus-visible, :where([class*="vui-btn--"]:not(.vui-btn--icon):focus-visible) {
+  :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):focus-visible), :where(.vui .button:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.vui button[type="submit"]:not([class*="vui-"])), .vui-btn--primary {
+  :where(.vui button[type="submit"]:not(nav button)), :where(.vui .button.fill) {
     background-color: var(--_accent);
     box-shadow: var(--_glow);
     color: var(--ink-900);
   }
 
-  :where(.vui button[type="submit"]:not([class*="vui-"]):hover), .vui-btn--primary:hover {
+  :where(.vui button[type="submit"]:not(nav button):hover), :where(.vui .button.fill:hover) {
     background-color: var(--cyan-200);
     box-shadow: var(--glow-cyan-lg);
     color: var(--ink-900);
   }
 
-  .vui-btn--ghost {
+  :where(.vui button.ghost), :where(.vui .button.ghost) {
     color: var(--text-secondary);
     letter-spacing: var(--ls-wider);
     background-color: #0000;
     border-color: #0000;
   }
 
-  .vui-btn--ghost:hover {
+  :where(.vui button.ghost:hover), :where(.vui .button.ghost:hover) {
     background-color: color-mix(in srgb, var(--accent) 6%, transparent);
     box-shadow: none;
     color: var(--_accent);
   }
 
-  .vui-btn--secondary {
-    border-color: var(--_accent);
-    background-color: color-mix(in srgb, var(--_accent) 8%, transparent);
-    color: var(--_accent);
-  }
-
-  :where(.vui button[data-tone="amber"]), .vui-btn--amber {
+  :where(.vui button.amber), :where(.vui .button.amber) {
     --_accent: var(--amber-500);
     --_glow: var(--glow-amber-md);
   }
 
-  :where(.vui button[data-tone="danger"], .vui button[data-tone="threat"]), .vui-btn--danger {
+  :where(.vui button.danger), :where(.vui .button.danger) {
     --_accent: var(--red-500);
     --_glow: var(--glow-red-md);
   }
 
-  :where(.vui button[data-tone="secure"]), .vui-btn--secure {
+  :where(.vui button.secure), :where(.vui .button.secure) {
     --_accent: var(--green-500);
     --_glow: var(--glow-green-md);
   }
 
-  .vui-btn--danger.vui-btn--primary {
+  :where(.vui button.danger.fill), :where(.vui button[type="submit"].danger) {
     color: var(--cyan-50);
   }
 
-  :where(.vui button[data-size="sm"]), .vui-btn--sm {
-    font-size: var(--fs-xs);
+  :where(.vui button.small), :where(.vui .button.small) {
     --bevel-md: 7px;
+    font-size: var(--fs-xs);
     padding-block: 7px;
     padding-inline: 14px;
   }
 
-  :where(.vui button[data-size="lg"]), .vui-btn--lg {
-    font-size: var(--fs-base);
+  :where(.vui button.large), :where(.vui .button.large) {
     --bevel-md: 12px;
+    font-size: var(--fs-base);
     padding-block: 15px;
     padding-inline: 30px;
   }
 
-  .vui-btn--block {
+  :where(.vui button.block), :where(.vui .button.block) {
     inline-size: 100%;
     display: flex;
   }
 
-  :where(.vui button:not([class*="vui-"]):has( > svg:only-child)), :where(.vui button:not([class*="vui-"]):has( > i:only-child)), .vui-iconbtn, .vui-btn--icon {
+  :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):has( > i:only-child)), :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):has( > svg:only-child)), :where(.vui button.icon) {
     --bevel-sm: 6px;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: color-mix(in srgb, var(--cyan-400) 6%, transparent);
     block-size: 38px;
     inline-size: 38px;
     color: var(--text-secondary);
-    font-size: var(--fs-md);
     clip-path: var(--clip-notch);
-    cursor: pointer;
-    transition: all var(--dur-fast) var(--ease-hud);
-    justify-content: center;
-    align-items: center;
     padding: 0;
-    display: inline-flex;
   }
 
-  :where(.vui button:not([class*="vui-"]):has( > svg:only-child):hover), :where(.vui button:not([class*="vui-"]):has( > i:only-child):hover), .vui-iconbtn:hover, .vui-btn--icon:hover {
+  :where(.vui button:not(nav button):has( > i:only-child):hover), :where(.vui button:not(nav button):has( > svg:only-child):hover), :where(.vui button.icon:hover) {
     border-color: var(--hairline-accent);
     background-color: color-mix(in srgb, var(--cyan-400) 14%, transparent);
     box-shadow: var(--glow-cyan-sm);
     color: var(--accent);
   }
 
-  .vui-iconbtn:active, .vui-btn--icon:active {
-    transform: translateY(1px);
-  }
-
-  .vui-iconbtn:focus-visible, .vui-btn--icon:focus-visible {
-    box-shadow: var(--focus-ring);
-    outline: none;
-  }
-
-  .vui-iconbtn--active, .vui-btn--icon[aria-pressed="true"] {
+  :where(.vui button.icon[aria-pressed="true"]) {
     border-color: var(--hairline-accent);
     background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
     box-shadow: var(--glow-cyan-sm);
     color: var(--accent);
   }
 
-  .vui-iconbtn--sm {
+  :where(.vui button.icon.small) {
+    --bevel-sm: 5px;
     block-size: 30px;
     inline-size: 30px;
-    font-size: var(--fs-sm);
-    --bevel-sm: 5px;
   }
 
-  .vui-iconbtn--lg {
+  :where(.vui button.icon.large) {
+    --bevel-sm: 7px;
     block-size: 46px;
     inline-size: 46px;
-    font-size: var(--fs-lg);
-    --bevel-sm: 7px;
   }
 
-  :where(.vui button:disabled), .vui-btn[disabled], .vui-btn--disabled, .vui-iconbtn[disabled] {
+  :where(.vui button:disabled), :where(.vui .button[disabled]) {
     box-shadow: none;
     cursor: not-allowed;
     filter: saturate(.4);
@@ -1163,13 +1140,16 @@
     transform: none;
   }
 
-  .vui-btn-group {
+  :where(.vui menu.group), :where(.vui .group) {
     gap: var(--space-3);
     flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: inline-flex;
   }
 
-  :where(.vui article:not([class*="vui-"])), .vui-panel, :where([class*="vui-panel--"]:not([class*="vui-panel__"])) {
+  :where(.vui article) {
     --bevel-md: 10px;
     padding: var(--space-5);
     border: var(--border-hair) solid var(--hairline);
@@ -1181,91 +1161,62 @@
     position: relative;
   }
 
-  :where(.vui article:not([class*="vui-"]) > header), .vui-panel__head {
-    margin: calc(-1 * var(--space-5));
-    padding-inline: var(--space-5);
+  :where(.vui article) > :where(header) {
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
+    margin: calc(-1 * var(--space-5));
+    padding-inline: var(--space-5);
     border-block-end: var(--border-hair) solid var(--hairline);
     margin-block-end: var(--space-5);
     padding-block: 12px;
     display: flex;
   }
 
-  :where(.vui article:not([class*="vui-"]) > footer), .vui-panel__foot {
-    margin: calc(-1 * var(--space-5));
-    padding-inline: var(--space-5);
+  :where(.vui article) > :where(footer) {
     justify-content: flex-end;
     align-items: center;
     gap: var(--space-3);
+    margin: calc(-1 * var(--space-5));
+    padding-inline: var(--space-5);
     border-block-start: var(--border-hair) solid var(--hairline);
     margin-block-start: var(--space-5);
     padding-block: 12px;
     display: flex;
   }
 
-  .vui-panel__eyebrow {
-    color: var(--text-muted);
-    font-weight: var(--fw-semibold);
-    font-size: var(--fs-2xs);
-    font-family: var(--font-display);
-    letter-spacing: var(--ls-wider);
-    text-transform: uppercase;
-    align-items: center;
-    gap: 8px;
-    display: inline-flex;
-  }
-
-  .vui-panel__eyebrow:before {
-    content: "//";
-    color: var(--accent);
-  }
-
-  .vui-panel__aside {
+  :where(.vui article) > :where(header) small {
     color: var(--text-faint);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
   }
 
-  .vui-panel__body {
-    padding: var(--space-5);
-  }
-
-  .vui-panel:has( > .vui-panel__head), .vui-panel:has( > .vui-panel__body) {
-    padding: 0;
-  }
-
-  .vui-panel:has( > .vui-panel__head) > .vui-panel__head {
-    margin: 0;
-  }
-
-  .vui-panel--raised {
+  :where(.vui article.raised) {
     background-color: var(--surface-panel-2);
     box-shadow: var(--shadow-raised);
   }
 
-  .vui-panel--inset {
+  :where(.vui article.inset) {
     background-color: var(--surface-inset);
     box-shadow: var(--shadow-inset);
   }
 
-  .vui-panel--flat {
+  :where(.vui article.flat) {
     box-shadow: none;
   }
 
-  .vui-panel--glow, :where(.vui article[data-glow]) {
+  :where(.vui article.glow) {
     border-color: var(--hairline-accent);
     box-shadow: var(--shadow-panel),
     0 0 24px -6px var(--accent-glow);
   }
 
-  .vui-panel--notch {
+  :where(.vui article.notch) {
     --bevel-sm: 8px;
     clip-path: var(--clip-notch);
   }
 
-  .vui-panel--brackets:before, .vui-panel--brackets:after, :where(.vui article[data-brackets]):before, :where(.vui article[data-brackets]):after {
+  :where(.vui article.brackets):before, :where(.vui article.brackets):after {
     border: var(--border-bold) solid var(--accent);
     content: "";
     block-size: 14px;
@@ -1275,21 +1226,21 @@
     position: absolute;
   }
 
-  .vui-panel--brackets:before, :where(.vui article[data-brackets]):before {
+  :where(.vui article.brackets):before {
     border-block-end: 0;
     border-inline-end: 0;
     inset-block-start: 6px;
     inset-inline-start: 6px;
   }
 
-  .vui-panel--brackets:after, :where(.vui article[data-brackets]):after {
+  :where(.vui article.brackets):after {
     border-block-start: 0;
     border-inline-start: 0;
     inset-block-end: 6px;
     inset-inline-end: 6px;
   }
 
-  .vui-badge, :where(.vui [data-badge]), :where([class*="vui-badge--"]) {
+  :where(.vui .badge) {
     --_c: var(--cyan-400);
     --bevel-sm: 4px;
     border: var(--border-hair) solid currentColor;
@@ -1310,11 +1261,7 @@
     display: inline-flex;
   }
 
-  .vui-badge > .vui-badge__dot, .vui-badge:before {
-    flex: none;
-  }
-
-  .vui-badge--dot:before {
+  :where(.vui .badge.dot):before {
     border-radius: var(--radius-pill);
     content: "";
     background-color: currentColor;
@@ -1323,58 +1270,40 @@
     box-shadow: 0 0 6px;
   }
 
-  .vui-badge--solid {
-    color: var(--_c);
+  :where(.vui .badge.solid) {
     background-color: currentColor;
-    border-color: currentColor;
   }
 
-  .vui-badge--solid > * {
+  :where(.vui .badge.solid) > * {
     color: var(--ink-900);
   }
 
-  .vui-badge--cyan, :where(.vui [data-badge][data-tone="cyan"]) {
+  :where(.vui .badge.cyan) {
     --_c: var(--cyan-400);
     color: var(--cyan-400);
   }
 
-  .vui-badge--amber, :where(.vui [data-badge][data-tone="amber"]) {
+  :where(.vui .badge.amber) {
     --_c: var(--amber-500);
     color: var(--amber-500);
   }
 
-  .vui-badge--red, :where(.vui [data-badge][data-tone="red"]) {
+  :where(.vui .badge.red) {
     --_c: var(--red-500);
     color: var(--red-500);
   }
 
-  .vui-badge--green, :where(.vui [data-badge][data-tone="green"]) {
+  :where(.vui .badge.green) {
     --_c: var(--green-500);
     color: var(--green-500);
   }
 
-  .vui-badge--neutral, :where(.vui [data-badge][data-tone="neutral"]) {
+  :where(.vui .badge.neutral) {
     --_c: var(--slate-400);
     color: var(--slate-400);
   }
 
-  .vui-badge--solid.vui-badge--cyan {
-    color: var(--cyan-400);
-  }
-
-  .vui-badge--solid.vui-badge--amber {
-    color: var(--amber-500);
-  }
-
-  .vui-badge--solid.vui-badge--red {
-    color: var(--red-500);
-  }
-
-  .vui-badge--solid.vui-badge--green {
-    color: var(--green-500);
-  }
-
-  :where(.vui input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"]):not([class*="vui-"])), :where(.vui textarea:not([class*="vui-"])), :where(.vui select:not([class*="vui-"])), .vui-input {
+  :where(.vui input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"])), :where(.vui textarea), :where(.vui select) {
     --bevel-md: 8px;
     appearance: none;
     border: var(--border-hair) solid var(--hairline-strong);
@@ -1400,41 +1329,41 @@
     resize: vertical;
   }
 
-  :where(), .vui-input::placeholder {
+  :where() {
     color: var(--text-faint);
   }
 
-  :where(.vui input:focus, .vui textarea:focus, .vui select:focus), .vui-input:focus {
+  :where(.vui input:focus, .vui textarea:focus, .vui select:focus) {
     border-color: var(--hairline-accent);
     box-shadow: var(--shadow-inset),
     0 0 18px -4px var(--accent-glow);
   }
 
-  :where(.vui input:disabled, .vui textarea:disabled, .vui select:disabled), .vui-input:disabled {
+  :where(.vui input:disabled, .vui textarea:disabled, .vui select:disabled) {
     cursor: not-allowed;
     opacity: .45;
   }
 
-  :where(.vui input[aria-invalid="true"], .vui textarea[aria-invalid="true"]), .vui-input--invalid {
+  :where(.vui input[aria-invalid="true"], .vui textarea[aria-invalid="true"], .vui select[aria-invalid="true"]) {
     border-color: var(--red-500);
     box-shadow: var(--shadow-inset),
     0 0 16px -4px var(--red-glow);
   }
 
-  :where(.vui select:not([multiple])), .vui-select {
+  :where(.vui select:not([multiple])) {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2342e3ff' stroke-width='1.5'/%3E%3C/svg%3E");
     background-position: right 14px center;
     background-repeat: no-repeat;
     padding-inline-end: 34px;
   }
 
-  :where(.vui label:has( > input:not([type="checkbox"]):not([type="radio"]))), :where(.vui label:has( > textarea)), :where(.vui label:has( > select)), .vui-field {
+  :where(.vui label:has( > input:not([type="checkbox"]):not([type="radio"]))), :where(.vui label:has( > textarea)), :where(.vui label:has( > select)) {
     flex-direction: column;
     gap: 6px;
     display: flex;
   }
 
-  :where(.vui .vui-field__label), .vui-field > :where(span, .vui-field__label):first-child {
+  :is(:where(.vui label:has( > input:not([type="checkbox"]):not([type="radio"]))), :where(.vui label:has( > textarea)), :where(.vui label:has( > select))) > :where(span):first-child {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -1443,49 +1372,17 @@
     text-transform: uppercase;
   }
 
-  .vui-field__hint {
+  :is(:where(.vui label:has( > input:not([type="checkbox"]):not([type="radio"]))), :where(.vui label:has( > textarea)), :where(.vui label:has( > select))) > :where(small) {
     color: var(--text-faint);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
   }
 
-  .vui-field__hint--err {
+  :is(:where(.vui label:has( > input:not([type="checkbox"]):not([type="radio"]))), :where(.vui label:has( > textarea)), :where(.vui label:has( > select))) > :where(small.error) {
     color: var(--red-400);
   }
 
-  .vui-input-wrap {
-    --bevel-md: 8px;
-    border: var(--border-hair) solid var(--hairline-strong);
-    background-color: var(--surface-inset);
-    box-shadow: var(--shadow-inset);
-    clip-path: var(--clip-chamfer);
-    transition: border-color var(--dur-base) var(--ease-hud),
-    box-shadow var(--dur-base) var(--ease-hud);
-    align-items: center;
-    display: flex;
-    position: relative;
-  }
-
-  .vui-input-wrap:focus-within {
-    border-color: var(--hairline-accent);
-    box-shadow: var(--shadow-inset),
-    0 0 18px -4px var(--accent-glow);
-  }
-
-  .vui-input-wrap > :where(svg, i, .vui-input-wrap__icon) {
-    color: var(--text-muted);
-    flex: none;
-    margin-inline-start: 12px;
-  }
-
-  .vui-input-wrap > input {
-    box-shadow: none;
-    clip-path: none;
-    background: none;
-    border: 0;
-  }
-
-  :where(.vui input[type="checkbox"]:not([role="switch"]):not([class*="vui-"])), :where(.vui input[type="radio"]:not([class*="vui-"])), .vui-check {
+  :where(.vui input[type="checkbox"]:not([role="switch"])), :where(.vui input[type="radio"]) {
     --bevel-sm: 4px;
     appearance: none;
     border: var(--border-thin) solid var(--hairline-strong);
@@ -1501,7 +1398,7 @@
     display: inline-grid;
   }
 
-  :where(.vui input[type="checkbox"]:not([role="switch"])):before, :where(.vui input[type="radio"]):before, .vui-check:before {
+  :where(.vui input[type="checkbox"]:not([role="switch"])):before, :where(.vui input[type="radio"]):before {
     content: "";
     --bevel-sm: 2px;
     background-color: var(--cyan-400);
@@ -1514,33 +1411,33 @@
     transform: scale(.4);
   }
 
-  :where(.vui input[type="radio"]), .vui-check--radio {
+  :where(.vui input[type="radio"]) {
     border-radius: var(--radius-pill);
     clip-path: none;
   }
 
-  :where(.vui input[type="radio"]):before, .vui-check--radio:before {
+  :where(.vui input[type="radio"]):before {
     border-radius: var(--radius-pill);
     clip-path: none;
     block-size: 8px;
     inline-size: 8px;
   }
 
-  :where(.vui input[type="checkbox"]:checked, .vui input[type="radio"]:checked), .vui-check:checked {
+  :where(.vui input[type="checkbox"]:checked, .vui input[type="radio"]:checked) {
     border-color: var(--hairline-accent);
   }
 
-  :where(.vui input[type="checkbox"]:checked, .vui input[type="radio"]:checked):before, .vui-check:checked:before {
+  :where(.vui input[type="checkbox"]:checked, .vui input[type="radio"]:checked):before {
     opacity: 1;
     transform: scale(1);
   }
 
-  :where(.vui input[type="checkbox"]:focus-visible, .vui input[type="radio"]:focus-visible), .vui-check:focus-visible {
+  :where(.vui input[type="checkbox"]:focus-visible, .vui input[type="radio"]:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.vui label:has( > input[type="checkbox"])), :where(.vui label:has( > input[type="radio"])), .vui-check-label {
+  :where(.vui label:has( > input[type="checkbox"])), :where(.vui label:has( > input[type="radio"])) {
     color: var(--text-secondary);
     font-size: var(--fs-sm);
     font-family: var(--font-ui);
@@ -1552,7 +1449,7 @@
     display: inline-flex;
   }
 
-  :where(.vui input[type="checkbox"][role="switch"]), .vui-switch {
+  :where(.vui input[type="checkbox"][role="switch"]) {
     appearance: none;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: var(--surface-inset);
@@ -1566,7 +1463,7 @@
     position: relative;
   }
 
-  :where(.vui input[type="checkbox"][role="switch"]):before, .vui-switch:before {
+  :where(.vui input[type="checkbox"][role="switch"]):before {
     background-color: var(--slate-400);
     content: "";
     clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
@@ -1578,24 +1475,24 @@
     inset-inline-start: 2px;
   }
 
-  :where(.vui input[type="checkbox"][role="switch"]:checked), .vui-switch:checked {
+  :where(.vui input[type="checkbox"][role="switch"]:checked) {
     border-color: var(--hairline-accent);
     background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
     box-shadow: inset 0 0 12px -2px var(--accent-glow);
   }
 
-  :where(.vui input[type="checkbox"][role="switch"]:checked):before, .vui-switch:checked:before {
+  :where(.vui input[type="checkbox"][role="switch"]:checked):before {
     background-color: var(--cyan-400);
     box-shadow: var(--glow-cyan-md);
     inset-inline-start: 26px;
   }
 
-  :where(.vui input[type="checkbox"][role="switch"]:focus-visible), .vui-switch:focus-visible {
+  :where(.vui input[type="checkbox"][role="switch"]:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.vui input[type="range"]), .vui-range {
+  :where(.vui input[type="range"]) {
     appearance: none;
     cursor: pointer;
     background: none;
@@ -1603,12 +1500,6 @@
   }
 
   :where(.vui input[type="range"])::-webkit-slider-runnable-track {
-    border: var(--border-hair) solid var(--hairline);
-    background-color: var(--surface-inset);
-    block-size: 6px;
-  }
-
-  .vui-range::-webkit-slider-runnable-track {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     block-size: 6px;
@@ -1624,23 +1515,7 @@
     margin-block-start: -6px;
   }
 
-  .vui-range::-webkit-slider-thumb {
-    appearance: none;
-    background-color: var(--cyan-400);
-    block-size: 16px;
-    inline-size: 14px;
-    box-shadow: var(--glow-cyan-sm);
-    clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
-    margin-block-start: -6px;
-  }
-
   :where(.vui input[type="range"])::-moz-range-track {
-    border: var(--border-hair) solid var(--hairline);
-    background-color: var(--surface-inset);
-    block-size: 6px;
-  }
-
-  .vui-range::-moz-range-track {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     block-size: 6px;
@@ -1655,20 +1530,11 @@
     border: 0;
   }
 
-  .vui-range::-moz-range-thumb {
-    background-color: var(--cyan-400);
-    block-size: 16px;
-    inline-size: 14px;
-    box-shadow: var(--glow-cyan-sm);
-    clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
-    border: 0;
-  }
-
   :where(.vui) {
     accent-color: var(--accent);
   }
 
-  .vui-alert, :where([class*="vui-alert--"]), :where(.vui [role="status"]:not([class*="vui-"])), :where(.vui [role="alert"]:not([class*="vui-"])) {
+  :where(.vui [role="status"]), :where(.vui [role="alert"]) {
     --_c: var(--cyan-400);
     --_glyph: "◈";
     --bevel-md: 9px;
@@ -1687,7 +1553,7 @@
     position: relative;
   }
 
-  .vui-alert:before, :where([class*="vui-alert--"]):before, :where(.vui [role="status"]:not([class*="vui-"])):before, :where(.vui [role="alert"]:not([class*="vui-"])):before {
+  :where(.vui [role="status"]):before, :where(.vui [role="alert"]):before {
     background-color: var(--_c);
     inline-size: 3px;
     box-shadow: 0 0 12px var(--_c);
@@ -1697,7 +1563,7 @@
     inset-inline-start: 0;
   }
 
-  .vui-alert:after, :where([class*="vui-alert--"]):after, :where(.vui [role="status"]:not([class*="vui-"])):after, :where(.vui [role="alert"]:not([class*="vui-"])):after {
+  :where(.vui [role="status"]):after, :where(.vui [role="alert"]):after {
     content: var(--vui-alert-glyph, var(--_glyph));
     color: var(--_c);
     font-weight: var(--fw-bold);
@@ -1709,7 +1575,7 @@
     order: -1;
   }
 
-  .vui-alert :where(strong, b, h1, h2, h3, h4, h5, h6), .vui-alert__title {
+  :where(.vui [role="status"], .vui [role="alert"]) :where(strong, b, h1, h2, h3, h4, h5, h6) {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-sm);
@@ -1720,27 +1586,27 @@
     display: block;
   }
 
-  :where(.vui [role="alert"]:not([class*="vui-"])), .vui-alert--threat, :where(.vui-alert[data-tone="threat"]) {
+  :where(.vui [role="alert"]), :where(.vui [role="status"].threat, .vui [role="alert"].threat) {
     --_c: var(--red-500);
     --_glyph: "⬢";
   }
 
-  .vui-alert--warn, :where(.vui-alert[data-tone="warn"]) {
+  :where(.vui [role="status"].warn, .vui [role="alert"].warn) {
     --_c: var(--amber-500);
     --_glyph: "▲";
   }
 
-  .vui-alert--secure, :where(.vui-alert[data-tone="secure"]) {
+  :where(.vui [role="status"].secure, .vui [role="alert"].secure) {
     --_c: var(--green-500);
     --_glyph: "◉";
   }
 
-  .vui-alert--info, :where(.vui-alert[data-tone="info"]) {
+  :where(.vui [role="status"].info, .vui [role="alert"].info) {
     --_c: var(--cyan-400);
     --_glyph: "◈";
   }
 
-  :where(.vui progress), .vui-progress {
+  :where(.vui progress) {
     appearance: none;
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
@@ -1755,16 +1621,7 @@
     background-color: var(--surface-inset);
   }
 
-  .vui-progress::-webkit-progress-bar {
-    background-color: var(--surface-inset);
-  }
-
   :where(.vui progress)::-webkit-progress-value {
-    background-color: var(--cyan-400);
-    box-shadow: 0 0 10px color-mix(in srgb, var(--cyan-400) 70%, transparent);
-  }
-
-  .vui-progress::-webkit-progress-value {
     background-color: var(--cyan-400);
     box-shadow: 0 0 10px color-mix(in srgb, var(--cyan-400) 70%, transparent);
   }
@@ -1773,11 +1630,7 @@
     background-color: var(--cyan-400);
   }
 
-  .vui-progress::-moz-progress-bar {
-    background-color: var(--cyan-400);
-  }
-
-  :where(.vui meter), .vui-meter-el {
+  :where(.vui meter) {
     appearance: none;
     border: var(--border-hair) solid var(--hairline);
     background: var(--surface-inset);
@@ -1816,33 +1669,29 @@
     background-color: var(--red-500);
   }
 
-  .vui-meter {
+  :where(.vui .meter) {
     --value: 0;
     --max: 100;
     --_c: var(--cyan-400);
-    flex-direction: column;
-    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px 8px;
     inline-size: 100%;
     display: flex;
   }
 
-  .vui-meter__top {
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 8px;
-    display: flex;
-  }
-
-  .vui-meter__label {
+  :where(.vui .meter) > :where(span, label) {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
     font-family: var(--font-display);
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
+    flex: auto;
   }
 
-  .vui-meter__val {
+  :where(.vui .meter) > :where(b) {
     color: var(--_c);
     font-weight: var(--fw-bold);
     font-size: var(--fs-base);
@@ -1851,60 +1700,52 @@
     text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
   }
 
-  .vui-meter__val:empty {
+  :where(.vui .meter) > :where(b):empty {
     counter-reset: vui-meter var(--value);
   }
 
-  .vui-meter__val:empty:after {
+  :where(.vui .meter) > :where(b):empty:after {
     content: counter(vui-meter) "%";
   }
 
-  .vui-meter__track {
+  :where(.vui .meter):after {
+    --_fill: clamp(0%, calc(var(--value) / var(--max) * 100%), 100%);
+    content: "";
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
-    clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+    background-image: linear-gradient(90deg, var(--_c) 0 var(--_fill), transparent var(--_fill));
     block-size: 8px;
-    position: relative;
-    overflow: hidden;
+    box-shadow: inset 0 0 10px -4px color-mix(in srgb, var(--_c) 80%, transparent);
+    clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+    flex: 0 0 100%;
   }
 
-  .vui-meter__fill {
-    inline-size: clamp(0%, calc(var(--value) / var(--max) * 100%), 100%);
-    background-color: var(--_c);
-    block-size: 100%;
-    box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 70%, transparent);
-    transition: inline-size var(--dur-slow) var(--ease-hud);
-  }
-
-  .vui-meter--segmented .vui-meter__track:after {
+  :where(.vui .meter).segmented:after {
     background-image: repeating-linear-gradient(90deg,
-    transparent 0,
-    transparent 10px,
-    var(--bg-base) 10px,
-    var(--bg-base) 12px);
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
+        transparent 0,
+        transparent 10px,
+        var(--bg-base) 10px,
+        var(--bg-base) 12px),
+      linear-gradient(90deg, var(--_c) 0 var(--_fill), transparent var(--_fill));
   }
 
-  .vui-meter--amber {
+  :where(.vui .meter.amber) {
     --_c: var(--amber-500);
   }
 
-  .vui-meter--red {
+  :where(.vui .meter.red) {
     --_c: var(--red-500);
   }
 
-  .vui-meter--green {
+  :where(.vui .meter.green) {
     --_c: var(--green-500);
   }
 
-  .vui-meter--cyan {
+  :where(.vui .meter.cyan) {
     --_c: var(--cyan-400);
   }
 
-  .vui-gauge {
+  :where(.vui .gauge) {
     --value: 0;
     --max: 100;
     --size: 8rem;
@@ -1922,7 +1763,7 @@
     position: relative;
   }
 
-  .vui-gauge:before {
+  :where(.vui .gauge):before {
     background: conic-gradient(from 225deg,
     var(--_c) 0,
     var(--_c) calc(var(--_deg) - .6deg),
@@ -1952,7 +1793,7 @@
     inset: 0;
   }
 
-  .vui-gauge:after {
+  :where(.vui .gauge):after {
     content: "";
     background: radial-gradient(circle at 50% calc(var(--thickness) / 2),
     var(--_c) 0,
@@ -1967,7 +1808,7 @@
     inset: 0;
   }
 
-  .vui-gauge__value, .vui-gauge > b {
+  :where(.vui .gauge) > b {
     color: var(--_c);
     font-weight: var(--fw-bold);
     font-size: calc(var(--size) * .26);
@@ -1976,21 +1817,21 @@
     position: relative;
   }
 
-  .vui-gauge__value:empty {
+  :where(.vui .gauge) > b:empty {
     counter-reset: vui-gauge var(--value);
   }
 
-  .vui-gauge__value:empty:after {
+  :where(.vui .gauge) > b:empty:after {
     content: counter(vui-gauge);
   }
 
-  .vui-gauge small {
+  :where(.vui .gauge) small {
     color: var(--text-muted);
     font-size: calc(var(--size) * .1);
     position: relative;
   }
 
-  .vui-gauge__label {
+  :where(.vui .gauge) > span {
     color: var(--text-muted);
     font-size: calc(var(--size) * .08);
     font-family: var(--font-display);
@@ -2000,38 +1841,38 @@
     position: relative;
   }
 
-  .vui-gauge--sm {
+  :where(.vui .gauge.small) {
     --size: 6rem;
   }
 
-  .vui-gauge--lg {
+  :where(.vui .gauge.large) {
     --size: 11rem;
   }
 
-  .vui-gauge--amber {
+  :where(.vui .gauge.amber) {
     --_c: var(--amber-500);
   }
 
-  .vui-gauge--red {
+  :where(.vui .gauge.red) {
     --_c: var(--red-500);
   }
 
-  .vui-gauge--green {
+  :where(.vui .gauge.green) {
     --_c: var(--green-500);
   }
 
-  .vui-gauge--cyan {
+  :where(.vui .gauge.cyan) {
     --_c: var(--cyan-400);
   }
 
-  :where(.vui nav[role="tablist"]), .vui-tabs {
+  :where(.vui [role="tablist"]) {
     border-block-end: var(--border-hair) solid var(--hairline);
     flex-wrap: wrap;
     gap: 2px;
     display: flex;
   }
 
-  :where(.vui [role="tab"]), .vui-tab {
+  :where(.vui [role="tab"]) {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-sm);
@@ -2052,17 +1893,17 @@
     position: relative;
   }
 
-  :where(.vui [role="tab"]:hover), .vui-tab:hover {
+  :where(.vui [role="tab"]:hover) {
     background-color: color-mix(in srgb, var(--accent) 4%, transparent);
     color: var(--text-secondary);
   }
 
-  :where(.vui [role="tab"][aria-selected="true"]), .vui-tab--active {
+  :where(.vui [role="tab"][aria-selected="true"], .vui [role="tab"].active) {
     background-color: color-mix(in srgb, var(--cyan-400) 8%, transparent);
     color: var(--accent);
   }
 
-  :where(.vui [role="tab"][aria-selected="true"]):after, .vui-tab--active:after {
+  :where(.vui [role="tab"][aria-selected="true"], .vui [role="tab"].active):after {
     background-color: var(--accent);
     block-size: 2px;
     box-shadow: var(--glow-cyan-md);
@@ -2072,12 +1913,12 @@
     inset-inline: 0;
   }
 
-  :where(.vui [role="tab"]:focus-visible), .vui-tab:focus-visible {
+  :where(.vui [role="tab"]:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  .vui-tab__count {
+  :where(.vui [role="tab"]) small {
     border: var(--border-hair) solid var(--hairline-strong);
     color: var(--text-faint);
     font-size: var(--fs-2xs);
@@ -2086,20 +1927,20 @@
     padding-inline: 5px;
   }
 
-  :where(.vui [role="tab"][aria-selected="true"]) .vui-tab__count, .vui-tab--active .vui-tab__count {
+  :where(.vui [role="tab"][aria-selected="true"], .vui [role="tab"].active) small {
     border-color: var(--hairline-accent);
     color: var(--accent);
   }
 
-  :where(.vui [role="tabpanel"]), .vui-tab-panel {
+  :where(.vui [role="tabpanel"]) {
     padding-block-start: var(--space-5);
   }
 
-  :where(.vui [role="tabpanel"][hidden]), .vui-tab-panel[hidden] {
+  :where(.vui [role="tabpanel"][hidden]) {
     display: none;
   }
 
-  :where(.vui details), .vui-details {
+  :where(.vui details) {
     --bevel-md: 8px;
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-panel);
@@ -2107,11 +1948,11 @@
     clip-path: var(--clip-chamfer);
   }
 
-  :where(.vui details + details), .vui-details + .vui-details {
+  :where(.vui details + details) {
     margin-block-start: var(--space-3);
   }
 
-  :where(.vui details > summary), .vui-details > summary {
+  :where(.vui details > summary) {
     padding-inline: var(--space-5);
     color: var(--text-secondary);
     font-weight: var(--fw-semibold);
@@ -2132,28 +1973,28 @@
     display: none;
   }
 
-  :where(.vui details > summary):before, .vui-details > summary:before {
+  :where(.vui details > summary):before {
     content: "›";
     color: var(--accent);
     transition: transform var(--dur-fast) var(--ease-hud);
     font-size: 1.1em;
   }
 
-  :where(.vui details[open] > summary):before, .vui-details[open] > summary:before {
+  :where(.vui details[open] > summary):before {
     transform: rotate(90deg);
   }
 
-  :where(.vui details[open] > summary), .vui-details[open] > summary {
+  :where(.vui details[open] > summary) {
     border-block-end: var(--border-hair) solid var(--hairline);
     color: var(--accent);
   }
 
-  :where(.vui details > summary:focus-visible), .vui-details > summary:focus-visible {
+  :where(.vui details > summary:focus-visible) {
     box-shadow: var(--focus-ring);
     outline: none;
   }
 
-  :where(.vui details > :not(summary)), .vui-details > :not(summary) {
+  :where(.vui details > :not(summary)) {
     padding-inline: var(--space-5);
     padding-block: var(--space-4);
     color: var(--text-muted);
@@ -2162,7 +2003,7 @@
     font-family: var(--font-mono);
   }
 
-  .vui-table-scroll {
+  :where(.vui .scroll:has( > table)), :where(.vui .table-scroll) {
     border: var(--border-hair) solid var(--hairline);
     inline-size: 100%;
     clip-path: var(--clip-chamfer);
@@ -2170,7 +2011,7 @@
     overflow-x: auto;
   }
 
-  :where(.vui table:not([class*="vui-"])), .vui-table {
+  :where(.vui table) {
     border-collapse: collapse;
     inline-size: 100%;
     color: var(--text-secondary);
@@ -2178,7 +2019,7 @@
     font-family: var(--font-mono);
   }
 
-  :where(.vui table caption), .vui-table caption {
+  :where(.vui table caption) {
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
@@ -2191,7 +2032,7 @@
     padding-inline: 14px;
   }
 
-  :where(.vui table th), .vui-table th {
+  :where(.vui table th) {
     border-block-end: var(--border-hair) solid var(--hairline-strong);
     color: var(--text-muted);
     font-weight: var(--fw-semibold);
@@ -2205,32 +2046,32 @@
     padding-inline: 14px;
   }
 
-  :where(.vui table td), .vui-table td {
+  :where(.vui table td) {
     border-block-end: var(--border-hair) solid var(--hairline);
     padding-block: 10px;
     padding-inline: 14px;
   }
 
-  :where(.vui table tbody tr), .vui-table tbody tr {
+  :where(.vui table tbody tr) {
     transition: background-color var(--dur-fast) var(--ease-hud);
   }
 
-  :where(.vui table tbody tr:hover), .vui-table tbody tr:hover {
+  :where(.vui table tbody tr:hover) {
     background-color: color-mix(in srgb, var(--accent) 5%, transparent);
   }
 
-  :where(.vui table tbody tr:last-child td), .vui-table tbody tr:last-child td {
+  :where(.vui table tbody tr:last-child td) {
     border-block-end: 0;
   }
 
-  :where(.vui table [data-num]), .vui-table [data-num] {
+  :where(.vui table [data-num]) {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
     font-family: var(--font-hud);
     text-align: end;
   }
 
-  :where(.vui dialog), .vui-dialog {
+  :where(.vui dialog:not(.left):not(.right)) {
     --bevel-md: 12px;
     border: var(--border-hair) solid var(--hairline-accent);
     background-color: var(--surface-panel);
@@ -2242,59 +2083,55 @@
     padding: 0;
   }
 
-  :where(.vui dialog)::backdrop, .vui-dialog::backdrop {
+  :where(.vui dialog:not(.left):not(.right))::backdrop {
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
     background-color: var(--scrim);
   }
 
-  :where(.vui dialog > header), .vui-dialog__head {
-    padding-inline: var(--space-6);
+  :where(.vui dialog:not(.left):not(.right) > header) {
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
+    padding-inline: var(--space-6);
     border-block-end: var(--border-hair) solid var(--hairline);
     padding-block: 14px;
     display: flex;
   }
 
-  :where(.vui dialog > :not(header):not(footer)), .vui-dialog__body {
+  :where(.vui dialog:not(.left):not(.right) > :not(header):not(footer)) {
     padding-inline: var(--space-6);
     padding-block: var(--space-5);
   }
 
-  :where(.vui dialog > footer), .vui-dialog__foot {
-    padding-inline: var(--space-6);
+  :where(.vui dialog:not(.left):not(.right) > footer) {
     justify-content: flex-end;
     gap: var(--space-3);
+    padding-inline: var(--space-6);
     border-block-start: var(--border-hair) solid var(--hairline);
     padding-block: 14px;
     display: flex;
   }
 
-  .vui-divider {
+  :where(.vui .divider) {
     align-items: center;
     gap: var(--space-4);
     color: var(--text-faint);
     display: flex;
   }
 
-  .vui-divider:before, .vui-divider:after {
+  :where(.vui .divider):before, :where(.vui .divider):after {
     background-image: linear-gradient(90deg, transparent, var(--hairline-strong));
     content: "";
     flex: 1;
     block-size: 1px;
   }
 
-  .vui-divider:after {
+  :where(.vui .divider):after {
     background-image: linear-gradient(90deg, var(--hairline-strong), transparent);
   }
 
-  .vui-divider[data-label]:before {
-    content: none;
-  }
-
-  .vui-divider[data-label] {
+  :where(.vui .divider[data-label]) {
     font-weight: var(--fw-semibold);
     font-size: var(--fs-2xs);
     font-family: var(--font-display);
@@ -2302,11 +2139,15 @@
     text-transform: uppercase;
   }
 
-  .vui-tooltip {
+  :where(.vui .divider[data-label]):before {
+    content: none;
+  }
+
+  :where(.vui [data-tip]) {
     position: relative;
   }
 
-  .vui-tooltip:after {
+  :where(.vui [data-tip]):after {
     z-index: 50;
     border: var(--border-hair) solid var(--hairline-accent);
     background-color: var(--ink-800);
@@ -2330,11 +2171,11 @@
     translate: -50%;
   }
 
-  .vui-tooltip:hover:after, .vui-tooltip:focus-visible:after {
+  :where(.vui [data-tip]:hover):after, :where(.vui [data-tip]:focus-visible):after {
     opacity: 1;
   }
 
-  .vui-kv {
+  :where(.vui .kv) {
     justify-content: space-between;
     align-items: baseline;
     gap: var(--space-4);
@@ -2343,7 +2184,7 @@
     display: flex;
   }
 
-  .vui-kv > :first-child {
+  :where(.vui .kv) > :first-child {
     color: var(--text-muted);
     font-size: var(--fs-2xs);
     font-family: var(--font-display);
@@ -2351,19 +2192,19 @@
     text-transform: uppercase;
   }
 
-  .vui-kv > :last-child {
+  :where(.vui .kv) > :last-child {
     color: var(--text-primary);
     font-size: var(--fs-sm);
     font-family: var(--font-mono);
   }
 
-  .vui-stat {
+  :where(.vui .stat) {
     flex-direction: column;
     gap: 4px;
     display: flex;
   }
 
-  .vui-stat > b {
+  :where(.vui .stat) > b {
     color: var(--text-primary);
     font-weight: var(--fw-bold);
     font-size: var(--fs-3xl);
@@ -2371,17 +2212,17 @@
     font-family: var(--font-hud);
   }
 
-  .vui-stat--signal > b {
+  :where(.vui .stat.signal) > b {
     color: var(--accent);
     text-shadow: var(--text-glow-cyan);
   }
 
-  .vui-stat--amber > b {
+  :where(.vui .stat.amber) > b {
     color: var(--amber-500);
     text-shadow: var(--text-glow-amber);
   }
 
-  .vui-stat > span {
+  :where(.vui .stat) > span {
     color: var(--text-muted);
     font-size: var(--fs-2xs);
     font-family: var(--font-display);

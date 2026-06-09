@@ -18,7 +18,7 @@ const plugin = {
   install(app, options = {}) {
     if (typeof document === 'undefined') return; // SSR: nothing to do server-side
     const {root, behaviours = true, bodyClass = true} = options;
-    if (bodyClass) (root || document.body).classList.add('VantaUI');
+    if (bodyClass) (root || document.body).classList.add('vui');
     if (behaviours) VantaUIBehaviours.init(root || document);
     app.config.globalProperties.$VantaUI = VantaUIBehaviours;
   },

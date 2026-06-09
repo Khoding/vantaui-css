@@ -1,17 +1,17 @@
 /* ============================================================
-   VantaUI — Buttons
-   Semantic: a bare <button> or <a class="vui-btn"> inside .vui
-   becomes a chamfered outline control. type="submit" auto-promotes to
-   the filled primary CTA. Icon-only buttons (a lone <svg>/<i>) collapse
-   to a square via :has(). Tone via [data-tone] or vui-btn--* classes.
+   VantaUI — Buttons (semantic, zero-class)
+   A bare <button> is a chamfered outline control. type="submit"
+   auto-promotes to the filled primary CTA. An icon-only button (a lone
+   <i>/<svg>) collapses to a square. Style a link/other element as a
+   button with the .button helper. Tune with one word:
+     fill · ghost · amber · danger · secure · small · large · block
+
+   Buttons inside a <nav> are owned by header/navigation css (nav links,
+   rail/tab-bar/drawer items), so they're excluded here.
    ============================================================ */
 
-/* Base applies to: bare <button> in .vui, the .vui-btn class, AND any
-   lone vui-btn--* modifier (the idiomatic terse form) — so a modifier on
-   its own is always a complete, legible button. The icon variant opts out. */
-:where(.vui button:not([class*='vui-']):not([role='tab']):not([role='switch'])),
-.vui-btn,
-:where([class*='vui-btn--']:not(.vui-btn--icon)) {
+:where(.vui button:not([role='tab']):not([role='switch']):not(nav button)),
+:where(.vui .button) {
   --_accent: var(--cyan-400);
   --_glow: var(--glow-cyan-md);
   --bevel-md: 10px;
@@ -19,9 +19,9 @@
   position: relative;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   padding-inline: 22px;
   padding-block: 11px;
-  gap: 8px;
   border: var(--border-thin) solid var(--_accent);
   background-color: color-mix(in srgb, var(--_accent) 8%, transparent);
   color: var(--_accent);
@@ -42,164 +42,136 @@
   user-select: none;
 }
 
-:where(.vui button:not([class*='vui-']):hover),
-.vui-btn:hover,
-:where([class*='vui-btn--']:not(.vui-btn--icon):hover) {
+:where(.vui button:not([role='tab']):not([role='switch']):not(nav button):hover),
+:where(.vui .button:hover) {
   background-color: color-mix(in srgb, var(--_accent) 18%, transparent);
   box-shadow: var(--_glow);
   color: var(--cyan-200);
 }
-:where(.vui button:not([class*='vui-']):active),
-.vui-btn:active,
-:where([class*='vui-btn--']:not(.vui-btn--icon):active) {
+:where(.vui button:not([role='tab']):not([role='switch']):not(nav button):active),
+:where(.vui .button:active) {
   transform: translateY(1px);
 }
-:where(.vui button:not([class*='vui-']):focus-visible),
-.vui-btn:focus-visible,
-:where([class*='vui-btn--']:not(.vui-btn--icon):focus-visible) {
+:where(.vui button:not([role='tab']):not([role='switch']):not(nav button):focus-visible),
+:where(.vui .button:focus-visible) {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
 /* ---- Primary: filled emissive. submit buttons promote automatically ---- */
-:where(.vui button[type='submit']:not([class*='vui-'])),
-.vui-btn--primary {
+:where(.vui button[type='submit']:not(nav button)),
+:where(.vui .button.fill) {
   background-color: var(--_accent);
   box-shadow: var(--_glow);
   color: var(--ink-900);
 }
-:where(.vui button[type='submit']:not([class*='vui-']):hover),
-.vui-btn--primary:hover {
+:where(.vui button[type='submit']:not(nav button):hover),
+:where(.vui .button.fill:hover) {
   background-color: var(--cyan-200);
   box-shadow: var(--glow-cyan-lg);
   color: var(--ink-900);
 }
 
 /* ---- Ghost: bare ---- */
-.vui-btn--ghost {
+:where(.vui button.ghost),
+:where(.vui .button.ghost) {
   border-color: transparent;
   background-color: transparent;
   color: var(--text-secondary);
   letter-spacing: var(--ls-wider);
 }
-.vui-btn--ghost:hover {
+:where(.vui button.ghost:hover),
+:where(.vui .button.ghost:hover) {
   background-color: color-mix(in srgb, var(--accent) 6%, transparent);
   box-shadow: none;
   color: var(--_accent);
 }
 
-/* ---- Secondary (explicit alias of the default outline look) ---- */
-.vui-btn--secondary {
-  border-color: var(--_accent);
-  background-color: color-mix(in srgb, var(--_accent) 8%, transparent);
-  color: var(--_accent);
-}
-
-/* ---- Tones (class or [data-tone]) ---- */
-:where(.vui button[data-tone='amber']),
-.vui-btn--amber {
+/* ---- Tones ---- */
+:where(.vui button.amber),
+:where(.vui .button.amber) {
   --_accent: var(--amber-500);
   --_glow: var(--glow-amber-md);
 }
-:where(.vui button[data-tone='danger'], .vui button[data-tone='threat']),
-.vui-btn--danger {
+:where(.vui button.danger),
+:where(.vui .button.danger) {
   --_accent: var(--red-500);
   --_glow: var(--glow-red-md);
 }
-:where(.vui button[data-tone='secure']),
-.vui-btn--secure {
+:where(.vui button.secure),
+:where(.vui .button.secure) {
   --_accent: var(--green-500);
   --_glow: var(--glow-green-md);
 }
-.vui-btn--danger.vui-btn--primary {
+:where(.vui button.danger.fill),
+:where(.vui button[type='submit'].danger) {
   color: var(--cyan-50);
 }
 
 /* ---- Sizes ---- */
-:where(.vui button[data-size='sm']),
-.vui-btn--sm {
+:where(.vui button.small),
+:where(.vui .button.small) {
+  --bevel-md: 7px;
   padding-inline: 14px;
   padding-block: 7px;
   font-size: var(--fs-xs);
-  --bevel-md: 7px;
 }
-:where(.vui button[data-size='lg']),
-.vui-btn--lg {
+:where(.vui button.large),
+:where(.vui .button.large) {
+  --bevel-md: 12px;
   padding-inline: 30px;
   padding-block: 15px;
   font-size: var(--fs-base);
-  --bevel-md: 12px;
 }
 
 /* ---- Full-width ---- */
-.vui-btn--block {
+:where(.vui button.block),
+:where(.vui .button.block) {
   display: flex;
   inline-size: 100%;
 }
 
 /* ---- Icon-only → square notched control (detected via :has) ---- */
-:where(.vui button:not([class*='vui-']):has(> svg:only-child)),
-:where(.vui button:not([class*='vui-']):has(> i:only-child)),
-.vui-iconbtn,
-.vui-btn--icon {
+:where(.vui button:not([role='tab']):not([role='switch']):not(nav button):has(> i:only-child)),
+:where(.vui button:not([role='tab']):not([role='switch']):not(nav button):has(> svg:only-child)),
+:where(.vui button.icon) {
   --bevel-sm: 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   inline-size: 38px;
   block-size: 38px;
   padding: 0;
   border: var(--border-hair) solid var(--hairline-strong);
   background-color: color-mix(in srgb, var(--cyan-400) 6%, transparent);
   color: var(--text-secondary);
-  font-size: var(--fs-md);
   clip-path: var(--clip-notch);
-  cursor: pointer;
-  transition: all var(--dur-fast) var(--ease-hud);
 }
-:where(.vui button:not([class*='vui-']):has(> svg:only-child):hover),
-:where(.vui button:not([class*='vui-']):has(> i:only-child):hover),
-.vui-iconbtn:hover,
-.vui-btn--icon:hover {
+:where(.vui button:not(nav button):has(> i:only-child):hover),
+:where(.vui button:not(nav button):has(> svg:only-child):hover),
+:where(.vui button.icon:hover) {
   border-color: var(--hairline-accent);
   background-color: color-mix(in srgb, var(--cyan-400) 14%, transparent);
   box-shadow: var(--glow-cyan-sm);
   color: var(--accent);
 }
-.vui-iconbtn:active,
-.vui-btn--icon:active {
-  transform: translateY(1px);
-}
-.vui-iconbtn:focus-visible,
-.vui-btn--icon:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-.vui-iconbtn--active,
-.vui-btn--icon[aria-pressed='true'] {
+:where(.vui button.icon[aria-pressed='true']) {
   border-color: var(--hairline-accent);
   background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
   box-shadow: var(--glow-cyan-sm);
   color: var(--accent);
 }
-.vui-iconbtn--sm {
+:where(.vui button.icon.small) {
+  --bevel-sm: 5px;
   inline-size: 30px;
   block-size: 30px;
-  font-size: var(--fs-sm);
-  --bevel-sm: 5px;
 }
-.vui-iconbtn--lg {
+:where(.vui button.icon.large) {
+  --bevel-sm: 7px;
   inline-size: 46px;
   block-size: 46px;
-  font-size: var(--fs-lg);
-  --bevel-sm: 7px;
 }
 
-/* ---- Disabled (shared) ---- */
+/* ---- Disabled ---- */
 :where(.vui button:disabled),
-.vui-btn[disabled],
-.vui-btn--disabled,
-.vui-iconbtn[disabled] {
+:where(.vui .button[disabled]) {
   transform: none;
   box-shadow: none;
   cursor: not-allowed;
@@ -207,9 +179,13 @@
   opacity: 0.4;
 }
 
-/* ---- Button group: chamfered cluster ---- */
-.vui-btn-group {
+/* ---- Button group: a <menu>/<div> cluster of buttons ---- */
+:where(.vui menu.group),
+:where(.vui .group) {
   display: inline-flex;
   flex-wrap: wrap;
   gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }

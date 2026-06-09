@@ -1,12 +1,13 @@
 /* ============================================================
-   VantaUI — Data tables
-   Semantic <table> inside .vui becomes a tactical telemetry grid:
-   mono body, uppercase eyebrow headers, hairline rows, cyan hover.
-   Wrap wide tables in .vui-table-scroll for horizontal overflow on
-   small screens.
+   VantaUI — Data tables (semantic, zero-class)
+   A <table> becomes a tactical telemetry grid: mono body, uppercase
+   eyebrow headers, hairline rows, cyan row hover. Right-align numeric
+   cells with [data-num]. Wrap a wide table in a .scroll element for
+   horizontal overflow on small screens.
    ============================================================ */
 
-.vui-table-scroll {
+:where(.vui .scroll:has(> table)),
+:where(.vui .table-scroll) {
   inline-size: 100%;
   overflow-x: auto;
   border: var(--border-hair) solid var(--hairline);
@@ -14,16 +15,14 @@
   --bevel-md: 10px;
 }
 
-:where(.vui table:not([class*='vui-'])),
-.vui-table {
+:where(.vui table) {
   inline-size: 100%;
   border-collapse: collapse;
   color: var(--text-secondary);
   font-size: var(--fs-sm);
   font-family: var(--font-mono);
 }
-:where(.vui table caption),
-.vui-table caption {
+:where(.vui table caption) {
   padding-inline: 14px;
   padding-block: 10px;
   color: var(--text-muted);
@@ -35,8 +34,7 @@
   text-transform: uppercase;
   caption-side: top;
 }
-:where(.vui table th),
-.vui-table th {
+:where(.vui table th) {
   padding-inline: 14px;
   padding-block: 10px;
   border-block-end: var(--border-hair) solid var(--hairline-strong);
@@ -49,27 +47,22 @@
   text-transform: uppercase;
   white-space: nowrap;
 }
-:where(.vui table td),
-.vui-table td {
+:where(.vui table td) {
   padding-inline: 14px;
   padding-block: 10px;
   border-block-end: var(--border-hair) solid var(--hairline);
 }
-:where(.vui table tbody tr),
-.vui-table tbody tr {
+:where(.vui table tbody tr) {
   transition: background-color var(--dur-fast) var(--ease-hud);
 }
-:where(.vui table tbody tr:hover),
-.vui-table tbody tr:hover {
+:where(.vui table tbody tr:hover) {
   background-color: color-mix(in srgb, var(--accent) 5%, transparent);
 }
-:where(.vui table tbody tr:last-child td),
-.vui-table tbody tr:last-child td {
+:where(.vui table tbody tr:last-child td) {
   border-block-end: 0;
 }
 /* numeric columns read better right-aligned via [data-num] */
-:where(.vui table [data-num]),
-.vui-table [data-num] {
+:where(.vui table [data-num]) {
   color: var(--text-primary);
   font-weight: var(--fw-semibold);
   font-family: var(--font-hud);

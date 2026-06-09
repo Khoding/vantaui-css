@@ -1,20 +1,18 @@
 /* ============================================================
    VantaUI — Badges / status tags
-   Status tag chip with an optional live dot. Tone via class or
-   [data-tone]. A leading <i>/<svg>/.vui-dot sits inline (gap auto).
-   Semantic: <mark class="vui-badge"> or any element + class.
+   A .badge is a status chip (on a <span>, <a>, <mark>…). Tone with one
+   word: cyan · amber · red · green · neutral. Add .solid to fill, .dot
+   for a leading live dot. A leading <i>/<svg> sits inline (gap auto).
    ============================================================ */
 
-.vui-badge,
-:where(.vui [data-badge]),
-:where([class*='vui-badge--']) {
+:where(.vui .badge) {
   --_c: var(--cyan-400);
   --bevel-sm: 4px;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   padding-inline: 9px;
   padding-block: 4px;
-  gap: 6px;
   border: var(--border-hair) solid currentColor;
   background-color: color-mix(in srgb, currentColor 12%, transparent);
   color: var(--_c);
@@ -28,12 +26,8 @@
   clip-path: var(--clip-notch);
 }
 
-/* live dot inside a badge */
-.vui-badge > .vui-badge__dot,
-.vui-badge::before {
-  flex: none;
-}
-.vui-badge--dot::before {
+/* leading live dot */
+:where(.vui .badge.dot)::before {
   inline-size: 6px;
   block-size: 6px;
   border-radius: var(--radius-pill);
@@ -42,55 +36,32 @@
   content: '';
 }
 
-/* solid fill variant */
-.vui-badge--solid {
-  border-color: currentColor;
+/* solid fill */
+:where(.vui .badge.solid) {
   background-color: currentColor;
 }
-.vui-badge--solid {
-  color: var(--_c);
-}
-.vui-badge--solid > * {
+:where(.vui .badge.solid) > * {
   color: var(--ink-900);
 }
 
 /* ---- Tones ---- */
-.vui-badge--cyan,
-:where(.vui [data-badge][data-tone='cyan']) {
+:where(.vui .badge.cyan) {
   --_c: var(--cyan-400);
   color: var(--cyan-400);
 }
-.vui-badge--amber,
-:where(.vui [data-badge][data-tone='amber']) {
+:where(.vui .badge.amber) {
   --_c: var(--amber-500);
   color: var(--amber-500);
 }
-.vui-badge--red,
-:where(.vui [data-badge][data-tone='red']) {
+:where(.vui .badge.red) {
   --_c: var(--red-500);
   color: var(--red-500);
 }
-.vui-badge--green,
-:where(.vui [data-badge][data-tone='green']) {
+:where(.vui .badge.green) {
   --_c: var(--green-500);
   color: var(--green-500);
 }
-.vui-badge--neutral,
-:where(.vui [data-badge][data-tone='neutral']) {
+:where(.vui .badge.neutral) {
   --_c: var(--slate-400);
   color: var(--slate-400);
-}
-
-/* On solid badges keep the inner text ink-dark */
-.vui-badge--solid.vui-badge--cyan {
-  color: var(--cyan-400);
-}
-.vui-badge--solid.vui-badge--amber {
-  color: var(--amber-500);
-}
-.vui-badge--solid.vui-badge--red {
-  color: var(--red-500);
-}
-.vui-badge--solid.vui-badge--green {
-  color: var(--green-500);
 }

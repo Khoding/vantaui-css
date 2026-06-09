@@ -1,24 +1,22 @@
 /* ============================================================
-   VantaUI — Alerts / notices
-   Inline system notice with an accent rail + glyph. Semantic:
-   [role="status"] reads as info (cyan), [role="alert"] as threat
-   (red). Tone via class or [data-tone]; glyph auto-set per tone and
-   overridable with --vui-alert-glyph. Optional <strong>/<h*> title.
+   VantaUI — Alerts / notices (semantic, zero-class)
+   [role="status"] reads as an info notice (cyan); [role="alert"] reads
+   as a threat (red). Both get an accent rail + glyph. Re-tone with one
+   word: info · warn · threat · secure. An optional <strong>/<h*> is the
+   title. Override the glyph with --vui-alert-glyph.
    ============================================================ */
 
-.vui-alert,
-:where([class*='vui-alert--']),
-:where(.vui [role='status']:not([class*='vui-'])),
-:where(.vui [role='alert']:not([class*='vui-'])) {
+:where(.vui [role='status']),
+:where(.vui [role='alert']) {
   --_c: var(--cyan-400);
   --_glyph: '\25C8'; /* ◈ */
   --bevel-md: 9px;
   display: flex;
   position: relative;
   align-items: flex-start;
+  gap: 12px;
   padding-inline: 16px 14px;
   padding-block: 13px;
-  gap: 12px;
   border: var(--border-hair) solid var(--_c);
   background-color: var(--surface-panel);
   color: var(--text-secondary);
@@ -29,10 +27,8 @@
 }
 
 /* accent rail */
-.vui-alert::before,
-:where([class*='vui-alert--'])::before,
-:where(.vui [role='status']:not([class*='vui-']))::before,
-:where(.vui [role='alert']:not([class*='vui-']))::before {
+:where(.vui [role='status'])::before,
+:where(.vui [role='alert'])::before {
   position: absolute;
   inline-size: 3px;
   inset-block: 0;
@@ -43,10 +39,8 @@
 }
 
 /* leading glyph */
-.vui-alert::after,
-:where([class*='vui-alert--'])::after,
-:where(.vui [role='status']:not([class*='vui-']))::after,
-:where(.vui [role='alert']:not([class*='vui-']))::after {
+:where(.vui [role='status'])::after,
+:where(.vui [role='alert'])::after {
   flex: none;
   order: -1;
   content: var(--vui-alert-glyph, var(--_glyph));
@@ -59,8 +53,7 @@
 }
 
 /* title inside the body */
-.vui-alert :where(strong, b, h1, h2, h3, h4, h5, h6),
-.vui-alert__title {
+:where(.vui [role='status'], .vui [role='alert']) :where(strong, b, h1, h2, h3, h4, h5, h6) {
   display: block;
   margin-block-end: 3px;
   color: var(--text-primary);
@@ -72,24 +65,20 @@
 }
 
 /* ---- Tones ---- */
-:where(.vui [role='alert']:not([class*='vui-'])),
-.vui-alert--threat,
-:where(.vui-alert[data-tone='threat']) {
+:where(.vui [role='alert']),
+:where(.vui [role='status'].threat, .vui [role='alert'].threat) {
   --_c: var(--red-500);
   --_glyph: '\2B22'; /* ⬢ */
 }
-.vui-alert--warn,
-:where(.vui-alert[data-tone='warn']) {
+:where(.vui [role='status'].warn, .vui [role='alert'].warn) {
   --_c: var(--amber-500);
   --_glyph: '\25B2'; /* ▲ */
 }
-.vui-alert--secure,
-:where(.vui-alert[data-tone='secure']) {
+:where(.vui [role='status'].secure, .vui [role='alert'].secure) {
   --_c: var(--green-500);
   --_glyph: '\25C9'; /* ◉ */
 }
-.vui-alert--info,
-:where(.vui-alert[data-tone='info']) {
+:where(.vui [role='status'].info, .vui [role='alert'].info) {
   --_c: var(--cyan-400);
   --_glyph: '\25C8'; /* ◈ */
 }

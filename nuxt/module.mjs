@@ -32,7 +32,7 @@ export default defineNuxtModule({
     if (options.bodyClass) {
       const head = (nuxt.options.app.head ||= {});
       const bodyAttrs = (head.bodyAttrs ||= {});
-      bodyAttrs.class = `${bodyAttrs.class ? bodyAttrs.class + ' ' : ''}VantaUI`;
+      bodyAttrs.class = `${bodyAttrs.class ? bodyAttrs.class + ' ' : ''}vui`;
     }
 
     if (options.behaviours) {
