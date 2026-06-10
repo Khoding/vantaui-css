@@ -77,6 +77,10 @@ try {
   mkdirSync(docsDistDir, {recursive: true});
   copyFileSync(resolve(outDir, 'vantaui.min.css'), resolve(docsDistDir, 'vantaui.min.css'));
   console.log('✔ docs/dist/vantaui.min.css');
+  const docsJsDir = resolve(root, 'docs', 'js');
+  mkdirSync(docsJsDir, {recursive: true});
+  copyFileSync(resolve(root, 'js', 'vantaui.js'), resolve(docsJsDir, 'vantaui.js'));
+  console.log('✔ docs/js/vantaui.js');
   console.log('Done.');
 } finally {
   rmSync(tmpEntry, {force: true});
