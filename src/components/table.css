@@ -62,6 +62,82 @@
 :where(.vui table tbody tr:last-child td) {
   border-block-end: 0;
 }
+/* ---- Modifiers ---- */
+
+/* solid surface, hover preserved */
+:where(.vui table.opaque) {
+  background-color: var(--surface-panel);
+}
+
+/* cell text wrapping */
+:where(.vui table.wrap td) {
+  white-space: normal;
+}
+
+/* padding density */
+:where(.vui table.compact th),
+:where(.vui table.compact td) {
+  padding-block: 6px;
+}
+:where(.vui table.relaxed th),
+:where(.vui table.relaxed td) {
+  padding-block: 16px;
+}
+
+/* alternating row tint */
+:where(.vui table.striped tbody tr:nth-child(even)) {
+  background-color: color-mix(in srgb, white 3%, transparent);
+}
+
+/* column hairlines */
+:where(.vui table.ruled th:not(:last-child)),
+:where(.vui table.ruled td:not(:last-child)) {
+  border-inline-end: var(--border-hair) solid var(--hairline);
+}
+
+/* no row hover */
+:where(.vui table.flat tbody tr:hover) {
+  background-color: transparent;
+}
+
+/* sticky column headers — needs an opaque background to mask scrolling content */
+:where(.vui table.sticky-head thead th) {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background-color: var(--surface-panel);
+}
+
+/* ---- Row status tints ---- */
+:where(.vui table tbody tr.cyan) {
+  background-color: oklch(84.6% 0.133 212.1 / 0.08);
+  color: oklch(94% 0.025 212);
+}
+:where(.vui table tbody tr.cyan:hover) {
+  background-color: oklch(84.6% 0.133 212.1 / 0.16);
+}
+:where(.vui table tbody tr.amber) {
+  background-color: oklch(81.1% 0.155 71 / 0.08);
+  color: oklch(94% 0.055 79);
+}
+:where(.vui table tbody tr.amber:hover) {
+  background-color: oklch(81.1% 0.155 71 / 0.16);
+}
+:where(.vui table tbody tr.red) {
+  background-color: oklch(64.7% 0.239 23.8 / 0.08);
+  color: oklch(94% 0.04 23);
+}
+:where(.vui table tbody tr.red:hover) {
+  background-color: oklch(64.7% 0.239 23.8 / 0.16);
+}
+:where(.vui table tbody tr.green) {
+  background-color: oklch(78% 0.189 154.4 / 0.08);
+  color: oklch(94% 0.045 155);
+}
+:where(.vui table tbody tr.green:hover) {
+  background-color: oklch(78% 0.189 154.4 / 0.16);
+}
+
 /* numeric columns read better right-aligned via [data-num] */
 :where(.vui table [data-num]) {
   color: var(--text-primary);

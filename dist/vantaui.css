@@ -2249,6 +2249,77 @@
     border-block-end: 0;
   }
 
+  :where(.vui table.opaque) {
+    background-color: var(--surface-panel);
+  }
+
+  :where(.vui table.wrap td) {
+    white-space: normal;
+  }
+
+  :where(.vui table.compact th), :where(.vui table.compact td) {
+    padding-block: 6px;
+  }
+
+  :where(.vui table.relaxed th), :where(.vui table.relaxed td) {
+    padding-block: 16px;
+  }
+
+  :where(.vui table.striped tbody tr:nth-child(2n)) {
+    background-color: #ffffff08;
+  }
+
+  :where(.vui table.ruled th:not(:last-child)), :where(.vui table.ruled td:not(:last-child)) {
+    border-inline-end: var(--border-hair) solid var(--hairline);
+  }
+
+  :where(.vui table.flat tbody tr:hover) {
+    background-color: #0000;
+  }
+
+  :where(.vui table.sticky-head thead th) {
+    z-index: 1;
+    background-color: var(--surface-panel);
+    position: sticky;
+    inset-block-start: 0;
+  }
+
+  :where(.vui table tbody tr.cyan) {
+    color: oklch(94% .025 212);
+    background-color: oklch(84.6% .133 212.1 / .08);
+  }
+
+  :where(.vui table tbody tr.cyan:hover) {
+    background-color: oklch(84.6% .133 212.1 / .16);
+  }
+
+  :where(.vui table tbody tr.amber) {
+    color: oklch(94% .055 79);
+    background-color: oklch(81.1% .155 71 / .08);
+  }
+
+  :where(.vui table tbody tr.amber:hover) {
+    background-color: oklch(81.1% .155 71 / .16);
+  }
+
+  :where(.vui table tbody tr.red) {
+    color: oklch(94% .04 23);
+    background-color: oklch(64.7% .239 23.8 / .08);
+  }
+
+  :where(.vui table tbody tr.red:hover) {
+    background-color: oklch(64.7% .239 23.8 / .16);
+  }
+
+  :where(.vui table tbody tr.green) {
+    color: oklch(94% .045 155);
+    background-color: oklch(78% .189 154.4 / .08);
+  }
+
+  :where(.vui table tbody tr.green:hover) {
+    background-color: oklch(78% .189 154.4 / .16);
+  }
+
   :where(.vui table [data-num]) {
     color: var(--text-primary);
     font-weight: var(--fw-semibold);
