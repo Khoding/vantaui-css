@@ -4,15 +4,24 @@
    auto-spans edge-to-edge with a hairline divider (detected via :has,
    laid out with negative margins). Tune the surface with one word:
      raised · inset · flat · glow · notch · brackets
+   Tint with a color word: cyan · amber · red · green
+   Combine freely — "amber glow", "green raised", "red notch brackets".
    ============================================================ */
 
 :where(.vui article:not(.vui-prose):not(.prose)) {
   --bevel-md: 10px;
+  --_surface: var(--surface-panel);
+  --_c: var(--accent);
+  --_glow: var(--accent-glow);
+  /* Public context vars — inherited by child components (e.g. buttons) */
+  --panel-accent: var(--cyan-400);
+  --panel-glow: var(--glow-cyan-md);
+  --panel-hi: var(--cyan-200);
   display: block;
   position: relative;
   padding: var(--space-5);
   border: var(--border-hair) solid var(--hairline);
-  background-color: var(--surface-panel);
+  background-color: var(--_surface);
   box-shadow: var(--shadow-panel);
   color: var(--text-primary);
   clip-path: var(--clip-chamfer);
@@ -50,23 +59,15 @@
 
 /* ---- Depth variants ---- */
 :where(.vui article.raised) {
-  background-color: var(--surface-panel-2);
+  --_surface: var(--surface-panel-2);
   box-shadow: var(--shadow-raised);
 }
 :where(.vui article.inset) {
-  background-color: var(--surface-inset);
+  --_surface: var(--surface-inset);
   box-shadow: var(--shadow-inset);
 }
 :where(.vui article.flat) {
   box-shadow: none;
-}
-
-/* ---- Accent rim glow ---- */
-:where(.vui article.glow) {
-  border-color: var(--hairline-accent);
-  box-shadow:
-    var(--shadow-panel),
-    0 0 24px -6px var(--accent-glow);
 }
 
 /* ---- Notched plate ---- */
@@ -81,9 +82,9 @@
   position: absolute;
   inline-size: 14px;
   block-size: 14px;
-  border: var(--border-bold) solid var(--accent);
+  border: var(--border-bold) solid var(--_c);
   content: '';
-  filter: drop-shadow(var(--glow-cyan-sm));
+  filter: drop-shadow(0 0 4px var(--_glow));
   pointer-events: none;
 }
 :where(.vui article.brackets)::before {
@@ -97,4 +98,79 @@
   inset-inline-end: 6px;
   border-inline-start: 0;
   border-block-start: 0;
+}
+
+/* ---- Color variants (admonition tones) ----
+   Each variant defines three tint tokens (dim / default / vivid) as static
+   OKLCH values so the intensity modifiers below can pick them up without
+   needing var() inside a color function (avoids LightningCSS fallback issues).
+   background-image layers the tint on top of background-color (--_surface),
+   so depth modifiers (raised, inset) are preserved automatically. */
+:where(.vui article.cyan) {
+  --_c: var(--cyan-400);
+  --_glow: var(--cyan-glow);
+  --_tint-dim:   oklch(84.6% 0.133 212.1 / 0.05);
+  --_tint:       oklch(84.6% 0.133 212.1 / 0.11);
+  --_tint-vivid: oklch(84.6% 0.133 212.1 / 0.22);
+  --panel-accent: var(--cyan-400);
+  --panel-glow: var(--glow-cyan-md);
+  --panel-hi: var(--cyan-200);
+  --text-muted: oklch(79% 0.05 212);
+  border-color: oklch(84.6% 0.133 212.1 / 0.4);
+  background-image: linear-gradient(var(--_tint), var(--_tint));
+  color: oklch(94% 0.025 212);
+}
+:where(.vui article.amber) {
+  --_c: var(--amber-400);
+  --_glow: var(--amber-glow);
+  --_tint-dim:   oklch(81.1% 0.155 71 / 0.05);
+  --_tint:       oklch(81.1% 0.155 71 / 0.11);
+  --_tint-vivid: oklch(81.1% 0.155 71 / 0.22);
+  --panel-accent: var(--amber-500);
+  --panel-glow: var(--glow-amber-md);
+  --panel-hi: var(--amber-400);
+  --text-muted: oklch(79% 0.09 79);
+  border-color: oklch(81.1% 0.155 71 / 0.4);
+  background-image: linear-gradient(var(--_tint), var(--_tint));
+  color: oklch(94% 0.055 79);
+}
+:where(.vui article.red) {
+  --_c: var(--red-500);
+  --_glow: var(--red-glow);
+  --_tint-dim:   oklch(64.7% 0.239 23.8 / 0.05);
+  --_tint:       oklch(64.7% 0.239 23.8 / 0.11);
+  --_tint-vivid: oklch(64.7% 0.239 23.8 / 0.22);
+  --panel-accent: var(--red-500);
+  --panel-glow: var(--glow-red-md);
+  --panel-hi: var(--red-400);
+  --text-muted: oklch(79% 0.07 23);
+  border-color: oklch(64.7% 0.239 23.8 / 0.4);
+  background-image: linear-gradient(var(--_tint), var(--_tint));
+  color: oklch(94% 0.04 23);
+}
+:where(.vui article.green) {
+  --_c: var(--green-500);
+  --_glow: var(--green-glow);
+  --_tint-dim:   oklch(78% 0.189 154.4 / 0.05);
+  --_tint:       oklch(78% 0.189 154.4 / 0.11);
+  --_tint-vivid: oklch(78% 0.189 154.4 / 0.22);
+  --panel-accent: var(--green-500);
+  --panel-glow: var(--glow-green-md);
+  --panel-hi: var(--green-400);
+  --text-muted: oklch(81% 0.08 155);
+  border-color: oklch(78% 0.189 154.4 / 0.4);
+  background-image: linear-gradient(var(--_tint), var(--_tint));
+  color: oklch(94% 0.045 155);
+}
+
+/* ---- Tint intensity (must follow color variants to override background-image) ---- */
+:where(.vui article.dim)   { background-image: linear-gradient(var(--_tint-dim), var(--_tint-dim)); }
+:where(.vui article.vivid) { background-image: linear-gradient(var(--_tint-vivid), var(--_tint-vivid)); }
+
+/* ---- Accent rim glow (after color variants so --_c/--_glow are already set) ---- */
+:where(.vui article.glow) {
+  border-color: oklch(from var(--_c) l c h / 0.55);
+  box-shadow:
+    var(--shadow-panel),
+    0 0 24px -6px var(--_glow);
 }

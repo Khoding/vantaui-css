@@ -577,7 +577,7 @@
 
   .vui-eyebrow:before {
     content: "//";
-    color: var(--accent);
+    color: var(--_c, var(--accent));
     letter-spacing: 0;
   }
 
@@ -1068,9 +1068,9 @@
 
 @layer vui.components {
   :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button)), :where(.vui .button) {
-    --_accent: var(--cyan-400);
-    --_glow: var(--glow-cyan-md);
-    --_hi: var(--cyan-200);
+    --_accent: var(--panel-accent, var(--cyan-400));
+    --_glow: var(--panel-glow, var(--glow-cyan-md));
+    --_hi: var(--panel-hi, var(--cyan-200));
     --_on: var(--ink-900);
     --_fill-hover: var(--_hi);
     --bevel-md: 10px;
@@ -1238,9 +1238,15 @@
 
   :where(.vui article:not(.vui-prose):not(.prose)) {
     --bevel-md: 10px;
+    --_surface: var(--surface-panel);
+    --_c: var(--accent);
+    --_glow: var(--accent-glow);
+    --panel-accent: var(--cyan-400);
+    --panel-glow: var(--glow-cyan-md);
+    --panel-hi: var(--cyan-200);
     padding: var(--space-5);
     border: var(--border-hair) solid var(--hairline);
-    background-color: var(--surface-panel);
+    background-color: var(--_surface);
     box-shadow: var(--shadow-panel);
     color: var(--text-primary);
     clip-path: var(--clip-chamfer);
@@ -1279,23 +1285,17 @@
   }
 
   :where(.vui article.raised) {
-    background-color: var(--surface-panel-2);
+    --_surface: var(--surface-panel-2);
     box-shadow: var(--shadow-raised);
   }
 
   :where(.vui article.inset) {
-    background-color: var(--surface-inset);
+    --_surface: var(--surface-inset);
     box-shadow: var(--shadow-inset);
   }
 
   :where(.vui article.flat) {
     box-shadow: none;
-  }
-
-  :where(.vui article.glow) {
-    border-color: var(--hairline-accent);
-    box-shadow: var(--shadow-panel),
-    0 0 24px -6px var(--accent-glow);
   }
 
   :where(.vui article.notch) {
@@ -1304,11 +1304,11 @@
   }
 
   :where(.vui article.brackets):before, :where(.vui article.brackets):after {
-    border: var(--border-bold) solid var(--accent);
+    border: var(--border-bold) solid var(--_c);
     content: "";
     block-size: 14px;
     inline-size: 14px;
-    filter: drop-shadow(var(--glow-cyan-sm));
+    filter: drop-shadow(0 0 4px var(--_glow));
     pointer-events: none;
     position: absolute;
   }
@@ -1325,6 +1325,80 @@
     border-inline-start: 0;
     inset-block-end: 6px;
     inset-inline-end: 6px;
+  }
+
+  :where(.vui article.cyan) {
+    --_c: var(--cyan-400);
+    --_glow: var(--cyan-glow);
+    --_tint-dim: oklch(84.6% .133 212.1 / .05);
+    --_tint: oklch(84.6% .133 212.1 / .11);
+    --_tint-vivid: oklch(84.6% .133 212.1 / .22);
+    --panel-accent: var(--cyan-400);
+    --panel-glow: var(--glow-cyan-md);
+    --panel-hi: var(--cyan-200);
+    --text-muted: oklch(79% .05 212);
+    background-image: linear-gradient(var(--_tint), var(--_tint));
+    color: oklch(94% .025 212);
+    border-color: oklch(84.6% .133 212.1 / .4);
+  }
+
+  :where(.vui article.amber) {
+    --_c: var(--amber-400);
+    --_glow: var(--amber-glow);
+    --_tint-dim: oklch(81.1% .155 71 / .05);
+    --_tint: oklch(81.1% .155 71 / .11);
+    --_tint-vivid: oklch(81.1% .155 71 / .22);
+    --panel-accent: var(--amber-500);
+    --panel-glow: var(--glow-amber-md);
+    --panel-hi: var(--amber-400);
+    --text-muted: oklch(79% .09 79);
+    background-image: linear-gradient(var(--_tint), var(--_tint));
+    color: oklch(94% .055 79);
+    border-color: oklch(81.1% .155 71 / .4);
+  }
+
+  :where(.vui article.red) {
+    --_c: var(--red-500);
+    --_glow: var(--red-glow);
+    --_tint-dim: oklch(64.7% .239 23.8 / .05);
+    --_tint: oklch(64.7% .239 23.8 / .11);
+    --_tint-vivid: oklch(64.7% .239 23.8 / .22);
+    --panel-accent: var(--red-500);
+    --panel-glow: var(--glow-red-md);
+    --panel-hi: var(--red-400);
+    --text-muted: oklch(79% .07 23);
+    background-image: linear-gradient(var(--_tint), var(--_tint));
+    color: oklch(94% .04 23);
+    border-color: oklch(64.7% .239 23.8 / .4);
+  }
+
+  :where(.vui article.green) {
+    --_c: var(--green-500);
+    --_glow: var(--green-glow);
+    --_tint-dim: oklch(78% .189 154.4 / .05);
+    --_tint: oklch(78% .189 154.4 / .11);
+    --_tint-vivid: oklch(78% .189 154.4 / .22);
+    --panel-accent: var(--green-500);
+    --panel-glow: var(--glow-green-md);
+    --panel-hi: var(--green-400);
+    --text-muted: oklch(81% .08 155);
+    background-image: linear-gradient(var(--_tint), var(--_tint));
+    color: oklch(94% .045 155);
+    border-color: oklch(78% .189 154.4 / .4);
+  }
+
+  :where(.vui article.dim) {
+    background-image: linear-gradient(var(--_tint-dim), var(--_tint-dim));
+  }
+
+  :where(.vui article.vivid) {
+    background-image: linear-gradient(var(--_tint-vivid), var(--_tint-vivid));
+  }
+
+  :where(.vui article.glow) {
+    border-color: oklch(from var(--_c) l c h / .55);
+    box-shadow: var(--shadow-panel),
+    0 0 24px -6px var(--_glow);
   }
 
   :where(.vui .badge) {
@@ -1358,36 +1432,29 @@
   }
 
   :where(.vui .badge.solid) {
-    background-color: currentColor;
-  }
-
-  :where(.vui .badge.solid) > * {
+    background-color: var(--_c);
+    border-color: var(--_c);
     color: var(--ink-900);
   }
 
   :where(.vui .badge.cyan) {
     --_c: var(--cyan-400);
-    color: var(--cyan-400);
   }
 
   :where(.vui .badge.amber) {
     --_c: var(--amber-500);
-    color: var(--amber-500);
   }
 
   :where(.vui .badge.red) {
     --_c: var(--red-500);
-    color: var(--red-500);
   }
 
   :where(.vui .badge.green) {
     --_c: var(--green-500);
-    color: var(--green-500);
   }
 
   :where(.vui .badge.neutral) {
     --_c: var(--slate-400);
-    color: var(--slate-400);
   }
 
   :where(.vui input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"])), :where(.vui textarea), :where(.vui select) {

@@ -1,6 +1,6 @@
 {
   "name": "vantaui-css",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "VantaUI — a dark, angular, military-telemetry HUD CSS library. Semantic-first like BeerCSS: write proper HTML, get a tactical UI. Responsive, OKLCH, zero-dependency, framework-agnostic (Vue / Nuxt / vanilla).",
   "type": "module",
   "license": "MIT",

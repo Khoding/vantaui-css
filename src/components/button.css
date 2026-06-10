@@ -12,9 +12,9 @@
 
 :where(.vui button:not([role='tab']):not([role='switch']):not(nav button)),
 :where(.vui .button) {
-  --_accent: var(--cyan-400);
-  --_glow: var(--glow-cyan-md);
-  --_hi: var(--cyan-200); /* lighter shade — outline hover text + fill hover bg */
+  --_accent: var(--panel-accent, var(--cyan-400));
+  --_glow: var(--panel-glow, var(--glow-cyan-md));
+  --_hi: var(--panel-hi, var(--cyan-200));
   --_on: var(--ink-900); /* text colour on a filled button */
   --_fill-hover: var(--_hi); /* fill hover background (tone-overridable) */
   --bevel-md: 10px;

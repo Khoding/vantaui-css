@@ -68,7 +68,7 @@
 }
 .vui-eyebrow::before {
   content: '//';
-  color: var(--accent);
+  color: var(--_c, var(--accent));
   letter-spacing: 0;
 }
 

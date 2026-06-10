@@ -38,30 +38,14 @@
 
 /* solid fill */
 :where(.vui .badge.solid) {
-  background-color: currentColor;
-}
-:where(.vui .badge.solid) > * {
+  background-color: var(--_c);
+  border-color: var(--_c);
   color: var(--ink-900);
 }
 
 /* ---- Tones ---- */
-:where(.vui .badge.cyan) {
-  --_c: var(--cyan-400);
-  color: var(--cyan-400);
-}
-:where(.vui .badge.amber) {
-  --_c: var(--amber-500);
-  color: var(--amber-500);
-}
-:where(.vui .badge.red) {
-  --_c: var(--red-500);
-  color: var(--red-500);
-}
-:where(.vui .badge.green) {
-  --_c: var(--green-500);
-  color: var(--green-500);
-}
-:where(.vui .badge.neutral) {
-  --_c: var(--slate-400);
-  color: var(--slate-400);
-}
+:where(.vui .badge.cyan)    { --_c: var(--cyan-400); }
+:where(.vui .badge.amber)   { --_c: var(--amber-500); }
+:where(.vui .badge.red)     { --_c: var(--red-500); }
+:where(.vui .badge.green)   { --_c: var(--green-500); }
+:where(.vui .badge.neutral) { --_c: var(--slate-400); }
