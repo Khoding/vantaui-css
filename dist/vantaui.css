@@ -399,6 +399,10 @@
     text-decoration-color: var(--hairline-accent);
   }
 
+  :where(.vui :is(h1, h2, h3, h4, h5, h6) a:not([class*="vui-"])), :where(.vui :is(h1, h2, h3, h4, h5, h6) a:not([class*="vui-"]):hover) {
+    color: inherit;
+  }
+
   :where(.vui code, .vui kbd, .vui samp, .vui pre) {
     color: var(--text-secondary);
     font-size: .9em;
@@ -473,11 +477,19 @@
     list-style: none;
   }
 
+  :where(.vui ul > li) {
+    position: relative;
+  }
+
   :where(.vui ul > li):before {
     content: "›";
     color: var(--accent);
-    margin-inline-start: calc(-1 * var(--space-4));
-    margin-inline-end: var(--space-3);
+    position: absolute;
+    inset-inline-start: calc(-1 * var(--space-4));
+  }
+
+  :where(.vui li > p + p) {
+    margin-block-start: var(--space-4);
   }
 
   :where(.vui i:not([class]), .vui i.fill) {
@@ -1019,7 +1031,7 @@
     margin-block-end: var(--space-4);
   }
 
-  :where(.vui-prose > .vui-bleed, .vui-prose > .bleed, .vui-prose > .half-bleed, .vui-prose > img, .vui-prose > figure, .vui-prose > blockquote, .vui-prose > pre) {
+  :where(.vui-prose > .vui-bleed, .vui-prose > .bleed, .vui-prose > .half-bleed, .vui-prose > img, .vui-prose > p:has( > img:only-child), .vui-prose > figure, .vui-prose > blockquote, .vui-prose > pre) {
     grid-column: bleed;
     inline-size: 100%;
   }
@@ -1029,7 +1041,7 @@
     inline-size: 100%;
   }
 
-  :where(.vui-prose > img, .vui-prose > figure img) {
+  :where(.vui-prose > img, .vui-prose > p:has( > img:only-child) > img, .vui-prose > figure img) {
     border: var(--border-hair) solid var(--hairline);
     background-color: var(--surface-inset);
     block-size: auto;

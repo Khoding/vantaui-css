@@ -45,8 +45,10 @@
   margin-block-end: var(--space-4);
 }
 
-/* Bleed classes & semantic elements (Images, blockquotes, pre, figure) */
-:where(.vui-prose > .vui-bleed, .vui-prose > .bleed, .vui-prose > .half-bleed, .vui-prose > img, .vui-prose > figure, .vui-prose > blockquote, .vui-prose > pre) {
+/* Bleed classes & semantic elements (Images, blockquotes, pre, figure).
+   A lone Markdown image renders as <p><img></p> (Nuxt Content), so let an
+   image-only paragraph bleed like a bare <img>. */
+:where(.vui-prose > .vui-bleed, .vui-prose > .bleed, .vui-prose > .half-bleed, .vui-prose > img, .vui-prose > p:has(> img:only-child), .vui-prose > figure, .vui-prose > blockquote, .vui-prose > pre) {
   grid-column: bleed;
   inline-size: 100%;
 }
@@ -61,7 +63,7 @@
    Scoped to *direct* children (and a direct figure's image) so that prose
    never restyles images, figures or quotes that belong to a live component
    nested inside the article — only the article's own long-form assets. */
-:where(.vui-prose > img, .vui-prose > figure img) {
+:where(.vui-prose > img, .vui-prose > p:has(> img:only-child) > img, .vui-prose > figure img) {
   display: block;
   max-inline-size: 100%;
   block-size: auto;

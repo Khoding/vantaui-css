@@ -79,6 +79,16 @@
   text-decoration-color: var(--hairline-accent);
 }
 
+/* Heading anchor wrappers — MDC-based renderers (Nuxt Content) wrap the
+   heading text in an in-page anchor: <h2 id><a href="#id">Title</a></h2>.
+   Keep the heading's own colour so the title doesn't pick up the link accent.
+   Authored after the link rules so it wins on source order (both are zero
+   specificity within the same layer); the hover underline still hints the anchor. */
+:where(.vui :is(h1, h2, h3, h4, h5, h6) a:not([class*='vui-'])),
+:where(.vui :is(h1, h2, h3, h4, h5, h6) a:not([class*='vui-']):hover) {
+  color: inherit;
+}
+
 /* ---------- Mono / terminal text ---------- */
 :where(.vui code, .vui kbd, .vui samp, .vui pre) {
   color: var(--text-secondary);
@@ -144,7 +154,12 @@
   font-style: normal;
 }
 
-/* ---------- Lists ---------- */
+/* ---------- Lists ----------
+   The custom ul marker hangs in the gutter via absolute positioning instead
+   of an in-flow inline ::before. That keeps it on the item's first line even
+   when the item's content is block-level — which happens constantly with
+   Markdown/Nuxt Content: "loose" lists wrap each <li> in a <p>, and authors
+   drop a flex/grid helper (e.g. .vui-flex) straight into an <li>. */
 :where(.vui ul, .vui ol) {
   padding-inline-start: var(--space-6);
 }
@@ -152,11 +167,21 @@
   padding-inline-start: var(--space-5);
   list-style: none;
 }
+:where(.vui ul > li) {
+  position: relative;
+}
 :where(.vui ul > li)::before {
-  margin-inline-start: calc(-1 * var(--space-4));
-  margin-inline-end: var(--space-3);
   content: '›';
+  position: absolute;
+  inset-inline-start: calc(-1 * var(--space-4));
   color: var(--accent);
+}
+
+/* Markdown "loose" lists wrap each item's content in paragraphs; the reset
+   already zeroes <p> margins, so restore the rhythm between multiple
+   paragraphs inside a single <li>. */
+:where(.vui li > p + p) {
+  margin-block-start: var(--space-4);
 }
 
 /* ---------- Icons: <i> is the icon element ----------
