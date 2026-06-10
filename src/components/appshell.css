@@ -115,7 +115,11 @@
   z-index: 1;
 }
 
-/* ---------- Tablet and up: side rail becomes a vertical column ---------- */
+/* ---------- Tablet and up: side rail becomes a vertical column ----------
+   By default a <header> spans the FULL width across the top, with the rail(s)
+   sitting below it (the classic top-bar + sidebar shape). Add `header.inset`
+   to flip it: the rail rises the full height and the header is confined beside
+   it. On phones everything just stacks, so this only applies from `m` up. */
 @media (min-width: 48rem) {
   :where(.vui:has(> main)) {
     --rail-left-width: auto;
@@ -137,7 +141,7 @@
     grid-template-rows: auto 1fr auto;
     grid-template-columns: var(--rail-left-width) 1fr;
     grid-template-areas:
-      'rail top'
+      'top  top'
       'rail main'
       'rail foot';
   }
@@ -150,7 +154,7 @@
   :where(.vui:has(> main):has(> nav.right)) {
     grid-template-columns: 1fr var(--rail-right-width);
     grid-template-areas:
-      'top railend'
+      'top  top'
       'main railend'
       'foot railend';
   }
@@ -162,6 +166,31 @@
   :where(.vui:has(> main):has(> nav.left):has(> aside.right)),
   :where(.vui:has(> main):has(> aside:not(.right)):has(> aside.right)) {
     grid-template-columns: var(--rail-left-width) 1fr var(--rail-right-width);
+    grid-template-areas:
+      'top  top  top'
+      'rail main railend'
+      'rail foot railend';
+  }
+
+  /* ---------- header.inset: full-height rail(s), header confined beside them.
+     Opts out of the default banner header. Placed after the default area rules
+     so it overrides them (both are :where(), i.e. zero specificity). ---------- */
+  :where(.vui:has(> main):has(> header.inset):has(> nav.left)),
+  :where(.vui:has(> main):has(> header.inset):has(> aside:not(.right))) {
+    grid-template-areas:
+      'rail top'
+      'rail main'
+      'rail foot';
+  }
+  :where(.vui:has(> main):has(> header.inset):has(> aside.right)),
+  :where(.vui:has(> main):has(> header.inset):has(> nav.right)) {
+    grid-template-areas:
+      'top railend'
+      'main railend'
+      'foot railend';
+  }
+  :where(.vui:has(> main):has(> header.inset):has(> nav.left):has(> aside.right)),
+  :where(.vui:has(> main):has(> header.inset):has(> aside:not(.right)):has(> aside.right)) {
     grid-template-areas:
       'rail top railend'
       'rail main railend'

@@ -2437,7 +2437,7 @@
     :where(.vui:has( > main):has( > nav.left)), :where(.vui:has( > main):has( > aside:not(.right))) {
       grid-template-rows: auto 1fr auto;
       grid-template-columns: var(--rail-left-width) 1fr;
-      grid-template-areas: "rail top"
+      grid-template-areas: "top top"
                            "rail main"
                            "rail foot";
     }
@@ -2448,7 +2448,7 @@
 
     :where(.vui:has( > main):has( > aside.right)), :where(.vui:has( > main):has( > nav.right)) {
       grid-template-columns: 1fr var(--rail-right-width);
-      grid-template-areas: "top railend"
+      grid-template-areas: "top top"
                            "main railend"
                            "foot railend";
     }
@@ -2459,6 +2459,24 @@
 
     :where(.vui:has( > main):has( > nav.left):has( > aside.right)), :where(.vui:has( > main):has( > aside:not(.right)):has( > aside.right)) {
       grid-template-columns: var(--rail-left-width) 1fr var(--rail-right-width);
+      grid-template-areas: "top top top"
+                           "rail main railend"
+                           "rail foot railend";
+    }
+
+    :where(.vui:has( > main):has( > header.inset):has( > nav.left)), :where(.vui:has( > main):has( > header.inset):has( > aside:not(.right))) {
+      grid-template-areas: "rail top"
+                           "rail main"
+                           "rail foot";
+    }
+
+    :where(.vui:has( > main):has( > header.inset):has( > aside.right)), :where(.vui:has( > main):has( > header.inset):has( > nav.right)) {
+      grid-template-areas: "top railend"
+                           "main railend"
+                           "foot railend";
+    }
+
+    :where(.vui:has( > main):has( > header.inset):has( > nav.left):has( > aside.right)), :where(.vui:has( > main):has( > header.inset):has( > aside:not(.right)):has( > aside.right)) {
       grid-template-areas: "rail top railend"
                            "rail main railend"
                            "rail foot railend";
