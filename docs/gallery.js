@@ -302,7 +302,7 @@
         '<code>vui-prose</code> is a responsive-first grid layout for articles and long-form text. It centres text to a readable maximum width (65ch) for optimal typography, while allowing selected elements like images, figure blocks, blockquotes, and code snippets to bleed wider or stretch to the full viewport width. Use <code>vui-bleed</code> (or <code>bleed</code>) to bleed to the sides of the viewport container, and <code>vui-bleed-full</code> (or <code>bleed-full</code>) to stretch edge-to-edge.',
       examples: [
         {
-          code: '<article class="vui-prose">\n  <h1>Knightfall Protocol</h1>\n  <p class="vui-eyebrow">Security Level: Classified</p>\n  <p>To preserve the security of Gotham City and protect the identities of those who have aided the mission, the Knightfall Protocol has been established as a final contingency. In the event of primary identity compromise, all core assets are to be decommissioned.</p>\n  \n  <blockquote>"The city needs a legend. Something worse than me. Something that can rise from the ashes..."</blockquote>\n  \n  <h2>Contingency Execution</h2>\n  <p>Upon activation, the Batcomputer will execute a localized self-destruct sequence at Wayne Manor and all auxiliary batcaves, rendering all physical records, tactical gear, and tech research completely unrecoverable.</p>\n  \n  <figure class="bleed">\n    <img src="preview.png" alt="Tactical HUD preview" style="aspect-ratio: 16/9; object-fit: cover;">\n    <figcaption>Fig. 01 — BatOS Tactical HUD visualizer telemetry system.</figcaption>\n  </figure>\n  \n  <p>All field agents (Red Robin, Nightwing, Oracle) are instructed to stand down. Do not attempt to contact Wayne Manor or initiate rescue operations. All communication links will be terminated.</p>\n</article>',
+          code: '<article class="vui-prose">\n  <h1>Knightfall Protocol</h1>\n  <p class="vui-eyebrow">Security Level: Classified</p>\n  <p>To preserve the security of Gotham City and protect the identities of those who have aided the mission, the Knightfall Protocol has been established as a final contingency. In the event of primary identity compromise, all core assets are to be decommissioned.</p>\n  \n  <blockquote>"The city needs a legend. Something worse than me. Something that can rise from the ashes..."</blockquote>\n  \n  <h2>Contingency Execution</h2>\n  <p>Upon activation, the Batcomputer will execute a localized self-destruct sequence at Wayne Manor and all auxiliary batcaves, rendering all physical records, tactical gear, and tech research completely unrecoverable.</p>\n  \n  <figure class="bleed">\n    <img src="preview.png" alt="Tactical HUD preview" style="aspect-ratio: 16/9; object-fit: cover;">\n    <figcaption>Fig. 01 — VantaUI Tactical HUD visualizer telemetry system.</figcaption>\n  </figure>\n  \n  <p>All field agents (Red Robin, Nightwing, Oracle) are instructed to stand down. Do not attempt to contact Wayne Manor or initiate rescue operations. All communication links will be terminated.</p>\n</article>',
         },
       ],
     },
@@ -361,7 +361,7 @@
           code: '<label>\n  <span>Access code</span>\n  <input type="password" placeholder="••••••••" value="wayne">\n  <small>8–32 characters.</small>\n</label>',
         },
         {
-          code: '<label>\n  <span>Sector</span>\n  <select>\n    <option>Bleake Island</option>\n    <option>Miagani</option>\n    <option>Founders\'</option>\n  </select>\n</label>',
+          code: "<label>\n  <span>Sector</span>\n  <select>\n    <option>Bleake Island</option>\n    <option>Miagani</option>\n    <option>Founders'</option>\n  </select>\n</label>",
         },
         {
           code: '<label><input type="checkbox" role="switch" checked> Detective Mode</label>\n<label><input type="checkbox" checked> Mark case solved</label>\n<label><input type="radio" name="d" checked> Normal</label>\n<label><input type="radio" name="d"> Knightmare</label>',
@@ -529,12 +529,15 @@
     return '<span class="tk-' + cls + '">' + esc(text) + '</span>';
   }
   function hlAttrs(s) {
-    return s.replace(/([\w-]+)(?:(=)("[^"]*"|'[^']*'|[^\s"'=<>`]+))?/g, function (_, name, eq, val) {
-      var o = tk('attr', name);
-      if (eq) o += tk('pun', '=');
-      if (val) o += tk('str', val);
-      return o;
-    });
+    return s.replace(
+      /([\w-]+)(?:(=)("[^"]*"|'[^']*'|[^\s"'=<>`]+))?/g,
+      function (_, name, eq, val) {
+        var o = tk('attr', name);
+        if (eq) o += tk('pun', '=');
+        if (val) o += tk('str', val);
+        return o;
+      },
+    );
   }
   function hlHTML(code) {
     var re = /(<!--[\s\S]*?-->)|(<\/?)([a-zA-Z][\w-]*)((?:"[^"]*"|'[^']*'|[^<>])*?)(\/?>)/g;
