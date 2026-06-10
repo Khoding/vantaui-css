@@ -21,6 +21,15 @@
    ============================================================ */
 
 /* ---------- The frame ---------- */
+/* The frame claims the whole viewport with dvh. A viewport unit is
+   self-sufficient — it needs NO height on any ancestor — so the frame fills
+   the screen whether it sits on <body> or is mounted into a wrapper like
+   <div id="app"> (Vue / Nuxt / etc). That's the whole height story: no
+   html/body/#app chain to own, in any setup.
+
+   (We can't detect "an ancestor wrapper that contains a frame" in CSS to size
+   it, because that needs :has() inside :has(), which the spec forbids — so dvh
+   on the frame itself is both simpler and the only thing that actually works.) */
 :where(.vui:has(> main)) {
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -29,39 +38,19 @@
     'top'
     'main'
     'foot';
-  block-size: 100%;
+  block-size: 100dvh;
+  max-block-size: 100dvh;
   overflow: hidden;
   background-color: var(--bg-base);
   color: var(--text-primary);
   font-family: var(--font-ui);
 }
-/* A frame sitting on <body> claims the whole viewport. Nested frames
-   (e.g. a demo box) are sized by their own box via block-size:100% above. */
-:where(html:has(> body.vui:has(> main))) {
+/* A frame nested INSIDE another frame (e.g. a demo box in the docs) is sized by
+   its own slot, not the viewport. Two separate :has() in a descendant selector
+   — no nesting — so this is valid. */
+:where(.vui:has(> main) .vui:has(> main)) {
   block-size: 100%;
-}
-:where(body.vui:has(> main)) {
-  block-size: 100dvh;
-  max-block-size: 100dvh;
-}
-
-/* ---------- SPA mount chain (Vue / Nuxt / any app mounted into a wrapper) ----------
-   When the app mounts into a node like <div id="app">, the frame is nested a
-   level below <body>, so `body` has no direct <main> and the rule above can't
-   fire — the app would otherwise have to own the html/body/#app height chain
-   itself. Instead, claim the viewport down the mount chain automatically: size
-   <body> and the body-level mount wrapper that contains a frame, so a frame
-   placed at the app root fills the screen with zero app-side CSS. The mount
-   wrapper is matched structurally (`body > * :has(frame)`), so its id/class is
-   irrelevant. Gated on `body:not(:has(> main))` so on-<body> frames (handled
-   above) and plain document pages are left untouched; the frame-in-frame demo
-   boxes live inside such a body frame and so are never matched here either. */
-:where(body:not(:has(> main)):has(.vui:has(> main))) {
-  block-size: 100dvh;
-  max-block-size: 100dvh;
-}
-:where(body:not(:has(> main)) > *:has(.vui:has(> main))) {
-  block-size: 100%;
+  max-block-size: none;
 }
 
 /* ---------- Landmark → slot (mobile / default) ---------- */
@@ -87,31 +76,39 @@
   grid-area: foot;
 }
 
-/* ---------- Stage backdrop (hex grid · scanlines · vignette) ---------- */
-:where(.vui:has(> main)) > main {
-  background-color: var(--bg-base);
+/* ---------- Stage backdrop ----------
+   The texture rides on the FRAME's pseudo-elements, placed in the `main` grid
+   cell. The frame never scrolls, so the backdrop covers the visible stage and
+   holds still while <main> scrolls beneath it — unlike an absolute overlay
+   INSIDE the scroller, which only covers the first screenful and then scrolls
+   away. The hex grid is on by default; the atmospheric overlay (vignette +
+   scanlines) is opt-in via `.vignette` on the frame (or on <body>), and off by
+   default since a fixed dark vignette + scanlines over scrolling text hurts
+   readability. <main> is transparent and sits above the backdrop. */
+:where(.vui:has(> main))::before {
+  grid-area: main;
+  z-index: 0;
+  content: '';
+  pointer-events: none;
   background-image: var(--grid-fine);
   background-size: var(--grid-fine-size);
 }
-:where(.vui:has(> main)) > main::before,
-:where(.vui:has(> main)) > main::after {
-  position: absolute;
-  inset: 0;
+:where(.vui:has(> main).vignette)::before,
+:where(body.vignette .vui:has(> main))::before {
+  background-image: var(--vignette), var(--grid-fine);
+  background-size: cover, var(--grid-fine-size);
+}
+:where(.vui:has(> main).vignette)::after,
+:where(body.vignette .vui:has(> main))::after {
+  grid-area: main;
+  z-index: 0;
   content: '';
   pointer-events: none;
-}
-:where(.vui:has(> main)) > main::before {
-  z-index: 0;
-  background-image: var(--vignette);
-}
-:where(.vui:has(> main)) > main::after {
-  z-index: 0;
   background-image: var(--scanlines);
   opacity: 0.6;
 }
-/* keep real content above the texture layers */
-:where(.vui:has(> main)) > main > * {
-  position: relative;
+/* <main> and its content sit above the backdrop */
+:where(.vui:has(> main)) > main {
   z-index: 1;
 }
 

@@ -2350,7 +2350,8 @@
 
   :where(.vui:has( > main)) {
     background-color: var(--bg-base);
-    block-size: 100%;
+    block-size: 100dvh;
+    max-block-size: 100dvh;
     color: var(--text-primary);
     font-family: var(--font-ui);
     grid-template: "top"
@@ -2361,17 +2362,9 @@
     overflow: hidden;
   }
 
-  :where(html:has( > body.vui:has( > main))) {
+  :where(.vui:has( > main) .vui:has( > main)) {
     block-size: 100%;
-  }
-
-  :where(body.vui:has( > main)), :where(body:not(:has( > main)):has(.vui:has( > main))) {
-    block-size: 100dvh;
-    max-block-size: 100dvh;
-  }
-
-  :where(body:not(:has( > main)) > :has(.vui:has( > main))) {
-    block-size: 100%;
+    max-block-size: none;
   }
 
   :where(.vui:has( > main)) > header {
@@ -2391,33 +2384,31 @@
     grid-area: foot;
   }
 
-  :where(.vui:has( > main)) > main {
-    background-color: var(--bg-base);
-    background-image: var(--grid-fine);
-    background-size: var(--grid-fine-size);
-  }
-
-  :where(.vui:has( > main)) > main:before, :where(.vui:has( > main)) > main:after {
+  :where(.vui:has( > main)):before {
+    z-index: 0;
     content: "";
     pointer-events: none;
-    position: absolute;
-    inset: 0;
+    background-image: var(--grid-fine);
+    background-size: var(--grid-fine-size);
+    grid-area: main;
   }
 
-  :where(.vui:has( > main)) > main:before {
-    z-index: 0;
-    background-image: var(--vignette);
+  :where(.vui:has( > main).vignette):before, :where(body.vignette .vui:has( > main)):before {
+    background-image: var(--vignette), var(--grid-fine);
+    background-size: cover, var(--grid-fine-size);
   }
 
-  :where(.vui:has( > main)) > main:after {
+  :where(.vui:has( > main).vignette):after, :where(body.vignette .vui:has( > main)):after {
     z-index: 0;
+    content: "";
+    pointer-events: none;
     background-image: var(--scanlines);
     opacity: .6;
+    grid-area: main;
   }
 
-  :where(.vui:has( > main)) > main > * {
+  :where(.vui:has( > main)) > main {
     z-index: 1;
-    position: relative;
   }
 
   @media (width >= 48rem) {
