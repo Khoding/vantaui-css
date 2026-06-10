@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+    {
+      "path": "../AKStrats",
+    },
+  ],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "vantaui-css",
+  },
+}
