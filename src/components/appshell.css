@@ -35,7 +35,7 @@
   color: var(--text-primary);
   font-family: var(--font-ui);
 }
-/* Only a frame sitting on <body> claims the whole viewport. Nested frames
+/* A frame sitting on <body> claims the whole viewport. Nested frames
    (e.g. a demo box) are sized by their own box via block-size:100% above. */
 :where(html:has(> body.vui:has(> main))) {
   block-size: 100%;
@@ -43,6 +43,25 @@
 :where(body.vui:has(> main)) {
   block-size: 100dvh;
   max-block-size: 100dvh;
+}
+
+/* ---------- SPA mount chain (Vue / Nuxt / any app mounted into a wrapper) ----------
+   When the app mounts into a node like <div id="app">, the frame is nested a
+   level below <body>, so `body` has no direct <main> and the rule above can't
+   fire — the app would otherwise have to own the html/body/#app height chain
+   itself. Instead, claim the viewport down the mount chain automatically: size
+   <body> and the body-level mount wrapper that contains a frame, so a frame
+   placed at the app root fills the screen with zero app-side CSS. The mount
+   wrapper is matched structurally (`body > * :has(frame)`), so its id/class is
+   irrelevant. Gated on `body:not(:has(> main))` so on-<body> frames (handled
+   above) and plain document pages are left untouched; the frame-in-frame demo
+   boxes live inside such a body frame and so are never matched here either. */
+:where(body:not(:has(> main)):has(.vui:has(> main))) {
+  block-size: 100dvh;
+  max-block-size: 100dvh;
+}
+:where(body:not(:has(> main)) > *:has(.vui:has(> main))) {
+  block-size: 100%;
 }
 
 /* ---------- Landmark → slot (mobile / default) ---------- */
