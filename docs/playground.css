@@ -1,0 +1,338 @@
+/* ============================================================
+   VantaUI docs — interactive playground + code sidebar.
+   Unlayered docs chrome (always wins over the framework). Drives the
+   live configurator (stage + controls), the per-demo "view code"
+   button, the slide-in source panel, and the utility/primitive
+   reference grids. Everything is built from VantaUI's own tokens so the
+   docs UI stays on-brand without re-declaring colours.
+   ============================================================ */
+
+/* ============================================================
+   1 — Interactive playground (stage + controls)
+   ============================================================ */
+.doc-play {
+  margin-block-end: var(--space-6);
+  border: 1px solid var(--hairline);
+  clip-path: var(--clip-chamfer);
+  overflow: hidden;
+}
+
+/* The live stage reuses the demo look (.doc-demo) and adds a min height so
+   a sparse configuration never collapses the box as you toggle controls. */
+.doc-play__stage {
+  min-block-size: 132px;
+  justify-content: center;
+}
+
+/* Boxed frame stage for app-frame / chrome demos that need a definite size. */
+.doc-play__stage--frame {
+  padding: 0;
+  display: block;
+  min-block-size: 0;
+}
+
+.doc-play__stage--frame .vui {
+  block-size: 300px;
+  min-block-size: 0;
+}
+
+/* ---------- Control bar ---------- */
+.doc-play__panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-5) var(--space-6);
+  padding-inline: clamp(var(--space-5), 3vw, var(--space-6));
+  padding-block: var(--space-5);
+  border-block-start: 1px solid var(--hairline);
+  background-color: var(--surface-panel);
+  background-image: var(--scanlines);
+}
+
+.doc-play__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-5) var(--space-6);
+  flex: 1 1 auto;
+}
+
+/* A single labelled control (select / range). Checkbox toggles override below. */
+.doc-ctrl {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.doc-ctrl > span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+/* live numeric value beside a range label */
+.doc-ctrl > span b {
+  color: var(--cyan-400);
+  font-family: var(--font-hud);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+}
+
+.doc-ctrl select {
+  min-inline-size: 9rem;
+}
+
+.doc-ctrl input[type='range'] {
+  inline-size: 11rem;
+  max-inline-size: 100%;
+}
+
+/* Checkbox toggles sit on the control baseline; nudge so they align with the
+   bottom edge of the select/range fields beside them. */
+.doc-ctrl--toggle {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-block-end: 10px;
+}
+
+/* ---------- "View code" trigger (shared by playgrounds + static demos) ---------- */
+.doc-viewcode {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-end;
+  margin-inline-start: auto;
+  padding-inline: 14px;
+  padding-block: 8px;
+  border: 1px solid var(--hairline-strong);
+  background-color: color-mix(in srgb, var(--cyan-400) 6%, transparent);
+  color: var(--text-secondary);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  clip-path: var(--clip-notch);
+  --bevel-sm: 5px;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    border-color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+
+.doc-viewcode:hover {
+  border-color: var(--hairline-accent);
+  background-color: color-mix(in srgb, var(--cyan-400) 14%, transparent);
+  color: var(--cyan-400);
+}
+
+.doc-viewcode i {
+  font-size: 1.15em;
+}
+
+/* ---------- Static example footer (demo with no inline code) ---------- */
+.doc-example__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-inline: clamp(var(--space-5), 3vw, var(--space-6));
+  padding-block: 10px;
+  border-block-start: 1px solid var(--hairline);
+  background-color: var(--surface-panel);
+}
+
+.doc-example__label {
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   2 — Code sidebar (slide-in source panel)
+   ============================================================ */
+.doc-codepanel {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+}
+
+.doc-codepanel[hidden] {
+  display: none;
+}
+
+.doc-codepanel__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: var(--scrim);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-hud);
+}
+
+.doc-codepanel__sheet {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: flex;
+  flex-direction: column;
+  inline-size: min(94vw, 44rem);
+  border-inline-start: 1px solid var(--hairline-accent);
+  background-color: var(--bg-void);
+  box-shadow:
+    var(--shadow-raised),
+    0 0 60px -10px var(--accent-glow);
+  /* chamfered leading edge, matching the framework's own edge drawers */
+  clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
+  translate: 101% 0;
+  transition: translate var(--dur-base) var(--ease-hud);
+}
+
+.doc-codepanel.is-open .doc-codepanel__scrim {
+  opacity: 1;
+}
+
+.doc-codepanel.is-open .doc-codepanel__sheet {
+  translate: 0 0;
+}
+
+.doc-codepanel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-inline: var(--space-6) var(--space-5);
+  padding-block: 14px;
+  border-block-end: 1px solid var(--hairline);
+}
+
+.doc-codepanel__id {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-inline-size: 0;
+}
+
+.doc-codepanel__title {
+  color: var(--text-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+.doc-codepanel__tools {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.doc-codepanel__pre {
+  flex: 1;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  clip-path: none;
+  box-shadow: none;
+  background-color: var(--ink-1000);
+  overflow: auto;
+  padding: var(--space-6);
+  font-size: var(--fs-sm);
+}
+
+/* ============================================================
+   3 — Reference grids (utilities + primitives)
+   ============================================================ */
+.doc-ref {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-block-end: var(--space-7);
+}
+
+/* A scannable grid of utility/token chips: class name + a swatch/sample. */
+.doc-ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+  gap: 8px;
+}
+
+.doc-ref-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-inline: 12px;
+  padding-block: 10px;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background-color: var(--surface-panel);
+  clip-path: var(--clip-notch);
+  --bevel-sm: 5px;
+}
+
+.doc-ref-item code {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--cyan-200);
+  font-size: var(--fs-xs);
+}
+
+.doc-ref-item small {
+  color: var(--text-faint);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  text-align: end;
+}
+
+/* A live sample tile that demonstrates the utility/primitive in place. */
+.doc-ref-sample {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--hairline);
+  background-color: var(--bg-base);
+  background-image: var(--scanlines);
+  clip-path: var(--clip-chamfer);
+  --bevel-md: 8px;
+}
+
+.doc-ref-sample > code {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+}
+
+/* ============================================================
+   4 — Mobile
+   ============================================================ */
+@media (max-width: 40rem) {
+  .doc-play__panel {
+    gap: var(--space-4) var(--space-5);
+  }
+
+  .doc-viewcode {
+    margin-inline-start: 0;
+  }
+
+  .doc-codepanel__pre {
+    padding: var(--space-5);
+  }
+}
