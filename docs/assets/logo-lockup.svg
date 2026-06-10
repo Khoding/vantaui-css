@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" role="img" aria-label="VantaUI — tactical HUD design system">
+  <title>VantaUI</title>
+  <defs>
+    <filter id="l-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.4" result="b" />
+      <feMerge>
+        <feMergeNode in="b" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <linearGradient id="l-card" x1="0" y1="0" x2="0" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a1019" />
+      <stop offset="1" stop-color="#03070c" />
+    </linearGradient>
+    <linearGradient id="l-v" x1="0" y1="30" x2="0" y2="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#cbf4ff" />
+      <stop offset="0.55" stop-color="#42e3ff" />
+      <stop offset="1" stop-color="#18cdf2" />
+    </linearGradient>
+    <linearGradient id="l-void" x1="60" y1="22" x2="60" y2="98" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0e1722" />
+      <stop offset="1" stop-color="#03070c" />
+    </linearGradient>
+  </defs>
+
+  <!-- Chamfered tactical card -->
+  <path d="M22 4 L578 4 L596 22 L596 158 L578 176 L22 176 L4 158 L4 22 Z"
+        fill="url(#l-card)" stroke="#42e3ff" stroke-width="1.5" stroke-opacity="0.22" />
+  <!-- Faint scan rule along the top edge -->
+  <path d="M30 14 L570 14" stroke="#42e3ff" stroke-width="1" stroke-opacity="0.1" />
+
+  <!-- ============ EMBLEM ============ -->
+  <g transform="translate(24,30)">
+    <path d="M60 22 L90 37 L90 67 L60 98 L30 67 L30 37 Z" fill="url(#l-void)" />
+    <g fill="none" stroke="#42e3ff" stroke-linejoin="miter">
+      <path d="M60 6 L104 28 L104 72 L60 114 L16 72 L16 28 Z" stroke-width="2.4" opacity="0.42" />
+      <path d="M60 22 L90 37 L90 67 L60 98 L30 67 L30 37 Z" stroke-width="3" opacity="0.92" />
+    </g>
+    <g stroke="#42e3ff" stroke-width="3" stroke-linecap="round" opacity="0.55">
+      <path d="M30 37 l6 3" />
+      <path d="M90 37 l-6 3" />
+      <path d="M30 67 l6 -3" />
+      <path d="M90 67 l-6 -3" />
+    </g>
+    <g filter="url(#l-glow)">
+      <path d="M39 41 L60 83 L81 41 L71.5 41 L60 64 L48.5 41 Z" fill="url(#l-v)" />
+      <circle cx="60" cy="86.5" r="3.6" fill="#cbf4ff" />
+    </g>
+    <path d="M54 13 L66 13" stroke="#42e3ff" stroke-width="2.4" stroke-linecap="round" opacity="0.7" />
+  </g>
+
+  <!-- ============ EYEBROW ============ -->
+  <circle cx="190" cy="49.5" r="2.6" fill="#42e3ff" filter="url(#l-glow)" />
+  <text x="201" y="54" fill="#42e3ff" fill-opacity="0.62"
+        font-family="'Share Tech Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace"
+        font-size="13" letter-spacing="5.5">TACTICAL · HUD · SYSTEM</text>
+
+  <!-- ============ WORDMARK (machine-cut, vectored) ============ -->
+  <g transform="translate(186,34)" fill="none" stroke-linecap="butt" stroke-linejoin="miter">
+    <!-- VANTA -->
+    <g stroke="#eaf4ff" stroke-width="7">
+      <path d="M2 30 L20 86 L38 30" />
+      <path d="M54 86 L72 30 L90 86 M61 62 L83 62" />
+      <path d="M106 86 L106 30 L142 86 L142 30" />
+      <path d="M175 30 L175 86 M157 30 L193 30" />
+      <path d="M210 86 L228 30 L246 86 M217 62 L239 62" />
+    </g>
+    <!-- UI — the signal, glowing -->
+    <g stroke="url(#l-v)" stroke-width="8.5" filter="url(#l-glow)">
+      <path d="M270 30 L270 72 L284 86 L312 86 L326 72 L326 30" />
+      <path d="M348 30 L348 86 M340 30 L356 30 M340 86 L356 86" />
+    </g>
+    <!-- Baseline rule with a lit segment under UI -->
+    <path d="M2 97 L356 97" stroke="#42e3ff" stroke-opacity="0.16" stroke-width="1" />
+    <path d="M266 97 L358 97" stroke="#42e3ff" stroke-width="2.4" filter="url(#l-glow)" />
+  </g>
+</svg>

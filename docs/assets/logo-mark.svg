@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="VantaUI">
+  <title>VantaUI</title>
+  <defs>
+    <!-- Emissive cyan glow: light is emitted, not cast -->
+    <filter id="m-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.4" result="b" />
+      <feMerge>
+        <feMergeNode in="b" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <!-- The "V" reads dimensional: bright crown, cooler base -->
+    <linearGradient id="m-v" x1="60" y1="38" x2="60" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#cbf4ff" />
+      <stop offset="0.55" stop-color="#42e3ff" />
+      <stop offset="1" stop-color="#18cdf2" />
+    </linearGradient>
+    <!-- Vanta(black) void inside the badge -->
+    <linearGradient id="m-void" x1="60" y1="22" x2="60" y2="98" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a1019" />
+      <stop offset="1" stop-color="#03070c" />
+    </linearGradient>
+  </defs>
+
+  <!-- Vanta void field (keeps the mark legible on any background) -->
+  <path d="M60 22 L90 37 L90 67 L60 98 L30 67 L30 37 Z" fill="url(#m-void)" />
+
+  <!-- Twin chamfered hex frame -->
+  <g fill="none" stroke="#42e3ff" stroke-linejoin="miter">
+    <path d="M60 6 L104 28 L104 72 L60 114 L16 72 L16 28 Z" stroke-width="2.4" opacity="0.42" />
+    <path d="M60 22 L90 37 L90 67 L60 98 L30 67 L30 37 Z" stroke-width="3" opacity="0.92" />
+  </g>
+
+  <!-- Mount-point ticks on the inner hex shoulders -->
+  <g stroke="#42e3ff" stroke-width="3" stroke-linecap="round" opacity="0.55">
+    <path d="M30 37 l6 3" />
+    <path d="M90 37 l-6 3" />
+    <path d="M30 67 l6 -3" />
+    <path d="M90 67 l-6 -3" />
+  </g>
+
+  <!-- The sentinel "V" — Vanta's signal -->
+  <g filter="url(#m-glow)">
+    <path d="M39 41 L60 83 L81 41 L71.5 41 L60 64 L48.5 41 Z" fill="url(#m-v)" />
+    <circle cx="60" cy="86.5" r="3.6" fill="#cbf4ff" />
+  </g>
+
+  <!-- Crown tick at the apex of the badge -->
+  <path d="M54 13 L66 13" stroke="#42e3ff" stroke-width="2.4" stroke-linecap="round" opacity="0.7" />
+</svg>

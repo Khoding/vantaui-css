@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="VantaUI">
+  <title>VantaUI</title>
+  <defs>
+    <filter id="f-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.6" result="b" />
+      <feMerge>
+        <feMergeNode in="b" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <linearGradient id="f-tile" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a1019" />
+      <stop offset="1" stop-color="#03070c" />
+    </linearGradient>
+    <linearGradient id="f-v" x1="60" y1="34" x2="60" y2="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#cbf4ff" />
+      <stop offset="1" stop-color="#2ad7f5" />
+    </linearGradient>
+  </defs>
+
+  <!-- Chamfered tactical tile -->
+  <path d="M20 4 L100 4 L116 20 L116 100 L100 116 L20 116 L4 100 L4 20 Z"
+        fill="url(#f-tile)" stroke="#42e3ff" stroke-width="2.5" stroke-opacity="0.4" />
+
+  <!-- Inner hex shoulders (single, bold for small sizes) -->
+  <path d="M60 24 L92 40 L92 70 L60 98 L28 70 L28 40 Z"
+        fill="none" stroke="#42e3ff" stroke-width="4.5" opacity="0.85" stroke-linejoin="miter" />
+
+  <!-- Bold sentinel V + node -->
+  <g filter="url(#f-glow)">
+    <path d="M37 42 L60 88 L83 42 L71 42 L60 66 L49 42 Z" fill="url(#f-v)" />
+    <circle cx="60" cy="92" r="4.4" fill="#dff7ff" />
+  </g>
+</svg>
