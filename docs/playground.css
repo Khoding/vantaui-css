@@ -102,14 +102,22 @@
   padding-block-end: 10px;
 }
 
+/* ---------- Action buttons group (copy + view code, right-aligned) ---------- */
+.doc-play__actions {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+  align-self: flex-end;
+  margin-inline-start: auto;
+}
+
 /* ---------- "View code" trigger (shared by playgrounds + static demos) ---------- */
 .doc-viewcode {
   display: inline-flex;
   flex: none;
   align-items: center;
   gap: 8px;
-  align-self: flex-end;
-  margin-inline-start: auto;
   padding-inline: 14px;
   padding-block: 8px;
   border: 1px solid var(--hairline-strong);
@@ -321,7 +329,19 @@
 }
 
 /* ============================================================
-   4 — Mobile
+   4 — Code panel syntax highlighting
+   (same palette as the inline .doc-code blocks in index.html)
+   ============================================================ */
+.doc-codepanel__pre .tk-tag { color: var(--cyan-400); }
+.doc-codepanel__pre .tk-attr { color: var(--amber-400); }
+.doc-codepanel__pre .tk-str { color: var(--green-400); }
+.doc-codepanel__pre .tk-com { color: var(--text-faint); font-style: italic; }
+.doc-codepanel__pre .tk-pun { color: var(--text-muted); }
+.doc-codepanel__pre .tk-kw { color: var(--cyan-400); font-weight: 600; }
+.doc-codepanel__pre .tk-num { color: var(--amber-400); }
+
+/* ============================================================
+   6 — Mobile
    ============================================================ */
 @media (max-width: 40rem) {
   .doc-play__panel {

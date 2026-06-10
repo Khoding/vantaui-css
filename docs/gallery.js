@@ -375,9 +375,7 @@
         'Patterns from bare semantics. The <strong>bottom tab bar</strong> below is <code>&lt;nav class="bottom"&gt;</code> — items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> with an <code>&lt;i&gt;</code> + label; mark the current one <code>active</code>. Add <code>fixed</code> to pin it to the viewport floor. A <strong>breadcrumb</strong> is any <code>&lt;nav&gt;</code> wrapping an <code>&lt;ol&gt;</code> — detected with <code>:has()</code>, no class, auto separators.',
       play: {
         state: { active: 0 },
-        controls: [
-          { type: 'select', key: 'active', label: 'Active', options: [{ label: 'Ops', value: 0 }, { label: 'Files', value: 1 }, { label: 'Map', value: 2 }, { label: 'Setup', value: 3 }] },
-        ],
+        controls: [],
         render: function (s) {
           var items = [['space_dashboard', 'Ops'], ['folder', 'Files'], ['map', 'Map'], ['settings', 'Setup']];
           var active = Number(s.active);
@@ -390,6 +388,14 @@
               .join('\n') +
             '\n</nav>'
           );
+        },
+        postPaint: function (stage, state, repaint) {
+          stage.querySelectorAll('nav.bottom > a, nav.bottom > button').forEach(function (item, i) {
+            item.addEventListener('click', function () {
+              state.active = i;
+              repaint();
+            });
+          });
         },
       },
       examples: [
@@ -437,8 +443,8 @@
       examples: [
         {
           frame: true,
-          code: '<aside class="drawer" id="demoDrawer">\n  <header>\n    <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n    <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n  </header>\n  <nav>\n    <h6>Telemetry</h6>\n    <a class="active"><i>space_dashboard</i>Overview</a>\n    <a><i>radar</i>Scan</a>\n    <a><i>map</i>City Map</a>\n    <h6>System</h6>\n    <a><i>handyman</i>Loadout</a>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <footer>\n    <button class="ghost block"><i>logout</i>Sign out</button>\n  </footer>\n</aside>',
-          demo: '<div class="vui" style="block-size:300px">\n  <aside class="drawer" id="demoDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <a><i>map</i>City Map</a>\n      <h6>System</h6>\n      <a><i>handyman</i>Loadout</a>\n      <a><i>settings</i>Setup</a>\n    </nav>\n    <footer>\n      <button class="ghost block"><i>logout</i>Sign out</button>\n    </footer>\n  </aside>\n  <header>\n    <button class="icon vui-until-m" data-open="demoDrawer" aria-label="Open menu"><i>menu</i></button>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button aria-label="Profile"><i>account_circle</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Command Center</h1>\n      <p>The sidebar is pinned on desktop and collapses to an off-canvas drawer on phones — resize to see it switch.</p>\n    </div>\n  </main>\n</div>',
+          code: '<aside class="drawer" id="demoDrawer">\n  <header>\n    <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n    <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n  </header>\n  <nav>\n    <h6>Telemetry</h6>\n    <a class="active"><i>space_dashboard</i>Overview</a>\n    <a><i>radar</i>Scan</a>\n    <a><i>map</i>City Map</a>\n    <h6>System</h6>\n    <a><i>handyman</i>Loadout</a>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <footer>\n    <button class="ghost block"><i>home</i>Sign out</button>\n  </footer>\n</aside>',
+          demo: '<div class="vui" style="block-size:600px">\n  <aside class="drawer" id="demoDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <a><i>map</i>City Map</a>\n      <h6>System</h6>\n      <a><i>handyman</i>Loadout</a>\n      <a><i>settings</i>Setup</a>\n    </nav>\n    <footer>\n      <button class="ghost block"><i>home</i>Sign out</button>\n    </footer>\n  </aside>\n  <header>\n    <button class="icon vui-until-m" data-open="demoDrawer" aria-label="Open menu"><i>menu</i></button>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button aria-label="Profile"><i>account_circle</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Command Center</h1>\n      <p>The sidebar is pinned on desktop and collapses to an off-canvas drawer on phones — resize to see it switch.</p>\n    </div>\n  </main>\n</div>',
         },
       ],
     },
@@ -774,7 +780,7 @@
         {
           frame: true,
           code: '<body class="vui">\n  <nav class="left" aria-label="Rail">\n    <img src="emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</body>',
-          demo: '<div class="vui" style="block-size:300px">\n  <nav class="left" aria-label="Rail">\n    <img src="assets/emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</div>',
+          demo: '<div class="vui" style="block-size:600px">\n  <nav class="left" aria-label="Rail">\n    <img src="assets/emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</div>',
         },
       ],
     },
@@ -1008,10 +1014,24 @@
       stage.innerHTML = code();
       if (window.vui && window.vui.init) window.vui.init(stage);
       CodePanel.refresh(sec.id, sec.title, code);
+      if (play.postPaint) play.postPaint(stage, state, paint);
     }
 
     play.controls.forEach(function (c) {
       controls.appendChild(controlNode(c, state, paint));
+    });
+
+    var actions = el('div', 'doc-play__actions');
+
+    var copy = el('button', 'icon');
+    copy.type = 'button';
+    copy.setAttribute('aria-label', 'Copy code');
+    copy.innerHTML = '<i>content_copy</i>';
+    copy.addEventListener('click', function () {
+      navigator.clipboard && navigator.clipboard.writeText(code());
+      var ic = copy.querySelector('i');
+      ic.textContent = 'check';
+      setTimeout(function () { ic.textContent = 'content_copy'; }, 1200);
     });
 
     var view = el('button', 'doc-viewcode');
@@ -1021,8 +1041,10 @@
       CodePanel.open(sec.id, sec.title, code);
     });
 
+    actions.appendChild(copy);
+    actions.appendChild(view);
     panel.appendChild(controls);
-    panel.appendChild(view);
+    panel.appendChild(actions);
     wrap.appendChild(stage);
     wrap.appendChild(panel);
     paint();
@@ -1055,17 +1077,34 @@
       l.textContent = ex.label;
       foot.appendChild(l);
     }
+    var id = 'ex' + ++exUid;
+    var src = ex.code;
+
+    var actions = el('div', 'doc-play__actions');
+
+    var copy = el('button', 'icon');
+    copy.type = 'button';
+    copy.setAttribute('aria-label', 'Copy code');
+    copy.innerHTML = '<i>content_copy</i>';
+    copy.addEventListener('click', function () {
+      navigator.clipboard && navigator.clipboard.writeText(src);
+      var ic = copy.querySelector('i');
+      ic.textContent = 'check';
+      setTimeout(function () { ic.textContent = 'content_copy'; }, 1200);
+    });
+
     var view = el('button', 'doc-viewcode');
     view.type = 'button';
     view.innerHTML = '<i>code</i><span>View code</span>';
-    var id = 'ex' + ++exUid;
-    var src = ex.code;
     view.addEventListener('click', function () {
       CodePanel.open(id, sec.title, function () {
         return src;
       });
     });
-    foot.appendChild(view);
+
+    actions.appendChild(copy);
+    actions.appendChild(view);
+    foot.appendChild(actions);
     wrap.appendChild(foot);
     return wrap;
   }

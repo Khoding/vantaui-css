@@ -11,7 +11,7 @@
                  [data-value] (sets the --value custom property).
      • Clock   — live HH:MM:SS into [data-vui-clock].
 
-   API:  VantaUI.init(root?)  ·  VantaUI.setValue(el, n)  ·  VantaUI.tabs(root?)
+   API:  VantaUI.init(root?)  ·  VantaUI.setValue(el, n)  ·  VantaUI.tabs(root?)  ·  VantaUI.tooltips(root?)
    ============================================================ */
 
 const isBrowser = typeof document !== 'undefined';
@@ -113,6 +113,36 @@ function clocks(root = document) {
   window.__vuiClock = setInterval(tick, 1000);
 }
 
+/* ---------- Tooltips ---------- */
+export function tooltips(root = document) {
+  let tip = document.getElementById('vui-tooltip');
+  if (!tip) {
+    tip = document.createElement('div');
+    tip.id = 'vui-tooltip';
+    tip.setAttribute('role', 'tooltip');
+    document.body.appendChild(tip);
+  }
+
+  const show = el => {
+    tip.textContent = el.dataset.tip;
+    const r = el.getBoundingClientRect();
+    tip.style.left = (r.left + r.width / 2) + 'px';
+    tip.style.top = r.top + 'px';
+    tip.classList.add('is-visible');
+  };
+
+  const hide = () => tip.classList.remove('is-visible');
+
+  root.querySelectorAll('[data-tip]').forEach(el => {
+    if (el.classList.contains('vui-tip-js')) return;
+    el.classList.add('vui-tip-js');
+    el.addEventListener('mouseenter', () => show(el));
+    el.addEventListener('mouseleave', hide);
+    el.addEventListener('focusin', () => show(el));
+    el.addEventListener('focusout', hide);
+  });
+}
+
 /* ---------- Dialogs & Drawer Toggles ---------- */
 export function drawers(root = document) {
   const targetEl = root.documentElement || root;
@@ -200,9 +230,10 @@ export function init(root = document) {
   animateOnView(root);
   clocks(root);
   drawers(root);
+  tooltips(root);
 }
 
-const VantaUI = {init, tabs, setValue, drawers};
+const VantaUI = {init, tabs, setValue, drawers, tooltips};
 export default VantaUI;
 
 if (isBrowser) {

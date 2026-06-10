@@ -104,6 +104,36 @@
 :where(.vui [data-tip]:focus-visible)::after {
   opacity: 1;
 }
+/* When JS wires a tooltip it adds .vui-tip-js — suppress the CSS ::after so
+   both never show at once. The JS tooltip uses position:fixed at body level
+   and is therefore never clipped by any ancestor clip-path or overflow. */
+:where(.vui [data-tip].vui-tip-js)::after {
+  display: none;
+}
+#vui-tooltip {
+  position: fixed;
+  z-index: 9999;
+  inline-size: max-content;
+  max-inline-size: 16rem;
+  padding-inline: 10px;
+  padding-block: 6px;
+  border: var(--border-hair) solid var(--hairline-accent);
+  background-color: var(--ink-800);
+  box-shadow: var(--glow-cyan-sm);
+  color: var(--cyan-50);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+  clip-path: var(--clip-notch);
+  --bevel-sm: 5px;
+  opacity: 0;
+  pointer-events: none;
+  /* center on the anchor point and float 8px above it */
+  translate: -50% calc(-100% - 8px);
+  transition: opacity var(--dur-fast) var(--ease-hud);
+}
+#vui-tooltip.is-visible {
+  opacity: 1;
+}
 
 /* ---------- Key/value readout row ---------- */
 :where(.vui .kv) {

@@ -2431,6 +2431,35 @@
     opacity: 1;
   }
 
+  :where(.vui [data-tip].vui-tip-js):after {
+    display: none;
+  }
+
+  #vui-tooltip {
+    z-index: 9999;
+    border: var(--border-hair) solid var(--hairline-accent);
+    background-color: var(--ink-800);
+    inline-size: max-content;
+    max-inline-size: 16rem;
+    box-shadow: var(--glow-cyan-sm);
+    color: var(--cyan-50);
+    font-size: var(--fs-xs);
+    font-family: var(--font-mono);
+    clip-path: var(--clip-notch);
+    --bevel-sm: 5px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-hud);
+    padding-block: 6px;
+    padding-inline: 10px;
+    position: fixed;
+    translate: -50% calc(-100% - 8px);
+  }
+
+  #vui-tooltip.is-visible {
+    opacity: 1;
+  }
+
   :where(.vui .kv) {
     justify-content: space-between;
     align-items: baseline;
