@@ -293,6 +293,12 @@
     overflow-wrap: break-word;
   }
 
+  @media (width <= 20rem) {
+    :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, th, td, caption, figcaption, blockquote, a, button, label, summary, legend) {
+      overflow-wrap: anywhere;
+    }
+  }
+
   ::selection {
     color: var(--cyan-50);
     background-color: #42e3ff47;
@@ -2208,6 +2214,7 @@
   }
 
   :where(.vui table) {
+    table-layout: fixed;
     border-collapse: collapse;
     inline-size: 100%;
     color: var(--text-secondary);
@@ -2237,14 +2244,12 @@
     letter-spacing: var(--ls-wide);
     text-align: start;
     text-transform: uppercase;
-    white-space: nowrap;
     padding-block: 10px;
     padding-inline: 14px;
   }
 
   :where(.vui table td) {
     border-block-end: var(--border-hair) solid var(--hairline);
-    white-space: nowrap;
     padding-block: 10px;
     padding-inline: 14px;
   }
@@ -2265,8 +2270,12 @@
     background-color: var(--surface-panel);
   }
 
-  :where(.vui table.wrap td) {
-    white-space: normal;
+  :where(.vui table.nowrap) {
+    table-layout: auto;
+  }
+
+  :where(.vui table.nowrap th), :where(.vui table.nowrap td) {
+    white-space: nowrap;
   }
 
   :where(.vui table.compact th), :where(.vui table.compact td) {
@@ -2552,6 +2561,7 @@
   }
 
   :where(.vui:has( > main)) > main {
+    min-inline-size: 0;
     padding: var(--hud-edge);
     grid-area: main;
     position: relative;
@@ -2565,10 +2575,10 @@
 
   :where(.vui:has( > main)):before {
     z-index: 0;
-    content: "";
-    pointer-events: none;
     background-image: var(--grid-fine);
     background-size: var(--grid-fine-size);
+    content: "";
+    pointer-events: none;
     grid-area: main;
   }
 
@@ -2579,10 +2589,10 @@
 
   :where(.vui:has( > main).vignette):after, :where(body.vignette .vui:has( > main)):after {
     z-index: 0;
-    content: "";
-    pointer-events: none;
     background-image: var(--scanlines);
+    content: "";
     opacity: .6;
+    pointer-events: none;
     grid-area: main;
   }
 

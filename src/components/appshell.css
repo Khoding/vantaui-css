@@ -58,11 +58,27 @@
   z-index: 3;
   grid-area: top;
 }
+/* The stage is the frame's scroll container. `min-inline-size: 0` is the
+   load-bearing line: as a grid item, <main> defaults to `min-width: auto` and
+   would refuse to shrink below the min-content width of its widest child (a long
+   unbroken string, a nowrap table), letting that child balloon the `1fr` track
+   and drag a scrollbar onto the WHOLE shell — header, rail and footer sliding
+   with it. Zeroing it confines any overflow INSIDE <main>, so the chrome stays
+   pinned and only the stage moves.
+
+   We deliberately DON'T clip the inline axis. With self-containing content
+   (text wraps, <pre>/tables/carousels self-scroll) the stage never overflows in
+   practice — but if a consumer misuses something and it does, `overflow-y: auto`
+   coerces overflow-x to auto and the stage scrolls. That is the graceful failure
+   we want: the mistake stays VISIBLE (a scrollbar the dev will notice) and the
+   content stays REACHABLE (the end user isn't locked out) — both of which a
+   destructive `overflow: clip` would silently take away. */
 :where(.vui:has(> main)) > main {
   position: relative;
   grid-area: main;
-  overflow-y: auto;
+  min-inline-size: 0;
   padding: var(--hud-edge);
+  overflow-y: auto;
 }
 /* footer, an explicit bottom bar, AND a side rail all live along the bottom
    on phones (use a footer OR a rail/bottom-nav on small screens, not both).
@@ -71,7 +87,8 @@
    child list. :is() would inherit the specificity of its most specific arg
    (here nav.left:not(.drawer) → (0,2,1)), which would then outweigh the
    desktop `grid-area: rail` rule below and trap every side rail in `foot`. */
-:where(.vui:has(> main)) > :where(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
+:where(.vui:has(> main))
+  > :where(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
   z-index: 3;
   grid-area: foot;
 }
@@ -86,12 +103,12 @@
    default since a fixed dark vignette + scanlines over scrolling text hurts
    readability. <main> is transparent and sits above the backdrop. */
 :where(.vui:has(> main))::before {
-  grid-area: main;
   z-index: 0;
-  content: '';
-  pointer-events: none;
+  grid-area: main;
   background-image: var(--grid-fine);
   background-size: var(--grid-fine-size);
+  content: '';
+  pointer-events: none;
 }
 :where(.vui:has(> main).vignette)::before,
 :where(body.vignette .vui:has(> main))::before {
@@ -100,12 +117,12 @@
 }
 :where(.vui:has(> main).vignette)::after,
 :where(body.vignette .vui:has(> main))::after {
-  grid-area: main;
   z-index: 0;
-  content: '';
-  pointer-events: none;
+  grid-area: main;
   background-image: var(--scanlines);
+  content: '';
   opacity: 0.6;
+  pointer-events: none;
 }
 /* <main> and its content sit above the backdrop */
 :where(.vui:has(> main)) > main {

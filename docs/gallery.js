@@ -499,6 +499,27 @@
         },
       ],
     },
+    {
+      group: 'Layout',
+      id: 'overflow',
+      title: 'Overflow',
+      blurb:
+        'An app shell must never scroll sideways, so VantaUI contains overflow <em>at the source</em>. The stage carries <code>min-inline-size: 0</code> so a wide child cannot balloon the grid and drag the chrome with it; text wraps long strings (<code>overflow-wrap</code>); <code>&lt;pre&gt;</code>, tables and carousels scroll themselves; tables add <code>table-layout: fixed</code> so they are mathematically incapable of overflowing. Below <code>20rem</code> every word breaks, so even a long heading stays in bounds. Net result: respect semantics and a few helpers and the layout <strong>never</strong> overflows. And when a genuine mistake does, the stage <em>scrolls</em> — never <code>clip</code> — so the slip stays visible to you and the content stays reachable for your user.',
+      examples: [
+        {
+          label: 'Long unbroken strings wrap — they never push the layout',
+          code: '<article>\n  <p class="vui-eyebrow">Decryption key</p>\n  <p>VANTA0x4f2a9c1b2e8d3f6a509c1b2e8d3f6a509c1b2e8d3f6a509c1b2e8d3f6a509c1b2e8d</p>\n</article>',
+        },
+        {
+          label: 'A wide <pre> scrolls itself — no wrapper needed',
+          code: '<pre>$ vanta deploy --sector 14-C --threat high --uplink secure --window 24h --format ndjson --verbose</pre>',
+        },
+        {
+          label: 'Deliberate horizontal scroll — the .scroll escape hatch',
+          code: '<div class="scroll">\n  <table class="nowrap">\n    <thead><tr><th>Sector</th><th>Status</th><th>Operator</th><th>Last ping</th><th data-num>Threat</th></tr></thead>\n    <tbody>\n      <tr><td>Bleake Island</td><td>Contested</td><td>B. Wayne</td><td>02:18:04 UTC</td><td data-num>64</td></tr>\n      <tr class="red"><td>Miagani</td><td>Hostile</td><td>J. Gordon</td><td>02:17:51 UTC</td><td data-num>86</td></tr>\n      <tr><td>Founders Island</td><td>Secure</td><td>R. Sionis</td><td>02:16:30 UTC</td><td data-num>38</td></tr>\n    </tbody>\n  </table>\n</div>',
+        },
+      ],
+    },
 
     /* ---------------- COMPONENTS ---------------- */
     {
@@ -723,22 +744,21 @@
       id: 'table',
       title: 'Tables',
       blurb:
-        'A semantic <code>&lt;table&gt;</code> becomes a telemetry grid: uppercase eyebrow headers, hairline rows, cyan hover. Mark numeric cells with <code>data-num</code>; tint a row with a colour word. Tune density and rules below; wrap in <code>.scroll</code> for overflow on phones.',
+        'A semantic <code>&lt;table&gt;</code> becomes a telemetry grid: uppercase eyebrow headers, hairline rows, cyan hover. Mark numeric cells with <code>data-num</code>; tint a row with a colour word. Cells <strong>wrap by default</strong> and columns are fixed-width, so a bare table never overflows. Add <code>nowrap</code> to keep cells on one line — then wrap it in <code>.scroll</code> to scroll instead of stretch.',
       play: {
-        state: { density: '', striped: false, ruled: false, opaque: false, flat: false, wrap: false },
+        state: { density: '', striped: false, ruled: false, opaque: false, flat: false, nowrap: false },
         controls: [
           { type: 'select', key: 'density', label: 'Density', options: [{ label: 'Default', value: '' }, { label: 'Compact', value: 'compact' }, { label: 'Relaxed', value: 'relaxed' }] },
           { type: 'toggle', key: 'striped', label: 'Striped' },
           { type: 'toggle', key: 'ruled', label: 'Column rules' },
           { type: 'toggle', key: 'opaque', label: 'Opaque' },
           { type: 'toggle', key: 'flat', label: 'No hover' },
-          { type: 'toggle', key: 'wrap', label: 'Wrap cells' },
+          { type: 'toggle', key: 'nowrap', label: 'Nowrap + scroll' },
         ],
         render: function (s) {
-          var c = [s.density, s.striped && 'striped', s.ruled && 'ruled', s.opaque && 'opaque', s.flat && 'flat', s.wrap && 'wrap'].filter(Boolean);
+          var c = [s.density, s.striped && 'striped', s.ruled && 'ruled', s.opaque && 'opaque', s.flat && 'flat', s.nowrap && 'nowrap'].filter(Boolean);
           var cls = c.length ? ' class="' + c.join(' ') + '"' : '';
-          return (
-            '<div class="scroll">\n' +
+          var table =
             '<table' + cls + '>\n' +
             '  <caption>District status</caption>\n' +
             '  <thead><tr><th>Sector</th><th>Status</th><th data-num>Threat</th></tr></thead>\n' +
@@ -747,9 +767,10 @@
             '    <tr class="red"><td>Miagani</td><td>Hostile</td><td data-num>86</td></tr>\n' +
             "    <tr><td>Founders'</td><td>Secure</td><td data-num>38</td></tr>\n" +
             '  </tbody>\n' +
-            '</table>\n' +
-            '</div>'
-          );
+            '</table>';
+          // .nowrap reverts to content-driven width, so a wide one needs .scroll
+          // to scroll; the default wrapping table is self-contained, no wrapper.
+          return s.nowrap ? '<div class="scroll">\n' + table + '\n</div>' : table;
         },
       },
     },
@@ -961,7 +982,7 @@
         'A <code>&lt;div class="carousel"&gt;</code> is a horizontal scroll-snap filmstrip — its direct children are the slides. Swipe, scroll or keyboard by default; on browsers with CSS-carousel support it also grows a native row of snap-marker dots, no JS. Size slides with <code>--vui-slide</code>; <code>peek</code> reveals the next, <code>full</code> snaps one per view, <code>clean</code> hides the scrollbar.',
       examples: [
         {
-          code: '<div class="carousel" style="max-inline-size:560px">\n  <article><div class="stat signal"><b>14-C</b><span>Sector</span></div><p>Contested · 6 contacts</p></article>\n  <article><div class="stat amber"><b>22-A</b><span>Sector</span></div><p>Hostile · 12 contacts</p></article>\n  <article><div class="stat"><b>09-F</b><span>Sector</span></div><p>Secure · 0 contacts</p></article>\n  <article><div class="stat signal"><b>31-B</b><span>Sector</span></div><p>Contested · 3 contacts</p></article>\n</div>',
+          code: '<div class="carousel" style="max-inline-size:min(560px, 100%)">\n  <article><div class="stat signal"><b>14-C</b><span>Sector</span></div><p>Contested · 6 contacts</p></article>\n  <article><div class="stat amber"><b>22-A</b><span>Sector</span></div><p>Hostile · 12 contacts</p></article>\n  <article><div class="stat"><b>09-F</b><span>Sector</span></div><p>Secure · 0 contacts</p></article>\n  <article><div class="stat signal"><b>31-B</b><span>Sector</span></div><p>Contested · 3 contacts</p></article>\n</div>',
         },
       ],
     },

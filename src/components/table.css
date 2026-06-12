@@ -2,8 +2,10 @@
    VantaUI — Data tables (semantic, zero-class)
    A <table> becomes a tactical telemetry grid: mono body, uppercase
    eyebrow headers, hairline rows, cyan row hover. Right-align numeric
-   cells with [data-num]. Wrap a wide table in a .scroll element for
-   horizontal overflow on small screens.
+   cells with [data-num]. Cells WRAP by default so a bare table never
+   forces horizontal overflow — it stays self-contained with no wrapper.
+   Opt into single-line cells with `table.nowrap`; when you do, wrap the
+   table in a .scroll element so it scrolls instead of breaking the layout.
    ============================================================ */
 
 :where(.vui .scroll:has(> table)),
@@ -15,8 +17,15 @@
   --bevel-md: 10px;
 }
 
+/* Fixed layout locks columns to the track instead of sizing them to content,
+   so columns stay even and predictable. Paired with wrapping cells (above) the
+   table CANNOT force horizontal overflow: content reflows within its column
+   rather than widening the table. For label/value tables where even columns
+   read oddly, set widths on the first row's <th> (or use <col>). `.nowrap`
+   opts back into content-driven `auto` so it can grow for a .scroll wrapper. */
 :where(.vui table) {
   inline-size: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   color: var(--text-secondary);
   font-size: var(--fs-sm);
@@ -45,13 +54,11 @@
   letter-spacing: var(--ls-wide);
   text-align: start;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 :where(.vui table td) {
   padding-inline: 14px;
   padding-block: 10px;
   border-block-end: var(--border-hair) solid var(--hairline);
-  white-space: nowrap;
 }
 :where(.vui table tbody tr) {
   transition: background-color var(--dur-fast) var(--ease-hud);
@@ -69,9 +76,16 @@
   background-color: var(--surface-panel);
 }
 
-/* cell text wrapping */
-:where(.vui table.wrap td) {
-  white-space: normal;
+/* opt-in: keep every cell on a single line (pair with a .scroll wrapper for
+   wide tables so they scroll horizontally instead of forcing shell overflow).
+   Revert to `auto` so the table can grow past its container for the wrapper to
+   scroll — under fixed layout it would stay 100% wide and spill out of cells. */
+:where(.vui table.nowrap) {
+  table-layout: auto;
+}
+:where(.vui table.nowrap th),
+:where(.vui table.nowrap td) {
+  white-space: nowrap;
 }
 
 /* padding density */

@@ -71,6 +71,21 @@ a:hover {
   overflow-wrap: break-word;
 }
 
+/* Below the smallest real device, even a normal-length word in a heading,
+   button or label can be wider than the viewport and force a horizontal
+   scrollbar. Down here we let EVERY word break mid-character (and `anywhere`,
+   unlike `break-word`, shrinks min-content so a word cannot push its flex/grid
+   track wider either) — so a semantic, class-light page is guaranteed never to
+   overflow, short of a ~3px screen. Above this width, wrapping stays pretty:
+   only the targeted rule above runs, and genuine misuse still scrolls (visible
+   and reachable) rather than being silently broken here. */
+@media (max-width: 20rem) {
+  :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, th, td,
+         caption, figcaption, blockquote, a, button, label, summary, legend) {
+    overflow-wrap: anywhere;
+  }
+}
+
 ::selection {
   background-color: rgba(66, 227, 255, 0.28);
   color: var(--cyan-50);
