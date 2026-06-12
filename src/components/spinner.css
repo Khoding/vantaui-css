@@ -1,0 +1,54 @@
+/* ============================================================
+   VantaUI — Spinner / activity indicator (indeterminate)
+   The indeterminate companion to the meter / gauge / progress
+   family: a radar-style sweeping ring for "working…" states.
+   On a <span>/<div>; tone with one word (cyan·amber·red·green),
+   size with small·large. A trailing text node becomes an inline
+   label; add .block to centre it in a panel. Mark it for AT with
+   role="status" + aria-label, e.g. <span class="spinner" role=
+   "status" aria-label="Loading"></span>.
+   ============================================================ */
+:where(.vui .spinner) {
+  --_c: var(--accent);
+  --_size: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+/* the sweeping ring rides on ::before so a label can sit beside it */
+:where(.vui .spinner)::before {
+  content: '';
+  flex: none;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  border-radius: var(--radius-pill);
+  /* an accent arc fading to transparent, masked into a thin ring */
+  background: conic-gradient(from 0deg, transparent 0 18%, var(--_c) 92%);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 calc(100% - 3px));
+  box-shadow: 0 0 10px -2px var(--_c);
+  animation: vui-sweep 0.85s linear infinite;
+}
+
+:where(.vui .spinner.small) { --_size: 16px; }
+:where(.vui .spinner.large) { --_size: 40px; }
+
+:where(.vui .spinner.cyan)  { --_c: var(--cyan-400); }
+:where(.vui .spinner.amber) { --_c: var(--amber-500); }
+:where(.vui .spinner.red)   { --_c: var(--red-500); }
+:where(.vui .spinner.green) { --_c: var(--green-500); }
+
+/* centre a bare spinner inside a panel / async region */
+:where(.vui .spinner.block) {
+  display: flex;
+  justify-content: center;
+  inline-size: 100%;
+  padding-block: var(--space-7);
+}

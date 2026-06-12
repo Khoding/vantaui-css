@@ -1,0 +1,68 @@
+/* ============================================================
+   VantaUI — Segmented control
+   A single-select switch: a .segmented track of <label> chips,
+   each wrapping a radio <input> (+ optional leading <i>). The
+   checked segment lights up. Zero-JS — it's real radios, so it
+   posts and keyboards like a radiogroup. Size with .small, tone
+   with a colour word. (For a multi-action button cluster use the
+   <menu class="group"> button group instead.)
+   ============================================================ */
+:where(.vui .segmented) {
+  --_c: var(--accent);
+  display: inline-flex;
+  padding: 3px;
+  border: var(--border-hair) solid var(--hairline-strong);
+  background-color: var(--surface-inset);
+  box-shadow: var(--shadow-inset);
+  clip-path: var(--clip-notch);
+  --bevel-sm: 6px;
+}
+:where(.vui .segmented > label) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 14px;
+  padding-block: 7px;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.vui .segmented > label > input) {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+:where(.vui .segmented > label > i) {
+  font-size: var(--fs-md);
+}
+:where(.vui .segmented > label:hover) {
+  color: var(--text-secondary);
+}
+:where(.vui .segmented > label:has(> input:checked)) {
+  background-color: color-mix(in srgb, var(--_c) 16%, transparent);
+  color: var(--_c);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--_c) 40%, transparent);
+}
+:where(.vui .segmented > label:has(> input:focus-visible)) {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+:where(.vui .segmented.small > label) {
+  padding-inline: 10px;
+  padding-block: 5px;
+}
+
+:where(.vui .segmented.amber) { --_c: var(--amber-500); }
+:where(.vui .segmented.red)   { --_c: var(--red-500); }
+:where(.vui .segmented.green) { --_c: var(--green-500); }

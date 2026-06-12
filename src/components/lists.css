@@ -1,0 +1,56 @@
+/* ============================================================
+   VantaUI — Description list (<dl>)
+   A bare <dl> is a telemetry readout: each <dt> an uppercase
+   label, each <dd> a mono value, divided by hairlines. Default is
+   a label │ value grid; add .stacked for label-over-value rows.
+   Pairs naturally inside a panel. (For ad-hoc single rows use the
+   .kv helper in overlay.css.)
+   ============================================================ */
+:where(.vui dl) {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  margin: 0;
+}
+:where(.vui dl > dt) {
+  align-self: center;
+  padding-block: 8px;
+  padding-inline-end: var(--space-5);
+  border-block-start: var(--border-hair) solid var(--hairline);
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+:where(.vui dl > dd) {
+  align-self: center;
+  margin: 0;
+  padding-block: 8px;
+  border-block-start: var(--border-hair) solid var(--hairline);
+  color: var(--text-primary);
+  font-size: var(--fs-sm);
+  font-family: var(--font-mono);
+  text-align: end;
+}
+/* first row needs no top rule */
+:where(.vui dl > dt:first-of-type),
+:where(.vui dl > dd:first-of-type) {
+  border-block-start: 0;
+}
+
+/* stacked: label sits above a left-aligned, full-width value */
+:where(.vui dl.stacked) {
+  grid-template-columns: 1fr;
+}
+:where(.vui dl.stacked > dt) {
+  padding-block: 10px 2px;
+}
+:where(.vui dl.stacked > dd) {
+  padding-block: 0 10px;
+  border-block-start: 0;
+  text-align: start;
+}
+:where(.vui dl.stacked > dt:first-of-type) {
+  padding-block-start: 0;
+}

@@ -57,48 +57,21 @@
   flex: 1 1 auto;
 }
 
-/* A single labelled control (select / range). Checkbox toggles override below. */
-.doc-ctrl {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.doc-ctrl > span {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  color: var(--text-muted);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-2xs);
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-}
-
-/* live numeric value beside a range label */
-.doc-ctrl > span b {
-  color: var(--cyan-400);
-  font-family: var(--font-hud);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.02em;
-}
-
-.doc-ctrl select {
+/* Playground fields are bare native <label> wrappers — forms.css lays them
+   out (stacked span-label + control; inline row for checkboxes) and styles
+   the label text. We only size the inputs and nudge toggles onto the field
+   baseline within the control bar. The live range value is a <b> tinted with
+   utilities in the markup (vui-text-cyan vui-font-hud). */
+.doc-play__controls select {
   min-inline-size: 9rem;
 }
 
-.doc-ctrl input[type='range'] {
+.doc-play__controls input[type='range'] {
   inline-size: 11rem;
   max-inline-size: 100%;
 }
 
-/* Checkbox toggles sit on the control baseline; nudge so they align with the
-   bottom edge of the select/range fields beside them. */
-.doc-ctrl--toggle {
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
+.doc-play__controls label:has(> input[type='checkbox']) {
   padding-block-end: 10px;
 }
 
@@ -166,61 +139,19 @@
 }
 
 /* ============================================================
-   2 — Code sidebar (slide-in source panel)
+   2 — Code sidebar: a native <dialog class="right"> edge drawer.
+   The framework supplies the fixed position, slide-in transition,
+   ::backdrop scrim, chamfered edge and the header divider; we only widen it
+   (code needs room) and switch it to a column so the <pre> fills the height.
+   Scoped to [open] so the closed dialog stays display:none.
    ============================================================ */
-.doc-codepanel {
-  position: fixed;
-  z-index: 60;
-  inset: 0;
+#doc-codepanel {
+  inline-size: min(94vw, 44rem);
 }
 
-.doc-codepanel[hidden] {
-  display: none;
-}
-
-.doc-codepanel__scrim {
-  position: absolute;
-  inset: 0;
-  background-color: var(--scrim);
-  backdrop-filter: blur(2px);
-  opacity: 0;
-  transition: opacity var(--dur-base) var(--ease-hud);
-}
-
-.doc-codepanel__sheet {
-  position: absolute;
-  inset-block: 0;
-  inset-inline-end: 0;
+#doc-codepanel[open] {
   display: flex;
   flex-direction: column;
-  inline-size: min(94vw, 44rem);
-  border-inline-start: 1px solid var(--hairline-accent);
-  background-color: var(--bg-void);
-  box-shadow:
-    var(--shadow-raised),
-    0 0 60px -10px var(--accent-glow);
-  /* chamfered leading edge, matching the framework's own edge drawers */
-  clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
-  translate: 101% 0;
-  transition: translate var(--dur-base) var(--ease-hud);
-}
-
-.doc-codepanel.is-open .doc-codepanel__scrim {
-  opacity: 1;
-}
-
-.doc-codepanel.is-open .doc-codepanel__sheet {
-  translate: 0 0;
-}
-
-.doc-codepanel__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-inline: var(--space-6) var(--space-5);
-  padding-block: 14px;
-  border-block-end: 1px solid var(--hairline);
 }
 
 .doc-codepanel__id {

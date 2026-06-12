@@ -1,0 +1,160 @@
+/* ============================================================
+   VantaUI — Carousel (scroll-snap filmstrip)
+   A <div class="carousel"> is a horizontal scroll-snap track — its
+   direct children are the slides. Swipe / scroll / keyboard by
+   default; on browsers with CSS-carousel support it also grows
+   native prev/next arrows + a row of snap-marker dots (no JS, no
+   library). Size slides with --vui-slide; .peek shows a sliver of
+   the next, .full snaps one slide per view, .clean hides the
+   scrollbar, .no-arrows / .no-dots drop either native control.
+
+   The scroller uses inline-block slides (not flex) so the native
+   ::scroll-marker-group lands as a normal centred block beneath it.
+   ============================================================ */
+:where(.vui .carousel) {
+  --vui-slide: clamp(220px, 72%, 360px);
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scroll-padding-inline: var(--space-1);
+  padding-block-end: var(--space-2);
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--hairline-strong) transparent;
+}
+:where(.vui .carousel) > * {
+  display: inline-block;
+  vertical-align: top;
+  white-space: normal;
+  inline-size: var(--vui-slide);
+  scroll-snap-align: start;
+}
+:where(.vui .carousel) > * + * {
+  margin-inline-start: var(--space-5);
+}
+:where(.vui .carousel.peek) {
+  --vui-slide: clamp(200px, 82%, 320px);
+}
+:where(.vui .carousel.full) > * {
+  inline-size: 100%;
+  scroll-snap-align: center;
+}
+:where(.vui .carousel.clean) {
+  scrollbar-width: none;
+}
+:where(.vui .carousel.clean)::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---- Native CSS-carousel controls (Chrome 135+): prev/next arrows +
+   a row of snap-marker dots. Pure enhancement — without support it stays
+   a swipe/scroll carousel. ---- */
+@supports (scroll-marker-group: after) {
+  :where(.vui .carousel) {
+    anchor-name: --vui-carousel;
+    scroll-marker-group: after;
+  }
+
+  /* prev / next arrows. Anchor positioning lets them overlap the track
+     edges WITHOUT being clipped by the scroller's overflow (plain insets
+     would be), and keeps both visible regardless of scroll position. */
+  :where(.vui .carousel)::scroll-button(inline-start),
+  :where(.vui .carousel)::scroll-button(inline-end) {
+    position: absolute;
+    position-anchor: --vui-carousel;
+    inset-block-start: anchor(center);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    inline-size: 38px;
+    block-size: 38px;
+    padding: 0;
+    border: var(--border-hair) solid var(--hairline-accent);
+    background-color: color-mix(in srgb, var(--bg-void) 82%, transparent);
+    color: var(--accent);
+    font-family: 'Material Symbols Outlined';
+    font-size: 1.25rem;
+    font-weight: 300;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    line-height: 1;
+    cursor: pointer;
+    clip-path: var(--clip-notch);
+    --bevel-sm: 6px;
+    transition:
+      color var(--dur-fast) var(--ease-hud),
+      border-color var(--dur-fast) var(--ease-hud),
+      background-color var(--dur-fast) var(--ease-hud);
+  }
+  :where(.vui .carousel)::scroll-button(inline-start) {
+    content: 'chevron_left';
+    inset-inline-start: anchor(start);
+    translate: 10px -50%;
+  }
+  :where(.vui .carousel)::scroll-button(inline-end) {
+    content: 'chevron_right';
+    inset-inline-start: anchor(end);
+    translate: calc(-100% - 10px) -50%;
+  }
+  :where(.vui .carousel)::scroll-button(inline-start):hover,
+  :where(.vui .carousel)::scroll-button(inline-end):hover {
+    border-color: var(--accent);
+    background-color: var(--surface-panel);
+    box-shadow: var(--glow-cyan-sm);
+  }
+  :where(.vui .carousel)::scroll-button(inline-start):focus-visible,
+  :where(.vui .carousel)::scroll-button(inline-end):focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+  /* the UA disables an arrow when there's nothing to scroll that way */
+  :where(.vui .carousel)::scroll-button(inline-start):disabled,
+  :where(.vui .carousel)::scroll-button(inline-end):disabled {
+    opacity: 0.3;
+    color: var(--text-faint);
+    cursor: default;
+    box-shadow: none;
+  }
+  :where(.vui .carousel.no-arrows)::scroll-button(inline-start),
+  :where(.vui .carousel.no-arrows)::scroll-button(inline-end) {
+    content: none;
+  }
+
+  /* the marker dots, centred below the track */
+  :where(.vui .carousel)::scroll-marker-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    inline-size: 100%;
+    padding-block: var(--space-4) 0;
+  }
+  :where(.vui .carousel) > *::scroll-marker {
+    content: '';
+    display: inline-block;
+    inline-size: 12px;
+    block-size: 12px;
+    border: var(--border-thin) solid var(--hairline-strong);
+    background-color: transparent;
+    clip-path: var(--clip-notch);
+    --bevel-sm: 2px;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-hud),
+      border-color var(--dur-fast) var(--ease-hud);
+  }
+  :where(.vui .carousel) > *::scroll-marker:hover {
+    border-color: var(--hairline-accent);
+  }
+  :where(.vui .carousel) > *::scroll-marker:target-current {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: var(--glow-cyan-sm);
+  }
+  :where(.vui .carousel.no-dots) > *::scroll-marker {
+    content: none;
+  }
+}

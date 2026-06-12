@@ -1,0 +1,64 @@
+/* ============================================================
+   VantaUI — Avatar
+   Operator identity on a <span>/<div> (initials) or an <img>. A
+   chamfered plate by default; .round for a disc, .hex for a
+   six-sided cut. Size with small·large. Add a status word
+   (online·busy·idle·offline) for a glowing status frame. Overlap
+   several inside .avatar-group to stack them.
+   ============================================================ */
+:where(.vui .avatar) {
+  --_size: 40px;
+  --_status: var(--slate-500);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  overflow: hidden;
+  border: var(--border-thin) solid var(--hairline-strong);
+  background-color: var(--surface-panel);
+  color: var(--accent);
+  font-weight: var(--fw-bold);
+  font-size: calc(var(--_size) * 0.36);
+  line-height: 1;
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  clip-path: var(--clip-chamfer);
+  --bevel-md: 7px;
+}
+/* an <img> — used directly as .avatar or nested inside the frame */
+:where(.vui img.avatar),
+:where(.vui .avatar) :where(img) {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+:where(.vui .avatar.small) { --_size: 28px; --bevel-md: 5px; }
+:where(.vui .avatar.large) { --_size: 56px; --bevel-md: 9px; }
+:where(.vui .avatar.round) { border-radius: var(--radius-pill); clip-path: none; }
+:where(.vui .avatar.hex) {
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+
+/* status — a coloured, glowing frame (drop-shadow follows the cut shape,
+   so it works on every variant and over photo avatars alike) */
+:where(.vui .avatar:is(.online, .busy, .idle, .offline)) {
+  border-color: var(--_status);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--_status) 65%, transparent));
+}
+:where(.vui .avatar.online)  { --_status: var(--green-500); }
+:where(.vui .avatar.busy)    { --_status: var(--red-500); }
+:where(.vui .avatar.idle)    { --_status: var(--amber-500); }
+:where(.vui .avatar.offline) { --_status: var(--slate-500); }
+
+/* overlapping stack */
+:where(.vui .avatar-group) {
+  display: inline-flex;
+  align-items: center;
+}
+:where(.vui .avatar-group) > .avatar:not(:first-child) {
+  margin-inline-start: -10px;
+}

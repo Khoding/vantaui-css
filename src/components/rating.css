@@ -1,0 +1,72 @@
+/* ============================================================
+   VantaUI — Rating / signal-strength
+   A <fieldset class="rating"> reads as a row of pips: click or
+   arrow-key to set, fills up to the choice. Each pip is a <label>
+   (glyph = a leading <i>) immediately followed by its radio
+   <input>, authored LOW → HIGH (1…5). The <legend> is the group
+   label. Tone with a colour word; add .readonly (or disable the
+   inputs) for a static readout.
+
+   The fieldset is NOT a flex container — the legend stays a normal
+   caption and the pips flow inline — and the fill is resolved with
+   :has(), so no reversed source order is needed.
+   ============================================================ */
+:where(.vui .rating) {
+  --_c: var(--accent);
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+:where(.vui .rating > legend) {
+  margin-block-end: 6px;
+  padding: 0;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+/* real radios stay focusable but out of the visual flow */
+:where(.vui .rating > input) {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+}
+:where(.vui .rating > label) {
+  display: inline-grid;
+  place-items: center;
+  margin-inline-end: 4px;
+  color: var(--text-faint);
+  font-size: var(--fs-lg);
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-hud);
+}
+/* a pip fills when it (or any higher pip) is checked — i.e. it has a
+   checked radio among its following siblings — and previews on hover */
+:where(.vui .rating > label:has(~ input:checked)),
+:where(.vui .rating > label:hover),
+:where(.vui .rating > label:has(~ label:hover)) {
+  color: var(--_c);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--_c) 60%, transparent);
+}
+/* focus ring lands on the pip whose radio is focused */
+:where(.vui .rating > label:has(+ input:focus-visible)) {
+  outline: none;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--focus-ring);
+}
+
+/* static readout — no pointer affordance */
+:where(.vui .rating.readonly) { pointer-events: none; }
+:where(.vui .rating:has(> input:disabled)) > label { cursor: default; }
+
+:where(.vui .rating.cyan)  { --_c: var(--cyan-400); }
+:where(.vui .rating.amber) { --_c: var(--amber-500); }
+:where(.vui .rating.red)   { --_c: var(--red-500); }
+:where(.vui .rating.green) { --_c: var(--green-500); }

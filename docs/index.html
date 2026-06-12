@@ -32,10 +32,10 @@
     /* ---------- Main column ----------
      Horizontal padding is the page gutter. It never drops below 20px, so on the
      smallest phone the content always keeps a margin from the screen edge. */
-    .doc-main {
-      padding: var(--space-8) clamp(20px, 4vw, 64px) var(--space-13);
+    /* .doc-main {
+      padding: var(--space-8) clamp(var(--space-6), 4vw, var(--space-8)) var(--space-13);
       min-inline-size: 0;
-    }
+    } */
 
     .doc-main>* {
       max-inline-size: 1080px;
@@ -204,27 +204,13 @@
       overflow: auto;
     }
 
+    /* Inline copy button: the framework's `button.icon small` supplies the
+       square notched control + hover; we only place it and tint when copied. */
     .doc-copy {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      inset-block-start: 10px;
+      inset-inline-end: 10px;
       z-index: 2;
-      inline-size: 32px;
-      block-size: 32px;
-      display: grid;
-      place-items: center;
-      background: var(--surface-panel);
-      color: var(--text-muted);
-      border: 1px solid var(--hairline-strong);
-      cursor: pointer;
-      clip-path: var(--clip-notch);
-      --bevel-sm: 5px;
-      transition: all var(--dur-fast) var(--ease-hud);
-    }
-
-    .doc-copy:hover {
-      color: var(--cyan-400);
-      border-color: var(--hairline-accent);
     }
 
     .doc-copy.is-copied {
@@ -345,35 +331,6 @@
       color: var(--cyan-400);
     }
 
-    /* ---------- Mobile ---------- */
-    .doc-menu-btn {
-      display: none;
-    }
-
-    @media (max-width: 47.999rem) {
-      .doc-menu-btn {
-        display: inline-grid;
-        place-items: center;
-        position: fixed;
-        z-index: 41;
-        top: 14px;
-        inset-inline-start: 14px;
-        inline-size: 44px;
-        block-size: 44px;
-        background: var(--surface-panel);
-        color: var(--cyan-400);
-        border: 1px solid var(--hairline-accent);
-        clip-path: var(--clip-notch);
-        --bevel-sm: 6px;
-        cursor: pointer;
-        font-size: 20px;
-      }
-
-      .doc-main {
-        padding-top: var(--space-11);
-      }
-    }
-
     /* Phones: tighten the rhythm so content breathes without ever shrinking type
      into illegibility. Layout reflows; gutters stay. */
     @media (max-width: 40rem) {
@@ -398,12 +355,23 @@
 </head>
 
 <body class="vui vignette">
-  <button class="doc-menu-btn" data-open="doc-side" aria-label="Toggle navigation"><i>menu</i></button>
+  <header>
+    <button class="icon vui-until-m" data-open="doc-side" aria-label="Open navigation"><i>menu</i></button>
+    <a href="#"><img src="assets/logo-mark.svg" alt="" width="28" height="28" /><span class="vui-from-s">
+        Vanta<b>UI</b>
+        CSS
+      </span></a>
+    <menu class="right">
+      <a class="badge cyan vui-from-s" href="https://github.com/Khoding/vantaui-css/releases">v1.3.0</a>
+      <a class="icon" href="https://github.com/Khoding/vantaui-css" aria-label="GitHub repository" target="_blank"
+        rel="noopener"><i>code</i></a>
+    </menu>
+  </header>
 
   <aside class="drawer" id="doc-side">
-    <header>
+    <header class="vui-until-m">
       <span><img src="assets/logo-mark.svg" alt="" width="28" height="28" />Vanta<b>UI</b> CSS</span>
-      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>
+      <button class="icon" data-close aria-label="Close navigation"><i>close</i></button>
     </header>
     <nav id="doc-nav" aria-label="Documentation"></nav>
   </aside>
@@ -427,24 +395,22 @@
     <div id="doc-main"></div>
   </main>
 
-  <!-- Shared slide-in source panel. gallery.js fills it with the current
-       variant's clean code and live-refreshes it while controls change. -->
-  <div class="doc-codepanel" id="doc-codepanel" hidden>
-    <div class="doc-codepanel__scrim" data-code-close></div>
-    <aside class="doc-codepanel__sheet" role="dialog" aria-modal="true" aria-label="Source code">
-      <header class="doc-codepanel__head">
-        <div class="doc-codepanel__id">
-          <small class="vui-eyebrow">Source</small>
-          <span class="doc-codepanel__title"></span>
-        </div>
-        <div class="doc-codepanel__tools">
-          <button class="icon doc-codepanel__copy" type="button" aria-label="Copy code"><i>content_copy</i></button>
-          <button class="icon" type="button" data-code-close aria-label="Close code"><i>close</i></button>
-        </div>
-      </header>
-      <pre class="doc-codepanel__pre"><code></code></pre>
-    </aside>
-  </div>
+  <!-- Shared source panel — a native edge drawer (<dialog class="right">).
+       The framework supplies the slide-in, scrim, Esc + backdrop close;
+       gallery.js fills it with the current variant's clean code. -->
+  <dialog class="right" id="doc-codepanel" aria-label="Source code">
+    <header>
+      <div class="doc-codepanel__id">
+        <small class="vui-eyebrow">Source</small>
+        <span class="doc-codepanel__title"></span>
+      </div>
+      <div class="doc-codepanel__tools">
+        <button class="icon doc-codepanel__copy" type="button" aria-label="Copy code"><i>content_copy</i></button>
+        <button class="icon" type="button" data-close aria-label="Close code"><i>close</i></button>
+      </div>
+    </header>
+    <pre class="doc-codepanel__pre"><code></code></pre>
+  </dialog>
 
   <script type="module" src="js/vantaui.js"></script>
   <script type="module" src="gallery.js"></script>

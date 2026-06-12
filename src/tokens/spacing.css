@@ -68,7 +68,7 @@
   --container-narrow: 48rem; /* 768px reading measure */
   --container-pad: clamp(1rem, 0.6rem + 2vw, 2rem); /* fluid gutter */
   --gutter: var(--space-7);
-  --hud-edge: clamp(1rem, 0.5rem + 2.5vw, 2rem); /* fluid HUD inset */
+  --hud-edge: clamp(0.5rem, 0.5rem + 0.5vw, 1rem); /* fluid HUD inset */
 
   /* ---- Responsive breakpoints (mobile-first, min-width).
           Exposed as tokens for reference; media queries below

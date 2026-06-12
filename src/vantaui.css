@@ -49,5 +49,26 @@
 @import url('./components/footer.css') layer(vui.components);
 @import url('./components/navigation.css') layer(vui.components);
 
+/* Data display & feedback (imported after button/forms/nav so their
+   semantic triggers win on ties — e.g. pagination buttons over button.icon) */
+@import url('./components/spinner.css') layer(vui.components);
+@import url('./components/skeleton.css') layer(vui.components);
+@import url('./components/avatar.css') layer(vui.components);
+@import url('./components/lists.css') layer(vui.components);
+@import url('./components/empty-state.css') layer(vui.components);
+@import url('./components/pagination.css') layer(vui.components);
+@import url('./components/timeline.css') layer(vui.components);
+@import url('./components/rating.css') layer(vui.components);
+@import url('./components/segmented.css') layer(vui.components);
+@import url('./components/stepper.css') layer(vui.components);
+
+/* Interactive (imported after tabs/button so the dropdown & tree
+   override the base <details> accordion, and menus win over buttons) */
+@import url('./components/menu.css') layer(vui.components);
+@import url('./components/toolbar.css') layer(vui.components);
+@import url('./components/tree.css') layer(vui.components);
+@import url('./components/carousel.css') layer(vui.components);
+@import url('./components/toast.css') layer(vui.components);
+
 /* Utilities (win on ties) */
 @import url('./utilities/utilities.css') layer(vui.utilities);

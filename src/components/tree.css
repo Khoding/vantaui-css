@@ -1,0 +1,118 @@
+/* ============================================================
+   VantaUI — Tree (disclosure)
+   A <ul class="tree"> is a hierarchy of rows. A branch is a
+   <li><details><summary>…</summary><ul>…</ul></details></li> — it
+   collapses with zero JS and animates open where ::details-content
+   is supported. A leaf is a plain <li><a>/<span>. Lead any row with
+   an <i> (folder / file glyph); mark the selected leaf
+   aria-current="page" (or .active). Guide rails connect each level.
+
+   To upgrade to a full ARIA tree widget (roving tabindex, type-
+   ahead, arrow-key walk) add role="tree" / role="treeitem" /
+   role="group" and aria-expanded, then drive focus in JS — see the
+   "ARIA tree" note in the docs.
+   ============================================================ */
+:where(.vui ul.tree),
+:where(.vui .tree ul) {
+  margin: 0;
+  list-style: none;
+}
+:where(.vui ul.tree) {
+  padding-inline-start: 0;
+}
+:where(.vui ul.tree li) {
+  margin: 0;
+}
+/* nested levels indent and carry a guide rail */
+:where(.vui .tree ul) {
+  padding-inline-start: 18px;
+  margin-inline-start: 11px;
+  border-inline-start: var(--border-hair) solid var(--hairline);
+}
+
+/* a branch <details> is a transparent shell, not an accordion box */
+:where(.vui .tree details) {
+  margin: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  clip-path: none;
+}
+/* rows: summaries (branches) + leaf links share one look */
+:where(.vui .tree :where(summary, a, span)) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 8px;
+  padding-block: 6px;
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+  font-family: var(--font-ui);
+  letter-spacing: normal;
+  line-height: 1.3;
+  text-transform: none;
+  text-decoration: none;
+  list-style: none;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.vui .tree :where(summary, a, span)) > i {
+  flex: none;
+  color: var(--text-faint);
+  font-size: var(--fs-md);
+}
+:where(.vui .tree :where(summary:hover, a:hover)) {
+  background-color: color-mix(in srgb, var(--accent) 6%, transparent);
+  color: var(--text-secondary);
+}
+:where(.vui .tree :where(summary:focus-visible, a:focus-visible)) {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+/* the selected leaf */
+:where(.vui .tree :where([aria-current='page'], .active)) {
+  background-color: color-mix(in srgb, var(--cyan-400) 10%, transparent);
+  color: var(--accent);
+}
+:where(.vui .tree :where([aria-current='page'], .active)) > i {
+  color: var(--accent);
+}
+
+/* disclosure caret on a branch (replaces the accordion's marker) */
+:where(.vui .tree summary)::before {
+  content: '\203A'; /* › */
+  flex: none;
+  inline-size: 0.8em;
+  color: var(--accent);
+  font-size: 1.05em;
+  transition: transform var(--dur-fast) var(--ease-hud);
+}
+:where(.vui .tree details[open] > summary) {
+  border-block-end: 0;
+  color: var(--text-secondary);
+}
+:where(.vui .tree details[open] > summary)::before {
+  transform: rotate(90deg);
+}
+/* leaves have no caret — pad them to line up with branch labels */
+:where(.vui .tree li > :where(a, span)) {
+  padding-inline-start: calc(8px + 0.8em + 8px);
+}
+
+/* strip the accordion's content padding / mono font from the nested list */
+:where(.vui .tree details > :not(summary)) {
+  padding: 0;
+  color: inherit;
+  font: inherit;
+}
+@supports selector(::details-content) {
+  :where(.vui .tree details)::details-content {
+    padding: 0;
+  }
+  :where(.vui .tree details[open])::details-content {
+    padding-block: 0;
+  }
+}

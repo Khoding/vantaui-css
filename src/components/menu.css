@@ -1,0 +1,223 @@
+/* ============================================================
+   VantaUI — Dropdown / action menu
+   Two ways in, one look:
+     • <details class="dropdown">  — zero-JS, works everywhere. The
+       <summary> is the trigger; the panel is a <menu>/<nav>/<ul>.
+       (VantaUI.menus() adds outside-click / Esc dismissal.)
+     • <button popovertarget> + a [popover].menu panel — modern
+       top-layer + light-dismiss path; anchor-positioned where
+       supported. Falls back to the <details> pattern below the
+       browserslist floor.
+   Items are <a>/<button> (lead with an <i>); an <hr> divides, a
+   <h6>/.label is a group heading, .danger tones an item red.
+   Add .right to align the panel to the trailing edge.
+   ============================================================ */
+
+/* ---- <details class="dropdown">: strip the accordion box, it's a shell ---- */
+:where(.vui details.dropdown) {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  clip-path: none;
+}
+:where(.vui details.dropdown > summary) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 14px;
+  padding-block: 9px;
+  border: var(--border-hair) solid var(--hairline-strong);
+  background-color: color-mix(in srgb, var(--cyan-400) 6%, transparent);
+  color: var(--text-secondary);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  list-style: none;
+  cursor: pointer;
+  clip-path: var(--clip-chamfer);
+  --bevel-md: 7px;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    border-color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.vui details.dropdown > summary)::before { content: none; }
+:where(.vui details.dropdown > summary:hover) {
+  border-color: var(--hairline-accent);
+  color: var(--accent);
+}
+:where(.vui details.dropdown[open] > summary) {
+  border-block-end: var(--border-hair) solid var(--hairline-accent);
+  border-color: var(--hairline-accent);
+  color: var(--accent);
+}
+/* a trailing chevron rotates open */
+:where(.vui details.dropdown > summary > i:last-child) {
+  margin-inline-start: auto;
+  font-size: var(--fs-md);
+  transition: transform var(--dur-fast) var(--ease-hud);
+}
+:where(.vui details.dropdown[open] > summary > i:last-child) {
+  transform: rotate(180deg);
+}
+
+/* ---- The panel (shared by the <details> and [popover] paths) ---- */
+:where(.vui details.dropdown > :where(menu, nav, ul)),
+:where(.vui [popover].menu) {
+  z-index: 40;
+  inline-size: max-content;
+  min-inline-size: 12rem;
+  max-inline-size: min(20rem, 92vw);
+  margin: 0;
+  padding-block: var(--space-3);
+  padding-inline: 0;
+  list-style: none;
+  border: var(--border-hair) solid var(--hairline-accent);
+  background-color: var(--bg-void);
+  box-shadow:
+    var(--shadow-raised),
+    0 0 40px -12px var(--accent-glow);
+  color: var(--text-secondary);
+  clip-path: var(--clip-chamfer);
+  --bevel-md: 9px;
+}
+/* the <details> panel hangs below the summary */
+:where(.vui details.dropdown > :where(menu, nav, ul)) {
+  position: absolute;
+  inset-block-start: calc(100% + 6px);
+  inset-inline-start: 0;
+}
+:where(.vui details.dropdown.right > :where(menu, nav, ul)) {
+  inset-inline: auto 0;
+}
+/* In ::details-content browsers the panel is wrapped in a flow box that the
+   base accordion pads + animates on open — which would grow the trigger's
+   parent. Collapse that wrapper so the absolutely-positioned panel just
+   overlays instead of taking layout space. */
+@supports selector(::details-content) {
+  :where(.vui details.dropdown)::details-content,
+  :where(.vui details.dropdown[open])::details-content {
+    block-size: 0;
+    padding: 0;
+    overflow: visible;
+    transition: none;
+  }
+}
+
+/* items */
+:where(.vui details.dropdown :where(a, button)),
+:where(.vui [popover].menu :where(a, button)) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  inline-size: 100%;
+  padding-inline: var(--space-5);
+  padding-block: 9px;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  text-align: start;
+  text-decoration: none;
+  white-space: nowrap;
+  clip-path: none;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.vui details.dropdown :where(a, button) i),
+:where(.vui [popover].menu :where(a, button) i) {
+  flex: none;
+  inline-size: 20px;
+  color: var(--text-faint);
+  font-size: var(--fs-md);
+}
+:where(.vui details.dropdown :where(a:hover, button:hover)),
+:where(.vui [popover].menu :where(a:hover, button:hover)) {
+  background-color: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--text-secondary);
+}
+:where(.vui details.dropdown :where(a:focus-visible, button:focus-visible)),
+:where(.vui [popover].menu :where(a:focus-visible, button:focus-visible)) {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+:where(.vui details.dropdown :where(.danger)),
+:where(.vui [popover].menu :where(.danger)) {
+  color: var(--red-400);
+}
+:where(.vui details.dropdown :where(.danger) i),
+:where(.vui [popover].menu :where(.danger) i) {
+  color: var(--red-500);
+}
+:where(.vui details.dropdown :where(.danger:hover)),
+:where(.vui [popover].menu :where(.danger:hover)) {
+  background-color: color-mix(in srgb, var(--red-500) 12%, transparent);
+  color: var(--red-400);
+}
+/* divider + group heading */
+:where(.vui details.dropdown hr),
+:where(.vui [popover].menu hr) {
+  margin-block: 6px;
+  margin-inline: 0;
+  border: 0;
+  block-size: var(--border-hair);
+  background-color: var(--hairline);
+}
+:where(.vui details.dropdown :where(h6, .label)),
+:where(.vui [popover].menu :where(h6, .label)) {
+  margin-block: 6px 4px;
+  padding-inline: var(--space-5);
+  color: var(--text-faint);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+}
+
+/* ---- [popover].menu: top-layer placement + entry animation ---- */
+:where(.vui [popover].menu) {
+  position: fixed;
+  opacity: 0;
+  translate: 0 -6px;
+  transition:
+    opacity var(--dur-fast) var(--ease-hud),
+    translate var(--dur-fast) var(--ease-hud),
+    overlay var(--dur-fast) allow-discrete,
+    display var(--dur-fast) allow-discrete;
+}
+:where(.vui [popover].menu:popover-open) {
+  opacity: 1;
+  translate: 0 0;
+}
+@starting-style {
+  :where(.vui [popover].menu:popover-open) {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+/* anchor-position below the trigger where supported. When menus() runs it
+   sets anchor-name/position-anchor as inline styles per-instance; the
+   position-area here resolves only when that pair is wired up. */
+@supports (anchor-name: --vui) {
+  :where(.vui [popover].menu) {
+    position-area: block-end span-inline-end;
+    margin-block-start: 6px;
+  }
+  /* .right trigger → panel trails to the left */
+  :where(.vui details.dropdown.right > [popover].menu) {
+    position-area: block-end span-inline-start;
+  }
+}

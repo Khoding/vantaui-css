@@ -1,0 +1,48 @@
+/* ============================================================
+   VantaUI — Skeleton loading placeholders
+   A .skeleton is a dim, faintly-scanning stand-in for content that
+   hasn't loaded. Shape it: bare = a block, .text = a type line
+   (stack several; add .last for a short final line), .circle = an
+   avatar disc. Size a block with .block or an inline `block-size`.
+   Decorative — mark the group aria-hidden="true".
+   ============================================================ */
+:where(.vui .skeleton) {
+  --_h: 1rem;
+  display: block;
+  block-size: var(--_h);
+  border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-inset);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  clip-path: var(--clip-chamfer);
+  --bevel-md: 6px;
+  animation: vui-skeleton 1.4s var(--ease-inout) infinite;
+}
+
+@keyframes vui-skeleton {
+  from { background-position: 180% 0; }
+  to   { background-position: -80% 0; }
+}
+
+/* a type line — height tracks the surrounding font; barely-rounded ends */
+:where(.vui .skeleton.text) {
+  --_h: 0.72em;
+  border-radius: var(--radius-sm);
+  clip-path: none;
+}
+:where(.vui .skeleton.text.last) { inline-size: 60%; }
+
+:where(.vui .skeleton.circle) {
+  --_h: 44px;
+  inline-size: var(--_h);
+  border-radius: var(--radius-pill);
+  clip-path: none;
+}
+
+:where(.vui .skeleton.block) { --_h: 120px; }

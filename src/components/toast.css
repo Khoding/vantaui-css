@@ -1,0 +1,129 @@
+/* ============================================================
+   VantaUI — Toast / snackbar
+   Transient notices, the floating cousin of the inline alert.
+   Raise them imperatively: VantaUI.toast('Uplink restored',
+   {tone:'secure', title:'Comms'}). The helper owns a .toaster
+   live-region (created on demand, class="vui toaster"); each .toast
+   reuses the alert rail + glyph and slides in. Tone with a word:
+   info · warn · threat · secure. Place the region with .start /
+   .top on the toaster.
+   ============================================================ */
+:where(.vui.toaster),
+:where(.vui .toaster) {
+  position: fixed;
+  z-index: 9999;
+  inset-block-end: var(--space-6);
+  inset-inline-end: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  inline-size: min(92vw, 22rem);
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+:where(.vui.toaster.top),
+:where(.vui .toaster.top) {
+  inset-block: var(--space-6) auto;
+  flex-direction: column-reverse;
+}
+:where(.vui.toaster.start),
+:where(.vui .toaster.start) {
+  inset-inline: var(--space-6) auto;
+}
+:where(.vui.toaster.center),
+:where(.vui .toaster.center) {
+  inset-inline: 0;
+  margin-inline: auto;
+}
+
+:where(.vui .toast) {
+  --_c: var(--cyan-400);
+  --_glyph: '\25C8'; /* ◈ */
+  --bevel-md: 9px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-inline: 16px 10px;
+  padding-block: 13px;
+  border: var(--border-hair) solid var(--_c);
+  background-color: var(--bg-void);
+  box-shadow:
+    var(--shadow-raised),
+    0 0 40px -14px var(--accent-glow);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-mono);
+  font-family: var(--font-mono);
+  clip-path: var(--clip-chamfer);
+  pointer-events: auto;
+  animation: vui-toast-in var(--dur-base) var(--ease-hud);
+}
+/* accent rail */
+:where(.vui .toast)::before {
+  position: absolute;
+  inline-size: 3px;
+  inset-block: 0;
+  inset-inline-start: 0;
+  background-color: var(--_c);
+  box-shadow: 0 0 12px var(--_c);
+  content: '';
+}
+/* leading glyph */
+:where(.vui .toast)::after {
+  flex: none;
+  order: -1;
+  content: var(--_glyph);
+  color: var(--_c);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  line-height: 1.3;
+  font-family: var(--font-display);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 60%, transparent);
+}
+/* the message body (a wrapper holding an optional title + text) grows */
+:where(.vui .toast) > :where(div, p) {
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+}
+:where(.vui .toast :where(strong, b)) {
+  display: block;
+  margin-block-end: 3px;
+  color: var(--text-primary);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+/* the dismiss control is pushed to the trailing edge */
+:where(.vui .toast) > :where([data-close], button:last-child) {
+  flex: none;
+  margin-inline-start: auto;
+  align-self: flex-start;
+}
+
+/* ---- Tones (mirror the alert palette) ---- */
+:where(.vui .toast.info)   { --_c: var(--cyan-400);  --_glyph: '\25C8'; }
+:where(.vui .toast.warn)   { --_c: var(--amber-500); --_glyph: '\25B2'; }
+:where(.vui .toast.threat) { --_c: var(--red-500);   --_glyph: '\2B22'; }
+:where(.vui .toast.secure) { --_c: var(--green-500); --_glyph: '\25C9'; }
+
+/* ---- Enter / leave ---- */
+@keyframes vui-toast-in {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+:where(.vui .toast.is-leaving) {
+  animation: vui-toast-out var(--dur-base) var(--ease-snap) forwards;
+}
+@keyframes vui-toast-out {
+  to {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}

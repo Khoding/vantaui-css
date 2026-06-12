@@ -1,0 +1,78 @@
+/* ============================================================
+   VantaUI — Pagination
+   <nav class="pagination"> wrapping a list (<ul>/<ol>) of page
+   links. Items are <a>/<button>; a lone <i> collapses to an icon
+   prev/next. Mark the current page aria-current="page" and
+   unavailable controls disabled / aria-disabled. A bare <span> is
+   an ellipsis gap. Add .compact to tighten for table footers.
+   ============================================================ */
+:where(.vui nav.pagination) {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+:where(.vui nav.pagination :where(ul, ol)) {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+:where(.vui nav.pagination li) {
+  display: inline-flex;
+  margin: 0;
+}
+:where(.vui nav.pagination :where(a, button)) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 36px;
+  block-size: 36px;
+  padding-inline: 10px;
+  border: var(--border-hair) solid var(--hairline);
+  background-color: transparent;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+  text-decoration: none;
+  cursor: pointer;
+  clip-path: var(--clip-notch);
+  --bevel-sm: 5px;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    border-color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.vui nav.pagination :where(a, button):hover) {
+  border-color: var(--hairline-accent);
+  color: var(--accent);
+}
+:where(.vui nav.pagination :where([aria-current='page'])) {
+  border-color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  box-shadow: var(--glow-cyan-sm);
+}
+:where(.vui nav.pagination :where(a, button):focus-visible) {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+:where(.vui nav.pagination :where(a, button):disabled),
+:where(.vui nav.pagination :where([aria-disabled='true'])) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+/* an ellipsis gap (a bare <span>) */
+:where(.vui nav.pagination :where(span)) {
+  padding-inline: 6px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+:where(.vui nav.pagination.compact :where(a, button)) {
+  min-inline-size: 30px;
+  block-size: 30px;
+  padding-inline: 7px;
+}

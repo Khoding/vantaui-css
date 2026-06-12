@@ -1,0 +1,66 @@
+/* ============================================================
+   VantaUI — Toolbar
+   A <div role="toolbar"> (or .toolbar) is a control surface: a
+   chamfered track holding buttons, button groups (<menu class=
+   "group">), segmented controls, an <hr> separator, a .max spacer
+   and short <span>/<small> labels. VantaUI.toolbars() gives
+   role="toolbar" the roving-tabindex keyboard model (one tab stop,
+   arrow keys move focus). Add .vertical to stand it on end.
+   ============================================================ */
+:where(.vui [role='toolbar']),
+:where(.vui .toolbar) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding-inline: var(--space-4);
+  padding-block: var(--space-3);
+  border: var(--border-hair) solid var(--hairline-strong);
+  background-color: var(--surface-panel);
+  background-image: var(--scanlines);
+  box-shadow: var(--shadow-inset);
+  clip-path: var(--clip-notch);
+  --bevel-sm: 8px;
+}
+/* a vertical hairline separator */
+:where(.vui :is([role='toolbar'], .toolbar) > hr) {
+  align-self: stretch;
+  inline-size: var(--border-hair);
+  block-size: auto;
+  min-block-size: 20px;
+  margin-block: 2px;
+  margin-inline: 2px;
+  border: 0;
+  background-color: var(--hairline);
+}
+/* a flexible spacer */
+:where(.vui :is([role='toolbar'], .toolbar) > .max) {
+  flex: 1;
+}
+/* short labels riding in the bar */
+:where(.vui :is([role='toolbar'], .toolbar) > :where(span, small)) {
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+/* vertical */
+:where(.vui :is([role='toolbar'], .toolbar).vertical) {
+  flex-direction: column;
+  align-items: stretch;
+  inline-size: max-content;
+}
+:where(.vui :is([role='toolbar'], .toolbar).vertical > hr) {
+  align-self: stretch;
+  inline-size: auto;
+  block-size: var(--border-hair);
+  min-inline-size: 20px;
+  min-block-size: 0;
+  margin-block: 2px;
+}
+:where(.vui :is([role='toolbar'], .toolbar).vertical > .max) {
+  block-size: 0;
+}

@@ -1,0 +1,75 @@
+/* ============================================================
+   VantaUI — Timeline / telemetry log
+   An <ol class="timeline"> is a vertical event feed: each <li>
+   gets a glowing node on a connecting rail. Lead an <li> with a
+   <time> for the stamp; tone a node with a colour word on the <li>
+   (cyan·amber·red·green). Add .log for a dense, monospaced feed.
+   ============================================================ */
+:where(.vui ol.timeline) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+:where(.vui ol.timeline > li) {
+  --_c: var(--accent);
+  position: relative;
+  margin: 0;
+  padding-inline-start: var(--space-6);
+  color: var(--text-secondary);
+}
+/* the rail */
+:where(.vui ol.timeline > li)::before {
+  content: '';
+  position: absolute;
+  inset-block: 4px;
+  inset-inline-start: 4px;
+  inline-size: var(--border-hair);
+  background-color: var(--hairline-strong);
+}
+/* the last node ends the rail at its own marker */
+:where(.vui ol.timeline > li:last-child)::before {
+  block-size: 6px;
+  inset-block-end: auto;
+}
+/* the node */
+:where(.vui ol.timeline > li)::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 3px;
+  inset-inline-start: 0;
+  inline-size: 9px;
+  block-size: 9px;
+  border-radius: var(--radius-pill);
+  background-color: var(--_c);
+  box-shadow: 0 0 8px var(--_c);
+}
+:where(.vui ol.timeline > li > time) {
+  display: block;
+  margin-block-end: 2px;
+  color: var(--text-faint);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+/* node tones */
+:where(.vui ol.timeline > li.cyan)  { --_c: var(--cyan-400); }
+:where(.vui ol.timeline > li.amber) { --_c: var(--amber-500); }
+:where(.vui ol.timeline > li.red)   { --_c: var(--red-500); }
+:where(.vui ol.timeline > li.green) { --_c: var(--green-500); }
+
+/* dense monospaced log feed */
+:where(.vui ol.timeline.log) {
+  gap: 2px;
+}
+:where(.vui ol.timeline.log > li) {
+  padding-block: 3px;
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+}
+:where(.vui ol.timeline.log > li)::after {
+  inset-block-start: 8px;
+}

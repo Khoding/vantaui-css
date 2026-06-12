@@ -223,6 +223,210 @@ export function drawers(root = document) {
   });
 }
 
+/* ---------- Dropdown menus (<details class="dropdown">) ---------- */
+export function menus(root = document) {
+  const hasPopover = typeof HTMLElement.prototype.showPopover === 'function';
+
+  // Upgrade <details.dropdown> panels to the Popover top layer so they escape
+  // any overflow / clip-path boundaries. popover="auto" also gives light-dismiss,
+  // Esc, and exclusive-open for free.
+  // Runs on every menus() call (idempotent: skips already-upgraded panels) so
+  // dynamically rendered dropdowns are caught even on subsequent init() calls.
+  if (hasPopover) {
+    (root === document ? document : root).querySelectorAll('.vui details.dropdown').forEach(details => {
+      const panel = details.querySelector(':scope > menu, :scope > nav, :scope > ul');
+      const summary = details.querySelector(':scope > summary');
+      if (!panel || !summary || panel.hasAttribute('popover')) return;
+
+      panel.setAttribute('popover', 'auto');
+      panel.classList.add('menu');
+
+      // Position the panel below its trigger via getBoundingClientRect.
+      // JS inline styles override any CSS positioning (including position-area),
+      // so this works reliably in all browsers with the Popover API.
+      const placePanel = () => {
+        const r = summary.getBoundingClientRect();
+        panel.style.top = (r.bottom + 6) + 'px';
+        if (details.classList.contains('right')) {
+          panel.style.left = '';
+          panel.style.right = (window.innerWidth - r.right) + 'px';
+        } else {
+          panel.style.right = '';
+          panel.style.left = r.left + 'px';
+        }
+      };
+
+      // Drive state via Popover API; prevent <details> native toggle.
+      summary.addEventListener('click', e => {
+        e.preventDefault();
+        if (panel.matches(':popover-open')) {
+          panel.hidePopover();
+        } else {
+          panel.showPopover();
+          placePanel();
+        }
+      });
+
+      // Sync <details open> for CSS trigger/chevron styling.
+      panel.addEventListener('toggle', e => {
+        if (e.newState === 'open') details.setAttribute('open', '');
+        else details.removeAttribute('open');
+      });
+    });
+  }
+
+  // Event listeners are registered only once per root (guard below).
+  const target = root.documentElement || root;
+  if (target.dataset.vuiMenusReady) return;
+  target.dataset.vuiMenusReady = '1';
+
+  // Fallback handlers for <details> path (browsers without Popover API).
+  // Only one dropdown open at a time. `toggle` doesn't bubble, so capture it.
+  document.addEventListener(
+    'toggle',
+    e => {
+      const d = e.target;
+      if (d.matches && d.matches('details.dropdown') && d.open) {
+        document.querySelectorAll('details.dropdown[open]').forEach(o => {
+          if (o !== d) o.open = false;
+        });
+      }
+    },
+    true,
+  );
+
+  document.addEventListener('click', e => {
+    // outside click closes every open dropdown
+    if (!e.target.closest('details.dropdown')) {
+      document.querySelectorAll('details.dropdown[open]').forEach(o => (o.open = false));
+      return;
+    }
+    // choosing an item closes its dropdown (let the activation happen first)
+    const item = e.target.closest('details.dropdown a, details.dropdown button');
+    if (item && !e.target.closest('summary')) {
+      const d = item.closest('details.dropdown');
+      if (d) setTimeout(() => (d.open = false), 80);
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    const open = document.querySelector('details.dropdown[open]');
+    if (!open) return;
+    open.open = false;
+    const summary = open.querySelector(':scope > summary');
+    if (summary) summary.focus();
+  });
+}
+
+/* ---------- Toolbars: roving tabindex for [role="toolbar"] ---------- */
+export function toolbars(root = document) {
+  root.querySelectorAll('[role="toolbar"]').forEach(bar => {
+    if (bar.dataset.vuiToolbarReady) return;
+    bar.dataset.vuiToolbarReady = '1';
+
+    const items = () =>
+      [...bar.querySelectorAll('button, a[href], select, [tabindex]')].filter(
+        el => !el.disabled && el.offsetParent !== null,
+      );
+
+    const setStop = active => items().forEach(el => (el.tabIndex = el === active ? 0 : -1));
+
+    const list = items();
+    if (list.length) setStop(list[0]);
+
+    bar.addEventListener('keydown', e => {
+      const vertical = bar.classList.contains('vertical');
+      const fwd = vertical ? 'ArrowDown' : 'ArrowRight';
+      const back = vertical ? 'ArrowUp' : 'ArrowLeft';
+      const cur = items();
+      const i = cur.indexOf(document.activeElement);
+      if (i === -1) return;
+      let n;
+      if (e.key === fwd) n = (i + 1) % cur.length;
+      else if (e.key === back) n = (i - 1 + cur.length) % cur.length;
+      else if (e.key === 'Home') n = 0;
+      else if (e.key === 'End') n = cur.length - 1;
+      else return;
+      e.preventDefault();
+      setStop(cur[n]);
+      cur[n].focus();
+    });
+
+    // keep the most recently focused control as the single tab stop
+    bar.addEventListener('focusin', e => {
+      if (items().includes(e.target)) setStop(e.target);
+    });
+  });
+}
+
+/* ---------- Toast / snackbar ---------- */
+function ensureToaster(placement) {
+  let region = document.querySelector('.vui.toaster, .vui .toaster');
+  if (!region) {
+    region = document.createElement('div');
+    region.className = 'vui toaster' + (placement ? ' ' + placement : '');
+    region.setAttribute('aria-live', 'polite');
+    region.setAttribute('aria-atomic', 'false');
+    document.body.appendChild(region);
+  }
+  return region;
+}
+
+export function toast(message, options = {}) {
+  if (!isBrowser) return null;
+  if (typeof options === 'string') options = {tone: options};
+  const {
+    tone = '',
+    title = '',
+    duration = 4000,
+    role = 'status',
+    dismissible = true,
+    placement = '',
+  } = options;
+
+  const region = ensureToaster(placement);
+  const el = document.createElement('div');
+  el.className = 'toast' + (tone ? ' ' + tone : '');
+  el.setAttribute('role', role === 'alert' ? 'alert' : 'status');
+
+  const body = document.createElement('div');
+  if (title) {
+    const strong = document.createElement('strong');
+    strong.textContent = title;
+    body.appendChild(strong);
+  }
+  body.appendChild(document.createTextNode(message == null ? '' : String(message)));
+  el.appendChild(body);
+
+  let timer;
+  const dismiss = () => {
+    if (el.dataset.leaving) return;
+    el.dataset.leaving = '1';
+    clearTimeout(timer);
+    el.classList.add('is-leaving');
+    const done = () => el.remove();
+    el.addEventListener('animationend', done, {once: true});
+    setTimeout(done, 400);
+  };
+
+  if (dismissible) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'icon small';
+    btn.setAttribute('aria-label', 'Dismiss');
+    btn.setAttribute('data-close', '');
+    btn.innerHTML = '<i>close</i>';
+    btn.addEventListener('click', dismiss);
+    el.appendChild(btn);
+  }
+
+  region.appendChild(el);
+  if (duration > 0) timer = setTimeout(dismiss, duration);
+
+  return {el, dismiss};
+}
+
 /* ---------- Init everything ---------- */
 export function init(root = document) {
   if (!isBrowser) return;
@@ -231,9 +435,11 @@ export function init(root = document) {
   clocks(root);
   drawers(root);
   tooltips(root);
+  menus(root);
+  toolbars(root);
 }
 
-const VantaUI = {init, tabs, setValue, drawers, tooltips};
+const VantaUI = {init, tabs, setValue, drawers, tooltips, menus, toolbars, toast};
 export default VantaUI;
 
 if (isBrowser) {

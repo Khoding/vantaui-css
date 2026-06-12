@@ -769,6 +769,215 @@
       ],
     },
 
+    /* ---------------- FEEDBACK ---------------- */
+    {
+      group: 'Feedback',
+      id: 'spinner',
+      title: 'Spinner',
+      blurb:
+        'The indeterminate companion to meters and gauges — a radar-style sweep for <code>working…</code> states. On a <code>&lt;span&gt;</code>; size with <code>small</code>·<code>large</code>, tone with a colour word, add a trailing label. Give it <code>role="status"</code> for assistive tech.',
+      examples: [
+        {
+          code: '<div class="vui-cluster" style="align-items:center;gap:24px">\n  <span class="spinner small"></span>\n  <span class="spinner"></span>\n  <span class="spinner large"></span>\n  <span class="spinner amber">Scanning sector…</span>\n</div>',
+        },
+      ],
+    },
+    {
+      group: 'Feedback',
+      id: 'skeleton',
+      title: 'Skeleton',
+      blurb:
+        'Dim, faintly-scanning placeholders for content that has not loaded. <code>.skeleton</code> is a block; <code>.text</code> a line (add <code>.last</code> for a short tail), <code>.circle</code> an avatar disc. Mark the group <code>aria-hidden="true"</code>.',
+      examples: [
+        {
+          code: '<article style="inline-size:300px" aria-hidden="true">\n  <div class="vui-row" style="gap:12px;align-items:center">\n    <span class="skeleton circle"></span>\n    <div style="flex:1">\n      <span class="skeleton text"></span>\n      <span class="skeleton text last" style="margin-block-start:8px"></span>\n    </div>\n  </div>\n  <div class="skeleton block" style="margin-block-start:14px"></div>\n</article>',
+        },
+      ],
+    },
+    {
+      group: 'Feedback',
+      id: 'empty',
+      title: 'Empty state',
+      blurb:
+        'A centred placeholder for <em>no data</em> regions, composed from bare elements: a leading <code>&lt;i&gt;</code> glyph, a heading, a <code>&lt;p&gt;</code>, and a trailing <code>&lt;menu&gt;</code> of actions.',
+      examples: [
+        {
+          code: '<div class="empty">\n  <i>satellite_alt</i>\n  <h3>No contacts</h3>\n  <p>No active signals in this sector. Widen the scan radius or check back after the next sweep.</p>\n  <menu>\n    <button type="submit">Rescan</button>\n    <button class="ghost">Filters</button>\n  </menu>\n</div>',
+        },
+      ],
+    },
+
+    /* ---------------- DATA DISPLAY ---------------- */
+    {
+      group: 'Data display',
+      id: 'avatar',
+      title: 'Avatar',
+      blurb:
+        'Operator identity on a <code>&lt;span&gt;</code> (initials) or <code>&lt;img&gt;</code>. Chamfered by default; <code>round</code> or <code>hex</code> to reshape, <code>small</code>·<code>large</code> to size. A status word (<code>online</code>·<code>busy</code>·<code>idle</code>·<code>offline</code>) lights a glowing frame; <code>.avatar-group</code> overlaps a stack.',
+      examples: [
+        {
+          code: '<div class="vui-cluster" style="align-items:center;gap:16px">\n  <span class="avatar">BW</span>\n  <span class="avatar round online">BW</span>\n  <span class="avatar hex idle">14</span>\n  <span class="avatar large busy">JG</span>\n</div>',
+        },
+        {
+          label: 'Overlapping stack — .avatar-group',
+          code: '<div class="avatar-group">\n  <span class="avatar">A1</span>\n  <span class="avatar">B2</span>\n  <span class="avatar">C3</span>\n  <span class="avatar">+5</span>\n</div>',
+        },
+      ],
+    },
+    {
+      group: 'Data display',
+      id: 'dl',
+      title: 'Description list',
+      blurb:
+        'A bare <code>&lt;dl&gt;</code> is a telemetry readout — each <code>&lt;dt&gt;</code> an uppercase label, each <code>&lt;dd&gt;</code> a mono value, divided by hairlines. Add <code>stacked</code> for label-over-value rows.',
+      examples: [
+        {
+          code: '<dl style="min-inline-size:280px">\n  <dt>Operator</dt>\n  <dd>B. Wayne</dd>\n  <dt>Clearance</dt>\n  <dd>OMEGA-7</dd>\n  <dt>Sector</dt>\n  <dd>14-C</dd>\n  <dt>Status</dt>\n  <dd>Active</dd>\n</dl>',
+        },
+        {
+          label: 'Stacked — .stacked',
+          code: '<dl class="stacked" style="min-inline-size:240px">\n  <dt>Last ping</dt>\n  <dd>02:18:04 UTC</dd>\n  <dt>Channel</dt>\n  <dd>Encrypted · AES-256</dd>\n</dl>',
+        },
+      ],
+    },
+    {
+      group: 'Data display',
+      id: 'timeline',
+      title: 'Timeline / log',
+      blurb:
+        'An <code>&lt;ol class="timeline"&gt;</code> is a vertical event feed: each <code>&lt;li&gt;</code> gets a glowing node on a rail. Lead with a <code>&lt;time&gt;</code> stamp; tone a node with a colour word. Add <code>log</code> for a dense monospaced feed.',
+      examples: [
+        {
+          code: '<ol class="timeline">\n  <li class="green"><time>02:14:06</time>Uplink established · sector 14-C</li>\n  <li><time>02:15:22</time>Patrol drone deployed</li>\n  <li class="amber"><time>02:16:40</time>Motion flagged — grid 22-A</li>\n  <li class="red"><time>02:18:03</time>Contact lost · rerouting</li>\n</ol>',
+        },
+        {
+          label: 'Dense feed — .log',
+          code: '<ol class="timeline log">\n  <li class="green"><time>02:14:06</time>› handshake OK</li>\n  <li><time>02:15:22</time>› drone.deploy(grid-22A)</li>\n  <li class="amber"><time>02:16:40</time>› WARN motion 22-A</li>\n  <li class="red"><time>02:18:03</time>› ERR uplink_timeout</li>\n</ol>',
+        },
+      ],
+    },
+    {
+      group: 'Data display',
+      id: 'rating',
+      title: 'Rating / signal',
+      blurb:
+        'A <code>&lt;fieldset class="rating"&gt;</code> of reversed radios reads as signal-strength / threat pips — click or arrow-key to set, fills up to the choice. Real radios, so it keyboards and posts like a radiogroup. Author them <strong>high → low</strong>.',
+      examples: [
+        {
+          code: '<fieldset class="rating amber">\n  <legend>Threat level</legend>\n  <label for="th1"><i>warning</i></label><input type="radio" name="threat" id="th1" value="1">\n  <label for="th2"><i>warning</i></label><input type="radio" name="threat" id="th2" value="2">\n  <label for="th3"><i>warning</i></label><input type="radio" name="threat" id="th3" value="3" checked>\n  <label for="th4"><i>warning</i></label><input type="radio" name="threat" id="th4" value="4">\n  <label for="th5"><i>warning</i></label><input type="radio" name="threat" id="th5" value="5">\n</fieldset>',
+        },
+      ],
+    },
+
+    /* ---------------- CONTROLS ---------------- */
+    {
+      group: 'Controls',
+      id: 'segmented',
+      title: 'Segmented control',
+      blurb:
+        'A single-select switch built from real radios — zero-JS, keyboards like a radiogroup. Each <code>&lt;label&gt;</code> wraps an <code>&lt;input type="radio"&gt;</code> (+ optional <code>&lt;i&gt;</code>); the checked segment lights up. Size with <code>small</code>.',
+      examples: [
+        {
+          code: '<div class="segmented" role="radiogroup" aria-label="View mode">\n  <label><input type="radio" name="view" checked><i>grid_view</i>Grid</label>\n  <label><input type="radio" name="view"><i>view_list</i>List</label>\n  <label><input type="radio" name="view"><i>map</i>Map</label>\n</div>',
+        },
+      ],
+    },
+    {
+      group: 'Controls',
+      id: 'pagination',
+      title: 'Pagination',
+      blurb:
+        'A <code>&lt;nav class="pagination"&gt;</code> wrapping a list of page links. Mark the current page <code>aria-current="page"</code>; a lone <code>&lt;i&gt;</code> is an icon prev/next, a bare <code>&lt;span&gt;</code> an ellipsis. Add <code>compact</code> for table footers.',
+      examples: [
+        {
+          code: '<nav class="pagination" aria-label="Pagination">\n  <a aria-label="Previous page" aria-disabled="true"><i>chevron_left</i></a>\n  <ul>\n    <li><a aria-current="page">1</a></li>\n    <li><a>2</a></li>\n    <li><a>3</a></li>\n    <li><span>…</span></li>\n    <li><a>12</a></li>\n  </ul>\n  <a aria-label="Next page"><i>chevron_right</i></a>\n</nav>',
+        },
+      ],
+    },
+    {
+      group: 'Controls',
+      id: 'stepper',
+      title: 'Stepper',
+      blurb:
+        'An <code>&lt;ol class="stepper"&gt;</code> of numbered steps joined by a connector. Mark the active step <code>aria-current="step"</code> and cleared steps <code>done</code> (a check replaces the number). Add <code>vertical</code> to stack.',
+      examples: [
+        {
+          code: '<ol class="stepper">\n  <li class="done">Recon</li>\n  <li class="done">Breach</li>\n  <li aria-current="step">Secure</li>\n  <li>Extract</li>\n</ol>',
+        },
+        {
+          label: 'Vertical — .vertical',
+          code: '<ol class="stepper vertical">\n  <li class="done">Recon</li>\n  <li class="done">Breach</li>\n  <li aria-current="step">Secure</li>\n  <li>Extract</li>\n</ol>',
+        },
+      ],
+    },
+
+    /* ---------------- INTERACTIVE ---------------- */
+    {
+      group: 'Interactive',
+      id: 'dropdown',
+      title: 'Dropdown menu',
+      blurb:
+        'Two ways in, one look. The robust path is <code>&lt;details class="dropdown"&gt;</code> — zero-JS, works everywhere; the <code>&lt;summary&gt;</code> is the trigger and the panel is a <code>&lt;menu&gt;</code>. The optional JS adds outside-click / <kbd>Esc</kbd> dismissal. For the modern top-layer path, point a <code>&lt;button popovertarget&gt;</code> at a <code>[popover].menu</code> (anchor-positioned where supported). Items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code>; <code>&lt;hr&gt;</code> divides, <code>.danger</code> tones an item.',
+      examples: [
+        {
+          code: '<details class="dropdown">\n  <summary>Actions <i>expand_more</i></summary>\n  <menu>\n    <a href="#"><i>visibility</i>Inspect</a>\n    <a href="#"><i>content_copy</i>Duplicate</a>\n    <a href="#"><i>download</i>Export intel</a>\n    <hr>\n    <button class="danger"><i>delete</i>Decommission</button>\n  </menu>\n</details>',
+        },
+      ],
+    },
+    {
+      group: 'Interactive',
+      id: 'toolbar',
+      title: 'Toolbar',
+      blurb:
+        'A <code>&lt;div role="toolbar"&gt;</code> is a control surface holding buttons, button groups (<code>&lt;menu class="group"&gt;</code>), an <code>&lt;hr&gt;</code> separator and a <code>.max</code> spacer. The optional JS gives it the roving-tabindex model — one tab stop, arrow keys move between controls. Add <code>vertical</code> to stand it on end.',
+      examples: [
+        {
+          code: '<div role="toolbar" aria-label="Map tools">\n  <button class="icon" aria-label="Pan"><i>pan_tool</i></button>\n  <button class="icon" aria-label="Measure"><i>straighten</i></button>\n  <button class="icon" aria-label="Mark"><i>add_location</i></button>\n  <hr>\n  <menu class="group">\n    <button class="small">Sat</button>\n    <button class="small">Thermal</button>\n    <button class="small">Night</button>\n  </menu>\n  <span class="max"></span>\n  <button class="icon" aria-label="Settings"><i>tune</i></button>\n</div>',
+        },
+      ],
+    },
+    {
+      group: 'Interactive',
+      id: 'tree',
+      title: 'Tree',
+      blurb:
+        'A <code>&lt;ul class="tree"&gt;</code> is a hierarchy. A branch is a <code>&lt;li&gt;&lt;details&gt;&lt;summary&gt;…&lt;/summary&gt;&lt;ul&gt;…&lt;/ul&gt;&lt;/details&gt;</code> — collapses with zero JS, animates open where supported. A leaf is a plain <code>&lt;li&gt;&lt;a&gt;</code>; lead any row with an <code>&lt;i&gt;</code> and mark the selected leaf <code>aria-current="page"</code>. Guide rails connect each level.',
+      examples: [
+        {
+          code: '<ul class="tree">\n  <li>\n    <details open>\n      <summary><i>folder_open</i>Sector 14-C</summary>\n      <ul>\n        <li><a href="#"><i>description</i>case-001.dat</a></li>\n        <li><a href="#" aria-current="page"><i>description</i>case-002.dat</a></li>\n        <li>\n          <details>\n            <summary><i>folder</i>archive</summary>\n            <ul>\n              <li><a href="#"><i>lock</i>sealed-07.dat</a></li>\n            </ul>\n          </details>\n        </li>\n      </ul>\n    </details>\n  </li>\n  <li><a href="#"><i>map</i>city-grid.geo</a></li>\n</ul>',
+        },
+        {
+          label: 'Upgrade to a full ARIA tree widget',
+          noDemo: true,
+          code: '<!-- The disclosure tree is accessible as nested groups. For a true\n     tree WIDGET (single tab stop, arrow-key walk, type-ahead) layer on\n     the ARIA roles + aria-expanded, then drive focus in JS. -->\n<ul class="tree" role="tree" aria-label="Files">\n  <li role="treeitem" aria-expanded="true">\n    <details open>\n      <summary><i>folder_open</i>Sector 14-C</summary>\n      <ul role="group">\n        <li role="treeitem"><a href="#"><i>description</i>case-001.dat</a></li>\n      </ul>\n    </details>\n  </li>\n</ul>\n\n// roving tabindex: one stop, ArrowUp/Down move, ArrowRight/Left\n// expand/collapse. Reuse the pattern from VantaUI.toolbars().',
+        },
+      ],
+    },
+    {
+      group: 'Interactive',
+      id: 'carousel',
+      title: 'Carousel',
+      blurb:
+        'A <code>&lt;div class="carousel"&gt;</code> is a horizontal scroll-snap filmstrip — its direct children are the slides. Swipe, scroll or keyboard by default; on browsers with CSS-carousel support it also grows a native row of snap-marker dots, no JS. Size slides with <code>--vui-slide</code>; <code>peek</code> reveals the next, <code>full</code> snaps one per view, <code>clean</code> hides the scrollbar.',
+      examples: [
+        {
+          code: '<div class="carousel" style="max-inline-size:560px">\n  <article><div class="stat signal"><b>14-C</b><span>Sector</span></div><p>Contested · 6 contacts</p></article>\n  <article><div class="stat amber"><b>22-A</b><span>Sector</span></div><p>Hostile · 12 contacts</p></article>\n  <article><div class="stat"><b>09-F</b><span>Sector</span></div><p>Secure · 0 contacts</p></article>\n  <article><div class="stat signal"><b>31-B</b><span>Sector</span></div><p>Contested · 3 contacts</p></article>\n</div>',
+        },
+      ],
+    },
+    {
+      group: 'Interactive',
+      id: 'toast',
+      title: 'Toast',
+      blurb:
+        'The floating cousin of the inline alert, raised imperatively: <code>VantaUI.toast(message, options)</code>. The helper owns a live-region <code>.toaster</code> (created on demand) and each toast reuses the alert rail + glyph, slides in, and auto-dismisses. Tone with <code>info</code> · <code>warn</code> · <code>threat</code> · <code>secure</code>; pass <code>title</code>, <code>duration</code>, or <code>role:"alert"</code> for urgent notices.',
+      examples: [
+        {
+          code: '<div class="vui-cluster">\n  <button type="submit" class="secure"\n    onclick="vui.toast(\'Uplink restored\', {tone:\'secure\', title:\'Comms\'})">Secure</button>\n  <button class="amber"\n    onclick="vui.toast(\'Motion flagged in grid 22-A\', {tone:\'warn\'})">Warn</button>\n  <button class="danger"\n    onclick="vui.toast(\'Contact lost — rerouting\', {tone:\'threat\', title:\'Alert\', role:\'alert\'})">Threat</button>\n  <button class="ghost"\n    onclick="vui.toast(\'Scan complete. 14 contacts logged.\')">Info</button>\n</div>',
+        },
+      ],
+    },
+
     /* ---------------- PATTERNS ---------------- */
     {
       group: 'Patterns',
@@ -866,7 +1075,7 @@
      for a given playground, it live-refreshes as you change controls.
      ============================================================ */
   var CodePanel = (function () {
-    var root, titleEl, codeEl, copyBtn, owner = null, codeFn = null, ready = false, hideTimer;
+    var root, titleEl, codeEl, copyBtn, owner = null, ready = false;
 
     function ensure() {
       if (ready) return;
@@ -876,9 +1085,6 @@
       codeEl = root.querySelector('.doc-codepanel__pre code');
       copyBtn = root.querySelector('.doc-codepanel__copy');
 
-      root.addEventListener('click', function (e) {
-        if (e.target.closest('[data-code-close]')) close();
-      });
       copyBtn.addEventListener('click', function () {
         var text = codeEl.textContent;
         if (navigator.clipboard) navigator.clipboard.writeText(text);
@@ -890,15 +1096,14 @@
           copyBtn.classList.remove('is-copied');
         }, 1200);
       });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && isOpen()) close();
+      // The native <dialog> + VantaUI.drawers() handle Esc, the backdrop and
+      // the [data-close] button; we just forget the owner once it's closed.
+      root.addEventListener('close', function () {
+        owner = null;
       });
       ready = true;
     }
 
-    function isOpen() {
-      return root && root.classList.contains('is-open');
-    }
     function fill(title, code) {
       titleEl.textContent = title;
       codeEl.innerHTML = highlight(code);
@@ -907,28 +1112,14 @@
       ensure();
       if (!root) return;
       owner = id;
-      codeFn = fn;
       fill(title, fn());
-      clearTimeout(hideTimer);
-      root.hidden = false;
-      // next frame so the slide-in transition runs from the closed state
-      requestAnimationFrame(function () {
-        root.classList.add('is-open');
-      });
+      if (!root.open) root.showModal();
     }
     function refresh(id, title, fn) {
-      if (isOpen() && owner === id) {
-        codeFn = fn;
-        fill(title, fn());
-      }
+      if (root && root.open && owner === id) fill(title, fn());
     }
     function close() {
-      if (!root) return;
-      root.classList.remove('is-open');
-      owner = null;
-      hideTimer = setTimeout(function () {
-        if (!isOpen()) root.hidden = true;
-      }, 320);
+      if (root && root.open) root.close();
     }
     return { open: open, refresh: refresh, close: close };
   })();
@@ -945,7 +1136,7 @@
   /* ---- a single playground control (select / toggle / range) ---- */
   function controlNode(ctrl, state, onChange) {
     if (ctrl.type === 'toggle') {
-      var lab = el('label', 'doc-ctrl doc-ctrl--toggle');
+      var lab = el('label');
       var box = document.createElement('input');
       box.type = 'checkbox';
       box.checked = !!state[ctrl.key];
@@ -958,9 +1149,9 @@
       return lab;
     }
     if (ctrl.type === 'range') {
-      var rlab = el('label', 'doc-ctrl');
+      var rlab = el('label');
       var span = el('span');
-      span.innerHTML = ctrl.label + ' <b>' + state[ctrl.key] + (ctrl.suffix || '') + '</b>';
+      span.innerHTML = ctrl.label + ' <b class="vui-text-cyan vui-font-hud">' + state[ctrl.key] + (ctrl.suffix || '') + '</b>';
       var val = span.querySelector('b');
       var range = document.createElement('input');
       range.type = 'range';
@@ -977,7 +1168,7 @@
       return rlab;
     }
     /* select */
-    var slab = el('label', 'doc-ctrl');
+    var slab = el('label');
     var s = el('span');
     s.textContent = ctrl.label;
     var sel = document.createElement('select');
@@ -1061,7 +1252,7 @@
       /* reference snippet — keep the code inline, it IS the content */
       wrap.innerHTML =
         '<div class="doc-code">' +
-        '<button class="doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
+        '<button class="icon small doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
         '<pre><code>' + highlight(ex.code) + '</code></pre>' +
         '</div>';
       return wrap;

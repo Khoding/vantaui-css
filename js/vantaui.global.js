@@ -181,14 +181,215 @@
     });
   }
 
+  function menus(root) {
+    root = root || document;
+    var hasPopover = typeof HTMLElement.prototype.showPopover === 'function';
+
+    if (hasPopover) {
+      var scope = root === document ? document : root;
+      scope.querySelectorAll('.vui details.dropdown').forEach(function (details) {
+        var panel = details.querySelector(':scope > menu, :scope > nav, :scope > ul');
+        var summary = details.querySelector(':scope > summary');
+        if (!panel || !summary || panel.hasAttribute('popover')) return;
+
+        panel.setAttribute('popover', 'auto');
+        panel.classList.add('menu');
+
+        var placePanel = function () {
+          var r = summary.getBoundingClientRect();
+          panel.style.top = (r.bottom + 6) + 'px';
+          if (details.classList.contains('right')) {
+            panel.style.left = '';
+            panel.style.right = (window.innerWidth - r.right) + 'px';
+          } else {
+            panel.style.right = '';
+            panel.style.left = r.left + 'px';
+          }
+        };
+
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (panel.matches(':popover-open')) {
+            panel.hidePopover();
+          } else {
+            panel.showPopover();
+            placePanel();
+          }
+        });
+
+        panel.addEventListener('toggle', function (e) {
+          if (e.newState === 'open') details.setAttribute('open', '');
+          else details.removeAttribute('open');
+        });
+      });
+    }
+
+    var targetEl = root.documentElement || root;
+    if (targetEl.dataset.vuiMenusReady) return;
+    targetEl.dataset.vuiMenusReady = '1';
+
+    document.addEventListener(
+      'toggle',
+      function (e) {
+        var d = e.target;
+        if (d.matches && d.matches('details.dropdown') && d.open) {
+          document.querySelectorAll('details.dropdown[open]').forEach(function (o) {
+            if (o !== d) o.open = false;
+          });
+        }
+      },
+      true,
+    );
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('details.dropdown')) {
+        document.querySelectorAll('details.dropdown[open]').forEach(function (o) {
+          o.open = false;
+        });
+        return;
+      }
+      var item = e.target.closest('details.dropdown a, details.dropdown button');
+      if (item && !e.target.closest('summary')) {
+        var d = item.closest('details.dropdown');
+        if (d) setTimeout(function () { d.open = false; }, 80);
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var open = document.querySelector('details.dropdown[open]');
+      if (!open) return;
+      open.open = false;
+      var summary = open.querySelector(':scope > summary');
+      if (summary) summary.focus();
+    });
+  }
+
+  function toolbars(root) {
+    root = root || document;
+    root.querySelectorAll('[role="toolbar"]').forEach(function (bar) {
+      if (bar.dataset.vuiToolbarReady) return;
+      bar.dataset.vuiToolbarReady = '1';
+
+      var items = function () {
+        return Array.prototype.slice
+          .call(bar.querySelectorAll('button, a[href], select, [tabindex]'))
+          .filter(function (el) {
+            return !el.disabled && el.offsetParent !== null;
+          });
+      };
+      var setStop = function (active) {
+        items().forEach(function (el) {
+          el.tabIndex = el === active ? 0 : -1;
+        });
+      };
+      var list = items();
+      if (list.length) setStop(list[0]);
+
+      bar.addEventListener('keydown', function (e) {
+        var vertical = bar.classList.contains('vertical');
+        var fwd = vertical ? 'ArrowDown' : 'ArrowRight';
+        var back = vertical ? 'ArrowUp' : 'ArrowLeft';
+        var cur = items();
+        var i = cur.indexOf(document.activeElement);
+        if (i === -1) return;
+        var n;
+        if (e.key === fwd) n = (i + 1) % cur.length;
+        else if (e.key === back) n = (i - 1 + cur.length) % cur.length;
+        else if (e.key === 'Home') n = 0;
+        else if (e.key === 'End') n = cur.length - 1;
+        else return;
+        e.preventDefault();
+        setStop(cur[n]);
+        cur[n].focus();
+      });
+      bar.addEventListener('focusin', function (e) {
+        if (items().indexOf(e.target) !== -1) setStop(e.target);
+      });
+    });
+  }
+
+  function ensureToaster(placement) {
+    var region = document.querySelector('.vui.toaster, .vui .toaster');
+    if (!region) {
+      region = document.createElement('div');
+      region.className = 'vui toaster' + (placement ? ' ' + placement : '');
+      region.setAttribute('aria-live', 'polite');
+      region.setAttribute('aria-atomic', 'false');
+      document.body.appendChild(region);
+    }
+    return region;
+  }
+
+  function toast(message, options) {
+    options = options || {};
+    if (typeof options === 'string') options = {tone: options};
+    var tone = options.tone || '';
+    var title = options.title || '';
+    var duration = options.duration == null ? 4000 : options.duration;
+    var role = options.role || 'status';
+    var dismissible = options.dismissible !== false;
+
+    var region = ensureToaster(options.placement || '');
+    var el = document.createElement('div');
+    el.className = 'toast' + (tone ? ' ' + tone : '');
+    el.setAttribute('role', role === 'alert' ? 'alert' : 'status');
+
+    var body = document.createElement('div');
+    if (title) {
+      var strong = document.createElement('strong');
+      strong.textContent = title;
+      body.appendChild(strong);
+    }
+    body.appendChild(document.createTextNode(message == null ? '' : String(message)));
+    el.appendChild(body);
+
+    var timer;
+    var dismiss = function () {
+      if (el.dataset.leaving) return;
+      el.dataset.leaving = '1';
+      clearTimeout(timer);
+      el.classList.add('is-leaving');
+      var done = function () { el.remove(); };
+      el.addEventListener('animationend', done, {once: true});
+      setTimeout(done, 400);
+    };
+
+    if (dismissible) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'icon small';
+      btn.setAttribute('aria-label', 'Dismiss');
+      btn.setAttribute('data-close', '');
+      btn.innerHTML = '<i>close</i>';
+      btn.addEventListener('click', dismiss);
+      el.appendChild(btn);
+    }
+
+    region.appendChild(el);
+    if (duration > 0) timer = setTimeout(dismiss, duration);
+
+    return {el: el, dismiss: dismiss};
+  }
+
   function init(root) {
     tabs(root);
     animateOnView(root);
     clocks(root);
     drawers(root);
+    menus(root);
+    toolbars(root);
   }
 
-  window.vui = {init: init, tabs: tabs, setValue: setValue, drawers: drawers};
+  window.vui = {
+    init: init,
+    tabs: tabs,
+    setValue: setValue,
+    drawers: drawers,
+    menus: menus,
+    toolbars: toolbars,
+    toast: toast,
+  };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {

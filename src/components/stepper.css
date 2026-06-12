@@ -1,0 +1,105 @@
+/* ============================================================
+   VantaUI — Stepper / wizard progress
+   An <ol class="stepper"> of steps with numbered nodes joined by a
+   connector. Mark the active step aria-current="step"; add .done
+   to a cleared step (a check replaces its number). Goes vertical
+   with .vertical. Static by design — wire the navigation yourself
+   (e.g. toggle .done / aria-current as the user advances).
+   ============================================================ */
+:where(.vui ol.stepper) {
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: vui-step;
+}
+:where(.vui ol.stepper > li) {
+  --_c: var(--hairline-strong);
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding-inline: 6px;
+  counter-increment: vui-step;
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  text-align: center;
+}
+/* numbered node */
+:where(.vui ol.stepper > li)::before {
+  content: counter(vui-step);
+  display: grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: var(--border-hair) solid var(--_c);
+  background-color: var(--surface-panel);
+  color: var(--text-secondary);
+  font-family: var(--font-hud);
+  font-size: var(--fs-sm);
+  clip-path: var(--clip-notch);
+  --bevel-sm: 6px;
+}
+/* connector to the next node (edge → edge) */
+:where(.vui ol.stepper > li:not(:last-child))::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 16px;
+  inset-inline-start: calc(50% + 18px);
+  inline-size: calc(100% - 36px);
+  block-size: var(--border-hair);
+  background-color: var(--hairline-strong);
+}
+
+/* cleared step */
+:where(.vui ol.stepper > li.done) {
+  --_c: var(--accent);
+  color: var(--text-secondary);
+}
+:where(.vui ol.stepper > li.done)::before {
+  content: '\2713'; /* ✓ — font-independent, no icon dependency */
+  border-color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+:where(.vui ol.stepper > li.done)::after {
+  background-color: var(--accent);
+}
+/* active step */
+:where(.vui ol.stepper > li[aria-current='step']) {
+  --_c: var(--accent);
+  color: var(--accent);
+}
+:where(.vui ol.stepper > li[aria-current='step'])::before {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: var(--glow-cyan-sm);
+}
+
+/* vertical layout */
+:where(.vui ol.stepper.vertical) {
+  flex-direction: column;
+  align-items: stretch;
+}
+:where(.vui ol.stepper.vertical > li) {
+  flex: none;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: 8px;
+  text-align: start;
+}
+:where(.vui ol.stepper.vertical > li:not(:last-child))::after {
+  inset-block-start: 32px;
+  inset-inline-start: 16px;
+  inline-size: var(--border-hair);
+  block-size: calc(100% - 24px);
+}
