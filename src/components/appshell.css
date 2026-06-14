@@ -40,7 +40,7 @@
     'foot';
   block-size: 100dvh;
   max-block-size: 100dvh;
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: var(--bg-base);
   color: var(--text-primary);
   font-family: var(--font-ui);

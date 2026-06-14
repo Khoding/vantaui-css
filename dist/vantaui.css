@@ -2547,7 +2547,7 @@
                    "foot"
                    / 1fr;
     display: grid;
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
   :where(.vui:has( > main) .vui:has( > main)) {
