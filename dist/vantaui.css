@@ -44,7 +44,7 @@
     --text-primary: var(--slate-50);
     --text-secondary: var(--slate-300);
     --text-muted: var(--slate-400);
-    --text-faint: var(--slate-600);
+    --text-faint: var(--slate-500);
     --text-signal: var(--cyan-400);
     --text-invert: var(--ink-900);
     --accent: var(--cyan-400);
@@ -70,10 +70,10 @@
     --fw-medium: 500;
     --fw-semibold: 600;
     --fw-bold: 700;
-    --fs-2xs: .625rem;
-    --fs-xs: .6875rem;
-    --fs-sm: .8125rem;
-    --fs-base: clamp(.9375rem, .9rem + .2vw, 1rem);
+    --fs-2xs: .6875rem;
+    --fs-xs: .75rem;
+    --fs-sm: .875rem;
+    --fs-base: clamp(.9375rem, .88rem + .28vw, 1.0625rem);
     --fs-md: clamp(1.0625rem, 1rem + .3vw, 1.15rem);
     --fs-lg: clamp(1.2rem, 1.05rem + .7vw, 1.3125rem);
     --fs-xl: clamp(1.4rem, 1.15rem + 1.2vw, 1.6875rem);
@@ -795,6 +795,9 @@
   }
 
   .vui-grid > * {
+    --col-s: initial;
+    --col-m: initial;
+    --col-l: initial;
     grid-column: span var(--col-s, 12);
   }
 
@@ -1200,7 +1203,7 @@
     display: flex;
   }
 
-  :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):has( > i:only-child)), :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):has( > svg:only-child)), :where(.vui button.icon) {
+  :where(.vui button.icon) {
     --bevel-sm: 6px;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: color-mix(in srgb, var(--cyan-400) 6%, transparent);
@@ -1211,7 +1214,7 @@
     padding: 0;
   }
 
-  :where(.vui button:not(nav button):has( > i:only-child):hover), :where(.vui button:not(nav button):has( > svg:only-child):hover), :where(.vui button.icon:hover) {
+  :where(.vui button.icon:hover) {
     border-color: var(--hairline-accent);
     background-color: color-mix(in srgb, var(--cyan-400) 14%, transparent);
     box-shadow: var(--glow-cyan-sm);
@@ -1476,7 +1479,7 @@
   }
 
   :where(.vui input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"])), :where(.vui textarea), :where(.vui select) {
-    --bevel-md: 8px;
+    --bevel-md: 6px;
     appearance: none;
     border: var(--border-hair) solid var(--hairline-strong);
     background-color: var(--surface-inset);
@@ -2681,6 +2684,7 @@
     background-color: var(--bg-void);
     color: var(--text-primary);
     font-family: var(--font-ui);
+    flex-wrap: wrap;
     padding-block: 0;
     display: flex;
     container: vui-header / inline-size;

@@ -31,11 +31,13 @@
   --fw-bold: 700;
 
   /* ---- Fluid type scale (1.250-ish, HUD-tuned).
-          Micro sizes fixed; body and up scale with the viewport. ---- */
-  --fs-2xs: 0.625rem; /* 10px */
-  --fs-xs: 0.6875rem; /* 11px */
-  --fs-sm: 0.8125rem; /* 13px */
-  --fs-base: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem); /* 15 → 16 */
+          Micro sizes fixed; body and up scale with the viewport.
+          Micro/small steps were a touch too small to read comfortably at the
+          HUD's thin weights, so the bottom of the scale was nudged up ~1px. ---- */
+  --fs-2xs: 0.6875rem; /* 11px */
+  --fs-xs: 0.75rem; /* 12px */
+  --fs-sm: 0.875rem; /* 14px */
+  --fs-base: clamp(0.9375rem, 0.88rem + 0.28vw, 1.0625rem); /* 15 → 17 */
   --fs-md: clamp(1.0625rem, 1rem + 0.3vw, 1.15rem); /* 17 → 18.4 */
   --fs-lg: clamp(1.2rem, 1.05rem + 0.7vw, 1.3125rem); /* 19.2 → 21 */
   --fs-xl: clamp(1.4rem, 1.15rem + 1.2vw, 1.6875rem); /* 22.4 → 27 */

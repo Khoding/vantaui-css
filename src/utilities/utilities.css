@@ -43,7 +43,12 @@
   clip-path: inset(50%);
 }
 
-/* ---------- Flex / grid behaviour ---------- */
+/* ---------- Flex / grid behaviour ----------
+   Atomic escape hatches for one-off layouts. For common patterns prefer the
+   named composites in layout.css (.vui-cluster/.vui-row/.vui-stack/.vui-between/
+   .vui-center/.vui-spacer) — e.g. .vui-between == .vui-flex + .vui-items-center
+   + .vui-justify-between. Both ship on purpose; the helper is the canonical
+   choice, these are here for the cases it doesn't express. */
 .vui-flex-row {
   flex-direction: row;
 }

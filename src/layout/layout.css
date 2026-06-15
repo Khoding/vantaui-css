@@ -27,7 +27,13 @@
   max-inline-size: none;
 }
 
-/* ---------- Flex helpers ---------- */
+/* ---------- Flex helpers ----------
+   These named composites (row/col/stack/cluster/center/between/spacer) are the
+   RECOMMENDED way to express common layout intent — reach for them first. The
+   atomic flex utilities in utilities.css (.vui-flex plus the .vui-items-,
+   .vui-justify-, and .vui-flex-1 family) are the escape hatch for one-off
+   arrangements a helper doesn't cover. They intentionally coexist; pick the
+   helper when one fits. */
 .vui-row {
   display: flex;
   flex-direction: row;
@@ -87,8 +93,18 @@
 }
 /* Direct children span full width by default (stack on mobile), then
    opt into smaller spans at each breakpoint. Span logic is centralised:
-   the s/m/l classes only set a custom property. */
+   the s/m/l classes only set a custom property.
+
+   Custom properties inherit, so without this reset a grid item that sets
+   --col-l (e.g. an <article class="vui-l4">) would leak that value into the
+   children of ANY grid nested inside it — making bare .vui-s12 rows silently
+   span 4 and pile onto one line (and overflow). Resetting the three span vars
+   to the guaranteed-invalid value on every grid item walls each grid off: a
+   child's span comes only from its own s/m/l classes, else the var() fallback. */
 .vui-grid > * {
+  --col-s: initial;
+  --col-m: initial;
+  --col-l: initial;
   grid-column: span var(--col-s, 12);
 }
 

@@ -78,7 +78,11 @@
   text-shadow: var(--text-glow-cyan);
 }
 
-/* ---------- Chamfered / notched plates ---------- */
+/* ---------- Chamfered / notched plates ----------
+   General-purpose: clip ANY element to the house shapes. Components that
+   already own a shape expose it as a one-word modifier instead (e.g. a panel's
+   `.notch`, `.glow`) — prefer the modifier on a component, these utilities
+   elsewhere. Same shape, different reach; they coexist by design. */
 .vui-chamfer {
   clip-path: var(--clip-chamfer);
 }

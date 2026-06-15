@@ -1,9 +1,9 @@
 /* ============================================================
    VantaUI — Buttons (semantic, zero-class)
    A bare <button> is a chamfered outline control. type="submit"
-   auto-promotes to the filled primary CTA. An icon-only button (a lone
-   <i>/<svg>) collapses to a square. Style a link/other element as a
-   button with the .button helper. Tune with one word:
+   auto-promotes to the filled primary CTA. An <i>/<svg> + text reads as
+   an icon + label button; add .icon for a square icon-only control. Style
+   a link/other element as a button with the .button helper. Tune with one word:
      fill · ghost · amber · danger · secure · small · large · block
 
    Buttons inside a <nav> are owned by header/navigation css (nav links,
@@ -139,9 +139,14 @@
   inline-size: 100%;
 }
 
-/* ---- Icon-only → square notched control (detected via :has) ---- */
-:where(.vui button:not([role='tab']):not([role='switch']):not(nav button):has(> i:only-child)),
-:where(.vui button:not([role='tab']):not([role='switch']):not(nav button):has(> svg:only-child)),
+/* ---- Icon-only → square notched control ----
+   Opt in explicitly with `.icon`. A lone <i> is deliberately NOT
+   auto-detected: `:only-child` ignores text nodes, so it can't tell
+   <button><i>x</i></button> from <button><i>x</i> Label</button> and would
+   clip the label. So an icon + text button just works out of the box
+   (the base button already lays out inline-flex with a gap):
+     <button><i>save</i> Save</button>   → icon + label
+     <button class="icon"><i>save</i></button> → 38px square */
 :where(.vui button.icon) {
   --bevel-sm: 6px;
   inline-size: 38px;
@@ -152,8 +157,6 @@
   color: var(--text-secondary);
   clip-path: var(--clip-notch);
 }
-:where(.vui button:not(nav button):has(> i:only-child):hover),
-:where(.vui button:not(nav button):has(> svg:only-child):hover),
 :where(.vui button.icon:hover) {
   border-color: var(--hairline-accent);
   background-color: color-mix(in srgb, var(--cyan-400) 14%, transparent);

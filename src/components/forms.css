@@ -19,7 +19,10 @@
 ),
 :where(.vui textarea),
 :where(.vui select) {
-  --bevel-md: 8px;
+  /* Gentle chamfer: the corner cut must stay smaller than the inline padding
+     or it clips the first/last glyph (worst on short, dense, or centred
+     numeric fields). Keep author padding at/above this value. */
+  --bevel-md: 6px;
   appearance: none;
   inline-size: 100%;
   min-inline-size: 0;

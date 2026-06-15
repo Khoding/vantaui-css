@@ -29,6 +29,7 @@
   display: flex;
   z-index: 20;
   container: vui-header / inline-size;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-5);
   min-block-size: 60px;

@@ -104,7 +104,7 @@
   --text-primary: var(--slate-50);
   --text-secondary: var(--slate-300);
   --text-muted: var(--slate-400);
-  --text-faint: var(--slate-600);
+  --text-faint: var(--slate-500);
   --text-signal: var(--cyan-400); /* glowing key data */
   --text-invert: var(--ink-900);
 
