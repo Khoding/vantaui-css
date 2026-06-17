@@ -40,7 +40,13 @@
     'foot';
   block-size: 100dvh;
   max-block-size: 100dvh;
-  overflow-x: hidden;
+  /* No `overflow-x: hidden` here. The frame doesn't need to clip the inline axis:
+     overflow is contained at the source — `min-inline-size: 0` on <main> (below)
+     confines a wide child to the stage, clipped house-shapes (panels, chamfer
+     utilities) keep their own inline overflow with `overflow-x: clip`, and text
+     wraps / tables + carousels self-scroll. A clip here would only hide genuine
+     misuse (and the bug from the dev) — see the <main> note and the project's
+     fail-visible philosophy. */
   background-color: var(--bg-base);
   color: var(--text-primary);
   font-family: var(--font-ui);

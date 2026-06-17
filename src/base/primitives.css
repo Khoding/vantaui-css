@@ -83,11 +83,17 @@
    already own a shape expose it as a one-word modifier instead (e.g. a panel's
    `.notch`, `.glow`) — prefer the modifier on a component, these utilities
    elsewhere. Same shape, different reach; they coexist by design. */
+/* Keep the scroll box in agreement with the clip shape (see the note on
+   <article> in panel.css): the paint is already clipped, so contain the inline
+   overflow too rather than let it silently scroll the stage. `clip` leaves the
+   block axis visible for downward popouts. */
 .vui-chamfer {
   clip-path: var(--clip-chamfer);
+  overflow-x: clip;
 }
 .vui-notch {
   clip-path: var(--clip-notch);
+  overflow-x: clip;
 }
 
 /* ---------- Corner-bracket frame: wrap content, get L-shaped ticks ---------- */

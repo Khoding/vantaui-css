@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VantaUI — overflow regression fixture</title>
+  <link rel="stylesheet" href="dist/vantaui.min.css" />
+  <style>
+    /* Make any horizontal page overflow obvious to a human eye too. */
+    html { scroll-behavior: auto; }
+  </style>
+</head>
+
+<!--
+  Controlled reproductions of the "blind clip" overflow bug: intrinsically wide
+  content (long unbroken tokens) sitting inside house-shape clip-path containers.
+  Before the fix these expand <main>'s scrollable width invisibly; after the fix
+  the audit (scripts/audit-overflow.mjs) must report zero offenders here.
+  Kept class-light and semantic on purpose — this is what a consumer writes.
+-->
+
+<body class="vui">
+  <header class="glow">
+    <a href="#">GOOD<b>// TIMES</b></a>
+  </header>
+
+  <nav class="left">
+    <a href="#" class="active"><i>group</i><span>People</span></a>
+    <a href="#"><i>import_export</i><span>Data</span></a>
+  </nav>
+
+  <main>
+    <div class="vui-container vui-stack">
+
+      <!-- CASE 1 — People page: long alias/name tokens as nowrap badges in a chamfered panel -->
+      <article class="flat">
+        <header><small class="vui-eyebrow">PEOPLE_DIRECTORY</small></header>
+        <article class="inset cyan" style="display:flex; justify-content:space-between; gap:var(--space-4);">
+          <div style="flex:1; min-inline-size:0;">
+            <div class="vui-cluster" style="gap:10px;">
+              <h3 style="margin:0;">Nathalie-Kocher-Supercalifragilisticexpialidocious-Identifier</h3>
+              <span class="badge cyan">12 NOTES</span>
+            </div>
+            <div class="vui-cluster" style="gap:6px; margin-block-start:10px;">
+              <span class="vui-font-mono vui-text-xs vui-text-secondary">ALIASES:</span>
+              <span class="badge neutral">Nathalie</span>
+              <span class="badge neutral">supercalifragilisticexpialidocious_extremely_long_alias_token_no_spaces_at_all</span>
+              <span class="badge neutral">N.Kocher</span>
+            </div>
+          </div>
+          <div class="vui-stack" style="gap:var(--space-2); align-items:flex-end; flex-shrink:0;">
+            <a class="button ghost small" href="#"><i>article</i> NOTES</a>
+          </div>
+        </article>
+      </article>
+
+      <!-- CASE 2 — Data page: long unbroken filename / id strings inside chamfered panels -->
+      <article class="notch raised">
+        <header><small class="vui-eyebrow">SELECTED_BACKUP_SPECIFICATIONS</small></header>
+        <article class="inset vui-font-mono">
+          <div>FILE_NAME: vivaldi_notes_backup_2026-06-17_full_database_export_with_a_very_long_unbroken_filename.json</div>
+          <div>HASH: 9f8c7b6a5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c</div>
+        </article>
+      </article>
+
+      <!-- CASE 3 — bare chamfer/notch utilities wrapping a long token -->
+      <div class="vui-chamfer" style="padding:var(--space-5); background:var(--surface-panel);">
+        antidisestablishmentarianism_pneumonoultramicroscopicsilicovolcanoconiosis_token
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="status">
+    <div>NOTES: <b>128</b></div>
+  </footer>
+</body>
+
+</html>

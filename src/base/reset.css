@@ -66,8 +66,12 @@ a:hover {
   margin-block: 0;
 }
 
-/* Keep long telemetry strings from overflowing their plates */
-:where(p, li, td, dd) {
+/* Keep long telemetry strings from overflowing their plates. Headings and the
+   definition-list terms are in here too: a single long token (an id, a URL, a
+   CamelCaseIdentifier) in an <h1> sitting in a bare container has no plate to
+   clip it, so without break-word it scrolls the stage. `break-word` only kicks
+   in when a word genuinely can't fit, so normal text is untouched. */
+:where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, th, td, caption, figcaption, blockquote) {
   overflow-wrap: break-word;
 }
 

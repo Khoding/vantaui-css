@@ -11,6 +11,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  /* A badge stays a single-line chip, but a long unbroken token (a person's
+     name, an id) must never blow past its flex row: it can shrink to nothing
+     (min-inline-size: 0) and is capped to its container, with the label itself
+     truncating. Without this the overflow is painted away by the notch clip-path
+     yet still drags a phantom scrollbar across the whole stage. */
+  min-inline-size: 0;
+  max-inline-size: 100%;
   padding-inline: 9px;
   padding-block: 4px;
   border: var(--border-hair) solid currentColor;
@@ -23,7 +30,15 @@
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   clip-path: var(--clip-notch);
+}
+/* Ellipsis needs a block formatting context on the text run; with an inline-flex
+   badge the truncation lands on the badge's own text. A leading icon/dot stays
+   put (flex: none) so only the label clips. */
+:where(.vui .badge > :where(i, svg)) {
+  flex: none;
 }
 
 /* leading live dot */

@@ -25,6 +25,14 @@
   box-shadow: var(--shadow-panel);
   color: var(--text-primary);
   clip-path: var(--clip-chamfer);
+  /* Keep the scroll box in agreement with the chamfer: the clip-path already
+     paints content to this shape, so a child wider than the plate is invisible
+     either way — but WITHOUT this it still expands the stage's scroll width and
+     drags a phantom horizontal scrollbar across the whole shell. `clip` (not
+     `hidden`) leaves the block axis `visible`, so a dropdown/menu opened inside
+     a panel still escapes downward. The panel's own rim glow (box-shadow) is
+     unaffected — overflow never clips an element's own decorations. */
+  overflow-x: clip;
 
   /* Header / footer span the full plate with a hairline divider */
   & > :where(header) {
