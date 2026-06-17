@@ -111,9 +111,14 @@
       margin-block: 0;
     }
 
-    /* This page's main IS the app-frame stage, so the framework would bleed any
-     .vui-prose past the (custom) stage padding. We pad the stage ourselves, so
-     keep doc prose within it. */
+    /* The prose grid's minmax(space-5, 1fr) side tracks are the sole source of
+     horizontal gutters here. Remove main's inline padding so the two don't
+     stack, and suppress the appshell bleed (which targets the same pair) since
+     the prose already sits flush against main's edges. */
+    .doc-main {
+      padding-inline: 0;
+    }
+
     .doc-main .vui-prose,
     .doc-main .vui-container {
       margin-inline: 0;
@@ -362,7 +367,7 @@
         CSS
       </span></a>
     <menu class="right">
-      <a class="badge cyan vui-from-s" href="https://github.com/Khoding/vantaui-css/releases">v1.5.0</a>
+      <a class="badge cyan vui-from-s" href="https://github.com/Khoding/vantaui-css/releases">v1.5.1</a>
       <a class="icon" href="https://github.com/Khoding/vantaui-css" aria-label="GitHub repository" target="_blank"
         rel="noopener"><i>code</i></a>
     </menu>
@@ -379,7 +384,7 @@
   <main class="doc-main">
     <header class="doc-hero">
       <div class="doc-hero__in">
-        <p class="vui-eyebrow">WayneTech Tactical Interface</p>
+        <p class="vui-eyebrow">KHODTECH Tactical Interface</p>
         <h1>Vanta<b>UI</b> CSS</h1>
         <p>A dark, angular, military-telemetry <strong>tactical HUD</strong> design system — as a semantic-first CSS
           library. Write proper HTML, get a HUD. Framework-agnostic, with first-class Vue &amp; Nuxt adapters and a
