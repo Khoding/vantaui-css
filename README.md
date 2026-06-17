@@ -20,30 +20,25 @@ VantaUI is built the BeerCSS way — **Settings · Elements · Helpers** — not
 
 ## Install
 
-**CDN — one line, nothing to build:**
-
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vui-css/dist/vantaui.min.css" />
-<!-- icons: Material Symbols, so <i>home</i> draws a glyph (also bundled via @import) -->
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block"
-/>
-```
-
-**npm:**
+**GitHub (current distribution — not yet on npm or any CDN):**
 
 ```bash
-npm i vui-css
+npm i github:Khoding/vantaui-css#v1.5.0
+```
+
+In `package.json` this appears as:
+
+```json
+"vantaui-css": "github:Khoding/vantaui-css#v1.5.0"
 ```
 
 ```js
-import 'vui-css'; // the stylesheet
-import {init} from 'vui-css/js'; // optional behaviours (tabs, animated meters, clock)
+import 'vantaui-css'; // the stylesheet
+import {init} from 'vantaui-css/js'; // optional behaviours (tabs, animated meters, clock)
 init();
 ```
 
-Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet — no extra step. The icon `<link>` above is just a faster path.
+Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet — no extra step. If your build tool (e.g. LightningCSS) chokes on the remote `@import`, vendor a copy with that line stripped and load the fonts separately.
 
 ---
 
@@ -183,7 +178,7 @@ Plus utilities: `vui-flex/grid-d`, `vui-gap-0…8`, `vui-p-/pi-/pb-`, `vui-m-/mb
 
 ```js
 import {createApp} from 'vue';
-import VantaUI from 'vui-css/vue'; // imports the CSS, adds `.vui` to <body>, boots behaviours
+import VantaUI from 'vantaui-css/vue'; // imports the CSS, adds `.vui` to <body>, boots behaviours
 import App from './App.vue';
 
 createApp(App).use(VantaUI).mount('#app');
@@ -195,7 +190,7 @@ createApp(App).use(VantaUI).mount('#app');
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['vui-css/nuxt'],
+  modules: ['vantaui-css/nuxt'],
   VantaUI: {behaviours: true, bodyClass: true}, // all default true
 });
 ```
