@@ -553,6 +553,10 @@ Every `src/` token ships twice (sRGB hex fallback, then `oklch()`). Palette mean
 
 Keyframes: `vui-flicker`, `vui-scan`, `vui-pulse`, `vui-sweep`. A global `prefers-reduced-motion: reduce` rule neutralizes ambient animation.
 
+## Fonts loading
+
+Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load via a remote `@import` in the stylesheet — convenience, not a requirement. **Self-hosting is recommended for production**: it drops the extra connection to `fonts.googleapis.com` and the render-blocking remote `@import`, and keeps requests off Google's CDN. If your framework has a font manager (e.g. [Nuxt Fonts](https://fonts.nuxt.com/) or [`@nuxtjs/google-fonts`](https://google-fonts.nuxtjs.org/)), let it download and self-host the four families and drop the remote `@import`. Without one: open each family on Google Fonts ([Chakra Petch](https://fonts.google.com/specimen/Chakra+Petch), [Rajdhani](https://fonts.google.com/specimen/Rajdhani), [Share Tech Mono](https://fonts.google.com/specimen/Share+Tech+Mono), [Material Symbols](https://fonts.google.com/icons)), download the files, serve them from your own origin, then vendor a copy of the VantaUI CSS with the font `@import` stripped and add local `@font-face` rules. Token family names (`--font-display` etc.) are unchanged, so nothing else moves. The first three are SIL OFL 1.1, Material Symbols is Apache-2.0 — when self-hosting the files, ship those license texts alongside them.
+
 ---
 
 # Optional JavaScript (`vantaui-css/js`)

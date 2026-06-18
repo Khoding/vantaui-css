@@ -40,6 +40,8 @@ init();
 
 Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet — no extra step. If your build tool (e.g. LightningCSS) chokes on the remote `@import`, vendor a copy with that line stripped and load the fonts separately.
 
+**For production, self-hosting the fonts is faster** (no extra connection to Google's CDN, no render-blocking remote `@import`). If your framework has a font manager (e.g. [Nuxt Fonts](https://fonts.nuxt.com/)), let it handle the four families. Otherwise grab them yourself from Google Fonts ([Chakra Petch](https://fonts.google.com/specimen/Chakra+Petch) · [Rajdhani](https://fonts.google.com/specimen/Rajdhani) · [Share Tech Mono](https://fonts.google.com/specimen/Share+Tech+Mono) · [Material Symbols](https://fonts.google.com/icons)), serve them from your own origin, and load local `@font-face` rules instead — the `--font-*` token names don't change. See [theming docs](docs/llms-theming.txt) for the step-by-step.
+
 ---
 
 ## The big idea
@@ -228,6 +230,17 @@ Source lives in `src/` (tokens → reset → base → layout → components → 
 
 Targets evergreen browsers from ~2023: requires `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, and `conic-gradient` — Chrome/Edge 111+, Firefox 121+, Safari 16.4+.
 
+## Acknowledgements
+
+VantaUI's authoring model — **Settings · Elements · Helpers**, semantic HTML styled inside a single root class, one short word to deviate — is directly inspired by **[BeerCSS](https://www.beercss.com)** (© Beer css!, MIT). VantaUI is an **independent reimplementation of that idea**: the concept and ergonomics are shared, but every selector, token, component, and the whole "tactical HUD" design language is original work written from scratch — no BeerCSS source code is copied or redistributed. Sincere thanks to the BeerCSS project for showing how good a semantic-first CSS framework can feel.
+
+Typefaces load from Google Fonts at runtime:
+
+- **Chakra Petch**, **Rajdhani**, **Share Tech Mono** — SIL Open Font License 1.1
+- **Material Symbols** — Apache License 2.0
+
+If you self-host these fonts instead of loading them remotely, ship their respective license texts alongside the font files.
+
 ## License
 
-MIT. An original interpretation of a tactical-HUD look — no trademarked marks or character likenesses. For fan / personal projects.
+[MIT](LICENSE) © Julien (Khodok). An original interpretation of a tactical-HUD look — no trademarked marks or character likenesses.

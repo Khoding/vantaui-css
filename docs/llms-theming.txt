@@ -64,3 +64,17 @@ Available animations: `vui-flicker`, `vui-scan`, `vui-pulse`, `vui-sweep` (and t
 ## Fonts loading
 
 Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet. The remote `@import` breaks some processors (e.g. LightningCSS in a host build) — if so, vendor a copy of the CSS with the font `@import` stripped and load the fonts separately.
+
+### Self-hosting the fonts (recommended for production)
+
+The bundled `@import` is convenience, not a requirement. Self-hosting the four families is faster (no extra connection to `fonts.googleapis.com`, no render-blocking remote `@import`, fonts cached on your own origin) and keeps visitor requests off Google's CDN.
+
+If your framework has a font manager, let it handle this — e.g. **[Nuxt Fonts](https://fonts.nuxt.com/)** or **[`@nuxtjs/google-fonts`](https://google-fonts.nuxtjs.org/)** will download, subset, and self-host automatically; just declare the four families and remove the remote `@import`.
+
+Without a font manager, do it by hand:
+
+1. Open each family on Google Fonts — [Chakra Petch](https://fonts.google.com/specimen/Chakra+Petch), [Rajdhani](https://fonts.google.com/specimen/Rajdhani), [Share Tech Mono](https://fonts.google.com/specimen/Share+Tech+Mono), [Material Symbols](https://fonts.google.com/icons) — and download the font files (or grab the `@font-face` CSS the Google Fonts URL returns).
+2. Drop the files under e.g. `/fonts/` in your app and serve them from your own origin.
+3. Strip the remote `@import` from the VantaUI stylesheet (vendor a copy with that line removed) and load your local `@font-face` declarations instead. The token family names (`--font-display` etc.) stay the same, so nothing else changes.
+
+Chakra Petch, Rajdhani, and Share Tech Mono are SIL Open Font License 1.1; Material Symbols is Apache License 2.0 — when you self-host the actual files, include those license texts alongside them.
