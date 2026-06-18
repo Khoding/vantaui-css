@@ -721,7 +721,6 @@
 
 @layer vui.layout {
   .vui-container {
-    inline-size: 100%;
     max-inline-size: var(--container-max);
     padding-inline: var(--container-pad);
     margin-inline: auto;
