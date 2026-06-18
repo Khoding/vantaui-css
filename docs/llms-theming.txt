@@ -1,0 +1,66 @@
+# VantaUI CSS — Theming & Design Tokens
+
+> Every design token (CSS custom property) and how to override it: the OKLCH color system, surfaces, text, status, spacing/geometry, typography, effects, motion, and keyframes. Authoritative as of v1.5.2.
+
+Prerequisites: tokens are defined on `:root`, so they're available everywhere — even outside `.vui` (outside `.vui`, ONLY tokens are defined; nothing else changes). Override any token anywhere; they cascade. See the hub: https://vantaui-css.khodok.com/llms.txt
+
+Related: type-role/utility classes that consume these tokens → https://vantaui-css.khodok.com/llms-layout.txt
+
+## How theming works
+
+VantaUI is token-driven. To re-skin it, override custom properties — you rarely touch component CSS. The single signal accent is electric cyan (`--accent`); change it and buttons, focus rings, glows, links, and active states all follow.
+
+```css
+:root {
+  --accent: oklch(84.6% 0.133 212.1); /* the signal color */
+  --bevel-md: 14px;                   /* deeper chamfers everywhere */
+  --container-max: 90rem;
+  --font-display: 'Chakra Petch', sans-serif;
+}
+```
+
+Scope a theme to a subtree by setting tokens on a container instead of `:root`. Panel color variants already remap their accent locally so nested buttons inherit the tone (see the data file).
+
+## Colors (OKLCH)
+
+Colors are OKLCH. Every token ships twice in `src/`: an sRGB hex/rgba fallback first, then the canonical `oklch()` value (engines without `oklch()` keep the fallback; they're the same color). The `dist` build targets OKLCH-capable engines. Palette meaning: cyan = you / system, amber = caution / hostile, red = threat, green = secure / online.
+
+- **Color scales**: `--ink-{1000,900,800,700,600,500,400}` (surfaces, cool near-black). `--cyan-{50,200,400,500,600,700}` + `--cyan-glow` (400 is the primary accent). `--amber-{300,400,500,600}` + `--amber-glow`. `--red-{400,500,600}` + `--red-glow`. `--green-{400,500,600}` + `--green-glow`. `--slate-{50,200,300,400,500,600}` (neutrals / text).
+- **Backgrounds**: `--bg-{void,base,raised}`, `--surface-{panel,panel-2,inset}`.
+- **Text**: `--text-{primary,secondary,muted,faint,signal,invert}`.
+- **Accent / brand**: `--accent` `--accent-strong` `--accent-dim` `--accent-glow`.
+- **Status**: `--status-{online,warn,threat,hostile}`.
+- **Lines / overlays**: `--hairline` `--hairline-strong` `--hairline-accent` `--divider` `--scrim`.
+
+## Spacing & geometry
+
+- **Spacing scale**: `--space-0…--space-13`. (0=0, 1=2px, 2=4px, 3=8px, 4=12px, 5=16px, 6=20px, 7=24px, 8=32px, then up to 13.)
+- **Radius**: `--radius-{none,xs,sm,pill}`.
+- **Bevel / chamfer cut sizes**: `--bevel-{sm,md,lg,xl}`. Ready clip-paths: `--clip-chamfer` (cut top-left + bottom-right) / `--clip-notch` (all four corners).
+- **Borders**: `--border-{hair,thin,bold}`.
+- **Container / frame**: `--container-max` `--container-narrow` `--container-pad` `--gutter` `--hud-edge` `--drawer-width`.
+- **Breakpoints**: `--bp-{s,m,l,xl}`.
+
+## Typography
+
+- **Families**: `--font-{display,ui,hud,mono,icon}` (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols).
+- **Weights**: `--fw-{light,regular,medium,semibold,bold}`.
+- **Fluid sizes**: `--fs-{2xs,xs,sm,base,md,lg,xl,2xl,3xl,4xl,5xl}` (base and up use `clamp()` — size with these, not media queries).
+- **Line height**: `--lh-{tight,snug,normal,mono}`. **Letter-spacing**: `--ls-{tight,normal,wide,wider,widest}`.
+- **Semantic sizes**: `--text-{display,title,heading,body,label,mono}-size`.
+
+## Effects & motion
+
+- **Glows**: `--glow-cyan-{sm,md,lg}` `--glow-{amber,red,green}-md`. **Text glow**: `--text-glow-{cyan,amber}`.
+- **Shadows**: `--shadow-{panel,raised,inset}`.
+- **Textures**: `--scanlines` `--grid-fine` (+`--grid-fine-size`) `--vignette`.
+- **Motion**: `--ease-{hud,snap,inout}` `--dur-{fast,base,slow,boot}`.
+- **Focus**: `--focus-ring`.
+
+## Keyframes
+
+Available animations: `vui-flicker`, `vui-scan`, `vui-pulse`, `vui-sweep` (and the component-internal `vui-skeleton`, `vui-toast-in`/`vui-toast-out`). A global `prefers-reduced-motion: reduce` rule neutralizes ambient animation.
+
+## Fonts loading
+
+Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet. The remote `@import` breaks some processors (e.g. LightningCSS in a host build) — if so, vendor a copy of the CSS with the font `@import` stripped and load the fonts separately.

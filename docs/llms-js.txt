@@ -1,0 +1,69 @@
+# VantaUI CSS — Optional JavaScript & Framework Integration
+
+> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with NO JavaScript — this only adds interactive niceties. Authoritative as of v1.5.2.
+
+Prerequisites: the CSS works on its own. Load the JS only for the interactions below. See the hub: https://vantaui-css.khodok.com/llms.txt
+
+Related: the markup these behaviours enhance → https://vantaui-css.khodok.com/llms-navigation.txt and https://vantaui-css.khodok.com/llms-feedback.txt
+
+## Install / boot
+
+```js
+import { init } from 'vantaui-css/js';
+init(); // boots tabs, animated meters, drawers, menus, toolbars, tooltips, clock
+```
+
+Works as an ES module or a plain `<script>` (then it's attached to `window.vui` and auto-inits on `DOMContentLoaded`). All functions take an optional `root` (default `document`) so you can re-run them on dynamically added markup. Most are idempotent (guarded against double-wiring).
+
+Package entry points (`exports`): `vantaui-css/js` (ES module), `vantaui-css/js/global` (plain-script global build).
+
+## API
+
+- **`init(root = document)`** — runs all behaviours below.
+- **`tabs(root)`** — wires `[role="tablist"]`/`[role="tab"]` (click + Left/Right arrow keys). Panels are matched by the tab's `aria-controls` or `data-tab` → element id; toggles the `hidden` attribute and sets `aria-selected`/`tabindex`. Activates the `aria-selected="true"` tab, else the first.
+- **`setValue(el, n, duration = 600)`** — animate a `.meter`/`.gauge`'s `--value` (ease-out cubic; respects `prefers-reduced-motion` and `duration <= 0`). Reads max from `--max` or `data-max` (default 100); clamps to `[0, max]`.
+- **Auto-animate (via `init`)** — elements with BOTH `data-value` and `data-animate` fill from 0 when scrolled into view (IntersectionObserver, threshold 0.4; falls back to immediate fill without IO).
+- **`drawers(root)`** — global click handling: `[data-open="id"]` opens a `<dialog id>` via `showModal()` (or toggles `.active`/`.open` on a non-dialog drawer); `[data-close]` closes the nearest dialog/drawer; backdrop click dismisses a dialog (opt out with `data-no-dismiss`); clicking a link inside a drawer auto-closes it.
+- **`menus(root)`** — `<details class="dropdown">` dropdowns. Where the Popover API exists, it upgrades the panel to the top layer (light-dismiss, Esc, exclusive open) and positions it below the trigger (add `class="right"` on the `<details>` to right-align). Without Popover it falls back to `<details>` toggle handling (one open at a time, outside-click + Esc to close, item-click closes).
+- **`toolbars(root)`** — roving tabindex for `[role="toolbar"]` (one tab stop, arrow keys move focus; `Home`/`End` jump). Add `class="vertical"` on the toolbar for Up/Down arrows.
+- **`tooltips(root)`** — shows `[data-tip="text"]` on hover/focus via a single body-level `#vui-tooltip` element (position:fixed, so it's never clipped by an ancestor `overflow`/`clip-path`). Marks wired elements `.vui-tip-js` so the CSS-only `::after` fallback is suppressed.
+- **Live clock (via `init`)** — writes `HH:MM:SS` into every `[data-vui-clock]` once per second.
+- **`toast(message, options?)`** — programmatic snackbar. Returns `{ el, dismiss }`. Auto-creates an `aria-live` `.toaster` region on first use.
+  - Options: `{ tone = '', title = '', duration = 4000, role = 'status', dismissible = true, placement = '' }`.
+  - `tone`: `'info' | 'warn' | 'threat' | 'secure'` (also accepts a bare string shorthand: `toast('msg', 'secure')`).
+  - `role`: `'status'` (polite) or `'alert'`.
+  - `placement`: applied to the toaster region (e.g. `'top'`, `'start'`, `'center'`).
+  - `duration: 0` keeps it until dismissed; `dismissible` adds a close button.
+
+```js
+import { init, toast, setValue } from 'vantaui-css/js';
+init();
+toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
+
+// animate a gauge to 92 over 800ms
+setValue(document.querySelector('.gauge'), 92, 800);
+```
+
+Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, toolbars, toast }`.
+
+## Vue 3
+
+```js
+import { createApp } from 'vue';
+import VantaUI from 'vantaui-css/vue'; // imports CSS, adds .vui to <body>, boots behaviours
+import App from './App.vue';
+createApp(App).use(VantaUI).mount('#app');
+// options: app.use(VantaUI, { behaviours: false, bodyClass: false, root: el })
+```
+
+## Nuxt 3
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['vantaui-css/nuxt'],
+  VantaUI: { behaviours: true, bodyClass: true }, // both default true
+});
+```
+
+The module registers the stylesheet, adds `.vui` to `<body>` app-wide, and (client-side) boots the optional behaviours.

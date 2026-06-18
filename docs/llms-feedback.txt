@@ -1,0 +1,101 @@
+# VantaUI CSS — Feedback & Status
+
+> Status and progress surfaces: inline alerts, toasts, meters & progress bars, radial gauges, spinners, skeletons, empty states, and the live status dot. Authoritative as of v1.5.2.
+
+Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words. A leading `<i>text</i>` is a Material Symbols icon. See the hub: https://vantaui-css.khodok.com/llms.txt
+
+Related: toast & meter/gauge JS animation → https://vantaui-css.khodok.com/llms-js.txt · color tokens → https://vantaui-css.khodok.com/llms-theming.txt
+
+## Alerts / notices (inline)
+
+`[role="status"]` reads as an info notice (cyan); `[role="alert"]` reads as a threat (red). Both get an accent rail + leading glyph. An optional `<strong>`/`<b>`/`<h*>` is the title. Re-tone with one word: `info` · `warn` (amber) · `threat` (red) · `secure` (green). Override the glyph with `--vui-alert-glyph`.
+
+```html
+<div role="status"><strong>Online</strong> Telemetry uplink restored.</div>
+<div role="status" class="warn"><strong>Caution</strong> Signal degraded to 40%.</div>
+<div role="alert"><strong>Threat</strong> Hostile contact, sector NE-04.</div>
+<div role="status" class="secure">Channel encrypted.</div>
+```
+
+## Toast / snackbar (transient)
+
+The floating cousin of the inline alert — raise them imperatively with the JS helper. `VantaUI.toast()` owns a `.toaster` live-region (created on demand) and each `.toast` reuses the alert rail + glyph and slides in. Tone with a word: `info` · `warn` · `threat` · `secure`. Place the region with `.start` / `.top` / `.center` on the toaster.
+
+```js
+import { toast } from 'vantaui-css/js';
+toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
+```
+
+See the JS file for the full `toast(message, options?)` signature. (You can also author a static `.toast` in markup using the same structure: a `<div>`/`<p>` body with an optional `<strong>` title and a trailing `[data-close]` button.)
+
+## Meters & progress
+
+- **Native `<progress>`** — a cyan telemetry bar (no classes).
+- **Native `<meter>`** — colors itself by the `low`/`high`/`optimum` thresholds (green optimum → amber suboptimum → red).
+- **`.meter` helper** — a labelled, accent-toned bar driven by a custom property, no JS: a `<span>`/`<label>` is the label, a `<b>` is the value readout (leave it empty and it renders `--value%` via a counter). Tone: `cyan` · `amber` · `red` · `green`. Add `.segmented` for tick marks. Set `--value` (and optionally `--max`, default 100).
+
+```html
+<meter min="0" max="100" low="30" high="70" optimum="100" value="86"></meter>
+<progress max="100" value="60"></progress>
+<div class="meter amber" style="--value:72"><span>Power</span><b></b></div>
+<div class="meter green segmented" style="--value:90"><span>Shields</span><b></b></div>
+```
+
+The JS `setValue()` helper animates `.meter`/`.gauge` `--value`; elements with `data-value` + `data-animate` fill from 0 when scrolled into view.
+
+## Radial gauge
+
+A `.gauge` is a 270° arc readout built in pure CSS (conic-gradient ring, glow follows the arc), driven entirely by `--value` — no SVG, no JS. Structure: a `<b>` (the number — leave empty to render `--value` via a counter), an optional `<small>` (unit), and a `<span>` (caption). Size with `small` · `large`; tone with `cyan` · `amber` · `red` · `green`. Set `--value` (and optionally `--max`).
+
+```html
+<div class="gauge" style="--value:72">
+  <b></b><small>%</small><span>Integrity</span>
+</div>
+<div class="gauge red large" style="--value:18"><b></b><small>%</small><span>Fuel</span></div>
+```
+
+## Spinner / activity indicator (indeterminate)
+
+The indeterminate companion to the meter/gauge family: a radar-style sweeping ring for "working…" states, on a `<span>`/`<div>`. Tone with one word (`cyan` · `amber` · `red` · `green`), size with `small` · `large`. A trailing text node becomes an inline label; add `.block` to center it in a panel/async region. Mark it for assistive tech with `role="status"` + `aria-label`.
+
+```html
+<span class="spinner" role="status" aria-label="Loading"></span>
+<span class="spinner cyan">Syncing…</span>
+<span class="spinner large block" role="status" aria-label="Loading"></span>
+```
+
+## Skeleton loading placeholders
+
+A `.skeleton` is a dim, faintly-scanning stand-in for content that hasn't loaded. Shape it: bare = a block, `.text` = a type line (stack several; add `.last` for a short final line), `.circle` = an avatar disc. Size a block with `.block` or an inline `block-size`. Decorative — mark the group `aria-hidden="true"`.
+
+```html
+<div aria-hidden="true">
+  <div class="skeleton circle"></div>
+  <div class="skeleton text"></div>
+  <div class="skeleton text"></div>
+  <div class="skeleton text last"></div>
+  <div class="skeleton block"></div>
+</div>
+```
+
+## Empty state
+
+A `.empty` is a centered placeholder for "no data" regions. Compose from bare elements: a leading `<i>` is the large glyph, a heading is the title, a `<p>` the message, and a trailing `<menu>`/`.actions` of buttons the actions.
+
+```html
+<div class="empty">
+  <i>satellite_alt</i>
+  <h3>No active units</h3>
+  <p>Deploy a unit to begin receiving telemetry.</p>
+  <menu><button type="submit">Deploy unit</button></menu>
+</div>
+```
+
+## Live status dot
+
+`vui-dot` is a pulsing status dot (default online/green). Variants: `vui-dot--warn` (amber) · `vui-dot--threat` (red) · `vui-dot--cyan` · `vui-dot--idle` (muted, no pulse).
+
+```html
+<span class="vui-dot"></span> Systems nominal
+<span class="vui-dot--threat"></span> Breach detected
+```

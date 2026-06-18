@@ -1,0 +1,173 @@
+# VantaUI CSS — Data Display
+
+> Surfaces and data components: panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, and segmented controls. Authoritative as of v1.5.2.
+
+Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words. A leading `<i>text</i>` is a Material Symbols icon. Mark the current/selected item `aria-current="page"` (alias `.active`). See the hub: https://vantaui-css.khodok.com/llms.txt
+
+Related: alerts/toasts/meters/spinners → https://vantaui-css.khodok.com/llms-feedback.txt · color tokens for tones → https://vantaui-css.khodok.com/llms-theming.txt
+
+## Panel (`<article>`)
+
+A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-spans edge-to-edge with a hairline divider (detected via `:has`). A trailing `<small>` in the header is a meta note.
+
+- **Depth**: `raised` · `inset` · `flat` (no shadow).
+- **Shape**: `notch` (all corners cut) · `brackets` (glowing corner ticks).
+- **Glow**: `glow` (accent rim glow).
+- **Color tint**: `cyan` · `amber` · `red` · `green` (admonition tones — tints the surface, recolors text, and sets the panel's accent so child buttons inherit the tone).
+- **Tint intensity** (with a color): `dim` · `vivid`.
+- Combine freely: `"amber glow"`, `"green raised"`, `"red notch brackets"`, `"cyan vivid"`.
+
+```html
+<article class="raised">
+  <header><small class="vui-eyebrow">Diagnostics</small> <small>v2.1</small></header>
+  <p>A chamfered panel; the header drew its own divider.</p>
+  <footer><button type="submit">Authorize</button></footer>
+</article>
+<article class="amber glow"><strong>Caution</strong><p>Tinted admonition panel.</p></article>
+```
+
+(Note: `<article class="vui-prose">` / `<article class="prose">` opts OUT of panel styling and into the long-form prose layout — see the layout file.)
+
+## Table
+
+A bare `<table>` is a mono data grid with eyebrow (uppercase) headers and cyan row hover. Use real `<thead>`/`<tbody>`/`<th>`/`<td>`. Wide tables self-scroll rather than breaking the layout.
+
+```html
+<table>
+  <thead><tr><th>Unit</th><th>Status</th><th>Integrity</th></tr></thead>
+  <tbody>
+    <tr><td>Raven-1</td><td>Online</td><td>98%</td></tr>
+  </tbody>
+</table>
+```
+
+## Description list (`<dl>`) — telemetry readout
+
+A bare `<dl>` is a label │ value grid: each `<dt>` an uppercase label, each `<dd>` a mono value, divided by hairlines. Add `.stacked` for label-over-value rows. Pairs naturally inside a panel.
+
+```html
+<dl>
+  <dt>Callsign</dt><dd>RAVEN-1</dd>
+  <dt>Sector</dt><dd>NE-04</dd>
+</dl>
+```
+
+## Key/value row & big stat
+
+- **`.kv`** — a single key/value readout row (label left, mono value right, hairline underneath). For ad-hoc rows where a full `<dl>` is overkill.
+- **`.stat`** — a big numeric readout: a `<b>` is the large HUD number, a `<span>` the uppercase caption. `.stat.signal` lights the number cyan; `.stat.amber` ambers it.
+
+```html
+<div class="kv"><span>Uplink</span><span>42 ms</span></div>
+<div class="stat signal"><b>98.6</b><span>Integrity</span></div>
+```
+
+## Badge / status tag
+
+A `.badge` is a status chip (on a `<span>`, `<a>`, `<mark>`…). Tone: `cyan` · `amber` · `red` · `green` · `neutral`. Add `.solid` to fill, `.dot` for a leading live dot. A leading `<i>`/`<svg>` sits inline; long labels truncate with an ellipsis.
+
+```html
+<span class="badge green dot">Online</span>
+<span class="badge red solid">Threat</span>
+<span class="badge amber"><i>warning</i> Degraded</span>
+```
+
+## Avatar
+
+Operator identity on a `<span>`/`<div>` (initials) or an `<img>`. A chamfered plate by default.
+
+- **Shape**: `round` (disc) · `hex` (six-sided).
+- **Size**: `small` · `large`.
+- **Status frame** (glowing): `online` · `busy` · `idle` · `offline`.
+- **`.avatar-group`** overlaps several into a stack.
+
+```html
+<span class="avatar online">R1</span>
+<img class="avatar round large" src="op.jpg" alt="Raven-1" />
+<div class="avatar-group">
+  <span class="avatar">R1</span><span class="avatar">B2</span><span class="avatar">+5</span>
+</div>
+```
+
+## Timeline / telemetry log
+
+An `<ol class="timeline">` is a vertical event feed: each `<li>` gets a glowing node on a connecting rail. Lead an `<li>` with a `<time>` for the stamp; tone a node with a color word on the `<li>` (`cyan` · `amber` · `red` · `green`). Add `.log` for a dense, monospaced feed.
+
+```html
+<ol class="timeline">
+  <li class="green"><time>09:42:01</time> Uplink established.</li>
+  <li class="amber"><time>09:43:18</time> Signal degraded.</li>
+  <li class="red"><time>09:45:00</time> Link lost.</li>
+</ol>
+```
+
+## Stepper / wizard progress
+
+An `<ol class="stepper">` of steps with numbered nodes joined by a connector. Mark the active step `aria-current="step"`; add `.done` to a cleared step (a check replaces its number). Add `.vertical` for a vertical layout. Static by design — wire navigation yourself (toggle `.done` / `aria-current` as the user advances).
+
+```html
+<ol class="stepper">
+  <li class="done">Authenticate</li>
+  <li aria-current="step">Configure</li>
+  <li>Deploy</li>
+</ol>
+```
+
+## Tree (disclosure hierarchy)
+
+A `<ul class="tree">` is a hierarchy of rows with guide rails. A branch is `<li><details><summary>…</summary><ul>…</ul></details></li>` — collapses with zero JS, animates open where `::details-content` is supported. A leaf is a plain `<li><a>` / `<li><span>`. Lead any row with an `<i>` (folder/file glyph); mark the selected leaf `aria-current="page"` (or `.active`).
+
+```html
+<ul class="tree">
+  <li><details open>
+    <summary><i>folder</i> Sector NE</summary>
+    <ul>
+      <li><a aria-current="page"><i>description</i> Brief.md</a></li>
+      <li><a><i>description</i> Map.png</a></li>
+    </ul>
+  </details></li>
+  <li><a><i>folder</i> Sector SW</a></li>
+</ul>
+```
+
+For a full ARIA tree widget (roving tabindex, type-ahead, arrow-key walk) add `role="tree"`/`role="treeitem"`/`role="group"` + `aria-expanded` and drive focus in JS.
+
+## Carousel (scroll-snap filmstrip)
+
+A `<div class="carousel">` is a horizontal scroll-snap track; its direct children are the slides. Swipe / scroll / keyboard by default. On browsers with CSS-carousel support (Chrome 135+) it also grows native prev/next arrows + a row of snap-marker dots — no JS, no library.
+
+- Size slides with `--vui-slide`.
+- `.peek` shows a sliver of the next slide · `.full` snaps one slide per view · `.clean` hides the scrollbar · `.no-arrows` / `.no-dots` drop either native control.
+
+```html
+<div class="carousel peek" style="--vui-slide: 18rem">
+  <article>Slide 1</article>
+  <article>Slide 2</article>
+  <article>Slide 3</article>
+</div>
+```
+
+## Rating / signal-strength
+
+A `<fieldset class="rating">` reads as a row of pips: click or arrow-key to set, fills up to the choice. Each pip is a `<label>` (glyph = a leading `<i>`) immediately followed by its radio `<input>`, authored LOW → HIGH (1…5). The `<legend>` is the group label. Tone with a color word (`cyan` · `amber` · `red` · `green`); add `.readonly` (or disable the inputs) for a static readout. Zero-JS — real radios, resolved with `:has()`.
+
+```html
+<fieldset class="rating amber">
+  <legend>Signal</legend>
+  <label><i>signal_cellular_alt</i></label><input type="radio" name="sig" value="1" />
+  <label><i>signal_cellular_alt</i></label><input type="radio" name="sig" value="2" checked />
+  <label><i>signal_cellular_alt</i></label><input type="radio" name="sig" value="3" />
+</fieldset>
+```
+
+## Segmented control
+
+A single-select switch: a `.segmented` track of `<label>` chips, each wrapping a radio `<input>` (+ optional leading `<i>`). The checked segment lights up. Zero-JS — real radios, so it posts and keyboards like a radiogroup. Size with `.small`, tone with a color word (`amber` · `red` · `green`; default cyan).
+
+```html
+<div class="segmented">
+  <label><input type="radio" name="view" checked /> Map</label>
+  <label><input type="radio" name="view" /> List</label>
+  <label><input type="radio" name="view" /> Grid</label>
+</div>
+```

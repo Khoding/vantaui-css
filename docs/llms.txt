@@ -2,30 +2,30 @@
 
 > A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first like BeerCSS: write proper, plain semantic HTML and get a tactical UI — no component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This file is the complete reference, written for LLMs. Reading it in full is enough to use the library correctly; you should not need the rest of the docs. Everything below is authoritative as of v1.5.0.
+This file is a HUB. It carries the always-needed core (rules, install, mental model) and then links to focused topic files so you only read what your task needs — a nav bar needs the navigation file, not the whole library. Fetch the topic files by URL as needed; or read the single-file complete reference: https://vantaui-css.khodok.com/llms-full.txt. Authoritative as of v1.5.2.
 
 ## Critical facts (read first)
 
-- **The package name is `vantaui-css`.** It is NOT published to npm or any CDN yet — install it directly from GitHub (`github:Khoding/vantaui-css#<tag>`). All import specifiers below therefore start with `vantaui-css`.
+- **The package name is `vantaui-css`.** It is NOT published to npm or any CDN yet — install it directly from GitHub (`github:Khoding/vantaui-css#<tag>`). All import specifiers start with `vantaui-css`.
 - **You opt in with one class: `class="vui"`** on a root element (usually `<body>`). Inside `.vui`, plain semantic HTML is styled automatically. Outside `.vui`, only design tokens are defined — nothing global changes.
 - **Semantic-first, almost zero classes.** A `<header>` containing a `<nav>` is an app bar. An `<article>` is a panel. A `<dialog class="left">` is a drawer. A `<meter>` is a telemetry bar. You rarely add classes; when you do, it is one short helper word (`glow`, `danger`, `small`, `left`).
 - **All VantaUI styles live in cascade layers and are authored at zero specificity (`:where()`).** Your app's own (unlayered) classes ALWAYS win. You never need `!important` to override VantaUI.
 - **`<i>text</i>` is an ICON** (Material Symbols ligature), e.g. `<i>home</i>` draws the home glyph. Use `<em>` for italic text, never `<i>`.
-- Two layout/utility prefixes exist: bare semantic styling needs **no prefix**; free-floating layout & utility helpers use the **`vui-`** prefix (collision-safe), e.g. `vui-grid`, `vui-p-4`, `vui-text-cyan`.
+- Two prefixes exist: bare semantic styling needs **no prefix**; free-floating layout & utility helpers use the **`vui-`** prefix (collision-safe), e.g. `vui-grid`, `vui-p-4`, `vui-text-cyan`.
 - CSS is fully usable with **no JavaScript**. JS only adds interactive niceties.
 
 ## Install
 
-Not on npm/CDN yet — install from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.5.0"`:
+Not on npm/CDN yet — install from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.5.2"`:
 
 ```bash
-npm i github:Khoding/vantaui-css#v1.5.0
+npm i github:Khoding/vantaui-css#v1.5.2
 ```
 
 ```js
-import 'vantaui-css';            // the stylesheet (package "main"/"style")
-import { init } from 'vantaui-css/js'; // optional behaviours
-init();                          // boots tabs, animated meters, drawers, menus, toolbars, tooltips, clock
+import 'vantaui-css';                     // the stylesheet (package "main"/"style")
+import { init } from 'vantaui-css/js';    // optional behaviours
+init();                                   // boots tabs, animated meters, drawers, menus, toolbars, tooltips, clock
 ```
 
 ```html
@@ -46,32 +46,6 @@ Package entry points (`exports`): `vantaui-css` (min css), `vantaui-css/css` (un
 
 State is semantic first: current nav item = `aria-current="page"` (or alias `class="active"`); invalid field = `aria-invalid`; a switch = `role="switch"`; alerts = `role="status"` / `role="alert"`; tabs = `role="tablist"`/`role="tab"`/`role="tabpanel"`.
 
-## What bare HTML gives you (inside `.vui`, no classes)
-
-| Write | You get |
-| --- | --- |
-| `<h1>`…`<h6>` | Uppercase, tracked display headings |
-| `<button>` | Chamfered outline button |
-| `<button type="submit">` | Filled primary button |
-| `<button><i>close</i></button>` | Square icon button (auto-detected via `:has`) |
-| `<i>home</i>` | The "home" Material Symbols glyph |
-| `<a> <code> <kbd> <mark> <pre> <blockquote> <hr>` | Tactical inline + block styles |
-| `<article>` | Chamfered panel; its `<header>`/`<footer>` auto-divide |
-| `<input> <textarea> <select>` | Inset terminal fields with focus glow |
-| `<input type="checkbox\|radio">` | Notched / round emissive marks |
-| `<input type="checkbox" role="switch">` | Angular toggle switch |
-| `<input type="range">` | Tactical slider |
-| `<meter>` / `<progress>` | Telemetry bars (`<meter>` colors by `low`/`high`/`optimum` thresholds) |
-| `<table>` | Mono data grid, eyebrow headers, cyan row hover |
-| `<details><summary>` | Zero-JS chamfered disclosure |
-| `<dialog>` | Chamfered modal with scrim backdrop |
-| `<header>` containing a `<nav>` | App bar; collapses to a burger when narrow |
-| `<footer>` | Footer bar (`status` / `columns` shapes) |
-| `<nav><ol>…</ol></nav>` | Breadcrumb (auto-detected, zero classes) |
-| `.vui` element directly holding a `<main>` | Full app frame (landmarks placed by element) |
-| `[role="status"]` / `[role="alert"]` | Info / threat alert with accent rail + glyph |
-| `[role="tablist"]` / `[role="tab"]` | Tab strip (state via the JS helper or your framework) |
-
 ### Minimal example
 
 ```html
@@ -79,7 +53,7 @@ State is semantic first: current nav item = `aria-current="page"` (or alias `cla
   <header>
     <a href="/">VANTA<b>UI</b></a>
     <nav><a aria-current="page">Overview</a><a>Units</a></nav>
-    <menu><button><i>settings</i></button></menu>
+    <menu><button class="icon"><i>settings</i></button></menu>
   </header>
   <main>
     <h1>Command Center</h1>
@@ -96,19 +70,7 @@ State is semantic first: current nav item = `aria-current="page"` (or alias `cla
 </body>
 ```
 
-## Helpers (deviate with one word — element-scoped, zero specificity)
-
-- **Buttons** (`<button>` or `.button` on a non-button): `fill` `ghost` · tones `amber` `danger` `secure` · sizes `small` `large` · `block` · `icon`.
-- **Panels** (`<article>`): `raised` `inset` `flat` `glow` `notch` `brackets`.
-- **Badges**: `.badge` + `cyan` `amber` `red` `green` `neutral` · `solid` · `dot`.
-- **Alerts** (`[role=status]`/`[role=alert]`): re-tone with `warn` `secure` `info`.
-- **Meters / gauges**: `.meter` / `.gauge` + `cyan` `amber` `red` `green` · `small` `large` · `segmented`.
-- **Header**: `glow` `center` `float` `bare` `tall` `sticky`. Inside it: an `<hr>` is a vertical divider; a `<menu>` is the trailing actions cluster.
-- **Footer**: `status` (telemetry strip) · `columns` (sitemap); `signal` on a status cell.
-- **Navigation**: `<nav class="left">` side rail · `<nav class="bottom">` phone command bar · `<dialog class="left|right">` off-canvas drawer.
-- **Alignment**: `max` (flex spacer) · `right` / `left` · `active` (alias of `aria-current="page"`).
-
-## App frame
+## App frame (quick reference)
 
 Any `.vui` element that directly holds a `<main>` becomes an app frame and places landmarks by element — no wrapper classes:
 
@@ -121,113 +83,18 @@ Any `.vui` element that directly holds a `<main>` becomes an app frame and place
 </body>
 ```
 
-On `<body>` it fills the viewport; nested in a sized box it fills the box. Drop the `<nav class="left">` for a stacked header/main/footer shell.
+On `<body>` it fills the viewport; nested in a sized box it fills the box. Full details (right rails, drawers, `header.inset`, `.vignette`) → the navigation file below.
 
-## Layout system (all `vui-` prefixed)
+## Reference (read only what your task needs)
 
-Breakpoints (mobile-first, min-width): **s** 36rem/576px · **m** 48rem/768px · **l** 64rem/1024px · **xl** 80rem/1280px.
-
-- **Container**: `vui-container` (+ `vui-container--narrow`, `vui-container--fluid`).
-- **Named flex composites (prefer these)**: `vui-row` (+ `vui-row--wrap`), `vui-col`, `vui-stack` (vertical rhythm), `vui-cluster` (wrapping horizontal), `vui-center` (grid place-items center), `vui-between` (space-between row), `vui-spacer` (flex:1).
-- **Auto grid**: `vui-autogrid` (+ `vui-autogrid--fit`); control min track with `style="--vui-min: 16rem"`.
-- **12-col grid**: `vui-grid` wrapping children with span classes `vui-s1…vui-s12`, `vui-m1…vui-m12`, `vui-l1…vui-l12`. Children stack full-width on mobile, opt into spans at each breakpoint up.
-- **Show/hide (hide-only, preserves natural display)**: `vui-until-{s,m,l,xl}` (hide at/above the bp), `vui-from-{s,m,l,xl}` (hide below the bp).
-
-```html
-<div class="vui-grid">
-  <article class="vui-s12 vui-m6 vui-l4">…</article>
-  <article class="vui-s12 vui-m6 vui-l8">…</article>
-</div>
-<div class="vui-autogrid" style="--vui-min: 16rem">… cards …</div>
-```
-
-## Utility classes (all `vui-` prefixed)
-
-Spacing index N → `--space-N`. Scale: 0=0, 1=2px, 2=4px, 3=8px, 4=12px, 5=16px, 6=20px, 7=24px, 8=32px (utilities cover 0–8; tokens go to 13).
-
-- **Display**: `vui-block` `vui-inline-block` `vui-inline` `vui-flex` `vui-inline-flex` `vui-grid-d` `vui-contents` `vui-hidden` `vui-sr-only`.
-- **Flex/grid behaviour**: `vui-flex-row` `vui-flex-col` `vui-wrap` `vui-nowrap` `vui-flex-1` `vui-grow` `vui-shrink-0`; `vui-items-{start,center,end,stretch,baseline}`; `vui-justify-{start,center,end,between,around}`.
-- **Position/sizing**: `vui-relative` `vui-absolute` `vui-sticky` `vui-w-full` `vui-h-full` `vui-w-auto` `vui-min-w-0` `vui-overflow-auto` `vui-overflow-hidden`.
-- **Gap**: `vui-gap-0…vui-gap-8`.
-- **Padding**: `vui-p-0…8` (all), `vui-pi-{0,2..8}` (inline), `vui-pb-{0,2..8}` (block).
-- **Margin**: `vui-m-{0,2,3,4,5,6}` `vui-m-auto` `vui-mi-auto`; `vui-mb-{0,2..8}` (block); `vui-mbe-{3,4,5,6}` (block-end only).
-- **Text**: `vui-text-{start,center,end}` `vui-upper` `vui-nowrap-text` `vui-truncate`.
-- **Font family**: `vui-font-{display,ui,hud,mono}`. **Weight**: `vui-fw-{light,regular,medium,semibold,bold}`. **Tracking**: `vui-tracked` `vui-tracked-wider` `vui-tracked-widest`. **Size**: `vui-text-{2xs,xs,sm,base,md,lg,xl,2xl,3xl,4xl,5xl}`.
-- **Text color**: `vui-text-{primary,secondary,muted,faint,cyan,amber,red,green}`.
-- **Surfaces**: `vui-bg-{void,base,raised,panel,inset}`.
-- **Borders**: `vui-border` `vui-border-strong` `vui-border-accent` `vui-border-0`.
-- **Glows**: `vui-glow-{cyan,amber,red,green}` `vui-text-glow`.
-- **Misc**: `vui-pointer` `vui-select-none` `vui-flicker` `vui-scanning`.
-
-## HUD primitives (base building blocks, `vui-` prefixed)
-
-- **Type roles**: `vui-display` `vui-title` `vui-heading` `vui-mono` `vui-readout` (big numeric) `vui-label` `vui-eyebrow` (renders a `//` prefix) `vui-signal` (glowing cyan text).
-- **Plates / frames**: `vui-chamfer` (cut top-left + bottom-right), `vui-notch` (all four corners cut), `vui-brackets` (L-shaped corner ticks), `vui-rule` (hairline with fading center).
-- **Textured backdrops**: `vui-bg-grid` `vui-bg-scan` `vui-bg-hud` (ink + grid + scanlines + vignette).
-- **Status dot**: `vui-dot` (default online/green, pulsing) + `vui-dot--warn` `vui-dot--threat` `vui-dot--cyan` `vui-dot--idle`.
-
-## Design tokens (CSS custom properties — override anywhere)
-
-Colors are OKLCH (the `dist` build targets OKLCH-capable engines; `src/` tokens also ship a hex fallback). The single signal accent is electric cyan.
-
-- **Color scales**: `--ink-{1000,900,800,700,600,500,400}` (surfaces), `--cyan-{50,200,400,500,600,700}` + `--cyan-glow`, `--amber-{300,400,500,600}` + `--amber-glow`, `--red-{400,500,600}` + `--red-glow`, `--green-{400,500,600}` + `--green-glow`, `--slate-{50,200,300,400,500,600}`.
-- **Semantic color aliases**: `--bg-{void,base,raised}`, `--surface-{panel,panel-2,inset}`, `--text-{primary,secondary,muted,faint,signal,invert}`, `--accent` `--accent-strong` `--accent-dim` `--accent-glow`, `--status-{online,warn,threat,hostile}`, `--hairline` `--hairline-strong` `--hairline-accent` `--divider` `--scrim`.
-- **Spacing/geometry**: `--space-0…--space-13`, `--radius-{none,xs,sm,pill}`, `--bevel-{sm,md,lg,xl}` (chamfer cut sizes), `--clip-chamfer` / `--clip-notch` (ready clip-paths), `--border-{hair,thin,bold}`, `--container-max` `--container-narrow` `--container-pad` `--gutter` `--hud-edge`, `--bp-{s,m,l,xl}`.
-- **Typography**: `--font-{display,ui,hud,mono,icon}`, `--fw-{light,regular,medium,semibold,bold}`, fluid sizes `--fs-{2xs,xs,sm,base,md,lg,xl,2xl,3xl,4xl,5xl}` (base and up use `clamp()`), `--lh-{tight,snug,normal,mono}`, `--ls-{tight,normal,wide,wider,widest}`, semantic `--text-{display,title,heading,body,label,mono}-size`.
-- **Effects**: `--glow-cyan-{sm,md,lg}` `--glow-{amber,red,green}-md`, `--shadow-{panel,raised,inset}`, `--text-glow-{cyan,amber}`, textures `--scanlines` `--grid-fine` (+`--grid-fine-size`) `--vignette`, motion `--ease-{hud,snap,inout}` `--dur-{fast,base,slow,boot}`, `--focus-ring`.
-
-```css
-:root {
-  --accent: oklch(84.6% 0.133 212.1); /* the signal color */
-  --bevel-md: 14px;                   /* deeper chamfers */
-  --container-max: 90rem;
-}
-```
-
-Keyframes available: `vui-flicker`, `vui-scan`, `vui-pulse`, `vui-sweep`. A global `prefers-reduced-motion: reduce` rule neutralizes ambient animation.
-
-## Optional JavaScript (`vantaui-css/js`)
-
-ES module exports (also attached to `window.vui` when loaded as a plain script; auto-inits on `DOMContentLoaded`):
-
-- `init(root = document)` — runs all behaviours below.
-- `tabs(root)` — wires `[role="tablist"]`/`[role="tab"]` (click + arrow keys). Panels are matched by the tab's `aria-controls` or `data-tab` → element id; hides/shows via the `hidden` attribute and sets `aria-selected`/`tabindex`.
-- `setValue(el, n, duration = 600)` — animate a `.vui-meter`/`.vui-gauge`'s `--value` (eased; respects reduced motion). Reads max from `--max` or `data-max` (default 100).
-- Auto-animate: elements with both `data-value` and `data-animate` fill from 0 when scrolled into view (IntersectionObserver).
-- `drawers(root)` — click handling for `[data-open="id"]` (opens a `<dialog id>` via `showModal()`, or toggles `.active`/`.open`), `[data-close]`, backdrop-click dismiss (opt out with `data-no-dismiss`), and auto-close on drawer link click.
-- `menus(root)` — `<details class="dropdown">` dropdowns; upgrades the panel to the Popover top layer when available (light-dismiss, Esc, exclusive open), positions below the trigger (add `class="right"` to right-align).
-- `toolbars(root)` — roving tabindex for `[role="toolbar"]` (add `class="vertical"` for up/down arrows).
-- `tooltips(root)` — shows `[data-tip="text"]` on hover/focus.
-- Live clock: writes `HH:MM:SS` into `[data-vui-clock]` every second.
-- `toast(message, options?)` — programmatic snackbar. Options: `{ tone, title, duration = 4000, role = 'status', dismissible = true, placement }`. `tone` may be passed as a string shorthand. Returns `{ el, dismiss }`. Auto-creates an `aria-live` toaster region.
-
-```js
-import { init, toast, setValue } from 'vantaui-css/js';
-init();
-toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
-```
-
-## Vue 3
-
-```js
-import { createApp } from 'vue';
-import VantaUI from 'vantaui-css/vue'; // imports CSS, adds .vui to <body>, boots behaviours
-import App from './App.vue';
-createApp(App).use(VantaUI).mount('#app');
-// options: app.use(VantaUI, { behaviours: false, bodyClass: false, root: el })
-```
-
-## Nuxt 3
-
-```ts
-// nuxt.config.ts
-export default defineNuxtConfig({
-  modules: ['vantaui-css/nuxt'],
-  VantaUI: { behaviours: true, bodyClass: true }, // both default true
-});
-```
-
-The module registers the stylesheet, adds `.vui` to `<body>` app-wide, and (client-side) boots the optional behaviours.
+- [Layout & utilities](https://vantaui-css.khodok.com/llms-layout.txt): breakpoints, container, flex composites, auto + 12-col grid, show/hide, the full utility-class catalogue, HUD primitives (type roles, plates, brackets, backdrops, status dot), prose layout.
+- [Navigation & chrome](https://vantaui-css.khodok.com/llms-navigation.txt): app frame, header/app bar, footer, side rails, drawers (off-canvas + persistent), breadcrumbs, dropdown menus, tabs, pagination, toolbars.
+- [Forms & buttons](https://vantaui-css.khodok.com/llms-forms.txt): buttons (tones/sizes/icon/groups), text fields, textarea, select, checkbox/radio, switch, range, field wrappers, validation.
+- [Data display](https://vantaui-css.khodok.com/llms-data.txt): panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, segmented controls.
+- [Feedback & status](https://vantaui-css.khodok.com/llms-feedback.txt): inline alerts, toasts, meters & progress, radial gauges, spinners, skeletons, empty states, status dot.
+- [Theming & tokens](https://vantaui-css.khodok.com/llms-theming.txt): the OKLCH color system and every design token, plus how to override them.
+- [JavaScript & frameworks](https://vantaui-css.khodok.com/llms-js.txt): the optional behaviours module (tabs, meters, drawers, menus, toolbars, tooltips, clock, toast) and the Vue plugin + Nuxt module.
+- [Everything in one file](https://vantaui-css.khodok.com/llms-full.txt): the complete reference, no link-following needed.
 
 ## Common mistakes to avoid
 
@@ -240,7 +107,7 @@ The module registers the stylesheet, adds `.vui` to `<body>` app-wide, and (clie
 
 ## Browser support
 
-Evergreen browsers from ~2023. Requires `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, `conic-gradient`: Chrome/Edge 111+, Firefox 121+, Safari 16.4+.
+Evergreen browsers from ~2023. Requires `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, `conic-gradient`: Chrome/Edge 111+, Firefox 121+, Safari 16.4+. Some progressive enhancements (animated `<details>`, native CSS carousel controls, anchor-positioned popovers) light up on newer engines and degrade gracefully.
 
 ## License
 

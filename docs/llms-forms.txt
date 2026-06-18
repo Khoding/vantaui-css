@@ -1,0 +1,92 @@
+# VantaUI CSS — Forms & Buttons
+
+> Buttons (tones, sizes, icon, groups) and form controls: text fields, textarea, select, checkbox/radio, switch, range slider, field wrappers, and validation. Native semantic elements styled directly — almost zero classes. Authoritative as of v1.5.2.
+
+Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words (zero specificity). A leading `<i>text</i>` is a Material Symbols icon — use `<em>` for italics. See the hub: https://vantaui-css.khodok.com/llms.txt
+
+Related: segmented control & rating inputs → https://vantaui-css.khodok.com/llms-data.txt · color/spacing tokens → https://vantaui-css.khodok.com/llms-theming.txt
+
+## Buttons
+
+A bare `<button>` is a chamfered outline control. `type="submit"` auto-promotes to the filled primary CTA. An `<i>`/`<svg>` + text reads as icon + label. Style a link or other element as a button with the `.button` helper. (Buttons inside a `<nav>` are owned by the header/navigation styles, not these.)
+
+Tune with one word:
+- **Variant**: `fill` (filled primary — submit buttons get this automatically) · `ghost` (bare).
+- **Tones**: `amber` · `danger` (red) · `secure` (green). Default tone is cyan. Each tone just remaps the accent variables; hover/fill follow.
+- **Sizes**: `small` · `large`.
+- **Width**: `block` (full-width).
+- **Icon-only**: `.icon` → a 38px square notched control (also `icon small` 30px, `icon large` 46px). An icon-only button needs `.icon` explicitly; an icon + text button just works.
+- `aria-pressed="true"` lights an icon button as a toggle. `disabled` dims + desaturates.
+
+```html
+<button>Override</button>
+<button type="submit">Authorize</button>     <!-- filled primary -->
+<button class="danger">Abort</button>
+<button class="secure fill">Confirm</button>
+<button><i>save</i> Save</button>             <!-- icon + label -->
+<button class="icon"><i>close</i></button>    <!-- square icon-only -->
+<a class="button ghost" href="/docs">Docs</a> <!-- a link styled as a button -->
+```
+
+### Button group
+
+A `<menu class="group">` (or any `.group`) is an inline-flex cluster of buttons with consistent gaps; it strips list styling so a `<menu>`/`<ul>` works directly.
+
+```html
+<menu class="group">
+  <button class="small">Day</button>
+  <button class="small">Week</button>
+  <button class="small">Month</button>
+</menu>
+```
+
+(For a single-select switch use the segmented control; for a multi-action toolbar use `role="toolbar"` — both in the navigation/data files.)
+
+## Text-like fields
+
+`<input>` (text/email/password/number/search/url/etc.), `<textarea>`, and `<select>` become inset terminal fields (mono font, gentle chamfer, focus glow). They size to `inline-size: 100%` of their container. `<textarea>` resizes vertically. `<select>` gets a custom cyan chevron.
+
+- Focus: accent border + glow. Disabled: dimmed, `not-allowed`.
+- Validation: set `aria-invalid="true"` for a red border + red glow.
+- Keep author inline padding ≥ the chamfer cut (the default is fine) so the cut never clips the first/last glyph.
+
+## Field wrapper (`<label>` around a control)
+
+A `<label>` wrapping a text control lays out as a stacked field: a leading `<span>` is the uppercase label, the control sits below, and a trailing `<small>` is the hint (`<small class="error">` turns it red). A `<label>` wrapping a checkbox/radio lays out as an inline row instead.
+
+```html
+<label>
+  <span>Callsign</span>
+  <input type="text" placeholder="e.g. RAVEN-1" />
+  <small>Letters, numbers, dash.</small>
+</label>
+
+<label>
+  <span>Clearance</span>
+  <select><option>Operator</option><option>Command</option></select>
+</label>
+
+<label><input type="checkbox" /> Enable telemetry</label>   <!-- inline row -->
+```
+
+## Checkbox & radio
+
+`<input type="checkbox">` draws a notched emissive mark; `<input type="radio">` a round one. Both render on the element (no extra markup), light cyan when `:checked`, and show a focus ring.
+
+## Switch
+
+`<input type="checkbox" role="switch">` becomes an angular toggle (the knob slides and lights cyan when checked).
+
+```html
+<label><input type="checkbox" role="switch" checked /> Active camo</label>
+```
+
+## Range slider
+
+`<input type="range">` is a tactical slider with a chamfered cyan thumb (styled cross-browser via the WebKit/Moz pseudo-elements).
+
+```html
+<label><span>Output</span><input type="range" min="0" max="100" value="72" /></label>
+```
+
+Any native control VantaUI doesn't fully restyle inherits `accent-color: var(--accent)`.

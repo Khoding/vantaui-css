@@ -12,9 +12,9 @@
    ============================================================ */
 
 import {bundle} from 'lightningcss';
-import {mkdirSync, writeFileSync, readFileSync, rmSync, copyFileSync} from 'node:fs';
+import {mkdirSync, writeFileSync, readFileSync, rmSync, copyFileSync, readdirSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
-import {dirname, resolve} from 'node:path';
+import {dirname, resolve, basename} from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
@@ -22,7 +22,89 @@ const srcDir = resolve(root, 'src');
 const entry = resolve(srcDir, 'vantaui.css');
 const tmpEntry = resolve(srcDir, '__vantaui_build_entry.css');
 const outDir = resolve(root, 'dist');
-const docsDistDir = resolve(root, 'docs', 'dist');
+const docsDir = resolve(root, 'docs');
+const docsDistDir = resolve(docsDir, 'dist');
+
+// ============================================================
+// Docs coverage gate — every shipping component must be documented.
+//
+// The LLM docs in docs/ are hand-curated prose and silently drift from src/
+// (a third of the library once shipped undocumented). This makes that a build
+// error: each src/components/*.css must (a) have an entry here mapping it to
+// the term(s) the docs use for it — a filename ≠ the user-facing name (e.g.
+// `appshell` → "App frame") — and (b) be findable by at least one of those
+// terms in BOTH a topic file (docs/llms-<topic>.txt) and the single-file
+// docs/llms-full.txt. Adding a new component with no entry here fails the
+// build, forcing you to document it. See CLAUDE.md.
+// ============================================================
+const DOC_TERMS = {
+  alert: ['alert', '[role="status"]'],
+  appshell: ['app frame'],
+  avatar: ['avatar'],
+  badge: ['badge'],
+  button: ['button'],
+  carousel: ['carousel'],
+  'empty-state': ['empty state', '.empty'],
+  footer: ['footer'],
+  forms: ['field', '<input>', 'checkbox'],
+  gauge: ['gauge'],
+  header: ['app bar', 'header'],
+  lists: ['description list', '<dl>'],
+  menu: ['dropdown', 'action menu'],
+  meter: ['meter'],
+  navigation: ['side rail', 'breadcrumb', 'drawer'],
+  overlay: ['modal', 'key/value', 'divider', 'tooltip'],
+  pagination: ['pagination'],
+  panel: ['panel'],
+  rating: ['rating'],
+  segmented: ['segmented'],
+  skeleton: ['skeleton'],
+  spinner: ['spinner'],
+  stepper: ['stepper'],
+  table: ['table'],
+  tabs: ['tab strip', 'role="tab"'],
+  timeline: ['timeline'],
+  toast: ['toast'],
+  toolbar: ['toolbar'],
+  tree: ['tree'],
+};
+
+function checkDocsCoverage() {
+  const components = readdirSync(resolve(srcDir, 'components'))
+    .filter(f => f.endsWith('.css'))
+    .map(f => basename(f, '.css'));
+
+  const docFiles = readdirSync(docsDir).filter(f => /^llms.*\.txt$/.test(f));
+  const read = f => readFileSync(resolve(docsDir, f), 'utf8').toLowerCase();
+  const topicText = docFiles
+    .filter(f => f !== 'llms.txt' && f !== 'llms-full.txt')
+    .map(read)
+    .join('\n');
+  const fullText = docFiles.includes('llms-full.txt') ? read('llms-full.txt') : '';
+
+  const hit = (terms, hay) => terms.some(t => hay.includes(t.toLowerCase()));
+  const problems = [];
+
+  for (const name of components) {
+    const terms = DOC_TERMS[name];
+    if (!terms) {
+      problems.push(`• "${name}" (src/components/${name}.css) has no DOC_TERMS entry — document it in docs/llms-*.txt, then add a mapping in scripts/build.mjs.`);
+      continue;
+    }
+    if (!hit(terms, topicText)) problems.push(`• "${name}" not found in any topic file (docs/llms-<topic>.txt). Expected one of: ${terms.join(', ')}`);
+    if (fullText && !hit(terms, fullText)) problems.push(`• "${name}" missing from docs/llms-full.txt. Expected one of: ${terms.join(', ')}`);
+  }
+
+  // A stale mapping (term for a component that no longer exists) is also a smell.
+  for (const name of Object.keys(DOC_TERMS)) {
+    if (!components.includes(name)) problems.push(`• DOC_TERMS has "${name}" but src/components/${name}.css does not exist — remove the stale mapping.`);
+  }
+
+  if (problems.length) {
+    throw new Error(`Docs coverage check failed (${problems.length}):\n${problems.join('\n')}`);
+  }
+  console.log(`✔ docs coverage   ${components.length} components documented`);
+}
 
 // LightningCSS targets (major << 16 | minor << 8). This is the real feature
 // floor for the library: oklch, color-mix, :has(), cascade layers, mask and
@@ -71,6 +153,7 @@ function build({minify, outFile}) {
 }
 
 console.log('VantaUI — building dist/ …');
+checkDocsCoverage();
 try {
   build({minify: false, outFile: 'vantaui.css'});
   build({minify: true, outFile: 'vantaui.min.css'});

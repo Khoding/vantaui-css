@@ -1,0 +1,156 @@
+# VantaUI CSS — Navigation & Chrome
+
+> The app frame and every navigation surface: header/app bar, footer, side rails, off-canvas + persistent drawers, breadcrumbs, dropdown menus, tabs, pagination, and toolbars. Mostly zero-class semantic HTML; a few interactive pieces want the optional JS. Authoritative as of v1.5.2.
+
+Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix. State is semantic-first: current item = `aria-current="page"` (alias `class="active"`). A leading `<i>text</i>` is a Material Symbols icon. See the hub: https://vantaui-css.khodok.com/llms.txt
+
+Related: interactive behaviours (drawers/menus/tabs/toolbars JS) → https://vantaui-css.khodok.com/llms-js.txt · layout utilities → https://vantaui-css.khodok.com/llms-layout.txt
+
+## App frame ("write the landmarks, get the layout")
+
+Any `.vui` element that DIRECTLY holds a `<main>` becomes an app frame and places landmarks by element — no wrapper classes. On `<body>` it fills the viewport (`100dvh`); nested in a sized box it fills the box.
+
+```html
+<body class="vui">
+  <header>…</header>            <!-- top bar -->
+  <nav class="left">…</nav>      <!-- side rail: vertical ≥768px, bottom bar below -->
+  <main>…</main>                <!-- the scrolling stage -->
+  <footer>…</footer>            <!-- bottom bar (or use <nav class="bottom">) -->
+</body>
+```
+
+- A bare `<aside>` works as a left rail; `<aside class="right">` / `<nav class="right">` is a right rail. You can have both rails at once.
+- A drawer sidebar (`<nav class="left drawer">` / `<aside class="drawer">`) sizes the rail column to `--drawer-width` (default 16.5rem).
+- `header.inset` flips the default: rail(s) rise full-height and the header is confined beside them (instead of a full-width top banner).
+- The stage shows a faint hex-grid backdrop by default. Opt into the atmospheric vignette + scanlines with `.vignette` on the frame or on `<body>` (off by default — it hurts readability over scrolling text).
+- Drop the rail for a simple stacked header / main / footer shell.
+
+Overflow philosophy: the stage (`<main>`) is the scroll container; `min-inline-size: 0` confines wide children inside it so chrome never slides. Genuine misuse scrolls visibly rather than being silently clipped.
+
+## Header / app bar
+
+A `<header>` becomes a tactical app bar when it carries a `<nav>`, is the top bar of an app frame, or sits directly on a `.vui` `<body>`. Compose from bare elements — no sub-classes:
+
+```html
+<header>
+  <a href="/">VANTA<b>UI</b></a>           <!-- brand: first link/heading; <b> is accent-lit; an <img>/<svg> is the emblem -->
+  <nav>                                     <!-- inline primary nav; first <nav> pushes everything after it to the right -->
+    <a aria-current="page">Overview</a>
+    <a>Units <small>12</small></a>          <!-- trailing <small> = count/status chip -->
+  </nav>
+  <form><i>search</i><input type="search" placeholder="Search…"></form>  <!-- inline search -->
+  <menu>                                    <!-- trailing actions cluster -->
+    <button class="icon"><i>settings</i></button>
+  </menu>
+  <button class="icon" aria-controls="drawer" data-open="drawer"><i>menu</i></button>  <!-- burger -->
+</header>
+```
+
+The header is a **container-query context**: when the BAR itself (not just the viewport) gets narrower than 52rem, the inline nav + search collapse and the menu button (any header `<button>` with `aria-controls`/`commandfor`/`command`/`data-open`) appears.
+
+- Inside the header: an `<hr>` is a vertical divider; a `<menu>` is the trailing actions cluster.
+- Shape/tone helpers: `sticky` `glow` `bare` `tall` `center` (centers the nav) `float` (detached chamfered bar). Alignment: `max` (flex spacer) · `right` / `left`.
+
+## Footer
+
+A `<footer>` in a `.vui` scope. Three shapes, one element:
+
+- **default** — a hairline strip: brand (first link/heading) · a `<nav>` of links (or loose trailing `<a>`s) · `<small>` legal line. Helpers `max` / `right` for alignment.
+- **`footer.status`** — dense HUD telemetry bar; each direct child is a readout cell divided by hairlines. Mark an accent-lit cell with `.signal`, push cells apart with `.max`. A `<b>` is the value.
+- **`footer.columns`** — multi-column sitemap; columns are `<nav>`/`<section>`/`<div>` blocks with a heading (`h4`–`h6` or `.label`) + links. A child marked `.bottom` spans full width as a base bar.
+- Tone helpers: `glow` · `base`.
+
+## Navigation rails, bottom bar, drawers
+
+Items are `<a>` (recommended) or `<button>`; mark the current one `aria-current="page"` (or `.active`). A leading `<i>` is its icon.
+
+- **Side rail**: `<nav class="left">` / `<nav class="right">` / a bare `<aside>`. Bottom bar (icons + labels) on phones; vertical column from the `m` breakpoint up (placed by the app frame). A leading `<img>`/`<svg>` is an emblem; `.max` is a spacer.
+- **Bottom command bar**: `<nav class="bottom">`. Pin a standalone one to the viewport floor with `nav.bottom.fixed` (respects the safe-area inset).
+- **Off-canvas drawer**: `<dialog class="left">` / `<dialog class="right">` — a native `<dialog>` animated with `@starting-style` + `allow-discrete` (no library). Open via `showModal()` (the JS `drawers()` helper wires `[data-open="id"]`/`[data-close]`/backdrop dismiss). Structure: `> header` (brand + close), `> nav` (link stack), `> footer` (pinned to the bottom). Active link gets a glowing edge marker; a heading/`.label` is a group label.
+- **Persistent drawer sidebar**: `<aside class="drawer">` / `<nav class="drawer">` — a full-height vertical column on desktop (≥768px), off-canvas (toggle `.active`/`.open`) on mobile. `.right` flips the side. Width via `--drawer-width`.
+
+```html
+<dialog class="left" id="drawer">
+  <header><a href="/"><img src="mark.svg" alt=""> VANTAUI</a><button class="icon" data-close><i>close</i></button></header>
+  <nav>
+    <h6>Sectors</h6>
+    <a aria-current="page"><i>dashboard</i> Overview</a>
+    <a><i>group</i> Units</a>
+  </nav>
+  <footer><button class="block" data-close>Close</button></footer>
+</dialog>
+```
+
+## Breadcrumb (detected, zero classes)
+
+A `<nav>` directly containing an `<ol>` is a breadcrumb (or force it with `ol.breadcrumb`). `/` separators are inserted automatically; mark the last item `aria-current="page"`.
+
+```html
+<nav><ol><li><a>Home</a></li><li><a>Units</a></li><li aria-current="page">Alpha</li></ol></nav>
+```
+
+## Dropdown / action menu
+
+Two ways in, one look:
+
+- **`<details class="dropdown">`** — zero-JS, works everywhere. The `<summary>` is the trigger; the panel is a `<menu>`/`<nav>`/`<ul>`. The JS `menus()` helper adds outside-click / Esc dismissal and (where supported) upgrades the panel to the Popover top layer so it escapes any `overflow`/`clip-path`.
+- **`<button popovertarget>` + a `[popover].menu` panel** — modern top-layer + light-dismiss path; anchor-positioned where supported.
+
+Items are `<a>`/`<button>` (lead with an `<i>`); an `<hr>` divides, an `<h6>`/`.label` is a group heading, `.danger` tones an item red. Add `.right` to align the panel to the trailing edge. A trailing `<i>` in the summary is a chevron that rotates open.
+
+```html
+<details class="dropdown">
+  <summary>Actions <i>expand_more</i></summary>
+  <menu>
+    <h6>Unit</h6>
+    <button><i>edit</i> Rename</button>
+    <hr>
+    <button class="danger"><i>delete</i> Decommission</button>
+  </menu>
+</details>
+```
+
+## Tabs
+
+A `[role="tablist"]` of `[role="tab"]` buttons; the active tab is read from `aria-selected="true"` (or forced with `.active`). Panels are `[role="tabpanel"]`, toggled with the `[hidden]` attribute. A trailing `<small>` in a tab is a count chip. Wire interaction with the JS `tabs()` helper (click + arrow keys, matched by `aria-controls`/`data-tab`) or your framework.
+
+```html
+<div role="tablist">
+  <button role="tab" aria-selected="true" aria-controls="p1">Sensors</button>
+  <button role="tab" aria-controls="p2">Comms <small>3</small></button>
+</div>
+<div role="tabpanel" id="p1">…</div>
+<div role="tabpanel" id="p2" hidden>…</div>
+```
+
+## Pagination
+
+`<nav class="pagination">` wrapping a list (`<ul>`/`<ol>`) of page links. Items are `<a>`/`<button>`; a lone `<i>` collapses to an icon prev/next. Mark the current page `aria-current="page"`, unavailable controls `disabled` / `aria-disabled`. A bare `<span>` is an ellipsis gap. Add `.compact` to tighten for table footers.
+
+```html
+<nav class="pagination">
+  <ul>
+    <li><a aria-disabled="true"><i>chevron_left</i></a></li>
+    <li><a aria-current="page">1</a></li>
+    <li><a>2</a></li>
+    <li><span>…</span></li>
+    <li><a>9</a></li>
+    <li><a><i>chevron_right</i></a></li>
+  </ul>
+</nav>
+```
+
+## Toolbar
+
+A `<div role="toolbar">` (or `.toolbar`) is a chamfered control track holding buttons, button groups (`<menu class="group">`), segmented controls, an `<hr>` separator, a `.max` spacer, and short `<span>`/`<small>` labels. The JS `toolbars()` helper gives it the roving-tabindex keyboard model (one tab stop, arrow keys move focus). Add `.vertical` to stand it on end (up/down arrows).
+
+```html
+<div role="toolbar">
+  <button class="icon"><i>play_arrow</i></button>
+  <button class="icon"><i>pause</i></button>
+  <hr>
+  <span>00:42</span>
+  <span class="max"></span>
+  <button class="icon"><i>settings</i></button>
+</div>
+```

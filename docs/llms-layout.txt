@@ -1,0 +1,100 @@
+# VantaUI CSS — Layout & Utilities
+
+> Containers, flex composites, grids, breakpoint show/hide, the full utility-class catalogue, HUD primitives (type roles, plates, brackets, backdrops, status dot), and the prose layout for long-form text. All free-floating helpers in this file use the `vui-` prefix. Authoritative as of v1.5.2.
+
+Prerequisites: opt in with `class="vui"` on a root element (usually `<body>`). Bare semantic HTML is styled with NO prefix; the `vui-` prefix marks free-floating layout/utility/primitive helpers (collision-safe). All VantaUI styles are zero-specificity (`:where()`) inside cascade layers, so your own unlayered classes always win — never use `!important`. See the hub: https://vantaui-css.khodok.com/llms.txt
+
+Related: app frame & navigation rails → https://vantaui-css.khodok.com/llms-navigation.txt · design tokens (spacing/color/type values) → https://vantaui-css.khodok.com/llms-theming.txt
+
+## Breakpoints (mobile-first, min-width)
+
+**s** 36rem/576px · **m** 48rem/768px · **l** 64rem/1024px · **xl** 80rem/1280px. Default to mobile styles; opt into larger layouts upward. Tokens: `--bp-{s,m,l,xl}`.
+
+## Container
+
+- `vui-container` — centered, max-width `--container-max`, inline padding `--container-pad`.
+- `vui-container--narrow` — max-width `--container-narrow`.
+- `vui-container--fluid` — no max-width.
+
+## Named flex composites (prefer these)
+
+Reach for these first; the atomic flex utilities below are the escape hatch.
+
+- `vui-row` — horizontal, centered, gap `--gutter`. Add `vui-row--wrap` to wrap.
+- `vui-col` — vertical flex column.
+- `vui-stack` — vertical rhythm column, gap `--space-5`.
+- `vui-cluster` — wrapping horizontal group, gap `--space-4`.
+- `vui-center` — grid place-items center.
+- `vui-between` — space-between row, centered.
+- `vui-spacer` — `flex: 1 1 auto` (pushes siblings apart).
+
+## Auto grid (zero-config, responsive)
+
+- `vui-autogrid` — cards flow and wrap; control the min track with `style="--vui-min: 16rem"`. Add `vui-autogrid--fit` to stretch the last row.
+
+```html
+<div class="vui-autogrid" style="--vui-min: 16rem">… cards …</div>
+```
+
+## 12-column grid
+
+`vui-grid` wraps children that carry span classes. Children span full width by default (stack on mobile) and opt into spans at each breakpoint up: `vui-s1…vui-s12`, `vui-m1…vui-m12`, `vui-l1…vui-l12`.
+
+```html
+<div class="vui-grid">
+  <article class="vui-s12 vui-m6 vui-l4">…</article>
+  <article class="vui-s12 vui-m6 vui-l8">…</article>
+</div>
+```
+
+## Show / hide (hide-only, preserves natural display)
+
+- `vui-until-{s,m,l,xl}` — hidden at/above the breakpoint.
+- `vui-from-{s,m,l,xl}` — hidden below the breakpoint.
+
+## Utility classes (all `vui-` prefixed)
+
+Spacing index N → `--space-N`. Scale: 0=0, 1=2px, 2=4px, 3=8px, 4=12px, 5=16px, 6=20px, 7=24px, 8=32px (utilities cover 0–8; tokens go to 13).
+
+- **Display**: `vui-block` `vui-inline-block` `vui-inline` `vui-flex` `vui-inline-flex` `vui-grid-d` `vui-contents` `vui-hidden` `vui-sr-only`.
+- **Flex/grid behaviour**: `vui-flex-row` `vui-flex-col` `vui-wrap` `vui-nowrap` `vui-flex-1` `vui-grow` `vui-shrink-0`; `vui-items-{start,center,end,stretch,baseline}`; `vui-justify-{start,center,end,between,around}`.
+- **Position/sizing**: `vui-relative` `vui-absolute` `vui-sticky` `vui-w-full` `vui-h-full` `vui-w-auto` `vui-min-w-0` `vui-overflow-auto` `vui-overflow-hidden`.
+- **Gap**: `vui-gap-0…vui-gap-8`.
+- **Padding**: `vui-p-0…8` (all), `vui-pi-{0,2..8}` (inline), `vui-pb-{0,2..8}` (block).
+- **Margin**: `vui-m-{0,2,3,4,5,6}` `vui-m-auto` `vui-mi-auto`; `vui-mb-{0,2..8}` (block); `vui-mbe-{3,4,5,6}` (block-end only).
+- **Text**: `vui-text-{start,center,end}` `vui-upper` `vui-nowrap-text` `vui-truncate`.
+- **Font family**: `vui-font-{display,ui,hud,mono}`. **Weight**: `vui-fw-{light,regular,medium,semibold,bold}`. **Tracking**: `vui-tracked` `vui-tracked-wider` `vui-tracked-widest`. **Size**: `vui-text-{2xs,xs,sm,base,md,lg,xl,2xl,3xl,4xl,5xl}`.
+- **Text color**: `vui-text-{primary,secondary,muted,faint,cyan,amber,red,green}`.
+- **Surfaces**: `vui-bg-{void,base,raised,panel,inset}`.
+- **Borders**: `vui-border` `vui-border-strong` `vui-border-accent` `vui-border-0`.
+- **Glows**: `vui-glow-{cyan,amber,red,green}` `vui-text-glow`.
+- **Misc**: `vui-pointer` `vui-select-none` `vui-flicker` `vui-scanning`.
+
+## HUD primitives (base building blocks, `vui-` prefixed)
+
+The vocabulary every component is built from — useful on their own.
+
+- **Type roles**: `vui-display` `vui-title` `vui-heading` `vui-mono` `vui-readout` (big numeric, HUD font) `vui-label` `vui-eyebrow` (renders a `//` prefix) `vui-signal` (glowing cyan text).
+- **Plates / frames**: `vui-chamfer` (cut top-left + bottom-right), `vui-notch` (all four corners cut), `vui-brackets` (L-shaped corner ticks), `vui-rule` (hairline with fading center). `vui-chamfer`/`vui-notch` clip their paint AND contain inline overflow (`overflow-x: clip`).
+- **Textured backdrops**: `vui-bg-grid` `vui-bg-scan` `vui-bg-hud` (ink + grid + scanlines + vignette).
+- **Status dot**: `vui-dot` (default online/green, pulsing) + `vui-dot--warn` `vui-dot--threat` `vui-dot--cyan` `vui-dot--idle`.
+- **Labelled divider** (in a `.vui` scope): `<div class="divider" data-label="SECTOR">` draws a centered, uppercase label between two fading hairlines; without `data-label` it's a plain hairline divider.
+
+## Prose layout (`vui-prose`) — long-form articles
+
+A grid that centers text to a readable measure (`--prose-width`, default 65ch) while letting images, quotes, `<pre>`, and `<figure>` bleed wider (`--bleed-width`, default 85ch). Direct children land in the content column by default.
+
+- Bleed wider: `vui-bleed` / `bleed` / `half-bleed` (or just use `<img>`, `<figure>`, `<blockquote>`, `<pre>` — they bleed automatically). A lone-image paragraph (`<p><img></p>`, common from Markdown) bleeds too.
+- Edge-to-edge: `vui-bleed-full` / `bleed-full`.
+- Blockquotes get an accent rail; figures style their `<figcaption>` in mono.
+
+```html
+<article class="vui-prose">
+  <h1>Mission Brief</h1>
+  <p>Readable measure…</p>
+  <figure><img src="map.png" alt=""><figcaption>Sector map</figcaption></figure>
+  <blockquote>Pulled-in accent quote.</blockquote>
+</article>
+```
+
+Note: `vui-prose` is a layout, so apply it to an `<article>` that is NOT a panel — `.vui article:not(.vui-prose):not(.prose)` is the panel selector, so the prose class opts the article out of panel styling.
