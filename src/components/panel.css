@@ -183,6 +183,17 @@
     0 0 24px -6px var(--_glow);
 }
 
+/* ---- Linked / tappable panel ---- */
+:where(.vui article.linked) {
+  transition:
+    border-color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.vui article.linked:hover) {
+  border-color: var(--hairline-accent);
+  background-color: var(--surface-panel-2);
+}
+
 /* ---- Progressive enhancement: corner-shape instead of clip-path ----
    Where corner-shape (CSS Borders L4, Chromium 139+) is supported, paint the
    chamfer/notch with border-radius + corner-shape. Same shape, but it styles

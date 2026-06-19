@@ -76,6 +76,15 @@ The vocabulary every component is built from — useful on their own.
 
 - **Type roles**: `vui-display` `vui-title` `vui-heading` `vui-mono` `vui-readout` (big numeric, HUD font) `vui-label` `vui-eyebrow` (renders a `//` prefix) `vui-signal` (glowing cyan text).
 - **Plates / frames**: `vui-chamfer` (cut top-left + bottom-right), `vui-notch` (all four corners cut), `vui-brackets` (L-shaped corner ticks), `vui-rule` (hairline with fading center). `vui-chamfer`/`vui-notch` clip their paint AND contain inline overflow (`overflow-x: clip`).
+- **Panel surface** (`vui-panel`): full panel look (background, border, shadow, chamfer/corner-shape, `overflow-x: clip`) on any element. Use when `<article>` isn't possible, e.g. a `<router-link>` renders as `<a>`. Tones `cyan` · `amber` · `red` · `green` remap `--_c` so child components pick up the accent. Add `linked` for hover interaction (border + background shift). Add `vui-clip` to opt out of the corner-shape upgrade (keeps the open unstroked diagonal). Compose freely with layout utilities — your own classes override the block/flex display.
+
+```html
+<!-- link that looks like a panel; router-link renders as <a> -->
+<router-link class="vui-panel cyan linked" to="/stats">
+  <small class="vui-eyebrow">Total Ops</small>
+  <div class="vui-readout">1 204</div>
+</router-link>
+```
 - **Textured backdrops**: `vui-bg-grid` `vui-bg-scan` `vui-bg-hud` (ink + grid + scanlines + vignette).
 - **Status dot**: `vui-dot` (default online/green, pulsing) + `vui-dot--warn` `vui-dot--threat` `vui-dot--cyan` `vui-dot--idle`.
 - **Labelled divider** (in a `.vui` scope): `<div class="divider" data-label="SECTOR">` draws a centered, uppercase label between two fading hairlines; without `data-label` it's a plain hairline divider.

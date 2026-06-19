@@ -15,7 +15,8 @@ A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-
 - **Glow**: `glow` (accent rim glow).
 - **Color tint**: `cyan` · `amber` · `red` · `green` (admonition tones — tints the surface, recolors text, and sets the panel's accent so child buttons inherit the tone).
 - **Tint intensity** (with a color): `dim` · `vivid`.
-- Combine freely: `"amber glow"`, `"green raised"`, `"red notch brackets"`, `"cyan vivid"`.
+- **Linked / tappable**: `linked` — hover shifts border to accent and raises the surface background. Use on panels that are wrapped in or are themselves a link.
+- Combine freely: `"amber glow"`, `"green raised"`, `"red notch brackets"`, `"cyan vivid linked"`.
 
 ```html
 <article class="raised">

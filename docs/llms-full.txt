@@ -157,7 +157,8 @@ Spacing index N → `--space-N`. Scale: 0=0, 1=2px, 2=4px, 3=8px, 4=12px, 5=16px
 ## HUD primitives (base building blocks, `vui-` prefixed)
 
 - **Type roles**: `vui-display` `vui-title` `vui-heading` `vui-mono` `vui-readout` (big numeric) `vui-label` `vui-eyebrow` (renders a `//` prefix) `vui-signal` (glowing cyan text).
-- **Plates / frames**: `vui-chamfer` (cut top-left + bottom-right), `vui-notch` (all four corners cut), `vui-brackets` (L-shaped corner ticks), `vui-rule` (hairline with fading center).
+- **Plates / frames**: `vui-chamfer` (cut top-left + bottom-right), `vui-notch` (all four corners cut), `vui-brackets` (L-shaped corner ticks), `vui-rule` (hairline with fading center). `vui-chamfer`/`vui-notch` clip paint AND contain inline overflow.
+- **Panel surface** (`vui-panel`): full panel look (background, border, shadow, chamfer/corner-shape, `overflow-x: clip`) on any element — use when `<article>` isn't possible (e.g. `<router-link>` → `<a>`). Tones `cyan` · `amber` · `red` · `green` remap `--_c`. Add `linked` for hover (border/bg shift). Add `vui-clip` to keep the open unstroked diagonal. Compose with any layout utility.
 - **Textured backdrops**: `vui-bg-grid` `vui-bg-scan` `vui-bg-hud` (ink + grid + scanlines + vignette).
 - **Status dot**: `vui-dot` (default online/green, pulsing) + `vui-dot--warn` `vui-dot--threat` `vui-dot--cyan` `vui-dot--idle`.
 - **Labelled divider**: `<div class="divider" data-label="SECTOR">` (label between fading hairlines; drop `data-label` for a plain divider).
@@ -356,7 +357,7 @@ A text `<input>` + a `<ul popover="manual" class="listbox" role="listbox">` of `
 
 ## Panel (`<article>`)
 
-A bare `<article>` is a chamfered plate; an inner `<header>`/`<footer>` auto-divides. Depth: `raised` · `inset` · `flat`. Shape: `notch` · `brackets`. Glow: `glow`. Color tint: `cyan` · `amber` · `red` · `green`. Tint intensity: `dim` · `vivid`. Combine freely (`"amber glow"`, `"green raised"`).
+A bare `<article>` is a chamfered plate; an inner `<header>`/`<footer>` auto-divides. Depth: `raised` · `inset` · `flat`. Shape: `notch` · `brackets`. Glow: `glow`. Color tint: `cyan` · `amber` · `red` · `green`. Tint intensity: `dim` · `vivid`. Linked/tappable: `linked` (hover shifts border to accent, raises background). Combine freely (`"amber glow"`, `"green raised"`, `"cyan linked"`).
 
 ```html
 <article class="raised">

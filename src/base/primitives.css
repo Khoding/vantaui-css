@@ -114,6 +114,49 @@
     border-radius: var(--bevel-sm);
     corner-shape: bevel;
   }
+  .vui-panel:not(.vui-clip) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+}
+
+/* ---------- Panel surface: full panel look on any element ----------
+   Escape hatch for when <article> isn't possible (e.g. a <router-link>
+   renders as <a>). Tones (cyan amber red green) remap --_c so child
+   components that use that variable pick up the accent. Add .linked for
+   interactive/hover treatment. Compose freely with layout utilities.
+   <article> panels are :where() zero-specificity; .vui-panel is a plain
+   class in a cascade layer — your unlayered classes always win either way. */
+.vui-panel {
+  --bevel-md: 10px;
+  --_c: var(--accent);
+  --_glow: var(--accent-glow);
+  display: block;
+  position: relative;
+  padding: var(--space-5);
+  border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-panel);
+  box-shadow: var(--shadow-panel);
+  color: var(--text-primary);
+  clip-path: var(--clip-chamfer);
+  overflow-x: clip;
+  text-decoration: none;
+}
+.vui-panel.cyan  { --_c: var(--cyan-400);  --_glow: var(--cyan-glow); }
+.vui-panel.amber { --_c: var(--amber-400); --_glow: var(--amber-glow); }
+.vui-panel.red   { --_c: var(--red-500);   --_glow: var(--red-glow); }
+.vui-panel.green { --_c: var(--green-500); --_glow: var(--green-glow); }
+.vui-panel.linked {
+  transition:
+    border-color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+.vui-panel.linked:hover {
+  border-color: var(--hairline-accent);
+  background-color: var(--surface-panel-2);
 }
 
 /* ---------- Corner-bracket frame: wrap content, get L-shaped ticks ---------- */
