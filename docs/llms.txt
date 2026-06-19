@@ -2,7 +2,7 @@
 
 > A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This file is a HUB. It carries the core information (rules, installation, and mental model) and links to focused topic files so you only read what is relevant to your current task. For instance, a nav bar needs the navigation file, not the whole library. Fetch the topic files by URL as needed; or read the single-file complete reference: https://vantaui-css.khodok.com/llms-full.txt. Authoritative as of v1.5.4.
+This file is a HUB. It carries the core information (rules, installation, and mental model) and links to focused topic files so you only read what is relevant to your current task. For instance, a nav bar needs the navigation file, not the whole library. Fetch the topic files by URL as needed; or read the single-file complete reference: https://vantaui-css.khodok.com/llms-full.txt. Authoritative as of v1.6.1.
 
 ## Critical facts (read first)
 
@@ -16,10 +16,10 @@ This file is a HUB. It carries the core information (rules, installation, and me
 
 ## Install
 
-Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.5.4"`:
+Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.6.1"`:
 
 ```bash
-npm i github:Khoding/vantaui-css#v1.5.4
+npm i github:Khoding/vantaui-css#v1.6.1
 ```
 
 ```js

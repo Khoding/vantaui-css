@@ -1,6 +1,6 @@
 # VantaUI CSS: Navigation & Chrome
 
-> The app frame and every navigation surface: header/app bar, footer, side rails, off-canvas + persistent drawers, breadcrumbs, dropdown menus, tabs, pagination, and toolbars. Mostly zero-class semantic HTML; a few interactive pieces want the optional JS. Authoritative as of v1.5.4.
+> The app frame and every navigation surface: header/app bar, footer, side rails, off-canvas + persistent drawers, breadcrumbs, dropdown menus, tabs, pagination, and toolbars. Mostly zero-class semantic HTML; a few interactive pieces want the optional JS. Authoritative as of v1.6.1.
 
 Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix. State is semantic-first: current item = `aria-current="page"` (alias `class="active"`). A leading `<i>text</i>` is a Material Symbols icon. See the hub: https://vantaui-css.khodok.com/llms.txt
 
