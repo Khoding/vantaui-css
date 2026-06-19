@@ -1,6 +1,6 @@
 # VantaUI CSS — Optional JavaScript & Framework Integration
 
-> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with NO JavaScript — this only adds interactive niceties. Authoritative as of v1.5.2.
+> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with NO JavaScript — this only adds interactive niceties. Authoritative as of v1.5.3.
 
 Prerequisites: the CSS works on its own. Load the JS only for the interactions below. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -25,6 +25,7 @@ Package entry points (`exports`): `vantaui-css/js` (ES module), `vantaui-css/js/
 - **Auto-animate (via `init`)** — elements with BOTH `data-value` and `data-animate` fill from 0 when scrolled into view (IntersectionObserver, threshold 0.4; falls back to immediate fill without IO).
 - **`drawers(root)`** — global click handling: `[data-open="id"]` opens a `<dialog id>` via `showModal()` (or toggles `.active`/`.open` on a non-dialog drawer); `[data-close]` closes the nearest dialog/drawer; backdrop click dismisses a dialog (opt out with `data-no-dismiss`); clicking a link inside a drawer auto-closes it.
 - **`menus(root)`** — `<details class="dropdown">` dropdowns. Where the Popover API exists, it upgrades the panel to the top layer (light-dismiss, Esc, exclusive open) and positions it below the trigger (add `class="right"` on the `<details>` to right-align). Without Popover it falls back to `<details>` toggle handling (one open at a time, outside-click + Esc to close, item-click closes).
+- **`placePopover(panel, anchor, opts?)`** — position a top-layer popover under an anchor element. Top-layer popovers (`[popover]`) escape every ancestor `clip-path`/`overflow`, but the browser does not anchor them, so call this after `panel.showPopover()` (and again on scroll/resize while open) to line the panel up under `anchor` off its viewport rect. Options: `{ align = 'start' | 'end', gap = 6, matchWidth = false }` — `'end'` right-aligns, `gap` is the px offset below the anchor, `matchWidth` sets the panel's min width to the anchor's. This is the primitive behind `menus()`, and the recommended way to build an autocomplete `<ul popover class="listbox">` (see Forms).
 - **`toolbars(root)`** — roving tabindex for `[role="toolbar"]` (one tab stop, arrow keys move focus; `Home`/`End` jump). Add `class="vertical"` on the toolbar for Up/Down arrows.
 - **`tooltips(root)`** — shows `[data-tip="text"]` on hover/focus via a single body-level `#vui-tooltip` element (position:fixed, so it's never clipped by an ancestor `overflow`/`clip-path`). Marks wired elements `.vui-tip-js` so the CSS-only `::after` fallback is suppressed.
 - **Live clock (via `init`)** — writes `HH:MM:SS` into every `[data-vui-clock]` once per second.
@@ -44,7 +45,26 @@ toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
 setValue(document.querySelector('.gauge'), 92, 800);
 ```
 
-Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, toolbars, toast }`.
+Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, toolbars, toast }`.
+
+### Autocomplete with placePopover
+
+```js
+import { placePopover } from 'vantaui-css/js';
+const input = document.querySelector('#names');
+const list  = document.querySelector('#names-ac'); // <ul popover="manual" class="listbox">
+
+function open() {
+  list.showPopover();
+  placePopover(list, input, { matchWidth: true }); // align under, match field width
+}
+// keep it pinned while the page moves
+addEventListener('scroll', () => list.matches(':popover-open') && placePopover(list, input, { matchWidth: true }), true);
+addEventListener('resize', () => list.matches(':popover-open') && placePopover(list, input, { matchWidth: true }));
+input.addEventListener('blur', () => list.hidePopover());
+```
+
+The `<ul>` lives in the top layer, so it is never clipped by the chamfer/notch `clip-path` of a surrounding panel — no teleport-to-body required.
 
 ## Vue 3
 

@@ -1715,6 +1715,67 @@
     border: 0;
   }
 
+  :where(.vui [popover].listbox) {
+    --bevel-md: 9px;
+    z-index: 50;
+    max-block-size: 16rem;
+    inline-size: max-content;
+    min-inline-size: 12rem;
+    max-inline-size: min(24rem, 92vw);
+    padding-block: var(--space-3);
+    border: var(--border-hair) solid var(--hairline-accent);
+    background-color: var(--bg-void);
+    box-shadow: var(--shadow-raised),
+    0 0 40px -12px var(--accent-glow);
+    color: var(--text-secondary);
+    clip-path: var(--clip-chamfer);
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-hud),
+    translate var(--dur-fast) var(--ease-hud),
+    overlay var(--dur-fast) allow-discrete,
+    display var(--dur-fast) allow-discrete;
+    margin: 0;
+    padding-inline: 0;
+    list-style: none;
+    position: fixed;
+    overflow-y: auto;
+    translate: 0 -6px;
+  }
+
+  :where(.vui [popover].listbox:popover-open) {
+    opacity: 1;
+    translate: 0;
+  }
+
+  @starting-style {
+    :where(.vui [popover].listbox:popover-open) {
+      opacity: 0;
+      translate: 0 -6px;
+    }
+  }
+
+  :where(.vui [popover].listbox > li) {
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+    align-items: center;
+    gap: 10px;
+    padding-block: 8px;
+    padding-inline: 14px;
+    display: flex;
+    overflow: hidden;
+  }
+
+  :where(.vui [popover].listbox > li:hover), :where(.vui [popover].listbox > li.active), :where(.vui [popover].listbox > li[aria-selected="true"]) {
+    background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--text-secondary);
+  }
+
   :where(.vui) {
     accent-color: var(--accent);
   }

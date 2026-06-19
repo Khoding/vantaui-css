@@ -8,6 +8,10 @@
    A <label> wrapping a text control lays out as a stacked field (label
    text on top, control below, a trailing <small> as the hint). A <label>
    wrapping a checkbox/radio lays out as an inline row.
+
+   For autocomplete, a <ul popover class="listbox"> renders its options in
+   the top layer so an ancestor panel's chamfer/notch clip-path never clips
+   it (see the combobox section at the foot of this file).
    ============================================================ */
 
 /* ---------- Text-like fields ---------- */
@@ -240,6 +244,85 @@
   background-color: var(--cyan-400);
   box-shadow: var(--glow-cyan-sm);
   clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+}
+
+/* ---------- Combobox / autocomplete (top-layer suggestion list) ----------
+   A text <input> paired with a <ul popover="manual" class="listbox"
+   role="listbox"> of <li role="option"> rows. The list lives in the TOP
+   LAYER (the native popover), so it is NEVER clipped by an ancestor's
+   chamfer/notch clip-path or overflow — no teleport-to-body needed, the
+   markup stays authored in place. The browser does not anchor a popover, so
+   position it under the field with VantaUI.placePopover(list, input) on open,
+   and re-call it on scroll/resize while open. Highlight the keyboard-active
+   row with .active (or [aria-selected="true"]).
+
+     <label>NAMES
+       <input role="combobox" aria-expanded="false" aria-controls="ac">
+     </label>
+     <ul id="ac" popover="manual" class="listbox" role="listbox">
+       <li role="option">…</li>
+     </ul>
+*/
+:where(.vui [popover].listbox) {
+  --bevel-md: 9px;
+  position: fixed;
+  z-index: 50;
+  inline-size: max-content;
+  min-inline-size: 12rem;
+  max-inline-size: min(24rem, 92vw);
+  max-block-size: 16rem;
+  margin: 0;
+  padding-block: var(--space-3);
+  padding-inline: 0;
+  overflow-y: auto;
+  list-style: none;
+  border: var(--border-hair) solid var(--hairline-accent);
+  background-color: var(--bg-void);
+  box-shadow:
+    var(--shadow-raised),
+    0 0 40px -12px var(--accent-glow);
+  color: var(--text-secondary);
+  clip-path: var(--clip-chamfer);
+  opacity: 0;
+  translate: 0 -6px;
+  transition:
+    opacity var(--dur-fast) var(--ease-hud),
+    translate var(--dur-fast) var(--ease-hud),
+    overlay var(--dur-fast) allow-discrete,
+    display var(--dur-fast) allow-discrete;
+}
+:where(.vui [popover].listbox:popover-open) {
+  opacity: 1;
+  translate: 0 0;
+}
+@starting-style {
+  :where(.vui [popover].listbox:popover-open) {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+:where(.vui [popover].listbox > li) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 14px;
+  padding-block: 8px;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+:where(.vui [popover].listbox > li:hover),
+:where(.vui [popover].listbox > li.active),
+:where(.vui [popover].listbox > li[aria-selected='true']) {
+  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--text-secondary);
 }
 
 /* Accent for any native control we don't fully restyle */

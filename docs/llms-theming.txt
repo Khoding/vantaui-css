@@ -1,6 +1,6 @@
 # VantaUI CSS — Theming & Design Tokens
 
-> Every design token (CSS custom property) and how to override it: the OKLCH color system, surfaces, text, status, spacing/geometry, typography, effects, motion, and keyframes. Authoritative as of v1.5.2.
+> Every design token (CSS custom property) and how to override it: the OKLCH color system, surfaces, text, status, spacing/geometry, typography, effects, motion, and keyframes. Authoritative as of v1.5.3.
 
 Prerequisites: tokens are defined on `:root`, so they're available everywhere — even outside `.vui` (outside `.vui`, ONLY tokens are defined; nothing else changes). Override any token anywhere; they cascade. See the hub: https://vantaui-css.khodok.com/llms.txt
 

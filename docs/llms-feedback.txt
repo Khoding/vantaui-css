@@ -1,6 +1,6 @@
 # VantaUI CSS — Feedback & Status
 
-> Status and progress surfaces: inline alerts, toasts, meters & progress bars, radial gauges, spinners, skeletons, empty states, and the live status dot. Authoritative as of v1.5.2.
+> Status and progress surfaces: inline alerts, toasts, meters & progress bars, radial gauges, spinners, skeletons, empty states, and the live status dot. Authoritative as of v1.5.3.
 
 Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words. A leading `<i>text</i>` is a Material Symbols icon. See the hub: https://vantaui-css.khodok.com/llms.txt
 

@@ -2,7 +2,7 @@
 
 > A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first like BeerCSS: write proper, plain semantic HTML and get a tactical UI — no component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This is the COMPLETE single-file reference — reading it in full is enough to use the library correctly, with no link-following. For a lean index that links to focused topic files (cheaper to read selectively), see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.5.2.
+This is the COMPLETE single-file reference — reading it in full is enough to use the library correctly, with no link-following. For a lean index that links to focused topic files (cheaper to read selectively), see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.5.3.
 
 ## Critical facts (read first)
 
@@ -16,10 +16,10 @@ This is the COMPLETE single-file reference — reading it in full is enough to u
 
 ## Install
 
-Not on npm/CDN yet — install from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.5.2"`:
+Not on npm/CDN yet — install from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.5.3"`:
 
 ```bash
-npm i github:Khoding/vantaui-css#v1.5.2
+npm i github:Khoding/vantaui-css#v1.5.3
 ```
 
 ```js
@@ -336,6 +336,20 @@ A `<label>` wrapping a text control stacks: leading `<span>` = uppercase label, 
 
 Any native control not fully restyled inherits `accent-color: var(--accent)`.
 
+## Combobox / autocomplete
+
+A text `<input>` + a `<ul popover="manual" class="listbox" role="listbox">` of `<li role="option">` rows. The list renders in the **top layer**, so it is **never clipped by an ancestor panel's chamfer/notch `clip-path`/`overflow`** (no body teleport — the markup stays in place). Highlight the active row with `.active` (or `[aria-selected="true"]`). Position it under the field with `VantaUI.placePopover(list, input, { matchWidth: true })` on open + on scroll/resize; you own filtering, keyboard nav, and `showPopover()`/`hidePopover()`. Needs the Popover API (Baseline 2024).
+
+```html
+<label><span>Names</span>
+  <input role="combobox" aria-expanded="false" aria-controls="names-ac" autocomplete="off" />
+</label>
+<ul id="names-ac" popover="manual" class="listbox" role="listbox">
+  <li role="option" class="active">Ada Lovelace</li>
+  <li role="option">Alan Turing</li>
+</ul>
+```
+
 ---
 
 # Data Display
@@ -569,6 +583,7 @@ ES module exports (also attached to `window.vui` as a plain script; auto-inits o
 - Auto-animate (via `init`): elements with `data-value` + `data-animate` fill from 0 on scroll into view.
 - `drawers(root)` — `[data-open="id"]` opens a `<dialog id>` (`showModal()`, or toggles `.active`/`.open`), `[data-close]`, backdrop dismiss (opt out `data-no-dismiss`), drawer-link auto-close.
 - `menus(root)` — `<details class="dropdown">`; upgrades to the Popover top layer where available (light-dismiss, Esc, exclusive open), positions below the trigger (`.right` to right-align).
+- `placePopover(panel, anchor, opts?)` — position a top-layer `[popover]` under `anchor` off its viewport rect (call after `showPopover()` + on scroll/resize). Options `{ align = 'start' | 'end', gap = 6, matchWidth = false }`. The primitive behind `menus()`; use it to build a `<ul popover class="listbox">` autocomplete that escapes ancestor `clip-path`.
 - `toolbars(root)` — roving tabindex for `[role="toolbar"]` (`.vertical` for up/down).
 - `tooltips(root)` — shows `[data-tip="text"]` on hover/focus via a body-level fixed element (never clipped).
 - Live clock (via `init`): writes `HH:MM:SS` into `[data-vui-clock]` every second.
@@ -580,7 +595,7 @@ init();
 toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
 ```
 
-Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, toolbars, toast }`. Entry points: `vantaui-css/js` (ESM), `vantaui-css/js/global` (plain-script global).
+Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, toolbars, toast }`. Entry points: `vantaui-css/js` (ESM), `vantaui-css/js/global` (plain-script global).
 
 ## Vue 3
 

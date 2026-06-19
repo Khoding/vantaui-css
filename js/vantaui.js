@@ -223,6 +223,30 @@ export function drawers(root = document) {
   });
 }
 
+/* ---------- Position a top-layer popover under an anchor element ----------
+   Top-layer popovers ([popover]) escape every ancestor clip-path / overflow,
+   but the browser does NOT anchor them — so we place them off the anchor's
+   viewport rect. position:fixed coordinates are viewport-relative, exactly
+   what getBoundingClientRect returns. Call this right after showPopover() and
+   again on scroll/resize while the panel is open.
+     align     'start' (default) lines the panel's leading edge to the anchor;
+               'end' lines the trailing edges (right-aligned dropdowns).
+     gap       px gap below the anchor (default 6).
+     matchWidth set the panel's min width to the anchor's width (comboboxes). */
+export function placePopover(panel, anchor, opts = {}) {
+  const {align = 'start', gap = 6, matchWidth = false} = opts;
+  const r = anchor.getBoundingClientRect();
+  panel.style.top = r.bottom + gap + 'px';
+  if (matchWidth) panel.style.minInlineSize = r.width + 'px';
+  if (align === 'end') {
+    panel.style.left = '';
+    panel.style.right = window.innerWidth - r.right + 'px';
+  } else {
+    panel.style.right = '';
+    panel.style.left = r.left + 'px';
+  }
+}
+
 /* ---------- Dropdown menus (<details class="dropdown">) ---------- */
 export function menus(root = document) {
   const hasPopover = typeof HTMLElement.prototype.showPopover === 'function';
@@ -244,17 +268,10 @@ export function menus(root = document) {
       // Position the panel below its trigger via getBoundingClientRect.
       // JS inline styles override any CSS positioning (including position-area),
       // so this works reliably in all browsers with the Popover API.
-      const placePanel = () => {
-        const r = summary.getBoundingClientRect();
-        panel.style.top = (r.bottom + 6) + 'px';
-        if (details.classList.contains('right')) {
-          panel.style.left = '';
-          panel.style.right = (window.innerWidth - r.right) + 'px';
-        } else {
-          panel.style.right = '';
-          panel.style.left = r.left + 'px';
-        }
-      };
+      const placePanel = () =>
+        placePopover(panel, summary, {
+          align: details.classList.contains('right') ? 'end' : 'start',
+        });
 
       // Drive state via Popover API; prevent <details> native toggle.
       summary.addEventListener('click', e => {
@@ -439,7 +456,7 @@ export function init(root = document) {
   toolbars(root);
 }
 
-const VantaUI = {init, tabs, setValue, drawers, tooltips, menus, toolbars, toast};
+const VantaUI = {init, tabs, setValue, drawers, tooltips, menus, placePopover, toolbars, toast};
 export default VantaUI;
 
 if (isBrowser) {
