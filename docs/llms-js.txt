@@ -1,6 +1,6 @@
-# VantaUI CSS — Optional JavaScript & Framework Integration
+# VantaUI CSS: Optional JavaScript & Framework Integration
 
-> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with NO JavaScript — this only adds interactive niceties. Authoritative as of v1.5.4.
+> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with no JavaScript, as the scripts only add interactive enhancements. Authoritative as of v1.5.4.
 
 Prerequisites: the CSS works on its own. Load the JS only for the interactions below. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -19,17 +19,17 @@ Package entry points (`exports`): `vantaui-css/js` (ES module), `vantaui-css/js/
 
 ## API
 
-- **`init(root = document)`** — runs all behaviours below.
-- **`tabs(root)`** — wires `[role="tablist"]`/`[role="tab"]` (click + Left/Right arrow keys). Panels are matched by the tab's `aria-controls` or `data-tab` → element id; toggles the `hidden` attribute and sets `aria-selected`/`tabindex`. Activates the `aria-selected="true"` tab, else the first.
-- **`setValue(el, n, duration = 600)`** — animate a `.meter`/`.gauge`'s `--value` (ease-out cubic; respects `prefers-reduced-motion` and `duration <= 0`). Reads max from `--max` or `data-max` (default 100); clamps to `[0, max]`.
-- **Auto-animate (via `init`)** — elements with BOTH `data-value` and `data-animate` fill from 0 when scrolled into view (IntersectionObserver, threshold 0.4; falls back to immediate fill without IO).
-- **`drawers(root)`** — global click handling: `[data-open="id"]` opens a `<dialog id>` via `showModal()` (or toggles `.active`/`.open` on a non-dialog drawer); `[data-close]` closes the nearest dialog/drawer; backdrop click dismisses a dialog (opt out with `data-no-dismiss`); clicking a link inside a drawer auto-closes it.
-- **`menus(root)`** — `<details class="dropdown">` dropdowns. Where the Popover API exists, it upgrades the panel to the top layer (light-dismiss, Esc, exclusive open) and positions it below the trigger (add `class="right"` on the `<details>` to right-align). Without Popover it falls back to `<details>` toggle handling (one open at a time, outside-click + Esc to close, item-click closes).
-- **`placePopover(panel, anchor, opts?)`** — position a top-layer popover under an anchor element. Top-layer popovers (`[popover]`) escape every ancestor `clip-path`/`overflow`, but the browser does not anchor them, so call this after `panel.showPopover()` (and again on scroll/resize while open) to line the panel up under `anchor` off its viewport rect. Options: `{ align = 'start' | 'end', gap = 6, matchWidth = false }` — `'end'` right-aligns, `gap` is the px offset below the anchor, `matchWidth` sets the panel's min width to the anchor's. This is the primitive behind `menus()`, and the recommended way to build an autocomplete `<ul popover class="listbox">` (see Forms).
-- **`toolbars(root)`** — roving tabindex for `[role="toolbar"]` (one tab stop, arrow keys move focus; `Home`/`End` jump). Add `class="vertical"` on the toolbar for Up/Down arrows.
-- **`tooltips(root)`** — shows `[data-tip="text"]` on hover/focus via a single body-level `#vui-tooltip` element (position:fixed, so it's never clipped by an ancestor `overflow`/`clip-path`). Marks wired elements `.vui-tip-js` so the CSS-only `::after` fallback is suppressed.
-- **Live clock (via `init`)** — writes `HH:MM:SS` into every `[data-vui-clock]` once per second.
-- **`toast(message, options?)`** — programmatic snackbar. Returns `{ el, dismiss }`. Auto-creates an `aria-live` `.toaster` region on first use.
+- **`init(root = document)`**: runs all behaviours below.
+- **`tabs(root)`**: wires `[role="tablist"]`/`[role="tab"]` (click and Left/Right arrow keys). Panels are matched by the tab's `aria-controls` or `data-tab` attribute to the matching element ID, toggles the `hidden` attribute, and sets `aria-selected` and `tabindex`. It activates the `aria-selected="true"` tab, defaulting to the first tab if none is selected.
+- **`setValue(el, n, duration = 600)`**: animates a `.meter` or `.gauge`'s `--value` using an ease-out cubic curve (respecting `prefers-reduced-motion` and `duration <= 0`). It reads the maximum value from `--max` or `data-max` (defaulting to 100) and clamps the result to `[0, max]`.
+- **Auto-animate (via `init`)**: elements with both `data-value` and `data-animate` fill from 0 when scrolled into view (using an IntersectionObserver with a threshold of 0.4, falling back to an immediate fill if the observer is unavailable).
+- **`drawers(root)`**: registers a global click handler where `[data-open="id"]` opens a `<dialog id>` using `showModal()` (or toggles `.active` or `.open` on a non-dialog drawer), `[data-close]` closes the nearest dialog or drawer, a backdrop click dismisses a dialog (which you can disable with `data-no-dismiss`), and clicking a link inside a drawer automatically closes it.
+- **`menus(root)`**: handles `<details class="dropdown">` dropdowns. Where the Popover API is available, it upgrades the panel to the top layer (supporting light-dismiss, the Esc key, and exclusive opening) and positions it below the trigger (add `class="right"` on the `<details>` to right-align). Without the Popover API, it falls back to standard `<details>` toggle handling, which ensures only one dropdown is open at a time, closes the dropdown on click-outside or Esc, and closes it when an item is clicked.
+- **`placePopover(panel, anchor, opts?)`**: positions a top-layer popover under an anchor element. Top-layer popovers (`[popover]`) escape all ancestor `clip-path` and `overflow` constraints, but the browser does not position them automatically. Call this function after `panel.showPopover()` (and again on scroll or resize while open) to align the panel under the `anchor` based on its viewport bounding rectangle. Available options are: `{ align = 'start' | 'end', gap = 6, matchWidth = false }` where `'end'` right-aligns, `gap` is the pixel offset below the anchor, and `matchWidth` sets the panel's minimum width to the anchor's width. This is the underlying primitive for `menus()`, and it is the recommended way to build an autocomplete `<ul popover class="listbox">` component.
+- **`toolbars(root)`**: roving tabindex for `[role="toolbar"]` (providing one tab stop where arrow keys move focus and `Home`/`End` jump). Add `class="vertical"` on the toolbar to enable Up/Down arrow navigation.
+- **`tooltips(root)`**: renders `[data-tip="text"]` on hover or focus using a single body-level `#vui-tooltip` element. It uses `position: fixed` so it is never clipped by an ancestor's `overflow` or `clip-path`. It also marks target elements with `.vui-tip-js` to suppress the CSS-only `::after` fallback.
+- **Live clock (via `init`)**: writes `HH:MM:SS` into every element with `[data-vui-clock]` once per second.
+- **`toast(message, options?)`**: programmatic snackbar that returns `{ el, dismiss }`. It automatically creates an `aria-live` `.toaster` region on its first invocation.
   - Options: `{ tone = '', title = '', duration = 4000, role = 'status', dismissible = true, placement = '' }`.
   - `tone`: `'info' | 'warn' | 'threat' | 'secure'` (also accepts a bare string shorthand: `toast('msg', 'secure')`).
   - `role`: `'status'` (polite) or `'alert'`.
@@ -64,7 +64,7 @@ addEventListener('resize', () => list.matches(':popover-open') && placePopover(l
 input.addEventListener('blur', () => list.hidePopover());
 ```
 
-The `<ul>` lives in the top layer, so it is never clipped by the chamfer/notch `clip-path` of a surrounding panel — no teleport-to-body required.
+The `<ul>` lives in the top layer, so it is never clipped by the chamfer/notch `clip-path` of a surrounding panel. No teleport-to-body logic is required.
 
 ## Vue 3
 

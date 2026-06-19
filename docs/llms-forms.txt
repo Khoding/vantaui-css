@@ -1,8 +1,8 @@
-# VantaUI CSS — Forms & Buttons
+# VantaUI CSS: Forms & Buttons
 
-> Buttons (tones, sizes, icon, groups) and form controls: text fields, textarea, select, checkbox/radio, switch, range slider, field wrappers, and validation. Native semantic elements styled directly — almost zero classes. Authoritative as of v1.5.4.
+> Buttons (tones, sizes, icon, groups) and form controls: text fields, textarea, select, checkbox/radio, switch, range slider, field wrappers, and validation. Native semantic elements are styled directly with almost zero classes. Authoritative as of v1.5.4.
 
-Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words (zero specificity). A leading `<i>text</i>` is a Material Symbols icon — use `<em>` for italics. See the hub: https://vantaui-css.khodok.com/llms.txt
+Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words (zero specificity). A leading `<i>text</i>` is a Material Symbols icon; use `<em>` for italics. See the hub: https://vantaui-css.khodok.com/llms.txt
 
 Related: segmented control & rating inputs → https://vantaui-css.khodok.com/llms-data.txt · color/spacing tokens → https://vantaui-css.khodok.com/llms-theming.txt
 
@@ -11,7 +11,7 @@ Related: segmented control & rating inputs → https://vantaui-css.khodok.com/ll
 A bare `<button>` is a chamfered outline control. `type="submit"` auto-promotes to the filled primary CTA. An `<i>`/`<svg>` + text reads as icon + label. Style a link or other element as a button with the `.button` helper. (Buttons inside a `<nav>` are owned by the header/navigation styles, not these.)
 
 Tune with one word:
-- **Variant**: `fill` (filled primary — submit buttons get this automatically) · `ghost` (bare).
+- **Variant**: `fill` (filled primary; submit buttons get this automatically) or `ghost` (bare).
 - **Tones**: `amber` · `danger` (red) · `secure` (green). Default tone is cyan. Each tone just remaps the accent variables; hover/fill follow.
 - **Sizes**: `small` · `large`.
 - **Width**: `block` (full-width).
@@ -40,7 +40,7 @@ A `<menu class="group">` (or any `.group`) is an inline-flex cluster of buttons 
 </menu>
 ```
 
-(For a single-select switch use the segmented control; for a multi-action toolbar use `role="toolbar"` — both in the navigation/data files.)
+(For a single-select switch, use the segmented control. For a multi-action toolbar, use `role="toolbar"`. Both are documented in the navigation and data files.)
 
 ## Text-like fields
 
@@ -93,7 +93,7 @@ Any native control VantaUI doesn't fully restyle inherits `accent-color: var(--a
 
 ## Combobox / autocomplete
 
-A text `<input>` plus a `<ul popover="manual" class="listbox" role="listbox">` of `<li role="option">` rows. The list renders in the **top layer** (the native popover), so it is **never clipped by an ancestor panel's chamfer/notch `clip-path` or `overflow`** — and, unlike a body teleport, the markup stays authored in place. Highlight the keyboard-active row with `.active` (or `[aria-selected="true"]`).
+A text `<input>` plus a `<ul popover="manual" class="listbox" role="listbox">` of `<li role="option">` rows. The list renders in the **top layer** (the native popover), so it is **never clipped by an ancestor panel's chamfer/notch `clip-path` or `overflow`**. Unlike a body teleport, the markup remains authored in place. Highlight the keyboard-active row with `.active` (or `[aria-selected="true"]`).
 
 The browser doesn't anchor a popover, so position it under the field with `VantaUI.placePopover(list, input, { matchWidth: true })` on open and re-call it on scroll/resize (see the JS file). You own the filtering, keyboard nav, and show/hide (`showPopover()`/`hidePopover()`); VantaUI provides the look + the positioning primitive.
 
@@ -108,4 +108,4 @@ The browser doesn't anchor a popover, so position it under the field with `Vanta
 </ul>
 ```
 
-Needs the Popover API (Baseline 2024). Below that floor, fall back to an in-flow `<ul>` — but it will be clipped by a chamfered ancestor, so prefer a panel with room below or no clip on that container.
+Needs the Popover API (Baseline 2024). Below that floor, fall back to an in-flow `<ul>`. However, it will be clipped by a chamfered ancestor, so you should prefer a panel with room below or opt out of clipping on that container.

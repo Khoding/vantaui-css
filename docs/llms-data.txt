@@ -1,4 +1,4 @@
-# VantaUI CSS — Data Display
+# VantaUI CSS: Data Display
 
 > Surfaces and data components: panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, and segmented controls. Authoritative as of v1.5.4.
 
@@ -13,9 +13,9 @@ A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-
 - **Depth**: `raised` · `inset` · `flat` (no shadow).
 - **Shape**: `notch` (all corners cut) · `brackets` (glowing corner ticks).
 - **Glow**: `glow` (accent rim glow).
-- **Color tint**: `cyan` · `amber` · `red` · `green` (admonition tones — tints the surface, recolors text, and sets the panel's accent so child buttons inherit the tone).
+- **Color tint**: `cyan`, `amber`, `red`, or `green` (these are admonition tones that tint the surface, recolor the text, and set the panel's accent color so that child buttons inherit the same tone).
 - **Tint intensity** (with a color): `dim` · `vivid`.
-- **Linked / tappable**: `linked` — hover shifts border to accent and raises the surface background. Use on panels that are wrapped in or are themselves a link.
+- **Linked / tappable**: `linked` makes the hover action shift the border to the accent color and raise the background. Use this on panels that are wrapped in or function as links.
 - Combine freely: `"amber glow"`, `"green raised"`, `"red notch brackets"`, `"cyan vivid linked"`.
 
 ```html
@@ -27,7 +27,7 @@ A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-
 <article class="amber glow"><strong>Caution</strong><p>Tinted admonition panel.</p></article>
 ```
 
-(Note: `<article class="vui-prose">` / `<article class="prose">` opts OUT of panel styling and into the long-form prose layout — see the layout file.)
+(Note: `<article class="vui-prose">` or `<article class="prose">` opts out of panel styling and uses the long-form prose layout documented in the layout file.)
 
 ## Table
 
@@ -42,7 +42,7 @@ A bare `<table>` is a mono data grid with eyebrow (uppercase) headers and cyan r
 </table>
 ```
 
-## Description list (`<dl>`) — telemetry readout
+## Description list (`<dl>`) as a telemetry readout
 
 A bare `<dl>` is a label │ value grid: each `<dt>` an uppercase label, each `<dd>` a mono value, divided by hairlines. Add `.stacked` for label-over-value rows. Pairs naturally inside a panel.
 
@@ -55,8 +55,8 @@ A bare `<dl>` is a label │ value grid: each `<dt>` an uppercase label, each `<
 
 ## Key/value row & big stat
 
-- **`.kv`** — a single key/value readout row (label left, mono value right, hairline underneath). For ad-hoc rows where a full `<dl>` is overkill.
-- **`.stat`** — a big numeric readout: a `<b>` is the large HUD number, a `<span>` the uppercase caption. `.stat.signal` lights the number cyan; `.stat.amber` ambers it.
+- **`.kv`**: a single key/value readout row (with the label on the left, a monospaced value on the right, and a hairline border underneath). This is useful for ad-hoc rows where a full `<dl>` is unnecessary.
+- **`.stat`**: a large numeric readout. Use `<b>` for the large HUD number and `<span>` for the uppercase caption. You can use `.stat.signal` to light the number in cyan, or `.stat.amber` for amber.
 
 ```html
 <div class="kv"><span>Uplink</span><span>42 ms</span></div>
@@ -104,7 +104,7 @@ An `<ol class="timeline">` is a vertical event feed: each `<li>` gets a glowing 
 
 ## Stepper / wizard progress
 
-An `<ol class="stepper">` of steps with numbered nodes joined by a connector. Mark the active step `aria-current="step"`; add `.done` to a cleared step (a check replaces its number). Add `.vertical` for a vertical layout. Static by design — wire navigation yourself (toggle `.done` / `aria-current` as the user advances).
+An `<ol class="stepper">` represents steps with numbered nodes joined by a connector line. Mark the active step with `aria-current="step"`, and add `.done` to a completed step to replace its number with a checkmark. You can also add `.vertical` for a vertical layout. Since the stepper is static by design, you will need to handle navigation logic in your application by toggling the `.done` class and the `aria-current` attribute.
 
 ```html
 <ol class="stepper">
@@ -116,7 +116,7 @@ An `<ol class="stepper">` of steps with numbered nodes joined by a connector. Ma
 
 ## Tree (disclosure hierarchy)
 
-A `<ul class="tree">` is a hierarchy of rows with guide rails. A branch is `<li><details><summary>…</summary><ul>…</ul></details></li>` — collapses with zero JS, animates open where `::details-content` is supported. A leaf is a plain `<li><a>` / `<li><span>`. Lead any row with an `<i>` (folder/file glyph); mark the selected leaf `aria-current="page"` (or `.active`).
+A `<ul class="tree">` displays a hierarchy of rows with guide rails. A branch is structured as `<li><details><summary>…</summary><ul>…</ul></details></li>`. This collapses automatically with no JavaScript and animates open on browsers that support `::details-content`. A leaf is a plain `<li><a>` or `<li><span>`. You can lead any row with an `<i>` folder or file icon, and mark the selected leaf with `aria-current="page"` or `.active`.
 
 ```html
 <ul class="tree">
@@ -135,7 +135,7 @@ For a full ARIA tree widget (roving tabindex, type-ahead, arrow-key walk) add `r
 
 ## Carousel (scroll-snap filmstrip)
 
-A `<div class="carousel">` is a horizontal scroll-snap track; its direct children are the slides. Swipe / scroll / keyboard by default. On browsers with CSS-carousel support (Chrome 135+) it also grows native prev/next arrows + a row of snap-marker dots — no JS, no library.
+A `<div class="carousel">` is a horizontal scroll-snap track where the direct child elements are the slides. It supports swipe, scroll, and keyboard navigation by default. On browsers that support native CSS carousels, it automatically adds navigation arrows and a row of snap-marker dots without requiring any JavaScript or external libraries.
 
 - Size slides with `--vui-slide`.
 - `.peek` shows a sliver of the next slide · `.full` snaps one slide per view · `.clean` hides the scrollbar · `.no-arrows` / `.no-dots` drop either native control.
@@ -150,7 +150,7 @@ A `<div class="carousel">` is a horizontal scroll-snap track; its direct childre
 
 ## Rating / signal-strength
 
-A `<fieldset class="rating">` reads as a row of pips: click or arrow-key to set, fills up to the choice. Each pip is a `<label>` (glyph = a leading `<i>`) immediately followed by its radio `<input>`, authored LOW → HIGH (1…5). The `<legend>` is the group label. Tone with a color word (`cyan` · `amber` · `red` · `green`); add `.readonly` (or disable the inputs) for a static readout. Zero-JS — real radios, resolved with `:has()`.
+A `<fieldset class="rating">` renders as a row of pips that fill up to the selected value when clicked or navigated with arrow keys. Each pip consists of a `<label>` (which uses a leading `<i>` for its icon) immediately followed by its radio `<input>`, ordered from lowest to highest value (1 to 5). The `<legend>` serves as the group label. You can tone the control using a color word like `cyan`, `amber`, `red`, or `green`. Add the `.readonly` class or disable the inputs to make it a static readout. This component requires no JavaScript since it uses real radios and is styled using `:has()`.
 
 ```html
 <fieldset class="rating amber">
@@ -163,7 +163,7 @@ A `<fieldset class="rating">` reads as a row of pips: click or arrow-key to set,
 
 ## Segmented control
 
-A single-select switch: a `.segmented` track of `<label>` chips, each wrapping a radio `<input>` (+ optional leading `<i>`). The checked segment lights up. Zero-JS — real radios, so it posts and keyboards like a radiogroup. Size with `.small`, tone with a color word (`amber` · `red` · `green`; default cyan).
+A segmented control acts as a single-select switch. It is structured as a `.segmented` track of `<label>` chips, each wrapping a radio `<input>` and an optional leading `<i>`. The checked segment is highlighted automatically. This control is built using real radios, meaning it works without JavaScript and supports native keyboard navigation. You can size it with `.small` and tone it with a color word like `amber`, `red`, or `green` (defaulting to cyan).
 
 ```html
 <div class="segmented">

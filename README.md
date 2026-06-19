@@ -10,17 +10,17 @@ The vibe: cold near-black surfaces, sharp **chamfered** corners, a single **elec
 
 ## Three ingredients
 
-VantaUI is built the BeerCSS way — **Settings · Elements · Helpers** — not BEM, not utility-first:
+VantaUI is built the BeerCSS way (Settings, Elements, Helpers) rather than BEM or utility-first:
 
-- **Settings** — design tokens (colors, type, spacing, effects) as CSS custom properties. Override any of them, anywhere.
-- **Elements** — semantic HTML styled directly. A `<header>` with a `<nav>` is an app bar; an `<article>` is a panel; a `<dialog class="left">` is a drawer; any `.vui` element holding a `<main>` is the whole app frame. **No component classes.**
-- **Helpers** — one short word to change a default: `glow`, `danger`, `small`, `left`, `status`. Usually one is enough.
+- **Settings**: design tokens (colors, type, spacing, and effects) defined as CSS custom properties. You can override any of them, anywhere.
+- **Elements**: semantic HTML styled directly. For example, a `<header>` with a `<nav>` acts as an app bar, an `<article>` represents a panel, a `<dialog class="left">` serves as a drawer, and any `.vui` element holding a `<main>` forms the complete app frame. **No component classes.**
+- **Helpers**: a single short word used to deviate from a default style, such as `glow`, `danger`, `small`, `left`, or `status`. Usually, one helper is enough.
 
 ---
 
 ## Install
 
-**GitHub (current distribution — not yet on npm or any CDN):**
+**GitHub (current distribution, as it is not yet on npm or a CDN):**
 
 ```bash
 npm i github:Khoding/vantaui-css#v1.5.0
@@ -38,15 +38,15 @@ import {init} from 'vantaui-css/js'; // optional behaviours (tabs, animated mete
 init();
 ```
 
-Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet — no extra step. If your build tool (e.g. LightningCSS) chokes on the remote `@import`, vendor a copy with that line stripped and load the fonts separately.
+Fonts (Chakra Petch, Rajdhani, Share Tech Mono, and Material Symbols) load automatically via `@import` inside the stylesheet with no extra step. If your build tool (e.g. LightningCSS) chokes on the remote `@import`, vendor a copy with that line stripped and load the fonts separately.
 
-**For production, self-hosting the fonts is faster** (no extra connection to Google's CDN, no render-blocking remote `@import`). If your framework has a font manager (e.g. [Nuxt Fonts](https://fonts.nuxt.com/)), let it handle the four families. Otherwise grab them yourself from Google Fonts ([Chakra Petch](https://fonts.google.com/specimen/Chakra+Petch) · [Rajdhani](https://fonts.google.com/specimen/Rajdhani) · [Share Tech Mono](https://fonts.google.com/specimen/Share+Tech+Mono) · [Material Symbols](https://fonts.google.com/icons)), serve them from your own origin, and load local `@font-face` rules instead — the `--font-*` token names don't change. See [theming docs](docs/llms-theming.txt) for the step-by-step.
+**For production, self-hosting the fonts is faster** because there is no extra connection to Google's CDN and no render-blocking remote `@import`. If your framework has a font manager (e.g. [Nuxt Fonts](https://fonts.nuxt.com/)), let it handle the four families. Otherwise grab them yourself from Google Fonts ([Chakra Petch](https://fonts.google.com/specimen/Chakra+Petch) · [Rajdhani](https://fonts.google.com/specimen/Rajdhani) · [Share Tech Mono](https://fonts.google.com/specimen/Share+Tech+Mono) · [Material Symbols](https://fonts.google.com/icons)), serve them from your own origin, and load local `@font-face` rules instead, as the `--font-*` token names do not change. See [theming docs](docs/llms-theming.txt) for the step-by-step.
 
 ---
 
 ## The big idea
 
-Add **`class="vui"`** to a root element (usually `<body>`). Inside it, plain semantic HTML is styled for you — **no classes required**:
+Add **`class="vui"`** to a root element (usually `<body>`). Inside it, plain semantic HTML is styled for you with **no classes required**:
 
 ```html
 <body class="vui">
@@ -116,15 +116,15 @@ Add **`class="vui"`** to a root element (usually `<body>`). Inside it, plain sem
 
 Helpers are short, element-scoped, and authored at zero specificity, so your own classes still win.
 
-- **Buttons** — `fill` `ghost` · tones `amber` `danger` `secure` · sizes `small` `large` · `block` · `icon`. Style a non-button as one with `.button`.
-- **Panels** (`<article>`) — `raised` `inset` `flat` `glow` `notch` `brackets`.
-- **Badges** — `.badge` + `cyan` `amber` `red` `green` `neutral` · `solid` · `dot`.
-- **Alerts** — re-tone `[role=status]`/`[role=alert]` with `warn` `secure` `info`.
-- **Meters / gauges** — `.meter` / `.gauge` + `cyan` `amber` `red` `green` · `small` `large` · `segmented`.
-- **Header** — `glow` `center` `float` `bare` `tall` `sticky`. An `<hr>` is a vertical divider; a `<menu>` is the trailing actions cluster.
-- **Footer** — `status` (telemetry strip) · `columns` (sitemap); `signal` on a status cell.
-- **Navigation** — `<nav class="left">` side rail · `<nav class="bottom">` phone command bar · `<dialog class="left|right">` off-canvas drawer.
-- **Alignment** — `max` (flex spacer) · `right` / `left` · `active` (alias of `aria-current="page"`).
+- **Buttons**: options include `fill`, `ghost`, tones (`amber`, `danger`, `secure`), sizes (`small`, `large`), `block`, and `icon`. You can style a non-button element as a button using `.button`.
+- **Panels** (`<article>`): options include `raised`, `inset`, `flat`, `glow`, `notch`, and `brackets`.
+- **Badges**: `.badge` with color classes (`cyan`, `amber`, `red`, `green`, `neutral`), optionally combined with `.solid` or `.dot`.
+- **Alerts**: re-tone `[role=status]` or `[role=alert]` with `warn`, `secure`, or `info`.
+- **Meters / gauges**: `.meter` or `.gauge` styled with colors (`cyan`, `amber`, `red`, `green`), sizes (`small`, `large`), or `.segmented` for ticks.
+- **Header**: options include `glow`, `center`, `float`, `bare`, `tall`, and `sticky`. An `<hr>` acts as a vertical divider, and a `<menu>` serves as the trailing actions cluster.
+- **Footer**: options include `status` (a telemetry strip) or `columns` (a sitemap), and `.signal` can be added to status cells.
+- **Navigation**: features include a `<nav class="left">` side rail, a `<nav class="bottom">` phone command bar, or a `<dialog class="left|right">` off-canvas drawer.
+- **Alignment**: helpers include `max` (a flex spacer), `right` or `left` alignment, and `active` (an alias of `aria-current="page"`).
 
 State is semantic first: mark the current item with `aria-current="page"`, an invalid field with `aria-invalid`, a switch with `role="switch"`.
 
@@ -132,7 +132,7 @@ State is semantic first: mark the current item with `aria-current="page"`, an in
 
 ## App frame
 
-Any `.vui` element that directly holds a `<main>` becomes an app frame and places its landmarks **by element** — no wrapper classes:
+Any `.vui` element that directly holds a `<main>` becomes an app frame and places its landmarks **by element**, without requiring wrapper classes:
 
 ```html
 <body class="vui">
@@ -203,7 +203,7 @@ The module registers the stylesheet, adds `.vui` to `<body>` app-wide, and (clie
 
 ## Theming
 
-Everything is CSS custom properties — override them anywhere (they cascade):
+Everything is CSS custom properties: you can override them anywhere because they cascade:
 
 ```css
 :root {
@@ -228,19 +228,19 @@ Source lives in `src/` (tokens → reset → base → layout → components → 
 
 ## Browser support
 
-Targets evergreen browsers from ~2023: requires `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, and `conic-gradient` — Chrome/Edge 111+, Firefox 121+, Safari 16.4+.
+Targets evergreen browsers from ~2023: requires `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, and `conic-gradient` (specifically Chrome/Edge 111+, Firefox 121+, and Safari 16.4+).
 
 ## Acknowledgements
 
-VantaUI's authoring model — **Settings · Elements · Helpers**, semantic HTML styled inside a single root class, one short word to deviate — is directly inspired by **[BeerCSS](https://www.beercss.com)** (© Beer css!, MIT). VantaUI is an **independent reimplementation of that idea**: the concept and ergonomics are shared, but every selector, token, component, and the whole "tactical HUD" design language is original work written from scratch — no BeerCSS source code is copied or redistributed. Sincere thanks to the BeerCSS project for showing how good a semantic-first CSS framework can feel.
+VantaUI's authoring model (Settings, Elements, and Helpers, styled inside a single root class where a short helper word deviates from a default) is directly inspired by **[BeerCSS](https://www.beercss.com)** (© Beer css!, MIT). VantaUI is an **independent reimplementation of that idea**: the concept and ergonomics are shared, but every selector, token, component, and the whole "tactical HUD" design language is original work written from scratch, meaning no BeerCSS source code is copied or redistributed. Sincere thanks to the BeerCSS project for showing how good a semantic-first CSS framework can feel.
 
 Typefaces load from Google Fonts at runtime:
 
-- **Chakra Petch**, **Rajdhani**, **Share Tech Mono** — SIL Open Font License 1.1
-- **Material Symbols** — Apache License 2.0
+- **Chakra Petch**, **Rajdhani**, **Share Tech Mono**: SIL Open Font License 1.1
+- **Material Symbols**: Apache License 2.0
 
 If you self-host these fonts instead of loading them remotely, ship their respective license texts alongside the font files.
 
 ## License
 
-[MIT](LICENSE) © Julien (Khodok). An original interpretation of a tactical-HUD look — no trademarked marks or character likenesses.
+[MIT](LICENSE) © Julien (Khodok). An original interpretation of a tactical-HUD look with no trademarked marks or character likenesses.

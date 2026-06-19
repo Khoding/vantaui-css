@@ -1,13 +1,13 @@
 # VantaUI CSS
 
-> A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first like BeerCSS: write proper, plain semantic HTML and get a tactical UI — no component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
+> A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This file is a HUB. It carries the always-needed core (rules, install, mental model) and then links to focused topic files so you only read what your task needs — a nav bar needs the navigation file, not the whole library. Fetch the topic files by URL as needed; or read the single-file complete reference: https://vantaui-css.khodok.com/llms-full.txt. Authoritative as of v1.5.4.
+This file is a HUB. It carries the core information (rules, installation, and mental model) and links to focused topic files so you only read what is relevant to your current task. For instance, a nav bar needs the navigation file, not the whole library. Fetch the topic files by URL as needed; or read the single-file complete reference: https://vantaui-css.khodok.com/llms-full.txt. Authoritative as of v1.5.4.
 
 ## Critical facts (read first)
 
-- **The package name is `vantaui-css`.** It is NOT published to npm or any CDN yet — install it directly from GitHub (`github:Khoding/vantaui-css#<tag>`). All import specifiers start with `vantaui-css`.
-- **You opt in with one class: `class="vui"`** on a root element (usually `<body>`). Inside `.vui`, plain semantic HTML is styled automatically. Outside `.vui`, only design tokens are defined — nothing global changes.
+- **The package name is `vantaui-css`.** It is not published to npm or any CDN yet, so you should install it directly from GitHub (`github:Khoding/vantaui-css#<tag>`). All import specifiers start with `vantaui-css`.
+- **You opt in with one class: `class="vui"`** on a root element (usually `<body>`). Inside `.vui`, plain semantic HTML is styled automatically. Outside `.vui`, only design tokens are defined, so nothing changes globally.
 - **Semantic-first, almost zero classes.** A `<header>` containing a `<nav>` is an app bar. An `<article>` is a panel. A `<dialog class="left">` is a drawer. A `<meter>` is a telemetry bar. You rarely add classes; when you do, it is one short helper word (`glow`, `danger`, `small`, `left`).
 - **All VantaUI styles live in cascade layers and are authored at zero specificity (`:where()`).** Your app's own (unlayered) classes ALWAYS win. You never need `!important` to override VantaUI.
 - **`<i>text</i>` is an ICON** (Material Symbols ligature), e.g. `<i>home</i>` draws the home glyph. Use `<em>` for italic text, never `<i>`.
@@ -16,7 +16,7 @@ This file is a HUB. It carries the always-needed core (rules, install, mental mo
 
 ## Install
 
-Not on npm/CDN yet — install from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.5.4"`:
+Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.5.4"`:
 
 ```bash
 npm i github:Khoding/vantaui-css#v1.5.4
@@ -34,13 +34,13 @@ init();                                   // boots tabs, animated meters, drawer
 <body class="vui">…</body>
 ```
 
-Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet. Note: the remote `@import` breaks some processors (e.g. LightningCSS in a host build) — if so, vendor a copy with the font `@import` stripped and load the fonts separately.
+Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet. Note that the remote `@import` can break some build tools (like LightningCSS). If this occurs, you can vendor a copy of the stylesheet with the `@import` line removed and load the fonts separately.
 
 Package entry points (`exports`): `vantaui-css` (min css), `vantaui-css/css` (unminified), `vantaui-css/min`, `vantaui-css/js`, `vantaui-css/js/global`, `vantaui-css/vue`, `vantaui-css/nuxt`, `vantaui-css/src/*`.
 
-## Mental model — Settings · Elements · Helpers (the BeerCSS way)
+## Mental model: Settings, Elements, and Helpers (the BeerCSS way)
 
-- **Settings** = design tokens (CSS custom properties). Override any, anywhere — they cascade.
+- **Settings** = design tokens (CSS custom properties). Override any, anywhere because they cascade.
 - **Elements** = semantic HTML styled directly inside `.vui`. No component classes.
 - **Helpers** = one short element-scoped word to change a default (e.g. `<button class="danger">`).
 
@@ -72,7 +72,7 @@ State is semantic first: current nav item = `aria-current="page"` (or alias `cla
 
 ## App frame (quick reference)
 
-Any `.vui` element that directly holds a `<main>` becomes an app frame and places landmarks by element — no wrapper classes:
+Any `.vui` element that directly holds a `<main>` becomes an app frame and places landmarks by element, with no wrapper classes required:
 
 ```html
 <body class="vui">
@@ -98,11 +98,11 @@ On `<body>` it fills the viewport; nested in a sized box it fills the box. Full 
 
 ## Common mistakes to avoid
 
-- Do NOT use `<i>` for italics — it renders an icon glyph. Use `<em>`.
-- Do NOT add component classes like `.panel`, `.card`, `.btn` — use the semantic element (`<article>`, `<button>`). Helpers are single words, not BEM.
+- Do NOT use `<i>` for italics; it renders an icon glyph. Use `<em>` instead.
+- Do NOT add component classes like `.panel`, `.card`, or `.btn`. Use the semantic element (`<article>`, `<button>`). Helpers are single words, not BEM.
 - Do NOT prefix bare semantic usage; the `vui-` prefix is only for free-floating layout/utility/primitive helpers.
-- Do NOT use `!important` to override VantaUI — write an unlayered class; it already wins.
-- The package is `vantaui-css` and installs from GitHub (`github:Khoding/vantaui-css#<tag>`) — it is not on npm or any CDN yet.
+- Do NOT use `!important` to override VantaUI. Write an unlayered class, which will always take precedence.
+- The package is named `vantaui-css` and must be installed from GitHub (`github:Khoding/vantaui-css#<tag>`) because it is not yet available on npm or any CDN.
 - The default `main` is the minified CSS; use `vantaui-css/css` for the unminified build.
 
 ## Browser support
@@ -111,4 +111,4 @@ Evergreen browsers from ~2023. Requires `:has()`, cascade layers, container quer
 
 ## License
 
-MIT. An original tactical-HUD interpretation — no trademarked marks or character likenesses.
+MIT. An original tactical-HUD interpretation with no trademarked marks or character likenesses.

@@ -1,14 +1,14 @@
-# VantaUI CSS — Theming & Design Tokens
+# VantaUI CSS: Theming & Design Tokens
 
 > Every design token (CSS custom property) and how to override it: the OKLCH color system, surfaces, text, status, spacing/geometry, typography, effects, motion, and keyframes. Authoritative as of v1.5.4.
 
-Prerequisites: tokens are defined on `:root`, so they're available everywhere — even outside `.vui` (outside `.vui`, ONLY tokens are defined; nothing else changes). Override any token anywhere; they cascade. See the hub: https://vantaui-css.khodok.com/llms.txt
+Prerequisites: design tokens are defined on `:root` and are available everywhere, including outside the `.vui` scope. Outside `.vui`, only tokens are defined, meaning nothing else changes. You can override any token anywhere because they cascade. See the hub: https://vantaui-css.khodok.com/llms.txt
 
 Related: type-role/utility classes that consume these tokens → https://vantaui-css.khodok.com/llms-layout.txt
 
 ## How theming works
 
-VantaUI is token-driven. To re-skin it, override custom properties — you rarely touch component CSS. The single signal accent is electric cyan (`--accent`); change it and buttons, focus rings, glows, links, and active states all follow.
+VantaUI is token-driven. To re-skin the interface, override the custom properties instead of touching component CSS. The primary accent color is electric cyan (`--accent`). If you change this token, all buttons, focus rings, glows, links, and active states will update to match.
 
 ```css
 :root {
@@ -36,7 +36,7 @@ Colors are OKLCH. Every token ships twice in `src/`: an sRGB hex/rgba fallback f
 
 - **Spacing scale**: `--space-0…--space-13`. (0=0, 1=2px, 2=4px, 3=8px, 4=12px, 5=16px, 6=20px, 7=24px, 8=32px, then up to 13.)
 - **Radius**: `--radius-{none,xs,sm,pill}`.
-- **Bevel / chamfer cut sizes**: `--bevel-{sm,md,lg,xl}`. Ready clip-paths: `--clip-chamfer` (cut top-left + bottom-right) / `--clip-notch` (all four corners). The text-bearing plates (`<article>` panels, `.vui-chamfer`/`.vui-notch`, `<pre>`) progressively upgrade to `border-radius` + `corner-shape: bevel` on browsers that support it (Chromium 139+): identical look, but corner-shape shapes only the box, so it never clips overflowing text/dropdowns the way clip-path does. clip-path remains the fallback elsewhere. Add `.vui-clip` to an element to opt it back out of the upgrade — it keeps the clip-path version, restoring the open, unstroked diagonal corner (the HUD "snipped" look) at the cost of clipping its own content (you manage that yourself).
+- **Bevel / chamfer cut sizes**: `--bevel-{sm,md,lg,xl}`. Ready clip-paths include `--clip-chamfer` (cut top-left and bottom-right) and `--clip-notch` (all four corners cut). Text-bearing plates (such as `<article>` panels, `.vui-chamfer`, `.vui-notch`, and `<pre>` elements) progressively upgrade to `border-radius` and `corner-shape: bevel` on compatible browsers (Chromium 139+). This offers an identical look, but `corner-shape` only shapes the box boundary without clipping overflowing text or dropdown menus the way `clip-path` does. On other browsers, `clip-path` remains the fallback. You can add the `.vui-clip` class to an element to opt out of this upgrade. This keeps the clip-path version and restores the open, unstroked diagonal corner (the classic "snipped" HUD look), though it will clip overflowing content (which you must then manage yourself).
 - **Borders**: `--border-{hair,thin,bold}`.
 - **Container / frame**: `--container-max` `--container-narrow` `--container-pad` `--gutter` `--hud-edge` `--drawer-width`.
 - **Breakpoints**: `--bp-{s,m,l,xl}`.
@@ -45,7 +45,7 @@ Colors are OKLCH. Every token ships twice in `src/`: an sRGB hex/rgba fallback f
 
 - **Families**: `--font-{display,ui,hud,mono,icon}` (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols).
 - **Weights**: `--fw-{light,regular,medium,semibold,bold}`.
-- **Fluid sizes**: `--fs-{2xs,xs,sm,base,md,lg,xl,2xl,3xl,4xl,5xl}` (base and up use `clamp()` — size with these, not media queries).
+- **Fluid sizes**: `--fs-{2xs,xs,sm,base,md,lg,xl,2xl,3xl,4xl,5xl}` (base and up use `clamp()`; size using these rather than media queries).
 - **Line height**: `--lh-{tight,snug,normal,mono}`. **Letter-spacing**: `--ls-{tight,normal,wide,wider,widest}`.
 - **Semantic sizes**: `--text-{display,title,heading,body,label,mono}-size`.
 
@@ -63,18 +63,18 @@ Available animations: `vui-flicker`, `vui-scan`, `vui-pulse`, `vui-sweep` (and t
 
 ## Fonts loading
 
-Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet. The remote `@import` breaks some processors (e.g. LightningCSS in a host build) — if so, vendor a copy of the CSS with the font `@import` stripped and load the fonts separately.
+Fonts (Chakra Petch, Rajdhani, Share Tech Mono, and Material Symbols) load automatically via `@import` inside the stylesheet. Because the remote `@import` can break some build tools (like LightningCSS), you can vendor a copy of the stylesheet with the `@import` line removed and load the fonts separately.
 
 ### Self-hosting the fonts (recommended for production)
 
 The bundled `@import` is convenience, not a requirement. Self-hosting the four families is faster (no extra connection to `fonts.googleapis.com`, no render-blocking remote `@import`, fonts cached on your own origin) and keeps visitor requests off Google's CDN.
 
-If your framework has a font manager, let it handle this — e.g. **[Nuxt Fonts](https://fonts.nuxt.com/)** or **[`@nuxtjs/google-fonts`](https://google-fonts.nuxtjs.org/)** will download, subset, and self-host automatically; just declare the four families and remove the remote `@import`.
+If your framework has a font manager, let it handle this. For example, **[Nuxt Fonts](https://fonts.nuxt.com/)** or **[`@nuxtjs/google-fonts`](https://google-fonts.nuxtjs.org/)** will download, subset, and self-host the fonts automatically. You only need to declare the four families and remove the remote `@import` line.
 
 Without a font manager, do it by hand:
 
-1. Open each family on Google Fonts — [Chakra Petch](https://fonts.google.com/specimen/Chakra+Petch), [Rajdhani](https://fonts.google.com/specimen/Rajdhani), [Share Tech Mono](https://fonts.google.com/specimen/Share+Tech+Mono), [Material Symbols](https://fonts.google.com/icons) — and download the font files (or grab the `@font-face` CSS the Google Fonts URL returns).
+1. Open each family on Google Fonts: [Chakra Petch](https://fonts.google.com/specimen/Chakra+Petch), [Rajdhani](https://fonts.google.com/specimen/Rajdhani), [Share Tech Mono](https://fonts.google.com/specimen/Share+Tech+Mono), [Material Symbols](https://fonts.google.com/icons), and download the font files (or grab the `@font-face` CSS that the Google Fonts URL returns).
 2. Drop the files under e.g. `/fonts/` in your app and serve them from your own origin.
 3. Strip the remote `@import` from the VantaUI stylesheet (vendor a copy with that line removed) and load your local `@font-face` declarations instead. The token family names (`--font-display` etc.) stay the same, so nothing else changes.
 
-Chakra Petch, Rajdhani, and Share Tech Mono are SIL Open Font License 1.1; Material Symbols is Apache License 2.0 — when you self-host the actual files, include those license texts alongside them.
+Chakra Petch, Rajdhani, and Share Tech Mono are licensed under the SIL Open Font License 1.1, while Material Symbols is licensed under the Apache License 2.0. When self-hosting the actual files, please include those license texts alongside them.

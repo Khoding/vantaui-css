@@ -1,13 +1,13 @@
 /* ============================================================
-   VantaUI docs — gallery data + renderer.
+   VantaUI docs: gallery data + renderer.
 
    Two kinds of section content:
-     • static examples — a live demo + a "view code" button. The demo can
+     • static examples: a live demo + a "view code" button. The demo can
        carry presentational scaffolding (a sized frame box) while the COPYABLE
        source stays clean: author `code` (clean, shown + copied) and an
        optional `demo` (the scaffolded preview). When `demo` is omitted the
        demo IS the clean code.
-     • playgrounds   — a live element you reconfigure with checkboxes/selects.
+     • playgrounds: a live element you reconfigure with checkboxes/selects.
        A `render(state)` returns ONLY the component markup, so the preview, the
        copyable source, and the controls can never drift, and the code is clean
        by construction (no demo-only sizing leaks in).
@@ -92,14 +92,14 @@
       id: 'philosophy',
       title: 'Philosophy',
       blurb:
-        'Three ingredients — <strong>Settings, Elements, Helpers</strong>. Add <code>class="vui"</code> to a root element and bare, semantic HTML (<code>header</code>, <code>nav</code>, <code>article</code>, <code>button</code>, <code>input</code>, <code>table</code>, <code>meter</code>, <code>dialog</code>…) comes alive with zero classes. Deviate from a default with one short <em>helper</em> word (<code>glow</code>, <code>danger</code>, <code>small</code>, <code>left</code>). Icons are <code>&lt;i&gt;home&lt;/i&gt;</code>. Everything ships inside <code>@layer</code>s at zero specificity, so your own styles always win.<br><br>Every component below is <strong>live</strong>: flip the checkboxes and selects to reconfigure it, then hit <strong>View code</strong> for the exact, copy-ready markup of that variant — nothing more.',
+        'Three ingredients: <strong>Settings, Elements, Helpers</strong>. Add <code>class="vui"</code> to a root element and bare, semantic HTML (<code>header</code>, <code>nav</code>, <code>article</code>, <code>button</code>, <code>input</code>, <code>table</code>, <code>meter</code>, <code>dialog</code>…) comes alive with zero classes. Deviate from a default with one short <em>helper</em> word (<code>glow</code>, <code>danger</code>, <code>small</code>, <code>left</code>). Icons are <code>&lt;i&gt;home&lt;/i&gt;</code>. Everything ships inside <code>@layer</code>s at zero specificity, so your own styles always win.<br><br>Every component below is <strong>live</strong>: flip the checkboxes and selects to reconfigure it, then hit <strong>View code</strong> for the exact, copy-ready markup of that variant with nothing more.',
     },
     {
       group: 'Getting started',
       id: 'install',
       title: 'Install',
       blurb:
-        'One stylesheet, one icon font. The optional JS adds tabs, drawers, the live clock, and meter/gauge animation — the CSS is fully usable without it.',
+        'One stylesheet, one icon font. The optional JS adds tabs, drawers, the live clock, and meter/gauge animation, though the CSS is fully usable without it.',
       examples: [
         {
           code: '<!doctype html>\n<html lang="en">\n  <head>\n    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n    <link rel="stylesheet" href="dist/vantaui.min.css">\n  </head>\n  <body class="vui">\n    <h1>Command Center</h1>\n    <button type="submit">Authorize</button>\n\n    <!-- optional behaviours -->\n    <script type="module" src="js/vantaui.js"><\/script>\n  </body>\n</html>',
@@ -118,8 +118,8 @@
       render: function () {
         return (
           '<p class="doc-tok-h">Ink &amp; surfaces</p>' + swatches(INK, '--') +
-          '<p class="doc-tok-h">Detective cyan — the signal</p>' + swatches(CYAN, '--') +
-          '<p class="doc-tok-h">Amber · Red · Green — status</p>' +
+          '<p class="doc-tok-h">Detective cyan: the signal</p>' + swatches(CYAN, '--') +
+          '<p class="doc-tok-h">Amber, Red, Green: status</p>' +
           swatches(AMBER, '--') + swatches(RED, '--') + swatches(GREEN, '--') +
           '<p class="doc-tok-h">Cool neutrals / text</p>' + swatches(SLATE, '--')
         );
@@ -133,7 +133,7 @@
         'Three voices: Chakra Petch (display / UI, uppercase + tracked), Rajdhani (HUD numerics), Share Tech Mono (telemetry). Sizes are fluid via clamp(). Webfonts swap with zero layout shift thanks to metric-matched fallbacks.',
       examples: [
         {
-          code: '<h1>Knightfall Protocol</h1>\n<h2>Detective Mode</h2>\n<h3>Gadget Loadout</h3>\n<p>Body copy in the UI voice — terse, operational, system-to-operator.</p>',
+          code: '<h1>Knightfall Protocol</h1>\n<h2>Detective Mode</h2>\n<h3>Gadget Loadout</h3>\n<p>Body copy in the UI voice: terse, operational, and system-to-operator.</p>',
         },
         {
           code: '<p class="vui-display">DISPLAY</p>\n<p class="vui-title">TITLE ROLE</p>\n<p class="vui-heading">HEADING ROLE</p>\n<span class="vui-readout">87.4</span>\n<p class="vui-eyebrow">System eyebrow</p>\n<p class="vui-signal">CRITICAL DATA 042.7</p>',
@@ -148,7 +148,7 @@
       id: 'geometry',
       title: 'Spacing & geometry',
       blurb:
-        '8px grid. Corners are cut, not rounded — the chamfer (cut TL+BR) and the four-corner notch are the signature silhouette. 2px is the most rounding you should ever see.',
+        '8px grid. Corners are cut rather than rounded: the chamfer (cut top-left and bottom-right) and the four-corner notch are the signature silhouette. 2px is the maximum rounding you should ever see.',
       render: function () {
         return (
           '<div class="doc-spaces">' +
@@ -200,7 +200,7 @@
       id: 'primitives',
       title: 'Primitives',
       blurb:
-        'The HUD building blocks every component is assembled from — useful on their own. Apply the class to any element. Type roles (<code>vui-display/title/heading/readout/mono</code>) live under <a href="#type">Type</a>; below are the plates, frames, rules and textured backdrops.',
+        'The HUD building blocks every component is assembled from, which are also useful on their own. Apply the class to any element. Type roles (<code>vui-display/title/heading/readout/mono</code>) live under <a href="#type">Type</a>; below are the plates, frames, rules and textured backdrops.',
       render: function () {
         return (
           '<p class="doc-tok-h">Plates &amp; frames</p>' +
@@ -231,7 +231,7 @@
       id: 'utilities',
       title: 'Utility classes',
       blurb:
-        'A focused, BeerCSS-sized helper set — not a Tailwind-scale explosion. All <code>vui-</code> prefixed, logical-property based, and living in the <code>utilities</code> layer so they win on ties but never on your own styles. Spacing follows the 8px scale (index → <code>--space-N</code>).',
+        'A focused, BeerCSS-sized helper set rather than a Tailwind-scale explosion. All <code>vui-</code> prefixed, logical-property based, and living in the <code>utilities</code> layer so they win on ties but never on your own styles. Spacing follows the 8px scale (index → <code>--space-N</code>).',
       render: function () {
         var size = function (n) {
           return { name: n, sample: '<span class="' + n + '" style="line-height:1">Aa</span>' };
@@ -290,7 +290,7 @@
       id: 'header',
       title: 'Header / app bar',
       blurb:
-        'A <code>&lt;header&gt;</code> containing a <code>&lt;nav&gt;</code> becomes an app bar — no class required. The first <code>&lt;a&gt;</code> is the brand; the first <code>&lt;nav&gt;</code> pushes trailing actions right; a <code>&lt;form role="search"&gt;</code> is the search shell; a <code>&lt;menu&gt;</code> is the trailing cluster. A container query collapses the nav to a burger when the bar itself is narrow.',
+        'A <code>&lt;header&gt;</code> containing a <code>&lt;nav&gt;</code> becomes an app bar with no class required. The first <code>&lt;a&gt;</code> is the brand; the first <code>&lt;nav&gt;</code> pushes trailing actions right; a <code>&lt;form role="search"&gt;</code> is the search shell; a <code>&lt;menu&gt;</code> is the trailing cluster. A container query collapses the nav to a burger when the bar itself is narrow.',
       play: {
         state: { tone: '', shape: '', align: '', size: '', sticky: false, search: false },
         controls: [
@@ -323,7 +323,7 @@
       id: 'footer',
       title: 'Footer',
       blurb:
-        'A bare <code>&lt;footer&gt;</code> (outside an <code>&lt;article&gt;</code>/<code>&lt;dialog&gt;</code>) is the page footer. Pick a shape: the default hairline strip, <code>status</code> (a dense telemetry bar where each child is a cell — add <code>signal</code> for the accent tone), or <code>columns</code> (an auto-fit sitemap; a <code>.bottom</code> child spans full width).',
+        'A bare <code>&lt;footer&gt;</code> (outside an <code>&lt;article&gt;</code>/<code>&lt;dialog&gt;</code>) is the page footer. Pick a shape: the default hairline strip, <code>status</code> (a dense telemetry bar where each child is a cell, where you can add <code>signal</code> for the accent tone), or <code>columns</code> (an auto-fit sitemap; a <code>.bottom</code> child spans full width).',
       play: {
         state: { shape: '', glow: false, base: false },
         controls: [
@@ -372,7 +372,7 @@
       id: 'navigation',
       title: 'Navigation',
       blurb:
-        'Patterns from bare semantics. The <strong>bottom tab bar</strong> below is <code>&lt;nav class="bottom"&gt;</code> — items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> with an <code>&lt;i&gt;</code> + label; mark the current one <code>active</code>. Add <code>fixed</code> to pin it to the viewport floor. A <strong>breadcrumb</strong> is any <code>&lt;nav&gt;</code> wrapping an <code>&lt;ol&gt;</code> — detected with <code>:has()</code>, no class, auto separators.',
+        'Patterns from bare semantics. The <strong>bottom tab bar</strong> below is <code>&lt;nav class="bottom"&gt;</code> where items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> with an <code>&lt;i&gt;</code> + label; mark the current one <code>active</code>. Add <code>fixed</code> to pin it to the viewport floor. A <strong>breadcrumb</strong> is any <code>&lt;nav&gt;</code> wrapping an <code>&lt;ol&gt;</code>, which is automatically detected using <code>:has()</code> with no classes or manual separators.',
       play: {
         state: { active: 0 },
         controls: [],
@@ -400,7 +400,7 @@
       },
       examples: [
         {
-          label: 'Breadcrumb — <nav><ol>…</ol></nav>',
+          label: 'Breadcrumb: <nav><ol>…</ol></nav>',
           code: '<nav aria-label="Breadcrumb">\n  <ol>\n    <li><a href="/">Home</a></li>\n    <li><a href="/cases">Cases</a></li>\n    <li><a href="/cases/active">Active</a></li>\n    <li aria-current="page">Bleake Island</li>\n  </ol>\n</nav>',
         },
       ],
@@ -439,12 +439,12 @@
       id: 'sidebar',
       title: 'Drawer sidebar',
       blurb:
-        'A semantic <code>&lt;aside class="drawer"&gt;</code> (or <code>&lt;nav class="drawer"&gt;</code>) in an app frame is a wide, text-labelled sidebar — <strong>persistent on desktop, off-canvas on mobile</strong>, no media queries. Structure it like any drawer; add <code>right</code> to dock it trailing. A <code>&lt;button data-open="id"&gt;</code> toggles it (optional JS). <em>This page&rsquo;s own sidebar is one.</em>',
+        'A semantic <code>&lt;aside class="drawer"&gt;</code> (or <code>&lt;nav class="drawer"&gt;</code>) in an app frame is a wide, text-labelled sidebar that is <strong>persistent on desktop but transitions off-canvas on mobile</strong> without requiring media queries. Structure it like any drawer; add <code>right</code> to dock it trailing. A <code>&lt;button data-open="id"&gt;</code> toggles it (optional JS). <em>This page&rsquo;s own sidebar is one.</em>',
       examples: [
         {
           frame: true,
           code: '<aside class="drawer" id="demoDrawer">\n  <header>\n    <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n    <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n  </header>\n  <nav>\n    <h6>Telemetry</h6>\n    <a class="active"><i>space_dashboard</i>Overview</a>\n    <a><i>radar</i>Scan</a>\n    <a><i>map</i>City Map</a>\n    <h6>System</h6>\n    <a><i>handyman</i>Loadout</a>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <footer>\n    <button class="ghost block"><i>home</i>Sign out</button>\n  </footer>\n</aside>',
-          demo: '<div class="vui" style="block-size:600px">\n  <aside class="drawer" id="demoDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <a><i>map</i>City Map</a>\n      <h6>System</h6>\n      <a><i>handyman</i>Loadout</a>\n      <a><i>settings</i>Setup</a>\n    </nav>\n    <footer>\n      <button class="ghost block"><i>home</i>Sign out</button>\n    </footer>\n  </aside>\n  <header>\n    <button class="icon vui-until-m" data-open="demoDrawer" aria-label="Open menu"><i>menu</i></button>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button aria-label="Profile"><i>account_circle</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Command Center</h1>\n      <p>The sidebar is pinned on desktop and collapses to an off-canvas drawer on phones — resize to see it switch.</p>\n    </div>\n  </main>\n</div>',
+          demo: '<div class="vui" style="block-size:600px">\n  <aside class="drawer" id="demoDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <a><i>map</i>City Map</a>\n      <h6>System</h6>\n      <a><i>handyman</i>Loadout</a>\n      <a><i>settings</i>Setup</a>\n    </nav>\n    <footer>\n      <button class="ghost block"><i>home</i>Sign out</button>\n    </footer>\n  </aside>\n  <header>\n    <button class="icon vui-until-m" data-open="demoDrawer" aria-label="Open menu"><i>menu</i></button>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button aria-label="Profile"><i>account_circle</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Command Center</h1>\n      <p>The sidebar is pinned on desktop and collapses to an off-canvas drawer on phones (resize to see it switch).</p>\n    </div>\n  </main>\n</div>',
         },
       ],
     },
@@ -467,7 +467,7 @@
       id: 'autogrid',
       title: 'Auto grid',
       blurb:
-        '<code>vui-autogrid</code> is the responsive-by-default card flow: it fits as many cards as the space allows at your <code>--vui-min</code> width, then reflows to a single full-width card on a phone — no breakpoints. Add <code>--fit</code> so a short last row stretches to fill.',
+        '<code>vui-autogrid</code> is the responsive-by-default card flow: it fits as many cards as the space allows at your <code>--vui-min</code> width, and reflows to a single full-width card on a phone without using breakpoints. Add <code>--fit</code> so a short last row stretches to fill.',
       play: {
         state: { min: 13, fit: false },
         controls: [
@@ -495,7 +495,7 @@
         '<code>vui-prose</code> is a responsive grid for long-form text. It centres copy to a readable measure (65ch) while letting images, figures, blockquotes and code bleed wider. Use <code>bleed</code> to widen to the container sides, <code>bleed-full</code> to go edge-to-edge.',
       examples: [
         {
-          code: '<article class="vui-prose">\n  <h1>Knightfall Protocol</h1>\n  <p class="vui-eyebrow">Security Level: Classified</p>\n  <p>To preserve the security of Gotham City, the Knightfall Protocol has been established as a final contingency. In the event of primary identity compromise, all core assets are to be decommissioned.</p>\n\n  <blockquote>"The city needs a legend. Something worse than me."</blockquote>\n\n  <figure class="bleed">\n    <img src="preview.png" alt="Tactical HUD preview" style="aspect-ratio:16/9;object-fit:cover">\n    <figcaption>Fig. 01 — VantaUI Tactical HUD telemetry.</figcaption>\n  </figure>\n\n  <p>All field agents are instructed to stand down. All communication links will be terminated.</p>\n</article>',
+          code: '<article class="vui-prose">\n  <h1>Knightfall Protocol</h1>\n  <p class="vui-eyebrow">Security Level: Classified</p>\n  <p>To preserve the security of Gotham City, the Knightfall Protocol has been established as a final contingency. In the event of primary identity compromise, all core assets are to be decommissioned.</p>\n\n  <blockquote>"The city needs a legend. Something worse than me."</blockquote>\n\n  <figure class="bleed">\n    <img src="preview.png" alt="Tactical HUD preview" style="aspect-ratio:16/9;object-fit:cover">\n    <figcaption>Fig. 01: VantaUI Tactical HUD telemetry.</figcaption>\n  </figure>\n\n  <p>All field agents are instructed to stand down. All communication links will be terminated.</p>\n</article>',
         },
       ],
     },
@@ -504,18 +504,18 @@
       id: 'overflow',
       title: 'Overflow',
       blurb:
-        'An app shell must never scroll sideways, so VantaUI contains overflow <em>at the source</em>. The stage carries <code>min-inline-size: 0</code> so a wide child cannot balloon the grid and drag the chrome with it; text wraps long strings (<code>overflow-wrap</code>); <code>&lt;pre&gt;</code>, tables and carousels scroll themselves; tables add <code>table-layout: fixed</code> so they are mathematically incapable of overflowing. Below <code>20rem</code> every word breaks, so even a long heading stays in bounds. Net result: respect semantics and a few helpers and the layout <strong>never</strong> overflows. And when a genuine mistake does, the stage <em>scrolls</em> — never <code>clip</code> — so the slip stays visible to you and the content stays reachable for your user.',
+        'An app shell must never scroll sideways, so VantaUI contains overflow at the source. The stage carries <code>min-inline-size: 0</code> so that a wide child cannot balloon the grid and pull the chrome with it. Text wraps long strings (<code>overflow-wrap</code>), while <code>&lt;pre&gt;</code>, tables, and carousels scroll themselves. Tables also use <code>table-layout: fixed</code>, making them mathematically incapable of overflowing. Below <code>20rem</code> every word breaks, ensuring even a long heading stays in bounds. As a result, if you respect the semantics and use a few helpers, the layout will never overflow. If a mistake does occur, the stage scrolls instead of clipping, keeping the layout slip visible to you and the content reachable for your user.',
       examples: [
         {
-          label: 'Long unbroken strings wrap — they never push the layout',
+          label: 'Long unbroken strings wrap without pushing the layout',
           code: '<article>\n  <p class="vui-eyebrow">Decryption key</p>\n  <p>VANTA0x4f2a9c1b2e8d3f6a509c1b2e8d3f6a509c1b2e8d3f6a509c1b2e8d3f6a509c1b2e8d</p>\n</article>',
         },
         {
-          label: 'A wide <pre> scrolls itself — no wrapper needed',
+          label: 'A wide <pre> scrolls itself without needing a wrapper',
           code: '<pre>$ vanta deploy --sector 14-C --threat high --uplink secure --window 24h --format ndjson --verbose</pre>',
         },
         {
-          label: 'Deliberate horizontal scroll — the .scroll escape hatch',
+          label: 'Deliberate horizontal scroll using the `.scroll` escape hatch',
           code: '<div class="scroll">\n  <table class="nowrap">\n    <thead><tr><th>Sector</th><th>Status</th><th>Operator</th><th>Last ping</th><th data-num>Threat</th></tr></thead>\n    <tbody>\n      <tr><td>Bleake Island</td><td>Contested</td><td>B. Wayne</td><td>02:18:04 UTC</td><td data-num>64</td></tr>\n      <tr class="red"><td>Miagani</td><td>Hostile</td><td>J. Gordon</td><td>02:17:51 UTC</td><td data-num>86</td></tr>\n      <tr><td>Founders Island</td><td>Secure</td><td>R. Sionis</td><td>02:16:30 UTC</td><td data-num>38</td></tr>\n    </tbody>\n  </table>\n</div>',
         },
       ],
@@ -611,7 +611,7 @@
       id: 'forms',
       title: 'Forms',
       blurb:
-        'Native controls are styled directly — no wrappers. A <code>&lt;label&gt;</code> wrapping a field stacks it (leading <code>&lt;span&gt;</code> label, trailing <code>&lt;small&gt;</code> hint; add <code>error</code> to the hint when <code>aria-invalid</code>). The single field below is live; switches, checkboxes, radios and the range slider follow.',
+        'Native controls are styled directly with no wrappers. A <code>&lt;label&gt;</code> wrapping a field stacks it (leading <code>&lt;span&gt;</code> label, trailing <code>&lt;small&gt;</code> hint; add <code>error</code> to the hint when <code>aria-invalid</code>). The single field below is live; switches, checkboxes, radios and the range slider follow.',
       play: {
         state: { type: 'password', invalid: false, disabled: false, hint: true },
         controls: [
@@ -633,7 +633,7 @@
             control = '<input type="' + s.type + '" placeholder="••••••••" value="' + val + '"' + inv + dis + '>';
           }
           var hint = s.hint
-            ? '\n  <small' + (s.invalid ? ' class="error"' : '') + '>' + (s.invalid ? 'Access denied — code rejected.' : '8–32 characters.') + '</small>'
+            ? '\n  <small' + (s.invalid ? ' class="error"' : '') + '>' + (s.invalid ? 'Access denied: code rejected.' : '8–32 characters.') + '</small>'
             : '';
           return '<label>\n  <span>Access code</span>\n  ' + control + hint + '\n</label>';
         },
@@ -673,7 +673,7 @@
       id: 'meters',
       title: 'Meters & progress',
       blurb:
-        'The <code>.meter</code> helper is a labelled, accent-toned bar driven purely by <code>--value</code> — the readout renders from a CSS counter, no JS. Tone it, or add <code>segmented</code> for ticks. Native <code>&lt;meter&gt;</code> (threshold-coloured) and <code>&lt;progress&gt;</code> are restyled too; add <code>data-animate</code> (with the JS helper) to count up on view.',
+        'The <code>.meter</code> helper is a labelled, accent-toned bar driven purely by <code>--value</code> where the readout renders from a CSS counter without JavaScript. Tone it, or add <code>segmented</code> for ticks. Native <code>&lt;meter&gt;</code> (threshold-coloured) and <code>&lt;progress&gt;</code> are restyled too; add <code>data-animate</code> (with the JS helper) to count up on view.',
       play: {
         state: { tone: '', segmented: false, value: 73 },
         controls: [
@@ -691,7 +691,7 @@
           code: '<meter min="0" max="100" low="30" high="70" optimum="100" value="86"></meter>\n<progress max="100" value="62"></progress>',
         },
         {
-          label: 'Counts up on view — data-animate (optional JS)',
+          label: 'Counts up on view via data-animate (optional JS)',
           code: '<div class="meter amber" data-value="62" data-animate style="--value:0">\n  <span>Threat Level</span>\n  <b></b>\n</div>',
         },
       ],
@@ -701,7 +701,7 @@
       id: 'gauge',
       title: 'Radial gauge',
       blurb:
-        'A 270° arc readout built from a single conic-gradient — no SVG, no JS. The value renders from <code>--value</code>; leave <code>&lt;b&gt;</code> empty and a counter fills it. Size with <code>small · large</code>, tone with a colour word.',
+        'A 270° arc readout built from a single conic-gradient with no SVG and no JavaScript. The value renders from <code>--value</code>; leave <code>&lt;b&gt;</code> empty and a counter fills it. Size with <code>small · large</code>, tone with a colour word.',
       play: {
         state: { size: '', tone: '', value: 87 },
         controls: [
@@ -732,7 +732,7 @@
       id: 'disclosure',
       title: 'Accordion',
       blurb:
-        'Native <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> styled as a chamfered, zero-JS disclosure — and it animates open on browsers that support <code>::details-content</code>.',
+        'Native <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> styled as a chamfered, zero-JS disclosure that animates open on browsers supporting <code>::details-content</code>.',
       examples: [
         {
           code: '<details open>\n  <summary>Mission briefing</summary>\n  Intercept the broker at pier 14-C before the data drive changes hands.\n</details>\n<details>\n  <summary>Known associates</summary>\n  Ironhand · The Chemist · Night Courier.\n</details>',
@@ -744,7 +744,7 @@
       id: 'table',
       title: 'Tables',
       blurb:
-        'A semantic <code>&lt;table&gt;</code> becomes a telemetry grid: uppercase eyebrow headers, hairline rows, cyan hover. Mark numeric cells with <code>data-num</code>; tint a row with a colour word. Cells <strong>wrap by default</strong> and columns are fixed-width, so a bare table never overflows. Add <code>nowrap</code> to keep cells on one line — then wrap it in <code>.scroll</code> to scroll instead of stretch.',
+        'A semantic <code>&lt;table&gt;</code> becomes a telemetry grid: uppercase eyebrow headers, hairline rows, cyan hover. Mark numeric cells with <code>data-num</code>; tint a row with a colour word. Cells <strong>wrap by default</strong> and columns are fixed-width, so a bare table never overflows. Add <code>nowrap</code> to keep cells on one line, which you can then wrap in <code>.scroll</code> to scroll instead of stretch.',
       play: {
         state: { density: '', striped: false, ruled: false, opaque: false, flat: false, nowrap: false },
         controls: [
@@ -796,7 +796,7 @@
       id: 'spinner',
       title: 'Spinner',
       blurb:
-        'The indeterminate companion to meters and gauges — a radar-style sweep for <code>working…</code> states. On a <code>&lt;span&gt;</code>; size with <code>small</code>·<code>large</code>, tone with a colour word, add a trailing label. Give it <code>role="status"</code> for assistive tech.',
+        'The indeterminate companion to meters and gauges: a radar-style sweep for <code>working…</code> states. On a <code>&lt;span&gt;</code>; size with <code>small</code>·<code>large</code>, tone with a colour word, add a trailing label. Give it <code>role="status"</code> for assistive tech.',
       examples: [
         {
           code: '<div class="vui-cluster" style="align-items:center;gap:24px">\n  <span class="spinner small"></span>\n  <span class="spinner"></span>\n  <span class="spinner large"></span>\n  <span class="spinner amber">Scanning sector…</span>\n</div>',
@@ -840,7 +840,7 @@
           code: '<div class="vui-cluster" style="align-items:center;gap:16px">\n  <span class="avatar">BW</span>\n  <span class="avatar round online">BW</span>\n  <span class="avatar hex idle">14</span>\n  <span class="avatar large busy">JG</span>\n</div>',
         },
         {
-          label: 'Overlapping stack — .avatar-group',
+          label: 'Overlapping stack: .avatar-group',
           code: '<div class="avatar-group">\n  <span class="avatar">A1</span>\n  <span class="avatar">B2</span>\n  <span class="avatar">C3</span>\n  <span class="avatar">+5</span>\n</div>',
         },
       ],
@@ -850,13 +850,13 @@
       id: 'dl',
       title: 'Description list',
       blurb:
-        'A bare <code>&lt;dl&gt;</code> is a telemetry readout — each <code>&lt;dt&gt;</code> an uppercase label, each <code>&lt;dd&gt;</code> a mono value, divided by hairlines. Add <code>stacked</code> for label-over-value rows.',
+        'A bare <code>&lt;dl&gt;</code> is a telemetry readout where each <code>&lt;dt&gt;</code> is an uppercase label and each <code>&lt;dd&gt;</code> is a monospaced value, separated by hairlines. Add <code>stacked</code> for label-over-value rows.',
       examples: [
         {
           code: '<dl style="min-inline-size:280px">\n  <dt>Operator</dt>\n  <dd>B. Wayne</dd>\n  <dt>Clearance</dt>\n  <dd>OMEGA-7</dd>\n  <dt>Sector</dt>\n  <dd>14-C</dd>\n  <dt>Status</dt>\n  <dd>Active</dd>\n</dl>',
         },
         {
-          label: 'Stacked — .stacked',
+          label: 'Stacked layout: .stacked',
           code: '<dl class="stacked" style="min-inline-size:240px">\n  <dt>Last ping</dt>\n  <dd>02:18:04 UTC</dd>\n  <dt>Channel</dt>\n  <dd>Encrypted · AES-256</dd>\n</dl>',
         },
       ],
@@ -869,10 +869,10 @@
         'An <code>&lt;ol class="timeline"&gt;</code> is a vertical event feed: each <code>&lt;li&gt;</code> gets a glowing node on a rail. Lead with a <code>&lt;time&gt;</code> stamp; tone a node with a colour word. Add <code>log</code> for a dense monospaced feed.',
       examples: [
         {
-          code: '<ol class="timeline">\n  <li class="green"><time>02:14:06</time>Uplink established · sector 14-C</li>\n  <li><time>02:15:22</time>Patrol drone deployed</li>\n  <li class="amber"><time>02:16:40</time>Motion flagged — grid 22-A</li>\n  <li class="red"><time>02:18:03</time>Contact lost · rerouting</li>\n</ol>',
+          code: '<ol class="timeline">\n  <li class="green"><time>02:14:06</time>Uplink established · sector 14-C</li>\n  <li><time>02:15:22</time>Patrol drone deployed</li>\n  <li class="amber"><time>02:16:40</time>Motion flagged: grid 22-A</li>\n  <li class="red"><time>02:18:03</time>Contact lost · rerouting</li>\n</ol>',
         },
         {
-          label: 'Dense feed — .log',
+          label: 'Dense feed: .log',
           code: '<ol class="timeline log">\n  <li class="green"><time>02:14:06</time>› handshake OK</li>\n  <li><time>02:15:22</time>› drone.deploy(grid-22A)</li>\n  <li class="amber"><time>02:16:40</time>› WARN motion 22-A</li>\n  <li class="red"><time>02:18:03</time>› ERR uplink_timeout</li>\n</ol>',
         },
       ],
@@ -882,7 +882,7 @@
       id: 'rating',
       title: 'Rating / signal',
       blurb:
-        'A <code>&lt;fieldset class="rating"&gt;</code> of reversed radios reads as signal-strength / threat pips — click or arrow-key to set, fills up to the choice. Real radios, so it keyboards and posts like a radiogroup. Author them <strong>high → low</strong>.',
+        'A <code>&lt;fieldset class="rating"&gt;</code> of reversed radios reads as signal-strength / threat pips that you click or arrow-key to set, filling up to the selected choice. Real radios, so it keyboards and posts like a radiogroup. Author them <strong>high → low</strong>.',
       examples: [
         {
           code: '<fieldset class="rating amber">\n  <legend>Threat level</legend>\n  <label for="th1"><i>warning</i></label><input type="radio" name="threat" id="th1" value="1">\n  <label for="th2"><i>warning</i></label><input type="radio" name="threat" id="th2" value="2">\n  <label for="th3"><i>warning</i></label><input type="radio" name="threat" id="th3" value="3" checked>\n  <label for="th4"><i>warning</i></label><input type="radio" name="threat" id="th4" value="4">\n  <label for="th5"><i>warning</i></label><input type="radio" name="threat" id="th5" value="5">\n</fieldset>',
@@ -896,7 +896,7 @@
       id: 'segmented',
       title: 'Segmented control',
       blurb:
-        'A single-select switch built from real radios — zero-JS, keyboards like a radiogroup. Each <code>&lt;label&gt;</code> wraps an <code>&lt;input type="radio"&gt;</code> (+ optional <code>&lt;i&gt;</code>); the checked segment lights up. Size with <code>small</code>.',
+        'A single-select switch built from real radios: it requires no JavaScript and keyboards like a radiogroup. Each <code>&lt;label&gt;</code> wraps an <code>&lt;input type="radio"&gt;</code> (+ optional <code>&lt;i&gt;</code>); the checked segment lights up. Size with <code>small</code>.',
       examples: [
         {
           code: '<div class="segmented" role="radiogroup" aria-label="View mode">\n  <label><input type="radio" name="view" checked><i>grid_view</i>Grid</label>\n  <label><input type="radio" name="view"><i>view_list</i>List</label>\n  <label><input type="radio" name="view"><i>map</i>Map</label>\n</div>',
@@ -926,7 +926,7 @@
           code: '<ol class="stepper">\n  <li class="done">Recon</li>\n  <li class="done">Breach</li>\n  <li aria-current="step">Secure</li>\n  <li>Extract</li>\n</ol>',
         },
         {
-          label: 'Vertical — .vertical',
+          label: 'Vertical layout: .vertical',
           code: '<ol class="stepper vertical">\n  <li class="done">Recon</li>\n  <li class="done">Breach</li>\n  <li aria-current="step">Secure</li>\n  <li>Extract</li>\n</ol>',
         },
       ],
@@ -938,7 +938,7 @@
       id: 'dropdown',
       title: 'Dropdown menu',
       blurb:
-        'Two ways in, one look. The robust path is <code>&lt;details class="dropdown"&gt;</code> — zero-JS, works everywhere; the <code>&lt;summary&gt;</code> is the trigger and the panel is a <code>&lt;menu&gt;</code>. The optional JS adds outside-click / <kbd>Esc</kbd> dismissal. For the modern top-layer path, point a <code>&lt;button popovertarget&gt;</code> at a <code>[popover].menu</code> (anchor-positioned where supported). Items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code>; <code>&lt;hr&gt;</code> divides, <code>.danger</code> tones an item.',
+        'Two ways in, one look. The robust path is <code>&lt;details class="dropdown"&gt;</code>, which requires no JavaScript and works everywhere; the <code>&lt;summary&gt;</code> is the trigger and the panel is a <code>&lt;menu&gt;</code>. The optional JS adds outside-click / <kbd>Esc</kbd> dismissal. For the modern top-layer path, point a <code>&lt;button popovertarget&gt;</code> at a <code>[popover].menu</code> (anchor-positioned where supported). Items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code>; <code>&lt;hr&gt;</code> divides, <code>.danger</code> tones an item.',
       examples: [
         {
           code: '<details class="dropdown">\n  <summary>Actions <i>expand_more</i></summary>\n  <menu>\n    <a href="#"><i>visibility</i>Inspect</a>\n    <a href="#"><i>content_copy</i>Duplicate</a>\n    <a href="#"><i>download</i>Export intel</a>\n    <hr>\n    <button class="danger"><i>delete</i>Decommission</button>\n  </menu>\n</details>',
@@ -950,7 +950,7 @@
       id: 'toolbar',
       title: 'Toolbar',
       blurb:
-        'A <code>&lt;div role="toolbar"&gt;</code> is a control surface holding buttons, button groups (<code>&lt;menu class="group"&gt;</code>), an <code>&lt;hr&gt;</code> separator and a <code>.max</code> spacer. The optional JS gives it the roving-tabindex model — one tab stop, arrow keys move between controls. Add <code>vertical</code> to stand it on end.',
+        'A <code>&lt;div role="toolbar"&gt;</code> is a control surface holding buttons, button groups (<code>&lt;menu class="group"&gt;</code>), an <code>&lt;hr&gt;</code> separator and a <code>.max</code> spacer. The optional JS gives it the roving-tabindex model: one tab stop where arrow keys move between controls. Add <code>vertical</code> to stand it on end.',
       examples: [
         {
           code: '<div role="toolbar" aria-label="Map tools">\n  <button class="icon" aria-label="Pan"><i>pan_tool</i></button>\n  <button class="icon" aria-label="Measure"><i>straighten</i></button>\n  <button class="icon" aria-label="Mark"><i>add_location</i></button>\n  <hr>\n  <menu class="group">\n    <button class="small">Sat</button>\n    <button class="small">Thermal</button>\n    <button class="small">Night</button>\n  </menu>\n  <span class="max"></span>\n  <button class="icon" aria-label="Settings"><i>tune</i></button>\n</div>',
@@ -962,7 +962,7 @@
       id: 'tree',
       title: 'Tree',
       blurb:
-        'A <code>&lt;ul class="tree"&gt;</code> is a hierarchy. A branch is a <code>&lt;li&gt;&lt;details&gt;&lt;summary&gt;…&lt;/summary&gt;&lt;ul&gt;…&lt;/ul&gt;&lt;/details&gt;</code> — collapses with zero JS, animates open where supported. A leaf is a plain <code>&lt;li&gt;&lt;a&gt;</code>; lead any row with an <code>&lt;i&gt;</code> and mark the selected leaf <code>aria-current="page"</code>. Guide rails connect each level.',
+        'A <code>&lt;ul class="tree"&gt;</code> is a hierarchy. A branch is a <code>&lt;li&gt;&lt;details&gt;&lt;summary&gt;…&lt;/summary&gt;&lt;ul&gt;…&lt;/ul&gt;&lt;/details&gt;</code> that collapses with zero JS and animates open where supported. A leaf is a plain <code>&lt;li&gt;&lt;a&gt;</code>; lead any row with an <code>&lt;i&gt;</code> and mark the selected leaf <code>aria-current="page"</code>. Guide rails connect each level.',
       examples: [
         {
           code: '<ul class="tree">\n  <li>\n    <details open>\n      <summary><i>folder_open</i>Sector 14-C</summary>\n      <ul>\n        <li><a href="#"><i>description</i>case-001.dat</a></li>\n        <li><a href="#" aria-current="page"><i>description</i>case-002.dat</a></li>\n        <li>\n          <details>\n            <summary><i>folder</i>archive</summary>\n            <ul>\n              <li><a href="#"><i>lock</i>sealed-07.dat</a></li>\n            </ul>\n          </details>\n        </li>\n      </ul>\n    </details>\n  </li>\n  <li><a href="#"><i>map</i>city-grid.geo</a></li>\n</ul>',
@@ -979,7 +979,7 @@
       id: 'carousel',
       title: 'Carousel',
       blurb:
-        'A <code>&lt;div class="carousel"&gt;</code> is a horizontal scroll-snap filmstrip — its direct children are the slides. Swipe, scroll or keyboard by default; on browsers with CSS-carousel support it also grows a native row of snap-marker dots, no JS. Size slides with <code>--vui-slide</code>; <code>peek</code> reveals the next, <code>full</code> snaps one per view, <code>clean</code> hides the scrollbar.',
+        'A <code>&lt;div class="carousel"&gt;</code> is a horizontal scroll-snap filmstrip where the direct children are the slides. Swipe, scroll or keyboard by default; on browsers with CSS-carousel support it also grows a native row of snap-marker dots, no JS. Size slides with <code>--vui-slide</code>; <code>peek</code> reveals the next, <code>full</code> snaps one per view, <code>clean</code> hides the scrollbar.',
       examples: [
         {
           code: '<div class="carousel" style="max-inline-size:min(560px, 100%)">\n  <article><div class="stat signal"><b>14-C</b><span>Sector</span></div><p>Contested · 6 contacts</p></article>\n  <article><div class="stat amber"><b>22-A</b><span>Sector</span></div><p>Hostile · 12 contacts</p></article>\n  <article><div class="stat"><b>09-F</b><span>Sector</span></div><p>Secure · 0 contacts</p></article>\n  <article><div class="stat signal"><b>31-B</b><span>Sector</span></div><p>Contested · 3 contacts</p></article>\n</div>',
@@ -994,7 +994,7 @@
         'The floating cousin of the inline alert, raised imperatively: <code>VantaUI.toast(message, options)</code>. The helper owns a live-region <code>.toaster</code> (created on demand) and each toast reuses the alert rail + glyph, slides in, and auto-dismisses. Tone with <code>info</code> · <code>warn</code> · <code>threat</code> · <code>secure</code>; pass <code>title</code>, <code>duration</code>, or <code>role:"alert"</code> for urgent notices.',
       examples: [
         {
-          code: '<div class="vui-cluster">\n  <button type="submit" class="secure"\n    onclick="vui.toast(\'Uplink restored\', {tone:\'secure\', title:\'Comms\'})">Secure</button>\n  <button class="amber"\n    onclick="vui.toast(\'Motion flagged in grid 22-A\', {tone:\'warn\'})">Warn</button>\n  <button class="danger"\n    onclick="vui.toast(\'Contact lost — rerouting\', {tone:\'threat\', title:\'Alert\', role:\'alert\'})">Threat</button>\n  <button class="ghost"\n    onclick="vui.toast(\'Scan complete. 14 contacts logged.\')">Info</button>\n</div>',
+          code: '<div class="vui-cluster">\n  <button type="submit" class="secure"\n    onclick="vui.toast(\'Uplink restored\', {tone:\'secure\', title:\'Comms\'})">Secure</button>\n  <button class="amber"\n    onclick="vui.toast(\'Motion flagged in grid 22-A\', {tone:\'warn\'})">Warn</button>\n  <button class="danger"\n    onclick="vui.toast(\'Contact lost: rerouting\', {tone:\'threat\', title:\'Alert\', role:\'alert\'})">Threat</button>\n  <button class="ghost"\n    onclick="vui.toast(\'Scan complete. 14 contacts logged.\')">Info</button>\n</div>',
         },
       ],
     },
@@ -1023,7 +1023,7 @@
       examples: [
         {
           noDemo: true,
-          code: 'import VantaUI from "./js/vantaui.js";\n\n// re-scan after you inject DOM (frameworks, htmx, etc.)\nVantaUI.init(document);\n\n// animate a meter or gauge to a value\nVantaUI.setValue(document.querySelector(".gauge"), 87);\n\n// open / close drawers via [data-open="id"] / [data-close]\nVantaUI.drawers(document);\n\n// live clock — any element:\n// <span data-vui-clock>00:00:00</span>',
+          code: 'import VantaUI from "./js/vantaui.js";\n\n// re-scan after you inject DOM (frameworks, htmx, etc.)\nVantaUI.init(document);\n\n// animate a meter or gauge to a value\nVantaUI.setValue(document.querySelector(".gauge"), 87);\n\n// open / close drawers via [data-open="id"] / [data-close]\nVantaUI.drawers(document);\n\n// live clock on any element:\n// <span data-vui-clock>00:00:00</span>',
         },
       ],
     },
@@ -1036,7 +1036,7 @@
       examples: [
         {
           noDemo: true,
-          code: "// Vue\nimport { createApp } from 'vue'\nimport VantaUI from 'vui-css/vue'\nimport 'vui-css'\ncreateApp(App).use(VantaUI).mount('#app')\n\n// Nuxt — nuxt.config.ts\nexport default defineNuxtConfig({\n  modules: ['vui-css/nuxt']\n})",
+          code: "// Vue\nimport { createApp } from 'vue'\nimport VantaUI from 'vui-css/vue'\nimport 'vui-css'\ncreateApp(App).use(VantaUI).mount('#app')\n\n// Nuxt: nuxt.config.ts\nexport default defineNuxtConfig({\n  modules: ['vui-css/nuxt']\n})",
         },
       ],
     },
@@ -1270,7 +1270,7 @@
     var wrap = el('div', 'doc-example bleed');
 
     if (ex.noDemo) {
-      /* reference snippet — keep the code inline, it IS the content */
+      /* reference snippet: keep the code inline, it IS the content */
       wrap.innerHTML =
         '<div class="doc-code">' +
         '<button class="icon small doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
@@ -1387,7 +1387,7 @@
     });
   }
 
-  /* scrollspy — highlight active nav link */
+  /* scrollspy: highlight active nav link */
   function wireSpy() {
     var links = [].slice.call(document.querySelectorAll('aside.drawer nav a'));
     var map = {};

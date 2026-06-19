@@ -1,4 +1,4 @@
-# VantaUI CSS — Feedback & Status
+# VantaUI CSS: Feedback & Status
 
 > Status and progress surfaces: inline alerts, toasts, meters & progress bars, radial gauges, spinners, skeletons, empty states, and the live status dot. Authoritative as of v1.5.4.
 
@@ -19,7 +19,7 @@ Related: toast & meter/gauge JS animation → https://vantaui-css.khodok.com/llm
 
 ## Toast / snackbar (transient)
 
-The floating cousin of the inline alert — raise them imperatively with the JS helper. `VantaUI.toast()` owns a `.toaster` live-region (created on demand) and each `.toast` reuses the alert rail + glyph and slides in. Tone with a word: `info` · `warn` · `threat` · `secure`. Place the region with `.start` / `.top` / `.center` on the toaster.
+This is the floating counterpart to the inline alert. You can trigger toasts programmatically using the JS helper. VantaUI.toast() manages a .toaster live-region (creating it on demand) where each .toast inherits the alert rail and glyph layout, sliding in from the edge. Tone can be configured using info, warn, threat, or secure. You can position the region by adding .start, .top, or .center to the toaster.
 
 ```js
 import { toast } from 'vantaui-css/js';
@@ -30,9 +30,9 @@ See the JS file for the full `toast(message, options?)` signature. (You can also
 
 ## Meters & progress
 
-- **Native `<progress>`** — a cyan telemetry bar (no classes).
-- **Native `<meter>`** — colors itself by the `low`/`high`/`optimum` thresholds (green optimum → amber suboptimum → red).
-- **`.meter` helper** — a labelled, accent-toned bar driven by a custom property, no JS: a `<span>`/`<label>` is the label, a `<b>` is the value readout (leave it empty and it renders `--value%` via a counter). Tone: `cyan` · `amber` · `red` · `green`. Add `.segmented` for tick marks. Set `--value` (and optionally `--max`, default 100).
+- **Native `<progress>`**: a cyan telemetry bar with no classes required.
+- **Native `<meter>`**: colors itself automatically by the `low`, `high`, and `optimum` thresholds (with green for optimum, amber for suboptimum, and red for alert thresholds).
+- **`.meter` helper**: a labelled, accent-toned bar driven by a custom property with no JavaScript. A `<span>` or `<label>` serves as the label, and a `<b>` functions as the value readout (leave it empty to automatically render `--value%` via a CSS counter). Available tones are `cyan`, `amber`, `red`, and `green`. You can add `.segmented` for tick marks, and set the value using `--value` (and optionally `--max`, which defaults to 100).
 
 ```html
 <meter min="0" max="100" low="30" high="70" optimum="100" value="86"></meter>
@@ -45,7 +45,7 @@ The JS `setValue()` helper animates `.meter`/`.gauge` `--value`; elements with `
 
 ## Radial gauge
 
-A `.gauge` is a 270° arc readout built in pure CSS (conic-gradient ring, glow follows the arc), driven entirely by `--value` — no SVG, no JS. Structure: a `<b>` (the number — leave empty to render `--value` via a counter), an optional `<small>` (unit), and a `<span>` (caption). Size with `small` · `large`; tone with `cyan` · `amber` · `red` · `green`. Set `--value` (and optionally `--max`).
+A `.gauge` is a 270-degree arc readout built in pure CSS using a conic-gradient ring where the glow automatically follows the arc. It is driven entirely by the `--value` custom property without SVG or JavaScript. The structure is: a `<b>` tag for the number (leave it empty to render the `--value` via a counter), an optional `<small>` tag for the unit, and a `<span>` for the caption. You can size the gauge with `small` or `large`, and tone it using `cyan`, `amber`, `red`, or `green`. Set the value with `--value` (and optionally `--max`).
 
 ```html
 <div class="gauge" style="--value:72">
@@ -66,7 +66,7 @@ The indeterminate companion to the meter/gauge family: a radar-style sweeping ri
 
 ## Skeleton loading placeholders
 
-A `.skeleton` is a dim, faintly-scanning stand-in for content that hasn't loaded. Shape it: bare = a block, `.text` = a type line (stack several; add `.last` for a short final line), `.circle` = an avatar disc. Size a block with `.block` or an inline `block-size`. Decorative — mark the group `aria-hidden="true"`.
+A `.skeleton` is a dim, faintly-scanning stand-in for content that has not loaded. Shape it: bare for a block, `.text` for a type line (stack several and add `.last` for a short final line), or `.circle` for an avatar disc. Size a block with `.block` or an inline `block-size`. These elements are decorative, so mark the group with `aria-hidden="true"`.
 
 ```html
 <div aria-hidden="true">
