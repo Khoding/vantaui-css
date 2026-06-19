@@ -1,6 +1,6 @@
 # VantaUI CSS — Data Display
 
-> Surfaces and data components: panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, and segmented controls. Authoritative as of v1.5.3.
+> Surfaces and data components: panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, and segmented controls. Authoritative as of v1.5.4.
 
 Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words. A leading `<i>text</i>` is a Material Symbols icon. Mark the current/selected item `aria-current="page"` (alias `.active`). See the hub: https://vantaui-css.khodok.com/llms.txt
 

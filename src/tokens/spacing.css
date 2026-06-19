@@ -2,7 +2,10 @@
    VantaUI — Spacing, Radii & Geometry
    The system is built on sharp angles. Corners are cut (chamfered),
    not rounded. Radii are near-zero by default; the "--bevel" tokens
-   drive the diagonal corner cuts used everywhere via clip-path.
+   drive the diagonal corner cuts. These render via clip-path everywhere,
+   and via border-radius + corner-shape (Chromium 139+) on the text-bearing
+   plates where supported — same look, but corner-shape shapes only the box
+   so it never clips the content the way clip-path does.
    8px base grid. px is used for the cut geometry (clip-path needs
    absolute lengths); rem is used for fluid layout rhythm.
    ============================================================ */

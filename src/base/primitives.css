@@ -95,6 +95,26 @@
   clip-path: var(--clip-notch);
   overflow-x: clip;
 }
+/* Where corner-shape (Chromium 139+) is supported, shape the box instead of
+   clipping the subtree — content near the cut and downward dropdowns escape
+   (the base `overflow-x: clip` keeps containing wide content on the inline
+   axis). clip-path above is the fallback. (See the longer note in panel.css.) */
+/* `.vui-clip` opts an element out of the enhancement (keeps the base clip-path
+   for the open unstroked-diagonal look — see the note in panel.css). */
+@supports (corner-shape: bevel) {
+  .vui-chamfer:not(.vui-clip) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+  .vui-notch:not(.vui-clip) {
+    clip-path: none;
+    border-radius: var(--bevel-sm);
+    corner-shape: bevel;
+  }
+}
 
 /* ---------- Corner-bracket frame: wrap content, get L-shaped ticks ---------- */
 .vui-brackets {

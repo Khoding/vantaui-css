@@ -182,3 +182,33 @@
     var(--shadow-panel),
     0 0 24px -6px var(--_glow);
 }
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where corner-shape (CSS Borders L4, Chromium 139+) is supported, paint the
+   chamfer/notch with border-radius + corner-shape. Same shape, but it styles
+   ONLY the box (border, background, glow) — it never clips the subtree the way
+   clip-path does in ALL directions. That's the win: a dropdown/menu opened in a
+   panel escapes downward (the base `overflow-x: clip` leaves the block axis
+   visible), and content near the cut is no longer painted away. We KEEP that
+   inline `overflow-x: clip` though — it is source-containment (a panel must not
+   leak wide content to the stage), independent of which corner mechanism is in
+   use. clip-path above stays as the fallback for browsers without corner-shape
+   (Firefox/Safari as of 2026).
+   Opt out per-element with `.vui-clip`: it is excluded from the enhancement
+   below, so the base clip-path stays in force — restoring the open, unstroked
+   diagonal corner (the HUD "snipped" look) at the cost of bringing the subtree
+   clipping back. For consumers who want the look and will manage clipping. */
+@supports (corner-shape: bevel) {
+  :where(.vui article:not(.vui-prose):not(.prose):not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+  /* notch = all four corners cut */
+  :where(.vui article.notch:not(.vui-clip)) {
+    border-radius: var(--bevel-sm);
+    corner-shape: bevel;
+  }
+}

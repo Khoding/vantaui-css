@@ -119,6 +119,18 @@
   line-height: var(--lh-mono);
   clip-path: var(--clip-chamfer);
 }
+/* Where supported, bevel the box instead of clipping it — the code still
+   self-scrolls (overflow-x:auto) but is no longer painted into the chamfer.
+   clip-path is the fallback. (See the note in panel.css.) */
+@supports (corner-shape: bevel) {
+  :where(.vui pre:not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+}
 :where(.vui pre code) {
   padding: 0;
   border: 0;

@@ -1,6 +1,6 @@
 # VantaUI CSS — Theming & Design Tokens
 
-> Every design token (CSS custom property) and how to override it: the OKLCH color system, surfaces, text, status, spacing/geometry, typography, effects, motion, and keyframes. Authoritative as of v1.5.3.
+> Every design token (CSS custom property) and how to override it: the OKLCH color system, surfaces, text, status, spacing/geometry, typography, effects, motion, and keyframes. Authoritative as of v1.5.4.
 
 Prerequisites: tokens are defined on `:root`, so they're available everywhere — even outside `.vui` (outside `.vui`, ONLY tokens are defined; nothing else changes). Override any token anywhere; they cascade. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -36,7 +36,7 @@ Colors are OKLCH. Every token ships twice in `src/`: an sRGB hex/rgba fallback f
 
 - **Spacing scale**: `--space-0…--space-13`. (0=0, 1=2px, 2=4px, 3=8px, 4=12px, 5=16px, 6=20px, 7=24px, 8=32px, then up to 13.)
 - **Radius**: `--radius-{none,xs,sm,pill}`.
-- **Bevel / chamfer cut sizes**: `--bevel-{sm,md,lg,xl}`. Ready clip-paths: `--clip-chamfer` (cut top-left + bottom-right) / `--clip-notch` (all four corners).
+- **Bevel / chamfer cut sizes**: `--bevel-{sm,md,lg,xl}`. Ready clip-paths: `--clip-chamfer` (cut top-left + bottom-right) / `--clip-notch` (all four corners). The text-bearing plates (`<article>` panels, `.vui-chamfer`/`.vui-notch`, `<pre>`) progressively upgrade to `border-radius` + `corner-shape: bevel` on browsers that support it (Chromium 139+): identical look, but corner-shape shapes only the box, so it never clips overflowing text/dropdowns the way clip-path does. clip-path remains the fallback elsewhere. Add `.vui-clip` to an element to opt it back out of the upgrade — it keeps the clip-path version, restoring the open, unstroked diagonal corner (the HUD "snipped" look) at the cost of clipping its own content (you manage that yourself).
 - **Borders**: `--border-{hair,thin,bold}`.
 - **Container / frame**: `--container-max` `--container-narrow` `--container-pad` `--gutter` `--hud-edge` `--drawer-width`.
 - **Breakpoints**: `--bp-{s,m,l,xl}`.
