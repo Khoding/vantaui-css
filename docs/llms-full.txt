@@ -2,7 +2,7 @@
 
 > A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This is the complete, single-file reference. Reading it in full is sufficient to use the library correctly without following any links. For a lean index linking to focused topic files, see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.6.1.
+This is the complete, single-file reference. Reading it in full is sufficient to use the library correctly without following any links. For a lean index linking to focused topic files, see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.7.0.
 
 ## Critical facts (read first)
 
@@ -16,10 +16,10 @@ This is the complete, single-file reference. Reading it in full is sufficient to
 
 ## Install
 
-Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.6.1"`:
+Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.7.0"`:
 
 ```bash
-npm i github:Khoding/vantaui-css#v1.6.1
+npm i github:Khoding/vantaui-css#v1.7.0
 ```
 
 ```js
@@ -111,6 +111,17 @@ Free-floating helpers here use the `vui-` prefix.
 
 - `vui-container`: centered, max-width `--container-max`, inline padding `--container-pad`.
 - `vui-container--narrow`: max-width `--container-narrow`. · `vui-container--fluid`: has no max-width.
+
+## Content section (`vui-section`)
+
+A titled content band: leading hairline divider, generous block padding, and a scroll anchor (the first stacked section drops its divider). Sets no `display`, so compose with `vui-prose` (measure) or `vui-stack` (rhythm). A child heading is the title; `<p class="blurb">` is the muted lead.
+
+```html
+<section class="vui-section vui-prose" id="philosophy">
+  <h2>Philosophy</h2>
+  <p class="blurb">One short framing sentence.</p>
+</section>
+```
 
 ## Named flex composites (prefer these)
 
@@ -556,7 +567,7 @@ Every `src/` token ships twice (sRGB hex fallback, then `oklch()`). Palette mean
 
 ## Spacing & geometry
 
-`--space-0…--space-13`, `--radius-{none,xs,sm,pill}`, `--bevel-{sm,md,lg,xl}`, `--clip-chamfer` / `--clip-notch`, `--border-{hair,thin,bold}`, `--container-max`, `--container-narrow`, `--container-pad`, `--gutter`, `--hud-edge`, `--drawer-width`, and `--bp-{s,m,l,xl}`. Text-bearing plates (such as `<article>`, `.vui-chamfer`, `.vui-notch`, and `<pre>`) upgrade their chamfer to `border-radius` and `corner-shape: bevel` where supported (Chromium 139+). This offers the same look, but shapes only the box so overflowing text or dropdown menus are never clipped. Elsewhere, `clip-path` remains the fallback. The `.vui-clip` class opts an element back out to keep the clip-path version, preserving the open, unstroked diagonal corner, though its content will be clipped (which you must manage yourself).
+`--space-0…--space-13`, `--radius-{none,xs,sm,pill}`, `--bevel-{sm,md,lg,xl}`, `--clip-chamfer` / `--clip-notch`, `--border-{hair,thin,bold}`, `--container-max`, `--container-narrow`, `--container-pad`, `--gutter`, `--hud-edge`, `--drawer-width`, and `--bp-{s,m,l,xl}`. Every beveled component upgrades its chamfer/notch from `clip-path` to `border-radius` and `corner-shape: bevel` where supported (Chromium 139+) — `<article>`/`.vui-panel`, `.vui-chamfer`/`.vui-notch`, `<pre>`, buttons, badges, inputs/select/textarea/checkbox, tables, menus & dropdowns, dialogs & tooltips, tabs, alerts, toasts, avatars, toolbars, segmented controls, pagination, steppers, skeletons, and carousel controls. This offers the same look, but shapes only the box so overflowing text or dropdown menus are never clipped. Elsewhere (Firefox/Safari as of 2026), `clip-path` remains the fallback. The `.vui-clip` class opts any such element back out to keep the clip-path version, preserving the open, unstroked diagonal corner, though its content will be clipped (which you must manage yourself). One-sided diagonals (drawer trailing edge, meter/progress bars, range/switch thumbs) are not corner bevels and stay on clip-path everywhere.
 
 ## Typography
 

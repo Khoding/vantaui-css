@@ -57,6 +57,9 @@
   line-height: var(--lh-mono);
   font-family: var(--font-mono);
   clip-path: var(--clip-chamfer);
+  /* Clip the subtree to the plate so the accent rail follows the chamfer (see
+     the note in alert.css — corner-shape no longer clips children). */
+  overflow: clip;
   pointer-events: auto;
   animation: vui-toast-in var(--dur-base) var(--ease-hud);
 }
@@ -125,5 +128,18 @@
   to {
     opacity: 0;
     translate: 0 8px;
+  }
+}
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the box; clip-path above is the
+   fallback. `.vui-clip` opts back in. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui .toast:not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
   }
 }

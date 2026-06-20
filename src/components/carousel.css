@@ -158,3 +158,16 @@
     content: none;
   }
 }
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   The arrows and marker dots are pseudo-elements, so they convert
+   unconditionally; clip-path on them is the fallback. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui .carousel)::scroll-button(inline-start),
+  :where(.vui .carousel)::scroll-button(inline-end),
+  :where(.vui .carousel) > *::scroll-marker {
+    clip-path: none;
+    border-radius: var(--bevel-sm);
+    corner-shape: bevel;
+  }
+}

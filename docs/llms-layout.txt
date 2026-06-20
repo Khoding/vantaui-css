@@ -1,6 +1,6 @@
 # VantaUI CSS: Layout & Utilities
 
-> Containers, flex composites, grids, breakpoint show/hide, the full utility-class catalogue, HUD primitives (type roles, plates, brackets, backdrops, status dot), and the prose layout for long-form text. All free-floating helpers in this file use the `vui-` prefix. Authoritative as of v1.6.1.
+> Containers, flex composites, grids, breakpoint show/hide, the full utility-class catalogue, HUD primitives (type roles, plates, brackets, backdrops, status dot), and the prose layout for long-form text. All free-floating helpers in this file use the `vui-` prefix. Authoritative as of v1.7.0.
 
 Prerequisites: opt in with `class="vui"` on a root element (usually `<body>`). Bare semantic HTML is styled with NO prefix; the `vui-` prefix marks free-floating layout/utility/primitive helpers (collision-safe). All VantaUI styles are zero-specificity (`:where()`) inside cascade layers, so your own unlayered classes always win. You should never use `!important`. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -15,6 +15,18 @@ Related: app frame & navigation rails → https://vantaui-css.khodok.com/llms-na
 - `vui-container`: centered, max-width `--container-max`, inline padding `--container-pad`.
 - `vui-container--narrow`: max-width `--container-narrow`.
 - `vui-container--fluid`: has no max-width.
+
+## Content section (`vui-section`)
+
+A titled content band: a leading hairline divider, generous block padding, and a scroll anchor for in-page links. Stacked sections read as one rhythmic document (the first drops its divider). It sets no `display`, so compose it with `vui-prose` (for a readable measure) or `vui-stack` (for child rhythm). A child heading is the title; a `<p class="blurb">` is the lead paragraph (muted, zero margin).
+
+```html
+<section class="vui-section vui-prose" id="philosophy">
+  <h2>Philosophy</h2>
+  <p class="blurb">One short framing sentence.</p>
+  <!-- section content … -->
+</section>
+```
 
 ## Named flex composites (prefer these)
 

@@ -1,7 +1,7 @@
 /* ============================================================
    VantaUI — Layout system (responsive-first)
-   Container, flex helpers, a 12-column mobile-first grid, a
-   zero-config auto grid, and breakpoint show/hide utilities.
+   Container, content section, flex helpers, a 12-column mobile-first
+   grid, a zero-config auto grid, and breakpoint show/hide utilities.
 
    Breakpoints (min-width, mobile-first):
      s  36rem / 576px      m  48rem / 768px
@@ -24,6 +24,25 @@
 }
 .vui-container--fluid {
   max-inline-size: none;
+}
+
+/* ---------- Content section ----------
+   A titled content band: a leading hairline divider, generous block padding,
+   and a scroll anchor for in-page links. Stacked sections read as one rhythmic
+   document (the first drops its divider). It sets no `display`, so it composes
+   cleanly with `vui-prose` (for a readable measure) or `vui-stack` (for child
+   rhythm). A child heading is the title; a `.blurb` paragraph is the lead. */
+.vui-section {
+  padding-block: var(--space-9);
+  border-block-start: var(--border-hair) solid var(--hairline);
+  scroll-margin-block-start: var(--space-6);
+}
+.vui-section:first-child {
+  border-block-start: 0;
+}
+.vui-section > .blurb {
+  margin-block: 0;
+  color: var(--text-secondary);
 }
 
 /* ---------- Flex helpers ----------

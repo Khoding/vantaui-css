@@ -251,3 +251,17 @@
   border: 0;
   background-color: var(--hairline);
 }
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the box without clipping content;
+   clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui header form:not(.vui-clip)),
+  :where(.vui header.float:not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+}

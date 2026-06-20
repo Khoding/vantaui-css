@@ -9,6 +9,8 @@
    re-insert it after the leading @layer statement — the one spot where
    @import is still valid.
      node scripts/build.mjs
+
+     Claude Generated because it's good at it, verified by hand and it's okay.
    ============================================================ */
 
 import {bundle} from 'lightningcss';
@@ -88,16 +90,27 @@ function checkDocsCoverage() {
   for (const name of components) {
     const terms = DOC_TERMS[name];
     if (!terms) {
-      problems.push(`• "${name}" (src/components/${name}.css) has no DOC_TERMS entry — document it in docs/llms-*.txt, then add a mapping in scripts/build.mjs.`);
+      problems.push(
+        `• "${name}" (src/components/${name}.css) has no DOC_TERMS entry — document it in docs/llms-*.txt, then add a mapping in scripts/build.mjs.`,
+      );
       continue;
     }
-    if (!hit(terms, topicText)) problems.push(`• "${name}" not found in any topic file (docs/llms-<topic>.txt). Expected one of: ${terms.join(', ')}`);
-    if (fullText && !hit(terms, fullText)) problems.push(`• "${name}" missing from docs/llms-full.txt. Expected one of: ${terms.join(', ')}`);
+    if (!hit(terms, topicText))
+      problems.push(
+        `• "${name}" not found in any topic file (docs/llms-<topic>.txt). Expected one of: ${terms.join(', ')}`,
+      );
+    if (fullText && !hit(terms, fullText))
+      problems.push(
+        `• "${name}" missing from docs/llms-full.txt. Expected one of: ${terms.join(', ')}`,
+      );
   }
 
   // A stale mapping (term for a component that no longer exists) is also a smell.
   for (const name of Object.keys(DOC_TERMS)) {
-    if (!components.includes(name)) problems.push(`• DOC_TERMS has "${name}" but src/components/${name}.css does not exist — remove the stale mapping.`);
+    if (!components.includes(name))
+      problems.push(
+        `• DOC_TERMS has "${name}" but src/components/${name}.css does not exist — remove the stale mapping.`,
+      );
   }
 
   if (problems.length) {

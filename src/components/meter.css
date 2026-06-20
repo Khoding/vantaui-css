@@ -18,6 +18,8 @@
   border: var(--border-hair) solid var(--hairline);
   background-color: var(--surface-inset);
   color: var(--cyan-400);
+  /* A one-sided full-height diagonal (parallelogram), not a corner bevel, so it
+     intentionally stays on clip-path — corner-shape has no equivalent. */
   clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
 }
 :where(.vui progress)::-webkit-progress-bar {

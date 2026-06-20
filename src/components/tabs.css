@@ -169,3 +169,17 @@
     padding-block: 0;
   }
 }
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the accordion box; clip-path above is
+   the fallback. `.dropdown` (a boxless menu shell) and `.vui-clip` are excluded.
+   See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui details:not(.dropdown):not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+}

@@ -24,6 +24,11 @@
   line-height: var(--lh-mono);
   font-family: var(--font-mono);
   clip-path: var(--clip-chamfer);
+  /* Clip the subtree to the plate shape so the full-height accent rail (and
+     glyph) follow the chamfered corner. With corner-shape the box no longer
+     clips its children the way clip-path did, so without this the rail fills the
+     top-left cut and reads as a heavy square border. */
+  overflow: clip;
 }
 
 /* accent rail */
@@ -81,4 +86,18 @@
 :where(.vui [role='status'].info, .vui [role='alert'].info) {
   --_c: var(--cyan-400);
   --_glyph: '\25C8'; /* ◈ */
+}
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the box without clipping content;
+   clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui [role='status']:not(.vui-clip)),
+  :where(.vui [role='alert']:not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
 }

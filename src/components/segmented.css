@@ -66,3 +66,31 @@
 :where(.vui .segmented.amber) { --_c: var(--amber-500); }
 :where(.vui .segmented.red)   { --_c: var(--red-500); }
 :where(.vui .segmented.green) { --_c: var(--green-500); }
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the box without clipping content;
+   clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui .segmented:not(.vui-clip)) {
+    clip-path: none;
+    border-radius: var(--bevel-sm);
+    corner-shape: bevel;
+  }
+  /* The clip-path fallback clipped the end segments' highlight to the notch;
+     corner-shape doesn't clip children, so bevel each end item's OUTER corners
+     to follow the track (inner corners, where segments meet, stay square). The
+     leg is the track bevel minus the 3px track padding, so the cuts run parallel
+     to the parent notch. */
+  :where(.vui .segmented:not(.vui-clip) > label:first-child) {
+    border-start-start-radius: calc(var(--bevel-sm) - 3px);
+    border-end-start-radius: calc(var(--bevel-sm) - 3px);
+    corner-start-start-shape: bevel;
+    corner-end-start-shape: bevel;
+  }
+  :where(.vui .segmented:not(.vui-clip) > label:last-child) {
+    border-start-end-radius: calc(var(--bevel-sm) - 3px);
+    border-end-end-radius: calc(var(--bevel-sm) - 3px);
+    corner-start-end-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+}

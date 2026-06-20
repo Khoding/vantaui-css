@@ -47,8 +47,8 @@
       overflow: hidden;
       padding: clamp(var(--space-8), 6vw, var(--space-11)) clamp(var(--space-6), 5vw, var(--space-8)) clamp(var(--space-7), 5vw, var(--space-10));
       border: 1px solid var(--hairline);
-      clip-path: var(--clip-chamfer);
       --bevel-md: 16px;
+      /* shape from the .vui-chamfer class in markup */
       margin-block-end: var(--space-9);
       background-color: var(--bg-void);
       background-image: var(--grid-fine);
@@ -94,21 +94,27 @@
     }
 
     /* ---------- Sections ----------
-     Each section is a .vui-prose article (see gallery.js): the heading + blurb
-     read at a comfortable measure while demos and token galleries bleed wider.
-     We drive the measure with the prose tokens and use the grid's row-gap for a
-     uniform vertical rhythm, so individual children don't need block margins. */
-    .doc-section {
+     Each section is the framework's .vui-section (hairline divider, block
+     rhythm, scroll anchor, first-child reset) composed with .vui-prose for the
+     measure (see gallery.js). The docs only widen the measure/bleed, set the
+     grid's row rhythm, and size the lead .blurb — everything else is inherited
+     from the framework, so the section chrome matches the rest of the library. */
+    .doc-main .vui-section {
       --prose-width: 72ch;
       --bleed-width: 1100px;
-      padding-block: var(--space-9);
-      border-block-start: 1px solid var(--hairline);
-      scroll-margin-top: 16px;
       row-gap: var(--space-7);
     }
 
-    .doc-section.vui-prose>* {
+    .doc-main .vui-section.vui-prose>* {
       margin-block: 0;
+    }
+
+    .doc-main .vui-section>.blurb {
+      font-size: var(--fs-base);
+    }
+
+    .doc-main .vui-section>.blurb code {
+      font-size: 0.85em;
     }
 
     /* The prose grid's minmax(space-5, 1fr) side tracks are the sole source of
@@ -124,31 +130,12 @@
       margin-inline: 0;
     }
 
-    .doc-section:first-of-type {
-      border-block-start: 0;
-    }
-
-    .doc-section__title {
-      font-size: var(--fs-2xl);
-      margin: 0 0 10px;
-    }
-
-    .doc-section__blurb {
-      color: var(--text-secondary);
-      margin: 0;
-      font-size: var(--fs-base);
-    }
-
-    .doc-section__blurb code {
-      font-size: 0.85em;
-    }
-
     /* ---------- Example: live demo + code ---------- */
     .doc-example {
       margin-block-end: var(--space-6);
       border: 1px solid var(--hairline);
-      clip-path: var(--clip-chamfer);
       overflow: hidden;
+      /* shape from the .vui-chamfer class in markup (corner-shape + fallback) */
     }
 
     .doc-demo {
@@ -172,7 +159,13 @@
     .doc-demo>header,
     .doc-demo>footer,
     .doc-demo>.vui-prose,
-    .doc-demo>nav {
+    .doc-demo>nav,
+    /* Disclosure widgets shrink-wrap in this flex-start column, so opening one
+       resizes its width instantly (only block-size transitions). Stretching them
+       to a definite width keeps the open/close animation purely vertical. The
+       dropdown is an inline-block menu trigger, so it stays out. */
+    .doc-demo>details:not(.dropdown),
+    .doc-demo>ul.tree {
       align-self: stretch;
       inline-size: auto;
     }
@@ -281,8 +274,8 @@
       display: flex;
       align-items: flex-end;
       padding: 8px;
-      clip-path: var(--clip-chamfer);
       --bevel-md: 7px;
+      /* shape from the .vui-chamfer class in markup */
     }
 
     .doc-swatch__name {
@@ -339,7 +332,7 @@
     /* Phones: tighten the rhythm so content breathes without ever shrinking type
      into illegibility. Layout reflows; gutters stay. */
     @media (max-width: 40rem) {
-      .doc-section {
+      .doc-main .vui-section {
         padding-block: var(--space-7);
       }
 
@@ -367,7 +360,7 @@
         CSS
       </span></a>
     <menu class="right">
-      <a class="badge cyan vui-from-s" href="https://github.com/Khoding/vantaui-css/releases">v1.6.1</a>
+      <a class="badge cyan vui-from-s" href="https://github.com/Khoding/vantaui-css/releases">v1.7.0</a>
       <a class="icon" href="https://github.com/Khoding/vantaui-css" aria-label="GitHub repository" target="_blank"
         rel="noopener"><i>code</i></a>
     </menu>
@@ -382,7 +375,7 @@
   </aside>
 
   <main class="doc-main">
-    <header class="doc-hero">
+    <header class="doc-hero vui-chamfer">
       <div class="doc-hero__in">
         <p class="vui-eyebrow">KHODTECH Tactical Interface</p>
         <h1>Vanta<b>UI</b> CSS</h1>

@@ -6,9 +6,14 @@
    (cyan·amber·red·green). Add .log for a dense, monospaced feed.
    ============================================================ */
 :where(.vui ol.timeline) {
+  /* `--_gap` is the row gap AND the distance the rail must bridge to reach the
+     next node; `--_node-y` is the node's top offset. Both are overridden by the
+     .log variant so the single rail math below stays continuous in either. */
+  --_gap: var(--space-5);
+  --_node-y: 3px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--_gap);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -20,25 +25,26 @@
   padding-inline-start: var(--space-6);
   color: var(--text-secondary);
 }
-/* the rail */
+/* the rail: one continuous line — each segment runs from this node down through
+   the flex gap to the next node, so consecutive segments meet under the dots. */
 :where(.vui ol.timeline > li)::before {
   content: '';
   position: absolute;
-  inset-block: 4px;
   inset-inline-start: 4px;
+  inset-block-start: calc(var(--_node-y) + 4px);
+  inset-block-end: calc(-1 * var(--_gap) - var(--_node-y));
   inline-size: var(--border-hair);
   background-color: var(--hairline-strong);
 }
-/* the last node ends the rail at its own marker */
+/* the last node ends the rail (nothing to connect below it) */
 :where(.vui ol.timeline > li:last-child)::before {
-  block-size: 6px;
-  inset-block-end: auto;
+  content: none;
 }
 /* the node */
 :where(.vui ol.timeline > li)::after {
   content: '';
   position: absolute;
-  inset-block-start: 3px;
+  inset-block-start: var(--_node-y);
   inset-inline-start: 0;
   inline-size: 9px;
   block-size: 9px;
@@ -63,13 +69,11 @@
 
 /* dense monospaced log feed */
 :where(.vui ol.timeline.log) {
-  gap: 2px;
+  --_gap: 2px;
+  --_node-y: 8px;
 }
 :where(.vui ol.timeline.log > li) {
   padding-block: 3px;
   font-size: var(--fs-xs);
   font-family: var(--font-mono);
-}
-:where(.vui ol.timeline.log > li)::after {
-  inset-block-start: 8px;
 }

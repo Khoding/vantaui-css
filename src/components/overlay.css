@@ -185,3 +185,23 @@
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
 }
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the box without clipping content;
+   clip-path above is the fallback. `.vui-clip` opts the modal back in. The
+   tooltips are pseudo/JS nodes, so they convert unconditionally. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui dialog:not(.left):not(.right):not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+  :where(.vui [data-tip])::after,
+  #vui-tooltip {
+    clip-path: none;
+    border-radius: var(--bevel-sm);
+    corner-shape: bevel;
+  }
+}

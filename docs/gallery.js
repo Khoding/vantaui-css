@@ -39,7 +39,7 @@
         .map(function (name) {
           var dark = /(-50|-200|-300|-400|cyan-5|green-4|amber-3)/.test(name);
           return (
-            '<div class="doc-swatch" style="background:var(--' + name + ')">' +
+            '<div class="doc-swatch vui-chamfer" style="background:var(--' + name + ')">' +
             '<span class="doc-swatch__name" style="color:' +
             (dark ? 'var(--ink-900)' : 'var(--slate-50)') + '">' +
             (prefix || '') + name + '</span></div>'
@@ -59,7 +59,7 @@
           var name = Array.isArray(it) ? it[0] : it;
           var note = Array.isArray(it) ? it[1] : '';
           return (
-            '<div class="doc-ref-item"><code>' + name + '</code>' +
+            '<div class="doc-ref-item vui-notch"><code>' + name + '</code>' +
             (note ? '<small>' + note + '</small>' : '') + '</div>'
           );
         })
@@ -74,7 +74,7 @@
       list
         .map(function (it) {
           return (
-            '<div class="doc-ref-item">' + it.sample + '<code>' + it.name + '</code></div>'
+            '<div class="doc-ref-item vui-notch">' + it.sample + '<code>' + it.name + '</code></div>'
           );
         })
         .join('') +
@@ -205,21 +205,21 @@
         return (
           '<p class="doc-tok-h">Plates &amp; frames</p>' +
           '<div class="doc-ref-grid">' +
-          '<div class="doc-ref-sample"><div class="vui-chamfer" style="block-size:60px;border:1px solid var(--hairline-strong);background:var(--surface-panel)"></div><code>vui-chamfer</code></div>' +
-          '<div class="doc-ref-sample"><div class="vui-notch" style="block-size:60px;border:1px solid var(--hairline-strong);background:var(--surface-panel)"></div><code>vui-notch</code></div>' +
-          '<div class="doc-ref-sample"><div class="vui-brackets" style="block-size:60px;display:grid;place-items:center;color:var(--text-muted)">framed</div><code>vui-brackets</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><div class="vui-chamfer" style="block-size:60px;border:1px solid var(--hairline-strong);background:var(--surface-panel)"></div><code>vui-chamfer</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><div class="vui-notch" style="block-size:60px;border:1px solid var(--hairline-strong);background:var(--surface-panel)"></div><code>vui-notch</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><div class="vui-brackets" style="block-size:60px;display:grid;place-items:center;color:var(--text-muted)">framed</div><code>vui-brackets</code></div>' +
           '</div>' +
           '<p class="doc-tok-h">Eyebrow · signal · rule</p>' +
           '<div class="doc-ref-grid">' +
-          '<div class="doc-ref-sample"><p class="vui-eyebrow" style="margin:0">System eyebrow</p><code>vui-eyebrow</code></div>' +
-          '<div class="doc-ref-sample"><p class="vui-signal" style="margin:0">SIGNAL 042.7</p><code>vui-signal</code></div>' +
-          '<div class="doc-ref-sample"><hr class="vui-rule" style="inline-size:100%"><code>vui-rule</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><p class="vui-eyebrow" style="margin:0">System eyebrow</p><code>vui-eyebrow</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><p class="vui-signal" style="margin:0">SIGNAL 042.7</p><code>vui-signal</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><hr class="vui-rule" style="inline-size:100%"><code>vui-rule</code></div>' +
           '</div>' +
           '<p class="doc-tok-h">Textured backdrops</p>' +
           '<div class="doc-ref-grid">' +
-          '<div class="doc-ref-sample"><div class="vui-bg-grid" style="block-size:64px;border:1px solid var(--hairline)"></div><code>vui-bg-grid</code></div>' +
-          '<div class="doc-ref-sample"><div class="vui-bg-scan" style="block-size:64px;border:1px solid var(--hairline)"></div><code>vui-bg-scan</code></div>' +
-          '<div class="doc-ref-sample"><div class="vui-bg-hud" style="block-size:64px;border:1px solid var(--hairline)"></div><code>vui-bg-hud</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><div class="vui-bg-grid" style="block-size:64px;border:1px solid var(--hairline)"></div><code>vui-bg-grid</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><div class="vui-bg-scan" style="block-size:64px;border:1px solid var(--hairline)"></div><code>vui-bg-scan</code></div>' +
+          '<div class="doc-ref-sample vui-chamfer"><div class="vui-bg-hud" style="block-size:64px;border:1px solid var(--hairline)"></div><code>vui-bg-hud</code></div>' +
           '</div>'
         );
       },
@@ -764,7 +764,8 @@
             '  <thead><tr><th>Sector</th><th>Status</th><th data-num>Threat</th></tr></thead>\n' +
             '  <tbody>\n' +
             '    <tr><td>Bleake Island</td><td>Contested</td><td data-num>64</td></tr>\n' +
-            '    <tr class="red"><td>Miagani</td><td>Hostile</td><td data-num>86</td></tr>\n' +
+            '    <tr><td>Miagani</td><td>Hostile</td><td data-num>86</td></tr>\n' +
+            '    <tr class="red"><td>Coventry</td><td>Critical</td><td data-num>92</td></tr>\n' +
             "    <tr><td>Founders'</td><td>Secure</td><td data-num>38</td></tr>\n" +
             '  </tbody>\n' +
             '</table>';
@@ -1214,7 +1215,7 @@
     var play = sec.play;
     var state = Object.assign({}, play.state);
 
-    var wrap = el('div', 'doc-play bleed');
+    var wrap = el('div', 'doc-play bleed vui-chamfer');
     var stage = el('div', 'doc-demo doc-play__stage' + (play.frame ? ' doc-play__stage--frame' : ''));
     var panel = el('div', 'doc-play__panel');
     var controls = el('div', 'doc-play__controls');
@@ -1246,7 +1247,7 @@
       setTimeout(function () { ic.textContent = 'content_copy'; }, 1200);
     });
 
-    var view = el('button', 'doc-viewcode');
+    var view = el('button', 'doc-viewcode vui-notch');
     view.type = 'button';
     view.innerHTML = '<i>code</i><span>View code</span>';
     view.addEventListener('click', function () {
@@ -1267,7 +1268,7 @@
 
   /* ---- a static example: live demo + view-code (or inline code for snippets) ---- */
   function exampleNode(ex, sec) {
-    var wrap = el('div', 'doc-example bleed');
+    var wrap = el('div', 'doc-example bleed vui-chamfer');
 
     if (ex.noDemo) {
       /* reference snippet: keep the code inline, it IS the content */
@@ -1305,7 +1306,7 @@
       setTimeout(function () { ic.textContent = 'content_copy'; }, 1200);
     });
 
-    var view = el('button', 'doc-viewcode');
+    var view = el('button', 'doc-viewcode vui-notch');
     view.type = 'button';
     view.innerHTML = '<i>code</i><span>View code</span>';
     view.addEventListener('click', function () {
@@ -1328,13 +1329,11 @@
     var order = [];
 
     SECTIONS.forEach(function (sec) {
-      var s = el('section', 'doc-section vui-prose');
+      var s = el('section', 'vui-section vui-prose');
       s.id = sec.id;
       s.innerHTML =
-        '<div class="doc-section__head">' +
-        '<h2 class="doc-section__title">' + sec.title + '</h2>' +
-        (sec.blurb ? '<p class="doc-section__blurb">' + sec.blurb + '</p>' : '') +
-        '</div>';
+        '<h2>' + sec.title + '</h2>' +
+        (sec.blurb ? '<p class="blurb">' + sec.blurb + '</p>' : '');
 
       if (sec.render) {
         var custom = el('div', 'doc-tokens bleed');
@@ -1408,7 +1407,7 @@
       },
       { rootMargin: '-12% 0px -78% 0px', threshold: 0 },
     );
-    document.querySelectorAll('.doc-section').forEach(function (s) {
+    document.querySelectorAll('.vui-section').forEach(function (s) {
       io.observe(s);
     });
   }

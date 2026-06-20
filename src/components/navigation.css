@@ -167,7 +167,8 @@
     var(--shadow-raised),
     0 0 60px -10px var(--accent-glow);
   color: var(--text-primary);
-  /* chamfered trailing edge */
+  /* Chamfered trailing edge — a one-sided full-height diagonal, not a corner
+     bevel, so it stays on clip-path (corner-shape has no equivalent). */
   clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
   /* closed state of the open/close transition */
   translate: -101% 0;

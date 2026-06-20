@@ -4,6 +4,8 @@
    can ship as `oklch(...)` (with a hex/rgba fallback). Run with:
      node scripts/palette-oklch.mjs
    Pure stdlib, no deps. sRGB D65 → linear → OKLab → OKLCH.
+   
+   Claude Generated because it's good at it, verified by hand and it's okay.
    ============================================================ */
 
 function srgbToLinear(c) {

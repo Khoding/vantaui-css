@@ -33,9 +33,12 @@
   text-transform: uppercase;
   text-align: center;
 }
-/* numbered node */
+/* numbered node — sits above the connector (z-index) so its opaque body masks
+   the connector to the node's real rendered edge (see the connector note). */
 :where(.vui ol.stepper > li)::before {
   content: counter(vui-step);
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   inline-size: 32px;
@@ -48,13 +51,15 @@
   clip-path: var(--clip-notch);
   --bevel-sm: 6px;
 }
-/* connector to the next node (edge → edge) */
+/* connector to the next node. It runs node-CENTRE to node-CENTRE behind both
+   nodes; each opaque node then masks its own half, so the visible line meets the
+   nodes exactly — no subpixel gap from flex-centred nodes vs a %-placed line. */
 :where(.vui ol.stepper > li:not(:last-child))::after {
   content: '';
   position: absolute;
   inset-block-start: 16px;
-  inset-inline-start: calc(50% + 18px);
-  inline-size: calc(100% - 36px);
+  inset-inline-start: 50%;
+  inline-size: 100%;
   block-size: var(--border-hair);
   background-color: var(--hairline-strong);
 }
@@ -67,7 +72,9 @@
 :where(.vui ol.stepper > li.done)::before {
   content: '\2713'; /* ✓ — font-independent, no icon dependency */
   border-color: var(--accent);
-  background-color: color-mix(in srgb, var(--accent) 14%, transparent);
+  /* opaque (composited over the panel surface, not transparent) so the node
+     masks the connector running behind it */
+  background-color: color-mix(in srgb, var(--accent) 14%, var(--surface-panel));
   color: var(--accent);
 }
 :where(.vui ol.stepper > li.done)::after {
@@ -97,9 +104,28 @@
   padding-block: 8px;
   text-align: start;
 }
+/* The connector bridges this node's bottom to the next node's top. Drive it
+   from the row's mid-line (50% — a percentage INSET resolves against the row's
+   full height, unlike a percentage block-size, which resolves against the node
+   and collapses to a stub) and offset by the node's half-height, so it stays
+   continuous at any row height. */
 :where(.vui ol.stepper.vertical > li:not(:last-child))::after {
-  inset-block-start: 32px;
-  inset-inline-start: 16px;
+  /* centre on the node: row padding-inline-start (6px) + node half-width (16px),
+     less half the hairline so the line sits dead-centre under the node. */
+  inset-inline-start: calc(6px + 16px - var(--border-hair) / 2);
+  inset-block-start: calc(50% + 16px);
+  inset-block-end: calc(-50% + 16px);
   inline-size: var(--border-hair);
-  block-size: calc(100% - 24px);
+  block-size: auto;
+}
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   The numbered node is a pseudo-element, so it converts unconditionally;
+   clip-path above is the fallback. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui ol.stepper > li)::before {
+    clip-path: none;
+    border-radius: var(--bevel-sm);
+    corner-shape: bevel;
+  }
 }

@@ -62,3 +62,18 @@
 :where(.vui .avatar-group) > .avatar:not(:first-child) {
   margin-inline-start: -10px;
 }
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the default chamfer plate; the
+   existing overflow:hidden then clips a child <img> to the bevel. `.round`
+   (disc) and `.hex` (hexagon) keep their own shapes; `.vui-clip` opts back
+   into clip-path. clip-path above is the fallback. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui .avatar:not(.round):not(.hex):not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+}

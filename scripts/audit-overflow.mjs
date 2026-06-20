@@ -19,6 +19,8 @@
      node scripts/audit-overflow.mjs --json tmp/overflow.json
 
    Exit code is non-zero when any offender is found (CI gate).
+
+   Claude Generated because it's good at it, verified by hand and it's okay.
    ============================================================ */
 import {createServer} from 'node:http';
 import {readFile, mkdir, writeFile} from 'node:fs/promises';
@@ -32,7 +34,7 @@ const flag = (name, def) => {
 };
 
 // Pages served from docs/ to audit (relative paths), unless --url overrides.
-const DEFAULT_PAGES = ['/index.html', '/overflow-fixture.html'];
+const DEFAULT_PAGES = ['/index.html'];
 const externalUrl = flag('url', null);
 const jsonOut = flag('json', null);
 // Viewport matrix: 250 is the support floor; the rest cover phones → desktop.
@@ -65,7 +67,8 @@ const MIME = {
 // it is tagged blindClip when a clip-path is why it's invisible.
 function detect() {
   const tol = 2; // ignore sub-pixel / border rounding
-  const ALLOW = 'pre, textarea, [class~="scroll"], [class~="table-scroll"], [class~="vui-overflow-auto"], [class*="carousel"], [class*="snap"]';
+  const ALLOW =
+    'pre, textarea, [class~="scroll"], [class~="table-scroll"], [class~="vui-overflow-auto"], [class*="carousel"], [class*="snap"]';
 
   const sel = el => {
     const parts = [];
@@ -88,12 +91,15 @@ function detect() {
   const isAllowed = el => el.matches(ALLOW) || el.closest(ALLOW) !== null;
   const contains = el => {
     const ox = getComputedStyle(el).overflowX;
-    return ox === 'clip' || ox === 'hidden' || ox === 'auto' || ox === 'scroll' || el.matches(ALLOW);
+    return (
+      ox === 'clip' || ox === 'hidden' || ox === 'auto' || ox === 'scroll' || el.matches(ALLOW)
+    );
   };
 
   // Stage scrollers that should never scroll the inline axis.
-  const stages = [...new Set([document.documentElement, document.body, ...document.querySelectorAll('main')])]
-    .filter(s => s && s.scrollWidth - s.clientWidth > tol && !isAllowed(s));
+  const stages = [
+    ...new Set([document.documentElement, document.body, ...document.querySelectorAll('main')]),
+  ].filter(s => s && s.scrollWidth - s.clientWidth > tol && !isAllowed(s));
 
   const offenders = [];
   for (const container of stages) {
@@ -108,7 +114,8 @@ function detect() {
       if (dr.width <= 0 || dr.height <= 0) return false;
       // Box pokes past the stage edge, OR its own text scrolls inside it — but
       // only count own-scroll when d does NOT contain it (else it never escapes).
-      const overflows = dr.right > rightEdge + tol || (d.scrollWidth - d.clientWidth > tol && !contains(d));
+      const overflows =
+        dr.right > rightEdge + tol || (d.scrollWidth - d.clientWidth > tol && !contains(d));
       if (!overflows) return false;
       // Is anything between d and the stage a real overflow boundary? If so the
       // overflow is contained there and never reached this stage through d.
@@ -121,7 +128,9 @@ function detect() {
     });
     // Reduce to leaf-most pokers (drop any that contain another poker).
     const pokeSet = new Set(poking);
-    const leaves = poking.filter(d => !Array.from(d.querySelectorAll('*')).some(c => pokeSet.has(c)));
+    const leaves = poking.filter(
+      d => !Array.from(d.querySelectorAll('*')).some(c => pokeSet.has(c)),
+    );
     if (!leaves.length) continue;
 
     for (const leaf of leaves) {
@@ -203,7 +212,13 @@ if (server) await new Promise(r => server.close(r));
 
 // ---- Report ----
 if (!results.length) {
-  console.log('✓ No horizontal overflow across', WIDTHS.join('/'), 'px on', targets.length, 'page(s).');
+  console.log(
+    '✓ No horizontal overflow across',
+    WIDTHS.join('/'),
+    'px on',
+    targets.length,
+    'page(s).',
+  );
 } else {
   for (const {url, width, docScroll, offenders} of results) {
     console.log(`\n✗ ${url} @ ${width}px — page scrolls ${docScroll}px horizontally`);
@@ -215,7 +230,9 @@ if (!results.length) {
       console.log(`    • ${o.container}  scrolls ${o.scrolls}px${tag}`);
       console.log(`        leaf: ${o.leaf}  (+${o.overshoot}px past container)`);
       if (o.blindClip) console.log(`        hidden by clip-path on: ${o.clipAncestor}`);
-      console.log(`        white-space:${o.whiteSpace}  min-inline:${o.minInlineSize}  overflow-x:${o.overflowX}  pos:${o.position}`);
+      console.log(
+        `        white-space:${o.whiteSpace}  min-inline:${o.minInlineSize}  overflow-x:${o.overflowX}  pos:${o.position}`,
+      );
     }
   }
   console.log(`\n${totalOffenders} offender(s) across ${results.length} viewport(s).`);

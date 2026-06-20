@@ -127,28 +127,28 @@
   background-color: oklch(84.6% 0.133 212.1 / 0.08);
   color: oklch(94% 0.025 212);
 }
-:where(.vui table tbody tr.cyan:hover) {
+:where(.vui table:not(.flat) tbody tr.cyan:hover) {
   background-color: oklch(84.6% 0.133 212.1 / 0.16);
 }
 :where(.vui table tbody tr.amber) {
   background-color: oklch(81.1% 0.155 71 / 0.08);
   color: oklch(94% 0.055 79);
 }
-:where(.vui table tbody tr.amber:hover) {
+:where(.vui table:not(.flat) tbody tr.amber:hover) {
   background-color: oklch(81.1% 0.155 71 / 0.16);
 }
 :where(.vui table tbody tr.red) {
   background-color: oklch(64.7% 0.239 23.8 / 0.08);
   color: oklch(94% 0.04 23);
 }
-:where(.vui table tbody tr.red:hover) {
+:where(.vui table:not(.flat) tbody tr.red:hover) {
   background-color: oklch(64.7% 0.239 23.8 / 0.16);
 }
 :where(.vui table tbody tr.green) {
   background-color: oklch(78% 0.189 154.4 / 0.08);
   color: oklch(94% 0.045 155);
 }
-:where(.vui table tbody tr.green:hover) {
+:where(.vui table:not(.flat) tbody tr.green:hover) {
   background-color: oklch(78% 0.189 154.4 / 0.16);
 }
 
@@ -158,4 +158,19 @@
   font-weight: var(--fw-semibold);
   font-family: var(--font-hud);
   text-align: end;
+}
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the scroll wrapper's box; its
+   overflow-x:auto still clips the scrolled table to the beveled corner.
+   clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
+@supports (corner-shape: bevel) {
+  :where(.vui .scroll:has(> table):not(.vui-clip)),
+  :where(.vui .table-scroll:not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
 }

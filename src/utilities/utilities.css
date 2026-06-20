@@ -40,6 +40,8 @@
   overflow: hidden;
   border: 0;
   white-space: nowrap;
+  /* Visually-hidden inset clip (accessibility) — not a corner shape, unrelated
+     to the corner-shape bevel enhancement; stays as-is. */
   clip-path: inset(50%);
 }
 

@@ -110,10 +110,11 @@
 :where(.vui input[type='checkbox']:not([role='switch'])),
 :where(.vui input[type='radio']) {
   --bevel-sm: 4px;
-  display: inline-grid;
+  display: inline-flex;
   appearance: none;
   flex: none;
-  place-content: center;
+  align-items: center;
+  justify-content: center;
   inline-size: 18px;
   block-size: 18px;
   margin: 0;
@@ -328,4 +329,36 @@
 /* Accent for any native control we don't fully restyle */
 :where(.vui) {
   accent-color: var(--accent);
+}
+
+/* ---- Progressive enhancement: corner-shape instead of clip-path ----
+   Where supported (Chromium 139+), bevel the box without clipping content;
+   clip-path above is the fallback. `.vui-clip` opts back in. See panel.css.
+   Radio (round) and the switch/range polygons keep their own shapes. */
+@supports (corner-shape: bevel) {
+  :where(
+    .vui
+      input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='submit']):not(
+        [type='button']
+      ):not([type='reset']):not([type='image']):not([type='color']):not(.vui-clip)
+  ),
+  :where(.vui textarea:not(.vui-clip)),
+  :where(.vui select:not(.vui-clip)),
+  :where(.vui [popover].listbox:not(.vui-clip)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+  :where(.vui input[type='checkbox']:not([role='switch']):not(.vui-clip)) {
+    clip-path: none;
+    border-radius: var(--bevel-sm);
+    corner-shape: bevel;
+  }
+  :where(.vui input[type='checkbox']:not([role='switch']))::before {
+    clip-path: none;
+    border-radius: var(--bevel-sm);
+    corner-shape: bevel;
+  }
 }

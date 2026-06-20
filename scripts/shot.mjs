@@ -15,6 +15,8 @@
      --out <path>       output PNG (default tmp/shot.png)
      --full             full-page screenshot
      --w / --h          viewport size (default 1280x900)
+
+     Claude Generated because it's good at it, verified by hand and it's okay.
    ============================================================ */
 import {createServer} from 'node:http';
 import {readFile, mkdir} from 'node:fs/promises';
@@ -71,7 +73,8 @@ page.on('pageerror', e => errors.push(String(e)));
 await page.goto(`http://localhost:${port}/`, {waitUntil: 'networkidle'});
 console.log('chromium', browser.version());
 
-if (sel) await page.evaluate(s => document.querySelector(s)?.scrollIntoView({block: 'center'}), sel);
+if (sel)
+  await page.evaluate(s => document.querySelector(s)?.scrollIntoView({block: 'center'}), sel);
 if (click) {
   await page.click(click, {timeout: 4000}).catch(e => console.log('click failed:', e.message));
 }
