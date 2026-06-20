@@ -12,6 +12,11 @@
        copyable source, and the controls can never drift, and the code is clean
        by construction (no demo-only sizing leaks in).
 
+   Opt a live demo into a resizable preview lane with `resize: true` (on a
+   static example or on `play`): a grip on the trailing edge lets you shrink the
+   preview and watch the component reflow. Off by default — reserve it for demos
+   where responsiveness is the point (layout, carousel, app shell…).
+
    Foundations / utilities use a `render()` reference gallery (swatches/chips),
    not a code panel. Sections are grouped for the sidebar nav.
    ============================================================ */
@@ -469,6 +474,7 @@
       blurb:
         '<code>vui-autogrid</code> is the responsive-by-default card flow: it fits as many cards as the space allows at your <code>--vui-min</code> width, and reflows to a single full-width card on a phone without using breakpoints. Add <code>--fit</code> so a short last row stretches to fill.',
       play: {
+        resize: true,
         state: { min: 13, fit: false },
         controls: [
           { type: 'range', key: 'min', label: 'Min card', min: 7, max: 22, suffix: 'rem' },
@@ -561,7 +567,7 @@
       blurb:
         'A bare <code>&lt;article&gt;</code> is a chamfered plate; a nested <code>&lt;header&gt;</code>/<code>&lt;footer&gt;</code> auto-spans with a hairline divider. Tune depth, tint and intensity independently and combine freely.',
       play: {
-        state: { surface: '', tint: '', intensity: '', glow: false, notch: false, brackets: false, sections: false },
+        state: { surface: '', tint: '', intensity: '', glow: false, notch: false, brackets: false, sections: false, filled: false },
         controls: [
           { type: 'select', key: 'surface', label: 'Surface', options: [{ label: 'Panel', value: '' }, { label: 'Raised', value: 'raised' }, { label: 'Inset', value: 'inset' }, { label: 'Flat', value: 'flat' }] },
           { type: 'select', key: 'tint', label: 'Tint', options: [{ label: 'None', value: '' }, { label: 'Cyan', value: 'cyan' }, { label: 'Amber', value: 'amber' }, { label: 'Red', value: 'red' }, { label: 'Green', value: 'green' }] },
@@ -570,16 +576,18 @@
           { type: 'toggle', key: 'notch', label: 'Notch' },
           { type: 'toggle', key: 'brackets', label: 'Brackets' },
           { type: 'toggle', key: 'sections', label: 'Header & footer' },
+          { type: 'toggle', key: 'filled', label: 'Filled bar (header/footer)' },
         ],
         render: function (s) {
           var c = [s.surface, s.tint, s.intensity, s.glow && 'glow', s.notch && 'notch', s.brackets && 'brackets'].filter(Boolean);
           var cls = c.length ? ' class="' + c.join(' ') + '"' : '';
           if (s.sections) {
+            var bar = s.filled ? ' class="filled"' : '';
             return (
               '<article' + cls + '>\n' +
-              '  <header>\n    <small class="vui-eyebrow">Case File</small>\n    <small>14-C</small>\n  </header>\n' +
+              '  <header' + bar + '>\n    <small class="vui-eyebrow">Case File</small>\n    <small>14-C</small>\n  </header>\n' +
               '  <p>Recovered intel from the broker drop. Chain of custody verified.</p>\n' +
-              '  <footer><button class="small">Open</button></footer>\n' +
+              '  <footer' + bar + '><button class="small">Open</button></footer>\n' +
               '</article>'
             );
           }
@@ -701,17 +709,18 @@
       id: 'gauge',
       title: 'Radial gauge',
       blurb:
-        'A 270° arc readout built from a single conic-gradient with no SVG and no JavaScript. The value renders from <code>--value</code>; leave <code>&lt;b&gt;</code> empty and a counter fills it. Size with <code>small · large</code>, tone with a colour word.',
+        'A 270° arc readout built from a single conic-gradient with no SVG and no JavaScript. The value renders from <code>--value</code>; leave <code>&lt;b&gt;</code> empty and a counter fills it. Fluid by default — it scales with the viewport; set <code>--size</code> for a fixed footprint. Tone with a colour word.',
       play: {
-        state: { size: '', tone: '', value: 87 },
+        resize: true,
+        state: { tone: '', value: 87, size: 8 },
         controls: [
-          { type: 'select', key: 'size', label: 'Size', options: [{ label: 'Medium', value: '' }, { label: 'Small', value: 'small' }, { label: 'Large', value: 'large' }] },
           { type: 'select', key: 'tone', label: 'Tone', options: [{ label: 'Cyan', value: '' }, { label: 'Amber', value: 'amber' }, { label: 'Red', value: 'red' }, { label: 'Green', value: 'green' }] },
           { type: 'range', key: 'value', label: 'Value', min: 0, max: 100 },
+          { type: 'range', key: 'size', label: 'Size (--size)', min: 6, max: 11, suffix: 'rem' },
         ],
         render: function (s) {
-          var c = ['gauge', s.size, s.tone].filter(Boolean);
-          return '<div class="' + c.join(' ') + '" style="--value:' + s.value + '">\n  <b></b><small>%</small>\n  <span>Integrity</span>\n</div>';
+          var c = ['gauge', s.tone].filter(Boolean);
+          return '<div class="' + c.join(' ') + '" style="--value:' + s.value + '; --size:' + s.size + 'rem">\n  <b></b><small>%</small>\n  <span>Integrity</span>\n</div>';
         },
       },
     },
@@ -980,12 +989,28 @@
       id: 'carousel',
       title: 'Carousel',
       blurb:
-        'A <code>&lt;div class="carousel"&gt;</code> is a horizontal scroll-snap filmstrip where the direct children are the slides. Swipe, scroll or keyboard by default; on browsers with CSS-carousel support it also grows a native row of snap-marker dots, no JS. Size slides with <code>--vui-slide</code>; <code>peek</code> reveals the next, <code>full</code> snaps one per view, <code>clean</code> hides the scrollbar.',
-      examples: [
-        {
-          code: '<div class="carousel" style="max-inline-size:min(560px, 100%)">\n  <article><div class="stat signal"><b>14-C</b><span>Sector</span></div><p>Contested · 6 contacts</p></article>\n  <article><div class="stat amber"><b>22-A</b><span>Sector</span></div><p>Hostile · 12 contacts</p></article>\n  <article><div class="stat"><b>09-F</b><span>Sector</span></div><p>Secure · 0 contacts</p></article>\n  <article><div class="stat signal"><b>31-B</b><span>Sector</span></div><p>Contested · 3 contacts</p></article>\n</div>',
+        'A <code>&lt;div class="carousel"&gt;</code> is a horizontal scroll-snap filmstrip where the direct children are the slides. Swipe, scroll or keyboard by default; on browsers with CSS-carousel support it also grows native prev/next arrows + a row of snap-marker dots, no JS. Size slides with <code>--vui-slide</code>; <code>peek</code> reveals the next, <code>full</code> snaps one per view, <code>clean</code> hides the scrollbar, <code>no-arrows</code>/<code>no-dots</code> drop either control. Drag the preview narrower to see the dots stay centred on the track.',
+      play: {
+        resize: true,
+        state: { mode: '', clean: false, arrows: true, dots: true },
+        controls: [
+          { type: 'select', key: 'mode', label: 'Slide fit', options: [{ label: 'Default', value: '' }, { label: 'Peek next', value: 'peek' }, { label: 'Full (one per view)', value: 'full' }] },
+          { type: 'toggle', key: 'arrows', label: 'Prev / next arrows' },
+          { type: 'toggle', key: 'dots', label: 'Marker dots' },
+          { type: 'toggle', key: 'clean', label: 'Hide scrollbar (clean)' },
+        ],
+        render: function (s) {
+          var cls = ['carousel', s.mode, s.clean ? 'clean' : '', s.arrows ? '' : 'no-arrows', s.dots ? '' : 'no-dots'].filter(Boolean);
+          return (
+            '<div class="' + cls.join(' ') + '">\n' +
+            '  <article><div class="stat signal"><b>14-C</b><span>Sector</span></div><p>Contested · 6 contacts</p></article>\n' +
+            '  <article><div class="stat amber"><b>22-A</b><span>Sector</span></div><p>Hostile · 12 contacts</p></article>\n' +
+            '  <article><div class="stat"><b>09-F</b><span>Sector</span></div><p>Secure · 0 contacts</p></article>\n' +
+            '  <article><div class="stat signal"><b>31-B</b><span>Sector</span></div><p>Contested · 3 contacts</p></article>\n' +
+            '</div>'
+          );
         },
-      ],
+      },
     },
     {
       group: 'Interactive',
@@ -1010,6 +1035,7 @@
       examples: [
         {
           frame: true,
+          resize: true,
           code: '<body class="vui">\n  <nav class="left" aria-label="Rail">\n    <img src="emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</body>',
           demo: '<div class="vui" style="block-size:600px">\n  <nav class="left" aria-label="Rail">\n    <img src="assets/emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</div>',
         },
@@ -1155,6 +1181,81 @@
     return node;
   }
 
+  /* ---- resizable preview lane (drag the trailing edge to test responsiveness)
+     The lane stays full-width; the demo shrinks inside it and the grip rides the
+     demo's trailing edge. A live width readout shows while dragging. Playgrounds
+     repaint the demo's innerHTML, so reattachResize() re-homes the grip + readout
+     after each paint. ---- */
+  var RESIZE_MIN = 240;
+
+  function reattachResize(demo) {
+    if (demo._resize) {
+      demo.appendChild(demo._resize.handle);
+      demo.appendChild(demo._resize.readout);
+    }
+  }
+
+  function resizableLane(demo) {
+    var lane = el('div', 'doc-resize');
+    var handle = el('div', 'doc-resize__handle');
+    handle.setAttribute('role', 'separator');
+    handle.setAttribute('aria-orientation', 'vertical');
+    handle.setAttribute('aria-label', 'Drag to resize the preview');
+    handle.setAttribute('title', 'Drag to resize');
+    handle.tabIndex = 0;
+    var readout = el('div', 'doc-resize__readout');
+    demo._resize = { handle: handle, readout: readout };
+
+    lane.appendChild(demo);
+    demo.appendChild(handle);
+    demo.appendChild(readout);
+
+    function widthNow() {
+      return Math.round(demo.getBoundingClientRect().width);
+    }
+    function apply(px) {
+      var maxW = lane.clientWidth;
+      var w = Math.max(RESIZE_MIN, Math.min(Math.round(px), maxW));
+      /* dropping the property hands width back to the fluid 100% default */
+      if (w >= maxW) demo.style.removeProperty('inline-size');
+      else demo.style.inlineSize = w + 'px';
+      readout.textContent = widthNow() + 'px';
+    }
+
+    var startX = 0, startW = 0;
+    function onMove(e) { apply(startW + (e.clientX - startX)); }
+    function onUp() {
+      lane.classList.remove('is-dragging');
+      document.body.style.removeProperty('cursor');
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+    }
+    handle.addEventListener('pointerdown', function (e) {
+      e.preventDefault();
+      startX = e.clientX;
+      startW = widthNow();
+      readout.textContent = startW + 'px';
+      lane.classList.add('is-dragging');
+      document.body.style.cursor = 'ew-resize';
+      window.addEventListener('pointermove', onMove);
+      window.addEventListener('pointerup', onUp);
+    });
+    handle.addEventListener('keydown', function (e) {
+      var step = e.shiftKey ? 48 : 16;
+      if (e.key === 'ArrowLeft') apply(widthNow() - step);
+      else if (e.key === 'ArrowRight') apply(widthNow() + step);
+      else if (e.key === 'Home') apply(RESIZE_MIN);
+      else if (e.key === 'End') apply(lane.clientWidth);
+      else return;
+      e.preventDefault();
+      lane.classList.add('is-dragging');
+      clearTimeout(handle._hideT);
+      handle._hideT = setTimeout(function () { lane.classList.remove('is-dragging'); }, 900);
+    });
+
+    return lane;
+  }
+
   /* ---- a single playground control (select / toggle / range) ---- */
   function controlNode(ctrl, state, onChange) {
     if (ctrl.type === 'toggle') {
@@ -1225,6 +1326,7 @@
     }
     function paint() {
       stage.innerHTML = code();
+      reattachResize(stage);
       if (window.vui && window.vui.init) window.vui.init(stage);
       CodePanel.refresh(sec.id, sec.title, code);
       if (play.postPaint) play.postPaint(stage, state, paint);
@@ -1258,7 +1360,7 @@
     actions.appendChild(view);
     panel.appendChild(controls);
     panel.appendChild(actions);
-    wrap.appendChild(stage);
+    wrap.appendChild(play.resize ? resizableLane(stage) : stage);
     wrap.appendChild(panel);
     paint();
     return wrap;
@@ -1282,7 +1384,7 @@
 
     var demo = el('div', 'doc-demo' + (ex.frame ? ' doc-demo--frame' : ''));
     demo.innerHTML = ex.demo || ex.code;
-    wrap.appendChild(demo);
+    wrap.appendChild(ex.resize ? resizableLane(demo) : demo);
 
     var foot = el('div', 'doc-example__foot');
     if (ex.label) {

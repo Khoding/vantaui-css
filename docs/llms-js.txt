@@ -1,6 +1,6 @@
 # VantaUI CSS: Optional JavaScript & Framework Integration
 
-> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with no JavaScript, as the scripts only add interactive enhancements. Authoritative as of v1.7.0.
+> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with no JavaScript, as the scripts only add interactive enhancements. Authoritative as of v1.7.1.
 
 Prerequisites: the CSS works on its own. Load the JS only for the interactions below. See the hub: https://vantaui-css.khodok.com/llms.txt
 

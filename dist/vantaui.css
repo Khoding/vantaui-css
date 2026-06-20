@@ -1418,6 +1418,10 @@
     font-family: var(--font-mono);
   }
 
+  :where(.vui article > header.filled), :where(.vui article > footer.filled) {
+    background-color: var(--surface-panel-2);
+  }
+
   :where(.vui article.raised) {
     --_surface: var(--surface-panel-2);
     box-shadow: var(--shadow-raised);
@@ -2166,17 +2170,17 @@
   :where(.vui .gauge) {
     --value: 0;
     --max: 100;
-    --size: 8rem;
-    --thickness: .45rem;
+    --size: clamp(6rem, 4.8rem + 6vw, 11rem);
+    --thickness: calc(var(--size) * .055);
     --_c: var(--cyan-400);
     --_deg: calc(var(--value) / var(--max) * 270deg);
     aspect-ratio: 1;
     inline-size: var(--size);
-    font-family: var(--font-hud);
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2px;
+    gap: calc(var(--size) * .016);
+    font-family: var(--font-hud);
+    flex-direction: column;
     display: inline-flex;
     position: relative;
   }
@@ -2255,16 +2259,8 @@
     font-family: var(--font-display);
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
-    margin-block-start: 2px;
+    margin-block-start: calc(var(--size) * .016);
     position: relative;
-  }
-
-  :where(.vui .gauge.small) {
-    --size: 6rem;
-  }
-
-  :where(.vui .gauge.large) {
-    --size: 11rem;
   }
 
   :where(.vui .gauge.amber) {
@@ -2544,6 +2540,10 @@
 
   :where(.vui table.striped tbody tr:nth-child(2n)) {
     background-color: #ffffff08;
+  }
+
+  :where(.vui table.striped:not(.flat) tbody tr:nth-child(2n):hover) {
+    background-color: color-mix(in srgb, var(--accent) 5%, transparent);
   }
 
   :where(.vui table.ruled th:not(:last-child)), :where(.vui table.ruled td:not(:last-child)) {
@@ -4965,6 +4965,8 @@
     white-space: nowrap;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    inline-size: fit-content;
+    max-inline-size: 100%;
     scroll-padding-inline: var(--space-1);
     overscroll-behavior-x: contain;
     scrollbar-width: thin;
@@ -4988,6 +4990,10 @@
 
   :where(.vui .carousel.peek) {
     --vui-slide: clamp(200px, 82%, 320px);
+  }
+
+  :where(.vui .carousel.full) {
+    inline-size: auto;
   }
 
   :where(.vui .carousel.full) > * {

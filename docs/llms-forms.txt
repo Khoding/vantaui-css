@@ -1,6 +1,6 @@
 # VantaUI CSS: Forms & Buttons
 
-> Buttons (tones, sizes, icon, groups) and form controls: text fields, textarea, select, checkbox/radio, switch, range slider, field wrappers, and validation. Native semantic elements are styled directly with almost zero classes. Authoritative as of v1.7.0.
+> Buttons (tones, sizes, icon, groups) and form controls: text fields, textarea, select, checkbox/radio, switch, range slider, field wrappers, and validation. Native semantic elements are styled directly with almost zero classes. Authoritative as of v1.7.1.
 
 Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words (zero specificity). A leading `<i>text</i>` is a Material Symbols icon; use `<em>` for italics. See the hub: https://vantaui-css.khodok.com/llms.txt
 

@@ -7,14 +7,19 @@
        <b></b><small>%</small><span>Integrity</span>
      </div>
    Leave <b> empty and it renders --value via a counter.
-   Size with small · large; tone with cyan · amber · red · green.
+   Fluid by default (clamps between ~6rem and ~11rem with viewport);
+   set --size for a fixed footprint. Tone with cyan · amber · red · green.
    ============================================================ */
 
 :where(.vui .gauge) {
   --value: 0;
   --max: 100;
-  --size: 8rem;
-  --thickness: 0.45rem;
+  /* Fluid footprint: grows with the viewport, clamped both ends. Set --size to
+     a fixed value (e.g. --size:7rem) to opt out. */
+  --size: clamp(6rem, 4.8rem + 6vw, 11rem);
+  /* Ring + spacing scale WITH --size so the whole gauge resizes as a unit, not
+     just the number. Override --thickness for a thinner/heavier ring. */
+  --thickness: calc(var(--size) * 0.055);
   --_c: var(--cyan-400);
   /* resolved sweep angle of the filled arc — used by ring + end-cap */
   --_deg: calc(var(--value) / var(--max) * 270deg);
@@ -25,7 +30,7 @@
   justify-content: center;
   aspect-ratio: 1;
   inline-size: var(--size);
-  gap: 2px;
+  gap: calc(var(--size) * 0.016);
   font-family: var(--font-hud);
 }
 :where(.vui .gauge)::before {
@@ -98,20 +103,12 @@
 }
 :where(.vui .gauge) > span {
   position: relative;
-  margin-block-start: 2px;
+  margin-block-start: calc(var(--size) * 0.016);
   color: var(--text-muted);
   font-size: calc(var(--size) * 0.08);
   font-family: var(--font-display);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-}
-
-/* ---- Sizes ---- */
-:where(.vui .gauge.small) {
-  --size: 6rem;
-}
-:where(.vui .gauge.large) {
-  --size: 11rem;
 }
 
 /* ---- Tones ---- */

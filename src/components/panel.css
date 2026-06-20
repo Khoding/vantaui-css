@@ -6,6 +6,7 @@
      raised · inset · flat · glow · notch · brackets
    Tint with a color word: cyan · amber · red · green
    Combine freely — "amber glow", "green raised", "red notch brackets".
+   Give a header/footer its own bar surface (toolbar look) with `filled`.
    ============================================================ */
 
 :where(.vui article:not(.vui-prose):not(.prose)) {
@@ -63,6 +64,16 @@
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
   }
+}
+
+/* ---- Filled header / footer bar ----
+   Gives the strip its own surface, distinct from the panel body, for a
+   toolbar-style bar — e.g. a plain panel + <footer class="filled"> reads as a
+   card with an action bar. Sits a step up from the body surface so it reads on
+   raised/inset/tinted panels alike. */
+:where(.vui article > header.filled),
+:where(.vui article > footer.filled) {
+  background-color: var(--surface-panel-2);
 }
 
 /* ---- Depth variants ---- */

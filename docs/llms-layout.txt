@@ -1,6 +1,6 @@
 # VantaUI CSS: Layout & Utilities
 
-> Containers, flex composites, grids, breakpoint show/hide, the full utility-class catalogue, HUD primitives (type roles, plates, brackets, backdrops, status dot), and the prose layout for long-form text. All free-floating helpers in this file use the `vui-` prefix. Authoritative as of v1.7.0.
+> Containers, flex composites, grids, breakpoint show/hide, the full utility-class catalogue, HUD primitives (type roles, plates, brackets, backdrops, status dot), and the prose layout for long-form text. All free-floating helpers in this file use the `vui-` prefix. Authoritative as of v1.7.1.
 
 Prerequisites: opt in with `class="vui"` on a root element (usually `<body>`). Bare semantic HTML is styled with NO prefix; the `vui-` prefix marks free-floating layout/utility/primitive helpers (collision-safe). All VantaUI styles are zero-specificity (`:where()`) inside cascade layers, so your own unlayered classes always win. You should never use `!important`. See the hub: https://vantaui-css.khodok.com/llms.txt
 

@@ -2,7 +2,7 @@
 
 > A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This is the complete, single-file reference. Reading it in full is sufficient to use the library correctly without following any links. For a lean index linking to focused topic files, see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.7.0.
+This is the complete, single-file reference. Reading it in full is sufficient to use the library correctly without following any links. For a lean index linking to focused topic files, see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.7.1.
 
 ## Critical facts (read first)
 
@@ -16,10 +16,10 @@ This is the complete, single-file reference. Reading it in full is sufficient to
 
 ## Install
 
-Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.7.0"`:
+Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.7.1"`:
 
 ```bash
-npm i github:Khoding/vantaui-css#v1.7.0
+npm i github:Khoding/vantaui-css#v1.7.1
 ```
 
 ```js
@@ -368,13 +368,13 @@ A text `<input>` combined with a `<ul popover="manual" class="listbox" role="lis
 
 ## Panel (`<article>`)
 
-A bare `<article>` is a chamfered plate; an inner `<header>`/`<footer>` auto-divides. Depth: `raised` · `inset` · `flat`. Shape: `notch` · `brackets`. Glow: `glow`. Color tint: `cyan` · `amber` · `red` · `green`. Tint intensity: `dim` · `vivid`. Linked/tappable: `linked` (hover shifts border to accent, raises background). Combine freely (`"amber glow"`, `"green raised"`, `"cyan linked"`).
+A bare `<article>` is a chamfered plate; an inner `<header>`/`<footer>` auto-divides. Add `filled` to a `<header>`/`<footer>` to give that strip its own raised surface (a toolbar bar) distinct from the body. Depth: `raised` · `inset` · `flat`. Shape: `notch` · `brackets`. Glow: `glow`. Color tint: `cyan` · `amber` · `red` · `green`. Tint intensity: `dim` · `vivid`. Linked/tappable: `linked` (hover shifts border to accent, raises background). Combine freely (`"amber glow"`, `"green raised"`, `"cyan linked"`).
 
 ```html
 <article class="raised">
   <header><small class="vui-eyebrow">Diagnostics</small> <small>v2.1</small></header>
   <p>A chamfered panel; the header drew its own divider.</p>
-  <footer><button type="submit">Authorize</button></footer>
+  <footer class="filled"><button type="submit">Authorize</button></footer>
 </article>
 ```
 
@@ -509,10 +509,11 @@ toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
 
 ## Radial gauge
 
-`.gauge`: a 270-degree arc in pure CSS driven by `--value`. The structure is a `<b>` tag for the number (leave it empty to use a CSS counter), an optional `<small>` unit, and a `<span>` caption. Size with `small` or `large`, and tone with color helpers.
+`.gauge`: a 270-degree arc in pure CSS driven by `--value`. The structure is a `<b>` tag for the number (leave it empty to use a CSS counter), an optional `<small>` unit, and a `<span>` caption. Fluid by default — it scales with the viewport (clamped ~6rem–11rem), ring thickness included; set `--size` for a fixed footprint and `--thickness` for a thinner/heavier ring. Tone with color helpers.
 
 ```html
 <div class="gauge" style="--value:72"><b></b><small>%</small><span>Integrity</span></div>
+<div class="gauge red" style="--value:18; --size:7rem"><b></b><small>%</small><span>Fuel</span></div>
 ```
 
 ## Spinner (indeterminate)

@@ -10,10 +10,16 @@
 
    The scroller uses inline-block slides (not flex) so the native
    ::scroll-marker-group lands as a normal centred block beneath it.
+   The track is sized to fit-content (capped at 100%) so when the slides
+   don't fill the container the box hugs them — keeping the marker group
+   centred on the TRACK, not on the surrounding container. (.full opts out:
+   it deliberately spans the full width, one slide per view.)
    ============================================================ */
 :where(.vui .carousel) {
   --vui-slide: clamp(220px, 72%, 360px);
   display: block;
+  inline-size: fit-content;
+  max-inline-size: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -37,6 +43,10 @@
 }
 :where(.vui .carousel.peek) {
   --vui-slide: clamp(200px, 82%, 320px);
+}
+:where(.vui .carousel.full) {
+  /* span the container again so a 100%-wide slide fills the view */
+  inline-size: auto;
 }
 :where(.vui .carousel.full) > * {
   inline-size: 100%;

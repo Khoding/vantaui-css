@@ -102,6 +102,12 @@
 :where(.vui table.striped tbody tr:nth-child(even)) {
   background-color: color-mix(in srgb, white 3%, transparent);
 }
+/* The stripe is declared after the base row hover, so it would otherwise mask
+   the hover tint on every even row — re-assert hover so striped rows still react
+   (matched to the base hover; status-tinted rows override this below). */
+:where(.vui table.striped:not(.flat) tbody tr:nth-child(even):hover) {
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+}
 
 /* column hairlines */
 :where(.vui table.ruled th:not(:last-child)),

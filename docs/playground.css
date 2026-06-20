@@ -138,6 +138,95 @@
 }
 
 /* ============================================================
+   1b — Resizable preview lane
+   Wraps a live demo/stage so its trailing edge can be dragged to test
+   responsiveness (TailwindUI-style). The lane stays full width; the demo
+   shrinks inside it, revealing the lane's track. A grip rides the demo's
+   trailing edge and a readout shows the live width while dragging.
+   ============================================================ */
+.doc-resize {
+  /* track revealed to the side of a narrowed preview */
+  background-color: var(--surface-panel);
+  background-image: var(--scanlines);
+}
+
+.doc-resize.is-dragging {
+  user-select: none;
+}
+
+/* The demo shrinks inside the full-width lane; width is set inline on drag and
+   CSS keeps it sane at both ends. The demo is already align-items:flex-start, so
+   a narrowed box stays pinned to the inline-start with the track on the trailing
+   side. */
+.doc-resize > .doc-demo {
+  position: relative;
+  min-inline-size: 240px;
+  max-inline-size: 100%;
+}
+
+.doc-resize__handle {
+  position: absolute;
+  z-index: 2;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 14px;
+  border-inline-start: 1px solid var(--hairline);
+  background-color: color-mix(in srgb, var(--surface-panel) 65%, transparent);
+  color: var(--text-faint);
+  cursor: ew-resize;
+  touch-action: none;
+  transition:
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+
+/* grip ridge */
+.doc-resize__handle::before {
+  content: '';
+  inline-size: 2px;
+  block-size: 30px;
+  border-radius: 2px;
+  background-color: currentColor;
+}
+
+.doc-resize__handle:hover,
+.doc-resize.is-dragging .doc-resize__handle {
+  background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
+  color: var(--cyan-400);
+}
+
+.doc-resize__handle:focus-visible {
+  outline: 2px solid var(--cyan-400);
+  outline-offset: -2px;
+  background-color: color-mix(in srgb, var(--cyan-400) 16%, transparent);
+  color: var(--cyan-400);
+}
+
+.doc-resize__readout {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 8px;
+  inset-inline-end: 22px;
+  padding-inline: 8px;
+  padding-block: 3px;
+  border: 1px solid var(--hairline-strong);
+  background-color: var(--ink-1000);
+  color: var(--cyan-200);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-hud);
+}
+
+.doc-resize.is-dragging .doc-resize__readout {
+  opacity: 1;
+}
+
+/* ============================================================
    2 — Code sidebar: a native <dialog class="right"> edge drawer.
    The framework supplies the fixed position, slide-in transition,
    ::backdrop scrim, chamfered edge and the header divider; we only widen it

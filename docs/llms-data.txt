@@ -1,6 +1,6 @@
 # VantaUI CSS: Data Display
 
-> Surfaces and data components: panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, and segmented controls. Authoritative as of v1.7.0.
+> Surfaces and data components: panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, and segmented controls. Authoritative as of v1.7.1.
 
 Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words. A leading `<i>text</i>` is a Material Symbols icon. Mark the current/selected item `aria-current="page"` (alias `.active`). See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -10,6 +10,7 @@ Related: alerts/toasts/meters/spinners → https://vantaui-css.khodok.com/llms-f
 
 A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-spans edge-to-edge with a hairline divider (detected via `:has`). A trailing `<small>` in the header is a meta note.
 
+- **Filled bar**: add `filled` to a `<header>` or `<footer>` to give that strip its own raised surface (a toolbar look), distinct from the panel body — e.g. a plain panel + `<footer class="filled">` reads as a card with an action bar.
 - **Depth**: `raised` · `inset` · `flat` (no shadow).
 - **Shape**: `notch` (all corners cut) · `brackets` (glowing corner ticks).
 - **Glow**: `glow` (accent rim glow).
@@ -22,7 +23,7 @@ A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-
 <article class="raised">
   <header><small class="vui-eyebrow">Diagnostics</small> <small>v2.1</small></header>
   <p>A chamfered panel; the header drew its own divider.</p>
-  <footer><button type="submit">Authorize</button></footer>
+  <footer class="filled"><button type="submit">Authorize</button></footer>
 </article>
 <article class="amber glow"><strong>Caution</strong><p>Tinted admonition panel.</p></article>
 ```

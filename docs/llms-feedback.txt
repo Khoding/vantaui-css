@@ -1,6 +1,6 @@
 # VantaUI CSS: Feedback & Status
 
-> Status and progress surfaces: inline alerts, toasts, meters & progress bars, radial gauges, spinners, skeletons, empty states, and the live status dot. Authoritative as of v1.7.0.
+> Status and progress surfaces: inline alerts, toasts, meters & progress bars, radial gauges, spinners, skeletons, empty states, and the live status dot. Authoritative as of v1.7.1.
 
 Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words. A leading `<i>text</i>` is a Material Symbols icon. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -45,13 +45,13 @@ The JS `setValue()` helper animates `.meter`/`.gauge` `--value`; elements with `
 
 ## Radial gauge
 
-A `.gauge` is a 270-degree arc readout built in pure CSS using a conic-gradient ring where the glow automatically follows the arc. It is driven entirely by the `--value` custom property without SVG or JavaScript. The structure is: a `<b>` tag for the number (leave it empty to render the `--value` via a counter), an optional `<small>` tag for the unit, and a `<span>` for the caption. You can size the gauge with `small` or `large`, and tone it using `cyan`, `amber`, `red`, or `green`. Set the value with `--value` (and optionally `--max`).
+A `.gauge` is a 270-degree arc readout built in pure CSS using a conic-gradient ring where the glow automatically follows the arc. It is driven entirely by the `--value` custom property without SVG or JavaScript. The structure is: a `<b>` tag for the number (leave it empty to render the `--value` via a counter), an optional `<small>` tag for the unit, and a `<span>` for the caption. Tone it using `cyan`, `amber`, `red`, or `green`. Set the value with `--value` (and optionally `--max`). The gauge is fluid: it scales with the viewport (clamped ~6rem–11rem) and the ring thickness scales with it. For a fixed footprint, set `--size` (e.g. `--size:7rem`); override `--thickness` for a thinner or heavier ring.
 
 ```html
 <div class="gauge" style="--value:72">
   <b></b><small>%</small><span>Integrity</span>
 </div>
-<div class="gauge red large" style="--value:18"><b></b><small>%</small><span>Fuel</span></div>
+<div class="gauge red" style="--value:18; --size:7rem"><b></b><small>%</small><span>Fuel</span></div>
 ```
 
 ## Spinner / activity indicator (indeterminate)
