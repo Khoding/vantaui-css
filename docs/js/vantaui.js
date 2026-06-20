@@ -128,10 +128,20 @@ export function tooltips(root = document) {
   }
 
   let untrack = null;
+  const GAP = 8;
   const place = el => {
     const r = el.getBoundingClientRect();
-    tip.style.left = (r.left + r.width / 2) + 'px';
-    tip.style.top = r.top + 'px';
+    const tw = tip.offsetWidth;
+    const th = tip.offsetHeight;
+    // Horizontal: centre on the anchor, but keep the whole tip on-screen.
+    const half = tw / 2;
+    let cx = r.left + r.width / 2;
+    cx = Math.max(GAP + half, Math.min(cx, window.innerWidth - GAP - half));
+    // Vertical: prefer above; flip below when there isn't room (near the top).
+    const below = r.top - th - GAP < 0;
+    tip.classList.toggle('is-below', below);
+    tip.style.left = cx + 'px';
+    tip.style.top = (below ? r.bottom : r.top) + 'px';
   };
 
   const show = el => {

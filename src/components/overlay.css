@@ -131,6 +131,10 @@
   translate: -50% calc(-100% - 8px);
   transition: opacity var(--dur-fast) var(--ease-hud);
 }
+/* flipped below the anchor when there isn't room above (set by tooltips()) */
+#vui-tooltip.is-below {
+  translate: -50% 8px;
+}
 #vui-tooltip.is-visible {
   opacity: 1;
 }

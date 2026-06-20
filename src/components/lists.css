@@ -11,8 +11,12 @@
   grid-template-columns: auto 1fr;
   margin: 0;
 }
+/* Both cells stretch to the row height so the label and value rules line up
+   exactly; the text stays vertically centred via align-content. */
 :where(.vui dl > dt) {
-  align-self: center;
+  align-self: stretch;
+  display: grid;
+  align-content: center;
   padding-block: 8px;
   padding-inline-end: var(--space-5);
   border-block-start: var(--border-hair) solid var(--hairline);
@@ -24,7 +28,9 @@
   text-transform: uppercase;
 }
 :where(.vui dl > dd) {
-  align-self: center;
+  align-self: stretch;
+  display: grid;
+  align-content: center;
   margin: 0;
   padding-block: 8px;
   border-block-start: var(--border-hair) solid var(--hairline);

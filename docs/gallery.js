@@ -1378,10 +1378,20 @@
         ],
         render: function (s) {
           var c = ['skeleton', s.shape, s.shape === 'text' && s.last && 'last'].filter(Boolean);
-          var sizing = s.shape === 'block' ? ' style="inline-size:280px"' : '';
-          return '<div' + sizing + ' class="' + c.join(' ') + '" aria-hidden="true"></div>';
+          /* skeletons fill their container, so size the group, not the element */
+          return (
+            '<div aria-hidden="true" style="inline-size:320px">\n' +
+            '  <div class="' + c.join(' ') + '"></div>\n' +
+            '</div>'
+          );
         },
       },
+      examples: [
+        {
+          label: 'Composite: a loading card',
+          code: '<article style="inline-size:300px" aria-hidden="true">\n  <div class="vui-row" style="gap:12px;align-items:center">\n    <span class="skeleton circle"></span>\n    <div style="flex:1">\n      <span class="skeleton text"></span>\n      <span class="skeleton text last" style="margin-block-start:8px"></span>\n    </div>\n  </div>\n  <div class="skeleton block" style="margin-block-start:14px"></div>\n</article>',
+        },
+      ],
     },
     {
       group: 'Feedback',

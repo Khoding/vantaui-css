@@ -1950,7 +1950,7 @@
     }
   }
 
-  :where(.vui [role="status"]), :where(.vui [role="alert"]) {
+  :where(.vui [role="status"]:not(.spinner)), :where(.vui [role="alert"]) {
     --_c: var(--cyan-400);
     --_glyph: "◈";
     --bevel-md: 9px;
@@ -1971,7 +1971,7 @@
     overflow: clip;
   }
 
-  :where(.vui [role="status"]):before, :where(.vui [role="alert"]):before {
+  :where(.vui [role="status"]:not(.spinner)):before, :where(.vui [role="alert"]):before {
     background-color: var(--_c);
     inline-size: 3px;
     box-shadow: 0 0 12px var(--_c);
@@ -1981,7 +1981,7 @@
     inset-inline-start: 0;
   }
 
-  :where(.vui [role="status"]):after, :where(.vui [role="alert"]):after {
+  :where(.vui [role="status"]:not(.spinner)):after, :where(.vui [role="alert"]):after {
     content: var(--vui-alert-glyph, var(--_glyph));
     color: var(--_c);
     font-weight: var(--fw-bold);
@@ -2024,7 +2024,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui [role="status"]:not(.vui-clip):not(.vui-clip *)), :where(.vui [role="alert"]:not(.vui-clip):not(.vui-clip *)) {
+    :where(.vui [role="status"]:not(.spinner):not(.vui-clip):not(.vui-clip *)), :where(.vui [role="alert"]:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -2746,6 +2746,10 @@
     padding-inline: 10px;
     position: fixed;
     translate: -50% calc(-100% - 8px);
+  }
+
+  #vui-tooltip.is-below {
+    translate: -50% 8px;
   }
 
   #vui-tooltip.is-visible {
@@ -4043,9 +4047,11 @@
     font-family: var(--font-display);
     letter-spacing: var(--ls-wide);
     text-transform: uppercase;
-    align-self: center;
+    align-content: center;
+    align-self: stretch;
     padding-block: 8px;
     padding-inline-end: var(--space-5);
+    display: grid;
   }
 
   :where(.vui dl > dd) {
@@ -4054,9 +4060,11 @@
     font-size: var(--fs-sm);
     font-family: var(--font-mono);
     text-align: end;
-    align-self: center;
+    align-content: center;
+    align-self: stretch;
     margin: 0;
     padding-block: 8px;
+    display: grid;
   }
 
   :where(.vui dl > dt:first-of-type), :where(.vui dl > dd:first-of-type) {

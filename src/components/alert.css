@@ -7,7 +7,7 @@
    Override the glyph with --vui-alert-glyph.
    ============================================================ */
 
-:where(.vui [role='status']),
+:where(.vui [role='status']:not(.spinner)),
 :where(.vui [role='alert']) {
   --_c: var(--cyan-400);
   --_glyph: '\25C8'; /* ◈ */
@@ -39,7 +39,7 @@
 }
 
 /* accent rail */
-:where(.vui [role='status'])::before,
+:where(.vui [role='status']:not(.spinner))::before,
 :where(.vui [role='alert'])::before {
   position: absolute;
   inline-size: 3px;
@@ -53,7 +53,7 @@
 /* leading glyph — grid col 1, spans 2 rows.
    Spanning 2 rows blocks col 1 entirely, so the auto-placement algorithm
    can only put content items (strong, text node) into col 2. */
-:where(.vui [role='status'])::after,
+:where(.vui [role='status']:not(.spinner))::after,
 :where(.vui [role='alert'])::after {
   grid-column: 1;
   grid-row: 1 / span 2;
@@ -101,7 +101,7 @@
    Where supported (Chromium 139+), bevel the box without clipping content;
    clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui [role='status']:not(.vui-clip):not(.vui-clip *)),
+  :where(.vui [role='status']:not(.spinner):not(.vui-clip):not(.vui-clip *)),
   :where(.vui [role='alert']:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
