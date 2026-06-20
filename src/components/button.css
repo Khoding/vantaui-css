@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Buttons (semantic, zero-class)
+   Buttons (semantic, zero-class)
    A bare <button> is a chamfered outline control. type="submit"
    auto-promotes to the filled primary CTA. An <i>/<svg> + text reads as
    an icon + label button; add .icon for a square icon-only control. Style
@@ -206,15 +206,15 @@
    label is never clipped; clip-path above is the fallback. `.vui-clip` opts an
    element back into clip-path (the open unstroked diagonal). See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui button:not([role='tab']):not([role='switch']):not(nav button):not(.vui-clip)),
-  :where(.vui .button:not(.vui-clip)) {
+  :where(.vui button:not([role='tab']):not([role='switch']):not(nav button):not(.vui-clip):not(.vui-clip *)),
+  :where(.vui .button:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);
     corner-start-start-shape: bevel;
     corner-end-end-shape: bevel;
   }
-  :where(.vui button.icon:not(.vui-clip)) {
+  :where(.vui button.icon:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-radius: var(--bevel-sm);
     corner-shape: bevel;

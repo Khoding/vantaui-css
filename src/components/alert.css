@@ -1,9 +1,9 @@
 /* ============================================================
-   VantaUI — Alerts / notices (semantic, zero-class)
+   Alerts / notices (semantic, zero-class)
    [role="status"] reads as an info notice (cyan); [role="alert"] reads
    as a threat (red). Both get an accent rail + glyph. Re-tone with one
    word: info · warn · threat · secure. An optional <strong>/<h*> is the
-   title — it always sits ABOVE the body text (grid row 1 / body in row 2).
+   title; it always sits ABOVE the body text (grid row 1 / body in row 2).
    Override the glyph with --vui-alert-glyph.
    ============================================================ */
 
@@ -101,8 +101,8 @@
    Where supported (Chromium 139+), bevel the box without clipping content;
    clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui [role='status']:not(.vui-clip)),
-  :where(.vui [role='alert']:not(.vui-clip)) {
+  :where(.vui [role='status']:not(.vui-clip):not(.vui-clip *)),
+  :where(.vui [role='alert']:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

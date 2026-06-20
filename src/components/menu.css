@@ -1,11 +1,11 @@
 /* ============================================================
-   VantaUI — Dropdown / action menu
+   Dropdown / action menu
    Two ways in, one look:
-     • <details class="dropdown">  — zero-JS, works everywhere. The
+     • <details class="dropdown">: zero-JS, works everywhere. The
        <summary> is the trigger; the panel is a <menu>/<nav>/<ul>.
        (VantaUI.menus() adds outside-click / Esc dismissal.)
-     • <button popovertarget> + a [popover].menu panel — modern
-       top-layer + light-dismiss path; anchor-positioned where
+     • <button popovertarget> + a [popover].menu panel: the modern
+       top-layer, light-dismiss path, anchor-positioned where
        supported. Falls back to the <details> pattern below the
        browserslist floor.
    Items are <a>/<button> (lead with an <i>); an <hr> divides, a
@@ -226,9 +226,9 @@
    Where supported (Chromium 139+), bevel the box without clipping content;
    clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui details.dropdown > summary:not(.vui-clip)),
-  :where(.vui details.dropdown > :where(menu, nav, ul):not(.vui-clip)),
-  :where(.vui [popover].menu:not(.vui-clip)) {
+  :where(.vui details.dropdown > summary:not(.vui-clip):not(.vui-clip *)),
+  :where(.vui details.dropdown > :where(menu, nav, ul):not(.vui-clip):not(.vui-clip *)),
+  :where(.vui [popover].menu:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

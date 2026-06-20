@@ -1,16 +1,16 @@
 /* ============================================================
-   VantaUI — Typography
+   Typography
    Three voices: Chakra Petch (UI/display, uppercase + tracked),
    Rajdhani (condensed HUD readouts & numerics), Share Tech Mono
    (telemetry / data). Display type is almost always uppercase with
-   positive letter-spacing — it reads as machine output.
+   positive letter-spacing, so it reads as machine output.
 
    Sizes are fluid: micro UI labels stay fixed for legibility, while
-   display sizes scale with the viewport via clamp() — no size is ever
+   display sizes scale with the viewport via clamp(). No size is ever
    tied to a media-query breakpoint.
 
    Each stack lists: real webfont → metric-matched fallback face
-   (see tokens/fonts.css — kills layout shift on swap) → system generic.
+   (see tokens/fonts.css; it kills layout shift on swap) → system generic.
    ============================================================ */
 
 :root {

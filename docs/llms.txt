@@ -2,11 +2,11 @@
 
 > A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This file is a HUB. It carries the core information (rules, installation, and mental model) and links to focused topic files so you only read what is relevant to your current task. For instance, a nav bar needs the navigation file, not the whole library. Fetch the topic files by URL as needed; or read the single-file complete reference: https://vantaui-css.khodok.com/llms-full.txt. Authoritative as of v1.7.2.
+This file is a HUB. It carries the core information (rules, installation, and mental model) and links to focused topic files so you only read what is relevant to your current task. For instance, a nav bar needs the navigation file, not the whole library. Fetch the topic files by URL as needed; or read the single-file complete reference: https://vantaui-css.khodok.com/llms-full.txt.
 
 ## Critical facts (read first)
 
-- **The package name is `vantaui-css`.** It is not published to npm or any CDN yet, so you should install it directly from GitHub (`github:Khoding/vantaui-css#<tag>`). All import specifiers start with `vantaui-css`.
+- **The package name is `vantaui-css`.** It is not published to npm or any CDN yet, so you should install it directly from GitHub (`github:Khoding/vantaui-css`). All import specifiers start with `vantaui-css`.
 - **You opt in with one class: `class="vui"`** on a root element (usually `<body>`). Inside `.vui`, plain semantic HTML is styled automatically. Outside `.vui`, only design tokens are defined, so nothing changes globally.
 - **Semantic-first, almost zero classes.** A `<header>` containing a `<nav>` is an app bar. An `<article>` is a panel. A `<dialog class="left">` is a drawer. A `<meter>` is a telemetry bar. You rarely add classes; when you do, it is one short helper word (`glow`, `danger`, `small`, `left`).
 - **All VantaUI styles live in cascade layers and are authored at zero specificity (`:where()`).** Your app's own (unlayered) classes ALWAYS win. You never need `!important` to override VantaUI.
@@ -16,10 +16,10 @@ This file is a HUB. It carries the core information (rules, installation, and me
 
 ## Install
 
-Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.7.2"`:
+Since it is not on npm or a CDN yet, you can install it directly from GitHub. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css"`:
 
 ```bash
-npm i github:Khoding/vantaui-css#v1.7.2
+npm i github:Khoding/vantaui-css
 ```
 
 ```js
@@ -92,7 +92,7 @@ On `<body>` it fills the viewport; nested in a sized box it fills the box. Full 
 - [Forms & buttons](https://vantaui-css.khodok.com/llms-forms.txt): buttons (tones/sizes/icon/groups), text fields, textarea, select, checkbox/radio, switch, range, field wrappers, validation.
 - [Data display](https://vantaui-css.khodok.com/llms-data.txt): panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, segmented controls.
 - [Feedback & status](https://vantaui-css.khodok.com/llms-feedback.txt): inline alerts, toasts, meters & progress, radial gauges, spinners, skeletons, empty states, status dot.
-- [Theming & tokens](https://vantaui-css.khodok.com/llms-theming.txt): the OKLCH color system and every design token, plus how to override them.
+- [Theming & tokens](https://vantaui-css.khodok.com/llms-theming.txt): the OKLCH color system and every design token, plus how to override them; the chamfer geometry (clip-path vs corner-shape engines) and the `vui-clip` switch.
 - [JavaScript & frameworks](https://vantaui-css.khodok.com/llms-js.txt): the optional behaviours module (tabs, meters, drawers, menus, toolbars, tooltips, clock, toast) and the Vue plugin + Nuxt module.
 - [Everything in one file](https://vantaui-css.khodok.com/llms-full.txt): the complete reference, no link-following needed.
 
@@ -102,7 +102,7 @@ On `<body>` it fills the viewport; nested in a sized box it fills the box. Full 
 - Do NOT add component classes like `.panel`, `.card`, or `.btn`. Use the semantic element (`<article>`, `<button>`). Helpers are single words, not BEM.
 - Do NOT prefix bare semantic usage; the `vui-` prefix is only for free-floating layout/utility/primitive helpers.
 - Do NOT use `!important` to override VantaUI. Write an unlayered class, which will always take precedence.
-- The package is named `vantaui-css` and must be installed from GitHub (`github:Khoding/vantaui-css#<tag>`) because it is not yet available on npm or any CDN.
+- The package is named `vantaui-css` and must be installed from GitHub (`github:Khoding/vantaui-css`) because it is not yet available on npm or any CDN.
 - The default `main` is the minified CSS; use `vantaui-css/css` for the unminified build.
 
 ## Browser support

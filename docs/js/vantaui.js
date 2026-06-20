@@ -1,19 +1,19 @@
 /* ============================================================
-   VantaUI — optional behaviours (zero dependencies).
+   optional behaviours (zero dependencies).
    The CSS is fully usable without this file. Load it only if you want
    the interactive niceties below. Works as an ES module or a plain
    <script> (auto-inits on DOMContentLoaded).
 
-     • Tabs    — accessible [role=tablist] / [role=tab] / [role=tabpanel]
+     • Tabs:   accessible [role=tablist] / [role=tab] / [role=tabpanel]
                  wiring (click + arrow keys), panels matched by
                  aria-controls or [data-tab].
-     • Meters  — animate a .vui-meter / .vui-gauge from 0 to
+     • Meters: animate a .vui-meter / .vui-gauge from 0 to
                  [data-value] (sets the --value custom property).
-     • Clock   — live HH:MM:SS into [data-vui-clock].
+     • Clock:  live HH:MM:SS into [data-vui-clock].
 
    Top-layer overlays (dropdown menus, tooltips, comboboxes) are placed off
    their anchor's viewport rect and kept pinned across scroll/resize via
-   trackAnchor() — they FOLLOW the page and never close on scroll.
+   trackAnchor(), so they FOLLOW the page and never close on scroll.
 
    API:  VantaUI.init(root?)  ·  VantaUI.setValue(el, n)  ·  VantaUI.tabs(root?)  ·  VantaUI.tooltips(root?)
    ============================================================ */

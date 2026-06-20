@@ -1,7 +1,7 @@
 /* ============================================================
-   VantaUI — Tree (disclosure)
+   Tree (disclosure)
    A <ul class="tree"> is a hierarchy of rows. A branch is a
-   <li><details><summary>…</summary><ul>…</ul></details></li> — it
+   <li><details><summary>…</summary><ul>…</ul></details></li>. It
    collapses with zero JS and animates open where ::details-content
    is supported. A leaf is a plain <li><a>/<span>. Lead any row with
    an <i> (folder / file glyph); mark the selected leaf
@@ -9,8 +9,8 @@
 
    To upgrade to a full ARIA tree widget (roving tabindex, type-
    ahead, arrow-key walk) add role="tree" / role="treeitem" /
-   role="group" and aria-expanded, then drive focus in JS — see the
-   "ARIA tree" note in the docs.
+   role="group" and aria-expanded, then drive focus in JS (see the
+   "ARIA tree" note in the docs).
    ============================================================ */
 :where(.vui ul.tree),
 :where(.vui .tree ul) {

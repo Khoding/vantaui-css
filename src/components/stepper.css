@@ -1,9 +1,9 @@
 /* ============================================================
-   VantaUI — Stepper / wizard progress
+   Stepper / wizard progress
    An <ol class="stepper"> of steps with numbered nodes joined by a
    connector. Mark the active step aria-current="step"; add .done
    to a cleared step (a check replaces its number). Goes vertical
-   with .vertical. Static by design — wire the navigation yourself
+   with .vertical. Static by design: wire the navigation yourself
    (e.g. toggle .done / aria-current as the user advances).
    ============================================================ */
 :where(.vui ol.stepper) {
@@ -123,7 +123,7 @@
    The numbered node is a pseudo-element, so it converts unconditionally;
    clip-path above is the fallback. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui ol.stepper > li)::before {
+  :where(.vui ol.stepper:not(.vui-clip):not(.vui-clip *) > li)::before {
     clip-path: none;
     border-radius: var(--bevel-sm);
     corner-shape: bevel;

@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Toast / snackbar
+   Toast / snackbar
    Transient notices, the floating cousin of the inline alert.
    Raise them imperatively: VantaUI.toast('Uplink restored',
    {tone:'secure', title:'Comms'}). The helper owns a .toaster
@@ -135,7 +135,7 @@
    Where supported (Chromium 139+), bevel the box; clip-path above is the
    fallback. `.vui-clip` opts back in. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui .toast:not(.vui-clip)) {
+  :where(.vui .toast:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

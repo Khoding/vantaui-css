@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Badges / status tags
+   Badges / status tags
    A .badge is a status chip (on a <span>, <a>, <mark>…). Tone with one
    word: cyan · amber · red · green · neutral. Add .solid to fill, .dot
    for a leading live dot. A leading <i>/<svg> sits inline (gap auto).
@@ -69,7 +69,7 @@
    Where supported (Chromium 139+), bevel the box without clipping the label;
    clip-path above is the fallback. `.vui-clip` opts back into it. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui .badge:not(.vui-clip)) {
+  :where(.vui .badge:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-radius: var(--bevel-sm);
     corner-shape: bevel;

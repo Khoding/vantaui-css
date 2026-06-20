@@ -2,11 +2,11 @@
 
 > A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This is the complete, single-file reference. Reading it in full is sufficient to use the library correctly without following any links. For a lean index linking to focused topic files, see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.7.2.
+This is the complete, single-file reference. Reading it in full is sufficient to use the library correctly without following any links. For a lean index linking to focused topic files, see https://vantaui-css.khodok.com/llms.txt.
 
 ## Critical facts (read first)
 
-- **The package name is `vantaui-css`.** It is not published to npm or any CDN yet, so you should install it directly from GitHub (`github:Khoding/vantaui-css#<tag>`). All import specifiers start with `vantaui-css`.
+- **The package name is `vantaui-css`.** It is not published to npm or any CDN yet, so you should install it directly from GitHub (`github:Khoding/vantaui-css`). All import specifiers start with `vantaui-css`.
 - **You opt in with one class: `class="vui"`** on a root element (usually `<body>`). Inside `.vui`, plain semantic HTML is styled automatically. Outside `.vui`, only design tokens are defined, so nothing changes globally.
 - **Semantic-first, almost zero classes.** A `<header>` containing a `<nav>` is an app bar. An `<article>` is a panel. A `<dialog class="left">` is a drawer. A `<meter>` is a telemetry bar. You rarely add classes; when you do, it is one short helper word (`glow`, `danger`, `small`, `left`).
 - **All VantaUI styles live in cascade layers and are authored at zero specificity (`:where()`).** Your app's own (unlayered) classes ALWAYS win. You never need `!important` to override VantaUI.
@@ -16,10 +16,10 @@ This is the complete, single-file reference. Reading it in full is sufficient to
 
 ## Install
 
-Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.7.2"`:
+Since it is not on npm or a CDN yet, you can install it directly from GitHub. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css"`:
 
 ```bash
-npm i github:Khoding/vantaui-css#v1.7.2
+npm i github:Khoding/vantaui-css
 ```
 
 ```js
@@ -568,7 +568,7 @@ Every `src/` token ships twice (sRGB hex fallback, then `oklch()`). Palette mean
 
 ## Spacing & geometry
 
-`--space-0…--space-13`, `--radius-{none,xs,sm,pill}`, `--bevel-{sm,md,lg,xl}`, `--clip-chamfer` / `--clip-notch`, `--border-{hair,thin,bold}`, `--container-max`, `--container-narrow`, `--container-pad`, `--gutter`, `--hud-edge`, `--drawer-width`, and `--bp-{s,m,l,xl}`. Every beveled component upgrades its chamfer/notch from `clip-path` to `border-radius` and `corner-shape: bevel` where supported (Chromium 139+) — `<article>`/`.vui-panel`, `.vui-chamfer`/`.vui-notch`, `<pre>`, buttons, badges, inputs/select/textarea/checkbox, tables, menus & dropdowns, dialogs & tooltips, tabs, alerts, toasts, avatars, toolbars, segmented controls, pagination, steppers, skeletons, and carousel controls. This offers the same look, but shapes only the box so overflowing text or dropdown menus are never clipped. Elsewhere (Firefox/Safari as of 2026), `clip-path` remains the fallback. The `.vui-clip` class opts any such element back out to keep the clip-path version, preserving the open, unstroked diagonal corner, though its content will be clipped (which you must manage yourself). One-sided diagonals (drawer trailing edge, meter/progress bars, range/switch thumbs) are not corner bevels and stay on clip-path everywhere.
+`--space-0…--space-13`, `--radius-{none,xs,sm,pill}`, `--bevel-{sm,md,lg,xl}`, `--clip-chamfer` / `--clip-notch`, `--border-{hair,thin,bold}`, `--container-max`, `--container-narrow`, `--container-pad`, `--gutter`, `--hud-edge`, `--drawer-width`, and `--bp-{s,m,l,xl}`. Every beveled component upgrades its chamfer/notch from `clip-path` to `border-radius` and `corner-shape: bevel` where supported (Chromium 139+) — `<article>`/`.vui-panel`, `.vui-chamfer`/`.vui-notch`, `<pre>`, buttons, badges, inputs/select/textarea/checkbox, tables, menus & dropdowns, dialogs & tooltips, tabs, alerts, toasts, avatars, toolbars, segmented controls, pagination, steppers, skeletons, and carousel controls. This offers the same look, but shapes only the box so overflowing text or dropdown menus are never clipped. Elsewhere (Firefox/Safari as of 2026), `clip-path` remains the fallback. The `.vui-clip` class forces the clip-path engine, preserving the open, unstroked diagonal corner, though its content will be clipped (which you must manage yourself). It works on a single element (opts just that element out) or on a root/ancestor: `<body class="vui vui-clip">` flips the whole subtree to clip-path, so one class switches the entire UI between the two engines. One-sided diagonals (drawer trailing edge, meter/progress bars, range/switch thumbs) are not corner bevels and stay on clip-path everywhere.
 
 ## Typography
 

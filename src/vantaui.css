@@ -1,8 +1,8 @@
 /* ============================================================
-   VantaUI — entry stylesheet.
+   entry stylesheet.
    Link/import THIS file. It is an import manifest assembled into
-   cascade layers so a host app's own (unlayered) styles always win —
-   safe to drop into any Vue / Nuxt / vanilla project.
+   cascade layers so a host app's own (unlayered) styles always win.
+   Safe to drop into any Vue / Nuxt / vanilla project.
 
    Layer order (low → high priority):
      tokens → reset → base → layout → components → utilities

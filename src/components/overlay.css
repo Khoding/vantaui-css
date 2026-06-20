@@ -1,9 +1,9 @@
 /* ============================================================
-   VantaUI — Overlays & misc surfaces (semantic, zero-class)
+   Overlays & misc surfaces (semantic, zero-class)
    A native <dialog> is a chamfered modal with a scrim backdrop; a
    <header>/<footer> inside it divides automatically. Plus small HUD
    pieces: a labelled divider, a tooltip, a key/value row, a big stat.
-   (Edge drawers are <dialog class="left|right"> — see navigation.css.)
+   (Edge drawers are <dialog class="left|right">; see navigation.css.)
    ============================================================ */
 
 /* ---------- Modal: native <dialog> ---------- */
@@ -191,7 +191,7 @@
    clip-path above is the fallback. `.vui-clip` opts the modal back in. The
    tooltips are pseudo/JS nodes, so they convert unconditionally. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui dialog:not(.left):not(.right):not(.vui-clip)) {
+  :where(.vui dialog:not(.left):not(.right):not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

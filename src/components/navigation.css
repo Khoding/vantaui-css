@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Navigation (semantic, zero-class)
+   Navigation (semantic, zero-class)
    Everything here reads off plain elements + a one-word position helper,
    and leans on native CSS / a tiny bit of JS:
 
@@ -7,7 +7,7 @@
                       vertical column on desktop, bottom bar on phones)
      • Off-canvas     <dialog class="left"> / <dialog class="right">
                       drawer in a native <dialog>; animated with
-                      @starting-style + allow-discrete — no library.
+                      @starting-style + allow-discrete (no library).
      • Bottom bar     <nav class="bottom">          (phone command bar)
      • Breadcrumb     <nav><ol>…</ol></nav>         (detected, no class)
 

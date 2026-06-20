@@ -1,11 +1,11 @@
 /* ============================================================
-   VantaUI — Panels / surfaces (semantic, zero-class)
+   Panels / surfaces (semantic, zero-class)
    A bare <article> is a chamfered plate. A <header>/<footer> inside it
    auto-spans edge-to-edge with a hairline divider (detected via :has,
    laid out with negative margins). Tune the surface with one word:
      raised · inset · flat · glow · notch · brackets
    Tint with a color word: cyan · amber · red · green
-   Combine freely — "amber glow", "green raised", "red notch brackets".
+   Combine freely: "amber glow", "green raised", "red notch brackets".
    Give a header/footer its own bar surface (toolbar look) with `filled`.
    ============================================================ */
 
@@ -221,7 +221,7 @@
    diagonal corner (the HUD "snipped" look) at the cost of bringing the subtree
    clipping back. For consumers who want the look and will manage clipping. */
 @supports (corner-shape: bevel) {
-  :where(.vui article:not(.vui-prose):not(.prose):not(.vui-clip)) {
+  :where(.vui article:not(.vui-prose):not(.prose):not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);
@@ -229,7 +229,7 @@
     corner-end-end-shape: bevel;
   }
   /* notch = all four corners cut */
-  :where(.vui article.notch:not(.vui-clip)) {
+  :where(.vui article.notch:not(.vui-clip):not(.vui-clip *)) {
     border-radius: var(--bevel-sm);
     corner-shape: bevel;
   }

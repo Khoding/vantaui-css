@@ -1,7 +1,7 @@
 /* ============================================================
-   VantaUI — Radial gauge (pure CSS)
+   Radial gauge (pure CSS)
    A 270° arc readout built from a conic-gradient ring (masked to a
-   ring, glow follows the arc). Driven entirely by --value — no SVG,
+   ring, glow follows the arc). Driven entirely by --value, no SVG,
    no JS:
      <div class="gauge" style="--value:72">
        <b></b><small>%</small><span>Integrity</span>

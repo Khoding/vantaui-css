@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Avatar
+   Avatar
    Operator identity on a <span>/<div> (initials) or an <img>. A
    chamfered plate by default; .round for a disc, .hex for a
    six-sided cut. Size with small·large. Add a status word
@@ -69,7 +69,7 @@
    (disc) and `.hex` (hexagon) keep their own shapes; `.vui-clip` opts back
    into clip-path. clip-path above is the fallback. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui .avatar:not(.round):not(.hex):not(.vui-clip)) {
+  :where(.vui .avatar:not(.round):not(.hex):not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

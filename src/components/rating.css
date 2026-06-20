@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Rating / signal-strength
+   Rating / signal-strength
    A <fieldset class="rating"> reads as a row of pips: click or
    arrow-key to set, fills up to the choice. Each pip is a <label>
    (glyph = a leading <i>) immediately followed by its radio
@@ -7,8 +7,8 @@
    label. Tone with a colour word; add .readonly (or disable the
    inputs) for a static readout.
 
-   The fieldset is NOT a flex container — the legend stays a normal
-   caption and the pips flow inline — and the fill is resolved with
+   The fieldset is NOT a flex container: the legend stays a normal
+   caption and the pips flow inline, and the fill is resolved with
    :has(), so no reversed source order is needed.
    ============================================================ */
 :where(.vui .rating) {

@@ -1,8 +1,8 @@
 /* ============================================================
-   VantaUI — App frame (semantic, zero-class)
+   App frame (semantic, zero-class)
    "Write the landmarks, get the layout." Any .vui element that
    directly holds a <main> becomes a tactical app frame. The frame
-   places its landmarks by element — no wrapper classes:
+   places its landmarks by element, no wrapper classes:
 
      <body class="vui">
        <header> … </header>          → top bar

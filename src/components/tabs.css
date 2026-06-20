@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Tabs & disclosures (semantic, zero-class)
+   Tabs & disclosures (semantic, zero-class)
    Tab strip: a [role="tablist"] of [role="tab"] buttons; the active tab
    is read from [aria-selected="true"] (the optional JS helper or your
    framework manages it) or forced with .active. Panels are [role="tabpanel"]
@@ -175,7 +175,7 @@
    the fallback. `.dropdown` (a boxless menu shell) and `.vui-clip` are excluded.
    See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui details:not(.dropdown):not(.vui-clip)) {
+  :where(.vui details:not(.dropdown):not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

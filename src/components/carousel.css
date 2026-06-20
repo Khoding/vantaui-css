@@ -1,17 +1,17 @@
 /* ============================================================
-   VantaUI — Carousel (scroll-snap filmstrip)
-   A <div class="carousel"> is a horizontal scroll-snap track — its
-   direct children are the slides. Swipe / scroll / keyboard by
-   default; on browsers with CSS-carousel support it also grows
-   native prev/next arrows + a row of snap-marker dots (no JS, no
-   library). Size slides with --vui-slide; .peek shows a sliver of
+   Carousel (scroll-snap filmstrip)
+   A <div class="carousel"> is a horizontal scroll-snap track; its
+   direct children are the slides. Swipe, scroll or keyboard by
+   default. On browsers with CSS-carousel support it also grows
+   native prev/next arrows and a row of snap-marker dots (no JS, no
+   library). Size slides with --vui-slide. .peek shows a sliver of
    the next, .full snaps one slide per view, .clean hides the
    scrollbar, .no-arrows / .no-dots drop either native control.
 
    The scroller uses inline-block slides (not flex) so the native
    ::scroll-marker-group lands as a normal centred block beneath it.
    The track is sized to fit-content (capped at 100%) so when the slides
-   don't fill the container the box hugs them — keeping the marker group
+   don't fill the container the box hugs them, keeping the marker group
    centred on the TRACK, not on the surrounding container. (.full opts out:
    it deliberately spans the full width, one slide per view.)
    ============================================================ */
@@ -173,9 +173,9 @@
    The arrows and marker dots are pseudo-elements, so they convert
    unconditionally; clip-path on them is the fallback. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui .carousel)::scroll-button(inline-start),
-  :where(.vui .carousel)::scroll-button(inline-end),
-  :where(.vui .carousel) > *::scroll-marker {
+  :where(.vui .carousel:not(.vui-clip):not(.vui-clip *))::scroll-button(inline-start),
+  :where(.vui .carousel:not(.vui-clip):not(.vui-clip *))::scroll-button(inline-end),
+  :where(.vui .carousel:not(.vui-clip):not(.vui-clip *)) > *::scroll-marker {
     clip-path: none;
     border-radius: var(--bevel-sm);
     corner-shape: bevel;

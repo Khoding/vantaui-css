@@ -1,8 +1,8 @@
 /* ============================================================
-   VantaUI — Header / app bar (semantic, zero-class)
+   Header / app bar (semantic, zero-class)
    A <header> becomes a tactical app bar when it carries a <nav>, when
    it's the top bar of an app frame, or when it sits directly on a
-   .vui <body>. Compose it from bare elements — no __sub-classes:
+   .vui <body>. Compose it from bare elements, no __sub-classes:
 
      <header>
        <a href="/">VANTA<b>UI</b></a>          → brand (first link/heading)
@@ -17,7 +17,7 @@
 
    The header is a container query context: when the BAR itself gets
    narrow (not just the viewport) the inline nav + search collapse and
-   a menu button — any header <button> that controls a dialog — appears.
+   a menu button (any header <button> that controls a dialog) appears.
 
    Panel headers (<article> > header) and dialog headers carry no <nav>
    and aren't frame/body children, so they're left to panel/overlay css.
@@ -256,8 +256,8 @@
    Where supported (Chromium 139+), bevel the box without clipping content;
    clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui header form:not(.vui-clip)),
-  :where(.vui header.float:not(.vui-clip)) {
+  :where(.vui header form:not(.vui-clip):not(.vui-clip *)),
+  :where(.vui header.float:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

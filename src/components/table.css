@@ -1,9 +1,9 @@
 /* ============================================================
-   VantaUI — Data tables (semantic, zero-class)
+   Data tables (semantic, zero-class)
    A <table> becomes a tactical telemetry grid: mono body, uppercase
    eyebrow headers, hairline rows, cyan row hover. Right-align numeric
    cells with [data-num]. Cells WRAP by default so a bare table never
-   forces horizontal overflow — it stays self-contained with no wrapper.
+   forces horizontal overflow; it stays self-contained with no wrapper.
    Opt into single-line cells with `table.nowrap`; when you do, wrap the
    table in a .scroll element so it scrolls instead of breaking the layout.
    ============================================================ */
@@ -171,8 +171,8 @@
    overflow-x:auto still clips the scrolled table to the beveled corner.
    clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui .scroll:has(> table):not(.vui-clip)),
-  :where(.vui .table-scroll:not(.vui-clip)) {
+  :where(.vui .scroll:has(> table):not(.vui-clip):not(.vui-clip *)),
+  :where(.vui .table-scroll:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Forms (semantic, zero-class)
+   Forms (semantic, zero-class)
    Native elements are styled directly: <input>, <textarea>, <select>
    become inset terminal fields; <input type=checkbox|radio> draw their
    own notched marks; <input type=checkbox role=switch> becomes an angled
@@ -340,18 +340,18 @@
     .vui
       input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='submit']):not(
         [type='button']
-      ):not([type='reset']):not([type='image']):not([type='color']):not(.vui-clip)
+      ):not([type='reset']):not([type='image']):not([type='color']):not(.vui-clip):not(.vui-clip *)
   ),
-  :where(.vui textarea:not(.vui-clip)),
-  :where(.vui select:not(.vui-clip)),
-  :where(.vui [popover].listbox:not(.vui-clip)) {
+  :where(.vui textarea:not(.vui-clip):not(.vui-clip *)),
+  :where(.vui select:not(.vui-clip):not(.vui-clip *)),
+  :where(.vui [popover].listbox:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);
     corner-start-start-shape: bevel;
     corner-end-end-shape: bevel;
   }
-  :where(.vui input[type='checkbox']:not([role='switch']):not(.vui-clip)) {
+  :where(.vui input[type='checkbox']:not([role='switch']):not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-radius: var(--bevel-sm);
     corner-shape: bevel;

@@ -1,12 +1,12 @@
 /* ============================================================
-   VantaUI — Footer (semantic, zero-class)
+   Footer (semantic, zero-class)
    A <footer> in a .vui scope becomes a tactical footer. Three shapes,
-   one element — pick with a single helper:
+   one element; pick with a single helper:
      • default            a hairline strip: brand · links · legal
      • footer.status      a dense HUD telemetry bar (IDE-style readouts)
      • footer.columns     a multi-column sitemap footer
 
-   Panel footers (<article> > footer) and dialog footers are excluded —
+   Panel footers (<article> > footer) and dialog footers are excluded;
    panel.css / overlay.css own those.
    ============================================================ */
 

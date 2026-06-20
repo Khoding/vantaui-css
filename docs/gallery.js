@@ -179,7 +179,7 @@
       id: 'geometry',
       title: 'Spacing & geometry',
       blurb:
-        '8px grid. Corners are cut rather than rounded: the chamfer (cut top-left and bottom-right) and the four-corner notch are the signature silhouette. 2px is the maximum rounding you should ever see.',
+        '8px grid. Corners are cut rather than rounded: the chamfer (cut top-left and bottom-right) and the four-corner notch are the signature silhouette. 2px is the maximum rounding you should ever see.<br><br>Two engines draw those cuts. <code>clip-path</code> is the universal fallback; on Chromium 139+ text-bearing plates upgrade to <code>border-radius</code> + <code>corner-shape</code>, which shapes only the box so content and dropdowns near the cut are never clipped. Force the fallback anywhere with <code>vui-clip</code> (on one element, or on a root to switch a whole subtree). The <strong>Shape / Clip</strong> button in the top bar flips this entire page between the two so you can compare.',
       render: function () {
         return (
           '<div class="doc-spaces">' +
@@ -1161,24 +1161,79 @@
       id: 'tabs',
       title: 'Tabs',
       blurb:
-        'Semantic <code>nav[role=tablist]</code> + <code>button[role=tab]</code>. The optional JS wires clicks, arrow keys, and panel visibility via <code>aria-controls</code>. A trailing <code>&lt;small&gt;</code> is a count chip.',
-      examples: [
-        {
-          code: '<nav role="tablist">\n  <button role="tab" aria-controls="t-cases" aria-selected="true">Case Files <small>7</small></button>\n  <button role="tab" aria-controls="t-map">City Map</button>\n  <button role="tab" aria-controls="t-gear">Loadout</button>\n</nav>\n<div role="tabpanel" id="t-cases">Seven open cases in the active sweep.</div>\n<div role="tabpanel" id="t-map" hidden>City map module offline.</div>\n<div role="tabpanel" id="t-gear" hidden>Three gadgets equipped.</div>',
+        'Semantic <code>nav[role=tablist]</code> + <code>button[role=tab]</code>. The optional JS wires clicks, arrow keys, and panel visibility via <code>aria-controls</code>. A trailing <code>&lt;small&gt;</code> is a count chip. (Clicking a tab here is the live JS at work.)',
+      play: {
+        state: {active: 0, count: true},
+        controls: [
+          {
+            type: 'select',
+            key: 'active',
+            label: 'Default tab',
+            options: [
+              {label: 'Case Files', value: 0},
+              {label: 'City Map', value: 1},
+              {label: 'Loadout', value: 2},
+            ],
+          },
+          {type: 'toggle', key: 'count', label: 'Count chip'},
+        ],
+        render: function (s) {
+          var active = Number(s.active);
+          var tabs = [
+            ['t-cases', 'Case Files', '7', 'Seven open cases in the active sweep.'],
+            ['t-map', 'City Map', '', 'City map module offline.'],
+            ['t-gear', 'Loadout', '', 'Three gadgets equipped.'],
+          ];
+          var strip = tabs
+            .map(function (t, i) {
+              var chip = s.count && t[2] ? ' <small>' + t[2] + '</small>' : '';
+              return (
+                '  <button role="tab" aria-controls="' + t[0] + '"' +
+                (i === active ? ' aria-selected="true"' : '') +
+                '>' + t[1] + chip + '</button>'
+              );
+            })
+            .join('\n');
+          var panels = tabs
+            .map(function (t, i) {
+              return (
+                '<div role="tabpanel" id="' + t[0] + '"' +
+                (i === active ? '' : ' hidden') +
+                '>' + t[3] + '</div>'
+              );
+            })
+            .join('\n');
+          return '<nav role="tablist">\n' + strip + '\n</nav>\n' + panels;
         },
-      ],
+      },
     },
     {
       group: 'Components',
       id: 'disclosure',
       title: 'Accordion',
       blurb:
-        'Native <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> styled as a chamfered, zero-JS disclosure that animates open on browsers supporting <code>::details-content</code>.',
-      examples: [
-        {
-          code: '<details open>\n  <summary>Mission briefing</summary>\n  Intercept the broker at pier 14-C before the data drive changes hands.\n</details>\n<details>\n  <summary>Known associates</summary>\n  Ironhand · The Chemist · Night Courier.\n</details>',
+        'Native <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> styled as a chamfered, zero-JS disclosure that animates open on browsers supporting <code>::details-content</code>. Add <code>name</code> to make a group behave as an exclusive accordion (one open at a time).',
+      play: {
+        state: {open: true, exclusive: false},
+        controls: [
+          {type: 'toggle', key: 'open', label: 'First open'},
+          {type: 'toggle', key: 'exclusive', label: 'Exclusive (shared name)'},
+        ],
+        render: function (s) {
+          var name = s.exclusive ? ' name="brief"' : '';
+          var open = s.open ? ' open' : '';
+          return (
+            '<details' + name + open + '>\n' +
+            '  <summary>Mission briefing</summary>\n' +
+            '  Intercept the broker at pier 14-C before the data drive changes hands.\n' +
+            '</details>\n' +
+            '<details' + name + '>\n' +
+            '  <summary>Known associates</summary>\n' +
+            '  Ironhand · The Chemist · Night Courier.\n' +
+            '</details>'
+          );
         },
-      ],
+      },
     },
     {
       group: 'Components',
@@ -1263,12 +1318,42 @@
       id: 'spinner',
       title: 'Spinner',
       blurb:
-        'The indeterminate companion to meters and gauges: a radar-style sweep for <code>working…</code> states. On a <code>&lt;span&gt;</code>; size with <code>small</code>·<code>large</code>, tone with a colour word, add a trailing label. Give it <code>role="status"</code> for assistive tech.',
-      examples: [
-        {
-          code: '<div class="vui-cluster" style="align-items:center;gap:24px">\n  <span class="spinner small"></span>\n  <span class="spinner"></span>\n  <span class="spinner large"></span>\n  <span class="spinner amber">Scanning sector…</span>\n</div>',
+        'The indeterminate companion to meters and gauges: a radar-style sweep for <code>working…</code> states. On a <code>&lt;span&gt;</code>; size with <code>small</code>·<code>large</code>, tone with a colour word, add a trailing label, or <code>block</code> to centre it. Give it <code>role="status"</code> for assistive tech.',
+      play: {
+        state: {tone: '', size: '', label: false, block: false},
+        controls: [
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: ''},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Red', value: 'red'},
+              {label: 'Green', value: 'green'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'size',
+            label: 'Size',
+            options: [
+              {label: 'Medium', value: ''},
+              {label: 'Small', value: 'small'},
+              {label: 'Large', value: 'large'},
+            ],
+          },
+          {type: 'toggle', key: 'label', label: 'Inline label'},
+          {type: 'toggle', key: 'block', label: 'Block (centered)'},
+        ],
+        render: function (s) {
+          var c = ['spinner', s.tone, s.size, s.block && 'block'].filter(Boolean);
+          var label = s.label ? 'Scanning sector…' : '';
+          return (
+            '<span class="' + c.join(' ') + '" role="status" aria-label="Loading">' + label + '</span>'
+          );
         },
-      ],
+      },
     },
     {
       group: 'Feedback',
@@ -1276,23 +1361,54 @@
       title: 'Skeleton',
       blurb:
         'Dim, faintly-scanning placeholders for content that has not loaded. <code>.skeleton</code> is a block; <code>.text</code> a line (add <code>.last</code> for a short tail), <code>.circle</code> an avatar disc. Mark the group <code>aria-hidden="true"</code>.',
-      examples: [
-        {
-          code: '<article style="inline-size:300px" aria-hidden="true">\n  <div class="vui-row" style="gap:12px;align-items:center">\n    <span class="skeleton circle"></span>\n    <div style="flex:1">\n      <span class="skeleton text"></span>\n      <span class="skeleton text last" style="margin-block-start:8px"></span>\n    </div>\n  </div>\n  <div class="skeleton block" style="margin-block-start:14px"></div>\n</article>',
+      play: {
+        state: {shape: 'text', last: false},
+        controls: [
+          {
+            type: 'select',
+            key: 'shape',
+            label: 'Shape',
+            options: [
+              {label: 'Text line', value: 'text'},
+              {label: 'Block', value: 'block'},
+              {label: 'Circle', value: 'circle'},
+            ],
+          },
+          {type: 'toggle', key: 'last', label: 'Short last line (text only)'},
+        ],
+        render: function (s) {
+          var c = ['skeleton', s.shape, s.shape === 'text' && s.last && 'last'].filter(Boolean);
+          var sizing = s.shape === 'block' ? ' style="inline-size:280px"' : '';
+          return '<div' + sizing + ' class="' + c.join(' ') + '" aria-hidden="true"></div>';
         },
-      ],
+      },
     },
     {
       group: 'Feedback',
       id: 'empty',
       title: 'Empty state',
       blurb:
-        'A centred placeholder for <em>no data</em> regions, composed from bare elements: a leading <code>&lt;i&gt;</code> glyph, a heading, a <code>&lt;p&gt;</code>, and a trailing <code>&lt;menu&gt;</code> of actions.',
-      examples: [
-        {
-          code: '<div class="empty">\n  <i>satellite_alt</i>\n  <h3>No contacts</h3>\n  <p>No active signals in this sector. Widen the scan radius or check back after the next sweep.</p>\n  <menu>\n    <button type="submit">Rescan</button>\n    <button class="ghost">Filters</button>\n  </menu>\n</div>',
+        'A centred placeholder for <em>no data</em> regions, composed from bare elements: a leading <code>&lt;i&gt;</code> glyph, a heading, a <code>&lt;p&gt;</code>, and an optional trailing <code>&lt;menu&gt;</code> of actions.',
+      play: {
+        state: {glyph: true, actions: true},
+        controls: [
+          {type: 'toggle', key: 'glyph', label: 'Leading glyph'},
+          {type: 'toggle', key: 'actions', label: 'Action buttons'},
+        ],
+        render: function (s) {
+          var glyph = s.glyph ? '\n  <i>satellite_alt</i>' : '';
+          var actions = s.actions
+            ? '\n  <menu>\n    <button type="submit">Rescan</button>\n    <button class="ghost">Filters</button>\n  </menu>'
+            : '';
+          return (
+            '<div class="empty">' +
+            glyph +
+            '\n  <h3>No contacts</h3>\n  <p>No active signals in this sector. Widen the scan radius or check back after the next sweep.</p>' +
+            actions +
+            '\n</div>'
+          );
         },
-      ],
+      },
     },
 
     /* ---------------- DATA DISPLAY ---------------- */
@@ -1302,15 +1418,59 @@
       title: 'Avatar',
       blurb:
         'Operator identity on a <code>&lt;span&gt;</code> (initials) or <code>&lt;img&gt;</code>. Chamfered by default; <code>round</code> or <code>hex</code> to reshape, <code>small</code>·<code>large</code> to size. A status word (<code>online</code>·<code>busy</code>·<code>idle</code>·<code>offline</code>) lights a glowing frame; <code>.avatar-group</code> overlaps a stack.',
-      examples: [
-        {
-          code: '<div class="vui-cluster" style="align-items:center;gap:16px">\n  <span class="avatar">BW</span>\n  <span class="avatar round online">BW</span>\n  <span class="avatar hex idle">14</span>\n  <span class="avatar large busy">JG</span>\n</div>',
+      play: {
+        state: {shape: '', size: '', status: '', group: false},
+        controls: [
+          {
+            type: 'select',
+            key: 'shape',
+            label: 'Shape',
+            options: [
+              {label: 'Plate', value: ''},
+              {label: 'Round', value: 'round'},
+              {label: 'Hex', value: 'hex'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'size',
+            label: 'Size',
+            options: [
+              {label: 'Medium', value: ''},
+              {label: 'Small', value: 'small'},
+              {label: 'Large', value: 'large'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'status',
+            label: 'Status',
+            options: [
+              {label: 'None', value: ''},
+              {label: 'Online', value: 'online'},
+              {label: 'Busy', value: 'busy'},
+              {label: 'Idle', value: 'idle'},
+              {label: 'Offline', value: 'offline'},
+            ],
+          },
+          {type: 'toggle', key: 'group', label: 'Overlapping group'},
+        ],
+        render: function (s) {
+          if (s.group) {
+            var g = ['avatar', s.shape, s.size].filter(Boolean).join(' ');
+            return (
+              '<div class="avatar-group">\n' +
+              '  <span class="' + g + '">A1</span>\n' +
+              '  <span class="' + g + '">B2</span>\n' +
+              '  <span class="' + g + '">C3</span>\n' +
+              '  <span class="' + g + '">+5</span>\n' +
+              '</div>'
+            );
+          }
+          var c = ['avatar', s.shape, s.size, s.status].filter(Boolean);
+          return '<span class="' + c.join(' ') + '">BW</span>';
         },
-        {
-          label: 'Overlapping stack: .avatar-group',
-          code: '<div class="avatar-group">\n  <span class="avatar">A1</span>\n  <span class="avatar">B2</span>\n  <span class="avatar">C3</span>\n  <span class="avatar">+5</span>\n</div>',
-        },
-      ],
+      },
     },
     {
       group: 'Data display',
@@ -1318,43 +1478,83 @@
       title: 'Description list',
       blurb:
         'A bare <code>&lt;dl&gt;</code> is a telemetry readout where each <code>&lt;dt&gt;</code> is an uppercase label and each <code>&lt;dd&gt;</code> is a monospaced value, separated by hairlines. Add <code>stacked</code> for label-over-value rows.',
-      examples: [
-        {
-          code: '<dl style="min-inline-size:280px">\n  <dt>Operator</dt>\n  <dd>B. Wayne</dd>\n  <dt>Clearance</dt>\n  <dd>OMEGA-7</dd>\n  <dt>Sector</dt>\n  <dd>14-C</dd>\n  <dt>Status</dt>\n  <dd>Active</dd>\n</dl>',
+      play: {
+        state: {stacked: false},
+        controls: [{type: 'toggle', key: 'stacked', label: 'Stacked (label over value)'}],
+        render: function (s) {
+          var cls = s.stacked ? ' class="stacked"' : '';
+          return (
+            '<dl' + cls + '>\n' +
+            '  <dt>Operator</dt>\n  <dd>B. Wayne</dd>\n' +
+            '  <dt>Clearance</dt>\n  <dd>OMEGA-7</dd>\n' +
+            '  <dt>Sector</dt>\n  <dd>14-C</dd>\n' +
+            '  <dt>Status</dt>\n  <dd>Active</dd>\n' +
+            '</dl>'
+          );
         },
-        {
-          label: 'Stacked layout: .stacked',
-          code: '<dl class="stacked" style="min-inline-size:240px">\n  <dt>Last ping</dt>\n  <dd>02:18:04 UTC</dd>\n  <dt>Channel</dt>\n  <dd>Encrypted · AES-256</dd>\n</dl>',
-        },
-      ],
+      },
     },
     {
       group: 'Data display',
       id: 'timeline',
       title: 'Timeline / log',
       blurb:
-        'An <code>&lt;ol class="timeline"&gt;</code> is a vertical event feed: each <code>&lt;li&gt;</code> gets a glowing node on a rail. Lead with a <code>&lt;time&gt;</code> stamp; tone a node with a colour word. Add <code>log</code> for a dense monospaced feed.',
-      examples: [
-        {
-          code: '<ol class="timeline">\n  <li class="green"><time>02:14:06</time>Uplink established · sector 14-C</li>\n  <li><time>02:15:22</time>Patrol drone deployed</li>\n  <li class="amber"><time>02:16:40</time>Motion flagged: grid 22-A</li>\n  <li class="red"><time>02:18:03</time>Contact lost · rerouting</li>\n</ol>',
+        'An <code>&lt;ol class="timeline"&gt;</code> is a vertical event feed: each <code>&lt;li&gt;</code> gets a glowing node on a rail. Lead with a <code>&lt;time&gt;</code> stamp; tone a node with a colour word on the <code>&lt;li&gt;</code>. Add <code>log</code> for a dense monospaced feed.',
+      play: {
+        state: {log: false},
+        controls: [{type: 'toggle', key: 'log', label: 'Dense feed (.log)'}],
+        render: function (s) {
+          var cls = s.log ? 'timeline log' : 'timeline';
+          var rows = s.log
+            ? '  <li class="green"><time>02:14:06</time>› handshake OK</li>\n' +
+              '  <li><time>02:15:22</time>› drone.deploy(grid-22A)</li>\n' +
+              '  <li class="amber"><time>02:16:40</time>› WARN motion 22-A</li>\n' +
+              '  <li class="red"><time>02:18:03</time>› ERR uplink_timeout</li>\n'
+            : '  <li class="green"><time>02:14:06</time>Uplink established · sector 14-C</li>\n' +
+              '  <li><time>02:15:22</time>Patrol drone deployed</li>\n' +
+              '  <li class="amber"><time>02:16:40</time>Motion flagged: grid 22-A</li>\n' +
+              '  <li class="red"><time>02:18:03</time>Contact lost · rerouting</li>\n';
+          return '<ol class="' + cls + '">\n' + rows + '</ol>';
         },
-        {
-          label: 'Dense feed: .log',
-          code: '<ol class="timeline log">\n  <li class="green"><time>02:14:06</time>› handshake OK</li>\n  <li><time>02:15:22</time>› drone.deploy(grid-22A)</li>\n  <li class="amber"><time>02:16:40</time>› WARN motion 22-A</li>\n  <li class="red"><time>02:18:03</time>› ERR uplink_timeout</li>\n</ol>',
-        },
-      ],
+      },
     },
     {
       group: 'Data display',
       id: 'rating',
       title: 'Rating / signal',
       blurb:
-        'A <code>&lt;fieldset class="rating"&gt;</code> of reversed radios reads as signal-strength / threat pips that you click or arrow-key to set, filling up to the selected choice. Real radios, so it keyboards and posts like a radiogroup. Author them <strong>high → low</strong>.',
-      examples: [
-        {
-          code: '<fieldset class="rating amber">\n  <legend>Threat level</legend>\n  <label for="th1"><i>warning</i></label><input type="radio" name="threat" id="th1" value="1">\n  <label for="th2"><i>warning</i></label><input type="radio" name="threat" id="th2" value="2">\n  <label for="th3"><i>warning</i></label><input type="radio" name="threat" id="th3" value="3" checked>\n  <label for="th4"><i>warning</i></label><input type="radio" name="threat" id="th4" value="4">\n  <label for="th5"><i>warning</i></label><input type="radio" name="threat" id="th5" value="5">\n</fieldset>',
+        'A <code>&lt;fieldset class="rating"&gt;</code> of radios reads as signal-strength / threat pips that you click or arrow-key to set, filling up to the selected choice. Real radios, so it keyboards and posts like a radiogroup. Author them <strong>low → high</strong>; tone with a colour word and add <code>readonly</code> for a static readout.',
+      play: {
+        state: {tone: 'amber', value: 3, readonly: false},
+        controls: [
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: ''},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Red', value: 'red'},
+              {label: 'Green', value: 'green'},
+            ],
+          },
+          {type: 'range', key: 'value', label: 'Level', min: 1, max: 5},
+          {type: 'toggle', key: 'readonly', label: 'Read-only'},
+        ],
+        render: function (s) {
+          var c = ['rating', s.tone, s.readonly && 'readonly'].filter(Boolean);
+          var pips = '';
+          for (var i = 1; i <= 5; i++) {
+            pips +=
+              '\n  <label for="th' + i + '"><i>warning</i></label>' +
+              '<input type="radio" name="threat" id="th' + i + '" value="' + i + '"' +
+              (i === Number(s.value) ? ' checked' : '') +
+              (s.readonly ? ' disabled' : '') +
+              '>';
+          }
+          return '<fieldset class="' + c.join(' ') + '">\n  <legend>Threat level</legend>' + pips + '\n</fieldset>';
         },
-      ],
+      },
     },
 
     /* ---------------- CONTROLS ---------------- */
@@ -1363,12 +1563,56 @@
       id: 'segmented',
       title: 'Segmented control',
       blurb:
-        'A single-select switch built from real radios: it requires no JavaScript and keyboards like a radiogroup. Each <code>&lt;label&gt;</code> wraps an <code>&lt;input type="radio"&gt;</code> (+ optional <code>&lt;i&gt;</code>); the checked segment lights up. Size with <code>small</code>.',
-      examples: [
-        {
-          code: '<div class="segmented" role="radiogroup" aria-label="View mode">\n  <label><input type="radio" name="view" checked><i>grid_view</i>Grid</label>\n  <label><input type="radio" name="view"><i>view_list</i>List</label>\n  <label><input type="radio" name="view"><i>map</i>Map</label>\n</div>',
+        'A single-select switch built from real radios: it requires no JavaScript and keyboards like a radiogroup. Each <code>&lt;label&gt;</code> wraps an <code>&lt;input type="radio"&gt;</code> (+ optional <code>&lt;i&gt;</code>); the checked segment lights up. Tone with a colour word, size with <code>small</code>.',
+      play: {
+        state: {tone: '', small: false, active: 0},
+        controls: [
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: ''},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Red', value: 'red'},
+              {label: 'Green', value: 'green'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'active',
+            label: 'Selected',
+            options: [
+              {label: 'Grid', value: 0},
+              {label: 'List', value: 1},
+              {label: 'Map', value: 2},
+            ],
+          },
+          {type: 'toggle', key: 'small', label: 'Small'},
+        ],
+        render: function (s) {
+          var c = ['segmented', s.tone, s.small && 'small'].filter(Boolean);
+          var items = [
+            ['grid_view', 'Grid'],
+            ['view_list', 'List'],
+            ['map', 'Map'],
+          ];
+          var labels = items
+            .map(function (it, i) {
+              return (
+                '  <label><input type="radio" name="view"' +
+                (i === Number(s.active) ? ' checked' : '') +
+                '><i>' + it[0] + '</i>' + it[1] + '</label>'
+              );
+            })
+            .join('\n');
+          return (
+            '<div class="' + c.join(' ') + '" role="radiogroup" aria-label="View mode">\n' +
+            labels +
+            '\n</div>'
+          );
         },
-      ],
+      },
     },
     {
       group: 'Controls',
@@ -1376,11 +1620,46 @@
       title: 'Pagination',
       blurb:
         'A <code>&lt;nav class="pagination"&gt;</code> wrapping a list of page links. Mark the current page <code>aria-current="page"</code>; a lone <code>&lt;i&gt;</code> is an icon prev/next, a bare <code>&lt;span&gt;</code> an ellipsis. Add <code>compact</code> for table footers.',
-      examples: [
-        {
-          code: '<nav class="pagination" aria-label="Pagination">\n  <a aria-label="Previous page" aria-disabled="true"><i>chevron_left</i></a>\n  <ul>\n    <li><a aria-current="page">1</a></li>\n    <li><a>2</a></li>\n    <li><a>3</a></li>\n    <li><span>…</span></li>\n    <li><a>12</a></li>\n  </ul>\n  <a aria-label="Next page"><i>chevron_right</i></a>\n</nav>',
+      play: {
+        state: {page: 1, compact: false},
+        controls: [
+          {
+            type: 'select',
+            key: 'page',
+            label: 'Current page',
+            options: [
+              {label: '1', value: 1},
+              {label: '2', value: 2},
+              {label: '3', value: 3},
+            ],
+          },
+          {type: 'toggle', key: 'compact', label: 'Compact'},
+        ],
+        render: function (s) {
+          var cls = s.compact ? 'pagination compact' : 'pagination';
+          var page = Number(s.page);
+          var prevDis = page === 1 ? ' aria-disabled="true"' : '';
+          var items = [1, 2, 3]
+            .map(function (n) {
+              return (
+                '    <li><a' +
+                (n === page ? ' aria-current="page"' : '') +
+                '>' + n + '</a></li>'
+              );
+            })
+            .join('\n');
+          return (
+            '<nav class="' + cls + '" aria-label="Pagination">\n' +
+            '  <a aria-label="Previous page"' + prevDis + '><i>chevron_left</i></a>\n' +
+            '  <ul>\n' +
+            items +
+            '\n    <li><span>…</span></li>\n    <li><a>12</a></li>\n' +
+            '  </ul>\n' +
+            '  <a aria-label="Next page"><i>chevron_right</i></a>\n' +
+            '</nav>'
+          );
         },
-      ],
+      },
     },
     {
       group: 'Controls',
@@ -1388,15 +1667,35 @@
       title: 'Stepper',
       blurb:
         'An <code>&lt;ol class="stepper"&gt;</code> of numbered steps joined by a connector. Mark the active step <code>aria-current="step"</code> and cleared steps <code>done</code> (a check replaces the number). Add <code>vertical</code> to stack.',
-      examples: [
-        {
-          code: '<ol class="stepper">\n  <li class="done">Recon</li>\n  <li class="done">Breach</li>\n  <li aria-current="step">Secure</li>\n  <li>Extract</li>\n</ol>',
+      play: {
+        state: {active: 2, vertical: false},
+        controls: [
+          {
+            type: 'select',
+            key: 'active',
+            label: 'Active step',
+            options: [
+              {label: 'Recon', value: 0},
+              {label: 'Breach', value: 1},
+              {label: 'Secure', value: 2},
+              {label: 'Extract', value: 3},
+            ],
+          },
+          {type: 'toggle', key: 'vertical', label: 'Vertical'},
+        ],
+        render: function (s) {
+          var cls = s.vertical ? 'stepper vertical' : 'stepper';
+          var active = Number(s.active);
+          var steps = ['Recon', 'Breach', 'Secure', 'Extract'];
+          var lis = steps
+            .map(function (label, i) {
+              var a = i < active ? ' class="done"' : i === active ? ' aria-current="step"' : '';
+              return '  <li' + a + '>' + label + '</li>';
+            })
+            .join('\n');
+          return '<ol class="' + cls + '">\n' + lis + '\n</ol>';
         },
-        {
-          label: 'Vertical layout: .vertical',
-          code: '<ol class="stepper vertical">\n  <li class="done">Recon</li>\n  <li class="done">Breach</li>\n  <li aria-current="step">Secure</li>\n  <li>Extract</li>\n</ol>',
-        },
-      ],
+      },
     },
 
     /* ---------------- INTERACTIVE ---------------- */
@@ -1405,35 +1704,106 @@
       id: 'dropdown',
       title: 'Dropdown menu',
       blurb:
-        'Two ways in, one look. The robust path is <code>&lt;details class="dropdown"&gt;</code>, which requires no JavaScript and works everywhere; the <code>&lt;summary&gt;</code> is the trigger and the panel is a <code>&lt;menu&gt;</code>. The optional JS adds outside-click / <kbd>Esc</kbd> dismissal. For the modern top-layer path, point a <code>&lt;button popovertarget&gt;</code> at a <code>[popover].menu</code> (anchor-positioned where supported). Items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code>; <code>&lt;hr&gt;</code> divides, <code>.danger</code> tones an item.',
-      examples: [
-        {
-          code: '<details class="dropdown">\n  <summary>Actions <i>expand_more</i></summary>\n  <menu>\n    <a href="#"><i>visibility</i>Inspect</a>\n    <a href="#"><i>content_copy</i>Duplicate</a>\n    <a href="#"><i>download</i>Export intel</a>\n    <hr>\n    <button class="danger"><i>delete</i>Decommission</button>\n  </menu>\n</details>',
+        'Two ways in, one look. The robust path is <code>&lt;details class="dropdown"&gt;</code>, which requires no JavaScript and works everywhere; the <code>&lt;summary&gt;</code> is the trigger and the panel is a <code>&lt;menu&gt;</code>. The optional JS adds outside-click / <kbd>Esc</kbd> dismissal. For the modern top-layer path, point a <code>&lt;button popovertarget&gt;</code> at a <code>[popover].menu</code> (anchor-positioned where supported). Items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code>; <code>&lt;hr&gt;</code> divides, an <code>&lt;h6&gt;</code> is a group heading, <code>.danger</code> tones an item, and <code>.right</code> aligns the panel to the trailing edge.',
+      play: {
+        state: {right: false, heading: true, danger: true},
+        controls: [
+          {type: 'toggle', key: 'heading', label: 'Group heading'},
+          {type: 'toggle', key: 'danger', label: 'Danger item'},
+          {type: 'toggle', key: 'right', label: 'Align right'},
+        ],
+        render: function (s) {
+          var cls = s.right ? 'dropdown right' : 'dropdown';
+          var heading = s.heading ? '\n    <h6>Unit</h6>' : '';
+          var danger = s.danger
+            ? '\n    <hr>\n    <button class="danger"><i>delete</i>Decommission</button>'
+            : '';
+          return (
+            '<details class="' + cls + '">\n' +
+            '  <summary>Actions <i>expand_more</i></summary>\n' +
+            '  <menu>' +
+            heading +
+            '\n    <a href="#"><i>visibility</i>Inspect</a>\n' +
+            '    <a href="#"><i>content_copy</i>Duplicate</a>\n' +
+            '    <a href="#"><i>download</i>Export intel</a>' +
+            danger +
+            '\n  </menu>\n' +
+            '</details>'
+          );
         },
-      ],
+      },
     },
     {
       group: 'Interactive',
       id: 'toolbar',
       title: 'Toolbar',
       blurb:
-        'A <code>&lt;div role="toolbar"&gt;</code> is a control surface holding buttons, button groups (<code>&lt;menu class="group"&gt;</code>), an <code>&lt;hr&gt;</code> separator and a <code>.max</code> spacer. The optional JS gives it the roving-tabindex model: one tab stop where arrow keys move between controls. Add <code>vertical</code> to stand it on end.',
-      examples: [
-        {
-          code: '<div role="toolbar" aria-label="Map tools">\n  <button class="icon" aria-label="Pan"><i>pan_tool</i></button>\n  <button class="icon" aria-label="Measure"><i>straighten</i></button>\n  <button class="icon" aria-label="Mark"><i>add_location</i></button>\n  <hr>\n  <menu class="group">\n    <button class="small">Sat</button>\n    <button class="small">Thermal</button>\n    <button class="small">Night</button>\n  </menu>\n  <span class="max"></span>\n  <button class="icon" aria-label="Settings"><i>tune</i></button>\n</div>',
+        'A <code>&lt;div role="toolbar"&gt;</code> is a control surface holding buttons, button groups (<code>&lt;menu class="group"&gt;</code>), an <code>&lt;hr&gt;</code> separator and a <code>.max</code> spacer. The optional JS gives it the roving-tabindex model: one tab stop where arrow keys move between controls. Add <code>vertical</code> to stand it on end (up/down arrows).',
+      play: {
+        state: {vertical: false},
+        controls: [{type: 'toggle', key: 'vertical', label: 'Vertical'}],
+        render: function (s) {
+          var attr = s.vertical ? ' class="vertical"' : '';
+          return (
+            '<div role="toolbar"' + attr + ' aria-label="Map tools">\n' +
+            '  <button class="icon" aria-label="Pan"><i>pan_tool</i></button>\n' +
+            '  <button class="icon" aria-label="Measure"><i>straighten</i></button>\n' +
+            '  <button class="icon" aria-label="Mark"><i>add_location</i></button>\n' +
+            '  <hr>\n' +
+            '  <menu class="group">\n' +
+            '    <button class="small">Sat</button>\n' +
+            '    <button class="small">Thermal</button>\n' +
+            '    <button class="small">Night</button>\n' +
+            '  </menu>\n' +
+            '  <span class="max"></span>\n' +
+            '  <button class="icon" aria-label="Settings"><i>tune</i></button>\n' +
+            '</div>'
+          );
         },
-      ],
+      },
     },
     {
       group: 'Interactive',
       id: 'tree',
       title: 'Tree',
       blurb:
-        'A <code>&lt;ul class="tree"&gt;</code> is a hierarchy. A branch is a <code>&lt;li&gt;&lt;details&gt;&lt;summary&gt;…&lt;/summary&gt;&lt;ul&gt;…&lt;/ul&gt;&lt;/details&gt;</code> that collapses with zero JS and animates open where supported. A leaf is a plain <code>&lt;li&gt;&lt;a&gt;</code>; lead any row with an <code>&lt;i&gt;</code> and mark the selected leaf <code>aria-current="page"</code>. Guide rails connect each level.',
-      examples: [
-        {
-          code: '<ul class="tree">\n  <li>\n    <details open>\n      <summary><i>folder_open</i>Sector 14-C</summary>\n      <ul>\n        <li><a href="#"><i>description</i>case-001.dat</a></li>\n        <li><a href="#" aria-current="page"><i>description</i>case-002.dat</a></li>\n        <li>\n          <details>\n            <summary><i>folder</i>archive</summary>\n            <ul>\n              <li><a href="#"><i>lock</i>sealed-07.dat</a></li>\n            </ul>\n          </details>\n        </li>\n      </ul>\n    </details>\n  </li>\n  <li><a href="#"><i>map</i>city-grid.geo</a></li>\n</ul>',
+        'A <code>&lt;ul class="tree"&gt;</code> is a hierarchy. A branch is a <code>&lt;li&gt;&lt;details&gt;&lt;summary&gt;…&lt;/summary&gt;&lt;ul&gt;…&lt;/ul&gt;&lt;/details&gt;</code> that collapses with zero JS and animates open where supported. A leaf is a plain <code>&lt;li&gt;&lt;a&gt;</code>; lead any row with an <code>&lt;i&gt;</code> and mark the selected leaf <code>aria-current="page"</code>. Guide rails connect each level. (Toggle the folders to expand/collapse.)',
+      play: {
+        state: {selected: 'case-002.dat'},
+        controls: [
+          {
+            type: 'select',
+            key: 'selected',
+            label: 'Selected leaf',
+            options: [
+              {label: 'case-001.dat', value: 'case-001.dat'},
+              {label: 'case-002.dat', value: 'case-002.dat'},
+              {label: 'sealed-07.dat', value: 'sealed-07.dat'},
+              {label: 'city-grid.geo', value: 'city-grid.geo'},
+            ],
+          },
+        ],
+        render: function (s) {
+          function leaf(icon, name) {
+            var cur = name === s.selected ? ' aria-current="page"' : '';
+            return '<a href="#"' + cur + '><i>' + icon + '</i>' + name + '</a>';
+          }
+          var archiveOpen = s.selected === 'sealed-07.dat' ? ' open' : '';
+          return (
+            '<ul class="tree">\n' +
+            '  <li>\n    <details open>\n      <summary><i>folder_open</i>Sector 14-C</summary>\n      <ul>\n' +
+            '        <li>' + leaf('description', 'case-001.dat') + '</li>\n' +
+            '        <li>' + leaf('description', 'case-002.dat') + '</li>\n' +
+            '        <li>\n          <details' + archiveOpen + '>\n            <summary><i>folder</i>archive</summary>\n            <ul>\n' +
+            '              <li>' + leaf('lock', 'sealed-07.dat') + '</li>\n' +
+            '            </ul>\n          </details>\n        </li>\n' +
+            '      </ul>\n    </details>\n  </li>\n' +
+            '  <li>' + leaf('map', 'city-grid.geo') + '</li>\n' +
+            '</ul>'
+          );
         },
+      },
+      examples: [
         {
           label: 'Upgrade to a full ARIA tree widget',
           noDemo: true,
@@ -2018,10 +2388,41 @@
     });
   }
 
+  /* geometry switch: flip the whole docs between the corner-shape engine and
+     the clip-path fallback by toggling .vui-clip on <body> (persisted). */
+  function wireGeometry() {
+    var btn = document.getElementById('geo-toggle');
+    if (!btn) return;
+    var body = document.body;
+    var label = btn.querySelector('span');
+    var KEY = 'vui-geometry';
+    function apply(clip) {
+      body.classList.toggle('vui-clip', clip);
+      btn.setAttribute('aria-pressed', String(clip));
+      if (label) label.textContent = clip ? 'Clip' : 'Shape';
+      btn.title = clip
+        ? 'Corner geometry: clip-path (click to use the shape engine)'
+        : 'Corner geometry: shape engine (click to force clip-path)';
+    }
+    var saved;
+    try {
+      saved = localStorage.getItem(KEY);
+    } catch (e) {}
+    apply(saved === 'clip');
+    btn.addEventListener('click', function () {
+      var clip = !body.classList.contains('vui-clip');
+      apply(clip);
+      try {
+        localStorage.setItem(KEY, clip ? 'clip' : 'shape');
+      } catch (e) {}
+    });
+  }
+
   function boot() {
     render();
     wireCopy();
     wireSpy();
+    wireGeometry();
     if (window.vui && window.vui.init) window.vui.init(document);
   }
 

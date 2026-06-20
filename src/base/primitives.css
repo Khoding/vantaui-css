@@ -1,9 +1,9 @@
 /* ============================================================
-   VantaUI — Base primitives
+   Base primitives
    Reusable HUD building blocks: type roles, eyebrow labels, chamfer
    plates, corner brackets, hairline rules, textured backdrops, the
    live status dot. These are the vocabulary every component is built
-   from — and they're useful on their own.
+   from, and they're useful on their own.
    ============================================================ */
 
 /* ---------- Type roles ---------- */
@@ -102,19 +102,19 @@
 /* `.vui-clip` opts an element out of the enhancement (keeps the base clip-path
    for the open unstroked-diagonal look — see the note in panel.css). */
 @supports (corner-shape: bevel) {
-  .vui-chamfer:not(.vui-clip) {
+  .vui-chamfer:not(.vui-clip):not(.vui-clip *) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);
     corner-start-start-shape: bevel;
     corner-end-end-shape: bevel;
   }
-  .vui-notch:not(.vui-clip) {
+  .vui-notch:not(.vui-clip):not(.vui-clip *) {
     clip-path: none;
     border-radius: var(--bevel-sm);
     corner-shape: bevel;
   }
-  .vui-panel:not(.vui-clip) {
+  .vui-panel:not(.vui-clip):not(.vui-clip *) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

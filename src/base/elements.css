@@ -1,10 +1,10 @@
 /* ============================================================
-   VantaUI — Semantic element defaults (scoped to .vui)
+   Semantic element defaults (scoped to .vui)
    "Write proper HTML, get a tactical UI." Everything here is scoped
    under the `.vui` root and authored at zero specificity via
    :where(), so your app's own classes always win. Add class="vui"
    to <body> (the Vue/Nuxt integration does this for you) and bare
-   semantic markup comes alive — no classes required.
+   semantic markup comes alive, no classes required.
 
    Elements that already carry an explicit vui-* component class are
    excluded, so the class layer stays in full control when you opt in.
@@ -123,7 +123,7 @@
    self-scrolls (overflow-x:auto) but is no longer painted into the chamfer.
    clip-path is the fallback. (See the note in panel.css.) */
 @supports (corner-shape: bevel) {
-  :where(.vui pre:not(.vui-clip)) {
+  :where(.vui pre:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);

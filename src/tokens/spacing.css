@@ -1,11 +1,13 @@
 /* ============================================================
-   VantaUI — Spacing, Radii & Geometry
-   The system is built on sharp angles. Corners are cut (chamfered),
+   Spacing, Radii & Geometry
+   The system is built on sharp angles: corners are cut (chamfered),
    not rounded. Radii are near-zero by default; the "--bevel" tokens
    drive the diagonal corner cuts. These render via clip-path everywhere,
    and via border-radius + corner-shape (Chromium 139+) on the text-bearing
-   plates where supported — same look, but corner-shape shapes only the box
-   so it never clips the content the way clip-path does.
+   plates where supported. Both look the same, but corner-shape shapes only
+   the box, so it never clips the content the way clip-path does.
+   Force the clip-path engine with .vui-clip: on one element, or on a root
+   (e.g. <body class="vui vui-clip">) to flip a whole subtree.
    8px base grid. px is used for the cut geometry (clip-path needs
    absolute lengths); rem is used for fluid layout rhythm.
    ============================================================ */

@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Description list (<dl>)
+   Description list (<dl>)
    A bare <dl> is a telemetry readout: each <dt> an uppercase
    label, each <dd> a mono value, divided by hairlines. Default is
    a label │ value grid; add .stacked for label-over-value rows.

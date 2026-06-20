@@ -443,7 +443,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui pre:not(.vui-clip)) {
+    :where(.vui pre:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -625,7 +625,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    .vui-chamfer:not(.vui-clip) {
+    .vui-chamfer:not(.vui-clip):not(.vui-clip *) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -633,13 +633,13 @@
       border-end-end-radius: var(--bevel-md);
     }
 
-    .vui-notch:not(.vui-clip) {
+    .vui-notch:not(.vui-clip):not(.vui-clip *) {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
     }
 
-    .vui-panel:not(.vui-clip) {
+    .vui-panel:not(.vui-clip):not(.vui-clip *) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -1359,7 +1359,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):not(.vui-clip)), :where(.vui .button:not(.vui-clip)) {
+    :where(.vui button:not([role="tab"]):not([role="switch"]):not(nav button):not(.vui-clip):not(.vui-clip *)), :where(.vui .button:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -1367,7 +1367,7 @@
       border-end-end-radius: var(--bevel-md);
     }
 
-    :where(.vui button.icon:not(.vui-clip)) {
+    :where(.vui button.icon:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
@@ -1555,7 +1555,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui article:not(.vui-prose):not(.prose):not(.vui-clip)) {
+    :where(.vui article:not(.vui-prose):not(.prose):not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -1563,7 +1563,7 @@
       border-end-end-radius: var(--bevel-md);
     }
 
-    :where(.vui article.notch:not(.vui-clip)) {
+    :where(.vui article.notch:not(.vui-clip):not(.vui-clip *)) {
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
     }
@@ -1634,7 +1634,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui .badge:not(.vui-clip)) {
+    :where(.vui .badge:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
@@ -1935,7 +1935,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"]):not(.vui-clip)), :where(.vui textarea:not(.vui-clip)), :where(.vui select:not(.vui-clip)), :where(.vui [popover].listbox:not(.vui-clip)) {
+    :where(.vui input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="color"]):not(.vui-clip):not(.vui-clip *)), :where(.vui textarea:not(.vui-clip):not(.vui-clip *)), :where(.vui select:not(.vui-clip):not(.vui-clip *)), :where(.vui [popover].listbox:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -1943,7 +1943,7 @@
       border-end-end-radius: var(--bevel-md);
     }
 
-    :where(.vui input[type="checkbox"]:not([role="switch"]):not(.vui-clip)), :where(.vui input[type="checkbox"]:not([role="switch"])):before {
+    :where(.vui input[type="checkbox"]:not([role="switch"]):not(.vui-clip):not(.vui-clip *)), :where(.vui input[type="checkbox"]:not([role="switch"])):before {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
@@ -2024,7 +2024,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui [role="status"]:not(.vui-clip)), :where(.vui [role="alert"]:not(.vui-clip)) {
+    :where(.vui [role="status"]:not(.vui-clip):not(.vui-clip *)), :where(.vui [role="alert"]:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -2453,7 +2453,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui details:not(.dropdown):not(.vui-clip)) {
+    :where(.vui details:not(.dropdown):not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -2610,7 +2610,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui .scroll:has( > table):not(.vui-clip)), :where(.vui .table-scroll:not(.vui-clip)) {
+    :where(.vui .scroll:has( > table):not(.vui-clip):not(.vui-clip *)), :where(.vui .table-scroll:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -2808,7 +2808,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui dialog:not(.left):not(.right):not(.vui-clip)) {
+    :where(.vui dialog:not(.left):not(.right):not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -3186,7 +3186,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui header form:not(.vui-clip)), :where(.vui header.float:not(.vui-clip)) {
+    :where(.vui header form:not(.vui-clip):not(.vui-clip *)), :where(.vui header.float:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -3932,7 +3932,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui .skeleton:not(.circle):not(.vui-clip)) {
+    :where(.vui .skeleton:not(.circle):not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -4020,7 +4020,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui .avatar:not(.round):not(.hex):not(.vui-clip)) {
+    :where(.vui .avatar:not(.round):not(.hex):not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -4201,7 +4201,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui nav.pagination :where(a, button):not(.vui-clip)) {
+    :where(.vui nav.pagination :where(a, button):not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
@@ -4437,20 +4437,20 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui .segmented:not(.vui-clip)) {
+    :where(.vui .segmented:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
     }
 
-    :where(.vui .segmented:not(.vui-clip) > label:first-child) {
+    :where(.vui .segmented:not(.vui-clip):not(.vui-clip *) > label:first-child) {
       corner-start-start-shape: bevel;
       corner-end-start-shape: bevel;
       border-start-start-radius: calc(var(--bevel-sm) - 3px);
       border-end-start-radius: calc(var(--bevel-sm) - 3px);
     }
 
-    :where(.vui .segmented:not(.vui-clip) > label:last-child) {
+    :where(.vui .segmented:not(.vui-clip):not(.vui-clip *) > label:last-child) {
       corner-start-end-shape: bevel;
       corner-end-end-shape: bevel;
       border-start-end-radius: calc(var(--bevel-sm) - 3px);
@@ -4563,7 +4563,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui ol.stepper > li):before {
+    :where(.vui ol.stepper:not(.vui-clip):not(.vui-clip *) > li):before {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
@@ -4780,7 +4780,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui details.dropdown > summary:not(.vui-clip)), :where(.vui details.dropdown > :where(menu, nav, ul):not(.vui-clip)), :where(.vui [popover].menu:not(.vui-clip)) {
+    :where(.vui details.dropdown > summary:not(.vui-clip):not(.vui-clip *)), :where(.vui details.dropdown > :where(menu, nav, ul):not(.vui-clip):not(.vui-clip *)), :where(.vui [popover].menu:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;
@@ -4848,7 +4848,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui [role="toolbar"]:not(.vui-clip)), :where(.vui .toolbar:not(.vui-clip)) {
+    :where(.vui [role="toolbar"]:not(.vui-clip):not(.vui-clip *)), :where(.vui .toolbar:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
@@ -5169,19 +5169,19 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui .carousel)::scroll-button(inline-start) {
+    :where(.vui .carousel:not(.vui-clip):not(.vui-clip *))::scroll-button(inline-start) {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
     }
 
-    :where(.vui .carousel)::scroll-button(inline-end) {
+    :where(.vui .carousel:not(.vui-clip):not(.vui-clip *))::scroll-button(inline-end) {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
     }
 
-    :where(.vui .carousel) > ::scroll-marker {
+    :where(.vui .carousel:not(.vui-clip):not(.vui-clip *)) > ::scroll-marker {
       clip-path: none;
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
@@ -5324,7 +5324,7 @@
   }
 
   @supports (corner-shape: bevel) {
-    :where(.vui .toast:not(.vui-clip)) {
+    :where(.vui .toast:not(.vui-clip):not(.vui-clip *)) {
       clip-path: none;
       corner-start-start-shape: bevel;
       corner-end-end-shape: bevel;

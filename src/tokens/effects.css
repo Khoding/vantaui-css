@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Effects: glows, shadows, scanlines, grids, motion
+   Effects: glows, shadows, scanlines, grids, motion
    Light is emitted, not cast. "Shadows" are really inner darkening
    + outer colored glow. Surfaces carry faint hex/scan textures.
    ============================================================ */

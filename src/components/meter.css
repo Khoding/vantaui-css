@@ -1,8 +1,8 @@
 /* ============================================================
-   VantaUI — Meters & progress
+   Meters & progress
    Native <meter> and <progress> are restyled into telemetry bars
    (no classes, <meter> colours itself by threshold). The .meter helper
-   is a labelled, accent-toned bar driven by a custom property — the
+   is a labelled, accent-toned bar driven by a custom property: the
    track is one element (a hard-stop gradient), the value text renders
    from --value via a counter, so no JS is required:
      <div class="meter" style="--value:72"><span>Power</span><b></b></div>

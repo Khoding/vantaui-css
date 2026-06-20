@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — optional behaviours, classic-script build.
+   optional behaviours, classic-script build.
    Same features as js/vantaui.js but as a plain <script> (no module),
    so it works with a simple tag and even over file://:
      <script src="vantaui.global.js"></script>

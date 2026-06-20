@@ -1,8 +1,8 @@
 /* ============================================================
-   VantaUI — Segmented control
+   Segmented control
    A single-select switch: a .segmented track of <label> chips,
    each wrapping a radio <input> (+ optional leading <i>). The
-   checked segment lights up. Zero-JS — it's real radios, so it
+   checked segment lights up. Zero-JS: it's real radios, so it
    posts and keyboards like a radiogroup. Size with .small, tone
    with a colour word. (For a multi-action button cluster use the
    <menu class="group"> button group instead.)
@@ -71,7 +71,7 @@
    Where supported (Chromium 139+), bevel the box without clipping content;
    clip-path above is the fallback. `.vui-clip` opts back in. See panel.css. */
 @supports (corner-shape: bevel) {
-  :where(.vui .segmented:not(.vui-clip)) {
+  :where(.vui .segmented:not(.vui-clip):not(.vui-clip *)) {
     clip-path: none;
     border-radius: var(--bevel-sm);
     corner-shape: bevel;
@@ -81,13 +81,13 @@
      to follow the track (inner corners, where segments meet, stay square). The
      leg is the track bevel minus the 3px track padding, so the cuts run parallel
      to the parent notch. */
-  :where(.vui .segmented:not(.vui-clip) > label:first-child) {
+  :where(.vui .segmented:not(.vui-clip):not(.vui-clip *) > label:first-child) {
     border-start-start-radius: calc(var(--bevel-sm) - 3px);
     border-end-start-radius: calc(var(--bevel-sm) - 3px);
     corner-start-start-shape: bevel;
     corner-end-start-shape: bevel;
   }
-  :where(.vui .segmented:not(.vui-clip) > label:last-child) {
+  :where(.vui .segmented:not(.vui-clip):not(.vui-clip *) > label:last-child) {
     border-start-end-radius: calc(var(--bevel-sm) - 3px);
     border-end-end-radius: calc(var(--bevel-sm) - 3px);
     corner-start-end-shape: bevel;

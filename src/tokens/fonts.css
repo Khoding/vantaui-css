@@ -1,5 +1,5 @@
 /* ============================================================
-   VantaUI — Webfonts
+   Webfonts
    Closest matches to the angular, technical, military-readout type
    of the VantaUI / KHODTECH HUD.
      - Chakra Petch     -> display / headings / UI labels (angular)
@@ -17,7 +17,7 @@
    its size, ascent and descent so it occupies the EXACT same space as
    the real webfont. They sit second in every --font-* stack, so the
    first paint already has the right geometry and the swap causes ~zero
-   layout shift — the same technique Nuxt Fonts / fontaine generate.
+   layout shift. This is the same technique Nuxt Fonts / fontaine generate.
 
    Override values were measured empirically against the live webfonts
    (canvas fontBoundingBox + average advance width). No JS, no build
@@ -32,7 +32,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
 
-/* Icon ligature font — inside .vui, <i>home</i> renders an icon (see base/elements.css).
+/* Icon ligature font. Inside .vui, <i>home</i> renders an icon (see base/elements.css).
    `display=block` hides the raw ligature text until the glyph font streams in. */
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block');
 
