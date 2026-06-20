@@ -3,7 +3,8 @@
    [role="status"] reads as an info notice (cyan); [role="alert"] reads
    as a threat (red). Both get an accent rail + glyph. Re-tone with one
    word: info · warn · threat · secure. An optional <strong>/<h*> is the
-   title. Override the glyph with --vui-alert-glyph.
+   title — it always sits ABOVE the body text (grid row 1 / body in row 2).
+   Override the glyph with --vui-alert-glyph.
    ============================================================ */
 
 :where(.vui [role='status']),
@@ -11,10 +12,16 @@
   --_c: var(--cyan-400);
   --_glyph: '\25C8'; /* ◈ */
   --bevel-md: 9px;
-  display: flex;
+  /* Two-column grid: glyph in col 1 (spanning 2 rows), content in col 2.
+     Because col 1 is blocked for both rows, CSS auto-placement puts the
+     <strong> title into (col 2, row 1) and the body text into (col 2, row 2)
+     automatically — no wrapper element, no absolute glyph, no extra padding. */
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 12px;
+  row-gap: 4px;
   position: relative;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: start;
   padding-inline: 16px 14px;
   padding-block: 13px;
   border: var(--border-hair) solid var(--_c);
@@ -43,11 +50,14 @@
   content: '';
 }
 
-/* leading glyph */
+/* leading glyph — grid col 1, spans 2 rows.
+   Spanning 2 rows blocks col 1 entirely, so the auto-placement algorithm
+   can only put content items (strong, text node) into col 2. */
 :where(.vui [role='status'])::after,
 :where(.vui [role='alert'])::after {
-  flex: none;
-  order: -1;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: start;
   content: var(--vui-alert-glyph, var(--_glyph));
   color: var(--_c);
   font-weight: var(--fw-bold);
@@ -57,10 +67,9 @@
   text-shadow: 0 0 10px color-mix(in srgb, var(--_c) 60%, transparent);
 }
 
-/* title inside the body */
+/* title — auto-placed to col 2, row 1 */
 :where(.vui [role='status'], .vui [role='alert']) :where(strong, b, h1, h2, h3, h4, h5, h6) {
   display: block;
-  margin-block-end: 3px;
   color: var(--text-primary);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-sm);

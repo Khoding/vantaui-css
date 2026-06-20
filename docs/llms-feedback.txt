@@ -1,6 +1,6 @@
 # VantaUI CSS: Feedback & Status
 
-> Status and progress surfaces: inline alerts, toasts, meters & progress bars, radial gauges, spinners, skeletons, empty states, and the live status dot. Authoritative as of v1.7.1.
+> Status and progress surfaces: inline alerts, toasts, meters & progress bars, radial gauges, spinners, skeletons, empty states, and the live status dot. Authoritative as of v1.7.2.
 
 Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words. A leading `<i>text</i>` is a Material Symbols icon. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -8,7 +8,7 @@ Related: toast & meter/gauge JS animation → https://vantaui-css.khodok.com/llm
 
 ## Alerts / notices (inline)
 
-`[role="status"]` reads as an info notice (cyan); `[role="alert"]` reads as a threat (red). Both get an accent rail + leading glyph. An optional `<strong>`/`<b>`/`<h*>` is the title. Re-tone with one word: `info` · `warn` (amber) · `threat` (red) · `secure` (green). Override the glyph with `--vui-alert-glyph`.
+`[role="status"]` reads as an info notice (cyan); `[role="alert"]` reads as a threat (red). Both get an accent rail + leading glyph. An optional `<strong>`/`<b>`/`<h*>` is the title — it stacks above the body text on a narrow alert and sits inline with it once the alert is wide enough (a container query on the alert's own width, so it adapts even inside a narrow column). Re-tone with one word: `info` · `warn` (amber) · `threat` (red) · `secure` (green). Override the glyph with `--vui-alert-glyph`.
 
 ```html
 <div role="status"><strong>Online</strong> Telemetry uplink restored.</div>

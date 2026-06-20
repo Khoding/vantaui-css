@@ -33,8 +33,17 @@
   const GREEN = ['green-400', 'green-500', 'green-600'];
   const SLATE = ['slate-50', 'slate-200', 'slate-300', 'slate-400', 'slate-500', 'slate-600'];
   const SPACE = [
-    ['1', '2px'], ['2', '4px'], ['3', '8px'], ['4', '12px'], ['5', '16px'],
-    ['6', '20px'], ['7', '24px'], ['8', '32px'], ['9', '40px'], ['10', '48px'], ['11', '64px'],
+    ['1', '2px'],
+    ['2', '4px'],
+    ['3', '8px'],
+    ['4', '12px'],
+    ['5', '16px'],
+    ['6', '20px'],
+    ['7', '24px'],
+    ['8', '32px'],
+    ['9', '40px'],
+    ['10', '48px'],
+    ['11', '64px'],
   ];
 
   function swatches(list, prefix) {
@@ -44,10 +53,15 @@
         .map(function (name) {
           var dark = /(-50|-200|-300|-400|cyan-5|green-4|amber-3)/.test(name);
           return (
-            '<div class="doc-swatch vui-chamfer" style="background:var(--' + name + ')">' +
+            '<div class="doc-swatch vui-chamfer" style="background:var(--' +
+            name +
+            ')">' +
             '<span class="doc-swatch__name" style="color:' +
-            (dark ? 'var(--ink-900)' : 'var(--slate-50)') + '">' +
-            (prefix || '') + name + '</span></div>'
+            (dark ? 'var(--ink-900)' : 'var(--slate-50)') +
+            '">' +
+            (prefix || '') +
+            name +
+            '</span></div>'
           );
         })
         .join('') +
@@ -64,8 +78,11 @@
           var name = Array.isArray(it) ? it[0] : it;
           var note = Array.isArray(it) ? it[1] : '';
           return (
-            '<div class="doc-ref-item vui-notch"><code>' + name + '</code>' +
-            (note ? '<small>' + note + '</small>' : '') + '</div>'
+            '<div class="doc-ref-item vui-notch"><code>' +
+            name +
+            '</code>' +
+            (note ? '<small>' + note + '</small>' : '') +
+            '</div>'
           );
         })
         .join('') +
@@ -79,7 +96,11 @@
       list
         .map(function (it) {
           return (
-            '<div class="doc-ref-item vui-notch">' + it.sample + '<code>' + it.name + '</code></div>'
+            '<div class="doc-ref-item vui-notch">' +
+            it.sample +
+            '<code>' +
+            it.name +
+            '</code></div>'
           );
         })
         .join('') +
@@ -122,11 +143,16 @@
         'A cold near-black palette lit by one signal: detective cyan. Amber = hostile / caution, red = threat, green = secure / online. Color is scarce and always means something. Tokens ship as sRGB hex with an OKLCH upgrade.',
       render: function () {
         return (
-          '<p class="doc-tok-h">Ink &amp; surfaces</p>' + swatches(INK, '--') +
-          '<p class="doc-tok-h">Detective cyan: the signal</p>' + swatches(CYAN, '--') +
+          '<p class="doc-tok-h">Ink &amp; surfaces</p>' +
+          swatches(INK, '--') +
+          '<p class="doc-tok-h">Detective cyan: the signal</p>' +
+          swatches(CYAN, '--') +
           '<p class="doc-tok-h">Amber, Red, Green: status</p>' +
-          swatches(AMBER, '--') + swatches(RED, '--') + swatches(GREEN, '--') +
-          '<p class="doc-tok-h">Cool neutrals / text</p>' + swatches(SLATE, '--')
+          swatches(AMBER, '--') +
+          swatches(RED, '--') +
+          swatches(GREEN, '--') +
+          '<p class="doc-tok-h">Cool neutrals / text</p>' +
+          swatches(SLATE, '--')
         );
       },
     },
@@ -159,8 +185,14 @@
           '<div class="doc-spaces">' +
           SPACE.map(function (s) {
             return (
-              '<div class="doc-space"><span class="doc-space__bar" style="inline-size:' + s[1] + '"></span>' +
-              '<span class="doc-space__tag">--space-' + s[0] + ' · ' + s[1] + '</span></div>'
+              '<div class="doc-space"><span class="doc-space__bar" style="inline-size:' +
+              s[1] +
+              '"></span>' +
+              '<span class="doc-space__tag">--space-' +
+              s[0] +
+              ' · ' +
+              s[1] +
+              '</span></div>'
             );
           }).join('') +
           '</div>' +
@@ -239,52 +271,182 @@
         'A focused, BeerCSS-sized helper set rather than a Tailwind-scale explosion. All <code>vui-</code> prefixed, logical-property based, and living in the <code>utilities</code> layer so they win on ties but never on your own styles. Spacing follows the 8px scale (index → <code>--space-N</code>).',
       render: function () {
         var size = function (n) {
-          return { name: n, sample: '<span class="' + n + '" style="line-height:1">Aa</span>' };
+          return {name: n, sample: '<span class="' + n + '" style="line-height:1">Aa</span>'};
         };
         var color = function (n) {
-          return { name: n, sample: '<span class="' + n + '" style="font-weight:600">Aa 042</span>' };
+          return {name: n, sample: '<span class="' + n + '" style="font-weight:600">Aa 042</span>'};
         };
         var glow = function (n) {
           return {
             name: n,
-            sample: '<span class="' + n + '" style="display:inline-block;inline-size:26px;block-size:26px;background:var(--surface-panel);border:1px solid var(--hairline-strong)"></span>',
+            sample:
+              '<span class="' +
+              n +
+              '" style="display:inline-block;inline-size:26px;block-size:26px;background:var(--surface-panel);border:1px solid var(--hairline-strong)"></span>',
           };
         };
         var surf = function (n) {
           return {
             name: n,
-            sample: '<span class="' + n + '" style="display:inline-block;inline-size:26px;block-size:26px;border:1px solid var(--hairline-strong)"></span>',
+            sample:
+              '<span class="' +
+              n +
+              '" style="display:inline-block;inline-size:26px;block-size:26px;border:1px solid var(--hairline-strong)"></span>',
           };
         };
         return (
           '<p class="doc-tok-h">Display</p>' +
-          refChips(['vui-flex', 'vui-inline-flex', 'vui-grid-d', 'vui-block', 'vui-inline-block', 'vui-inline', 'vui-contents', 'vui-hidden', 'vui-sr-only']) +
+          refChips([
+            'vui-flex',
+            'vui-inline-flex',
+            'vui-grid-d',
+            'vui-block',
+            'vui-inline-block',
+            'vui-inline',
+            'vui-contents',
+            'vui-hidden',
+            'vui-sr-only',
+          ]) +
           '<p class="doc-tok-h">Flex &amp; alignment</p>' +
-          refChips(['vui-flex-row', 'vui-flex-col', 'vui-wrap', 'vui-nowrap', 'vui-flex-1', 'vui-grow', 'vui-shrink-0', 'vui-items-start', 'vui-items-center', 'vui-items-end', 'vui-items-stretch', 'vui-items-baseline', 'vui-justify-start', 'vui-justify-center', 'vui-justify-end', 'vui-justify-between', 'vui-justify-around']) +
+          refChips([
+            'vui-flex-row',
+            'vui-flex-col',
+            'vui-wrap',
+            'vui-nowrap',
+            'vui-flex-1',
+            'vui-grow',
+            'vui-shrink-0',
+            'vui-items-start',
+            'vui-items-center',
+            'vui-items-end',
+            'vui-items-stretch',
+            'vui-items-baseline',
+            'vui-justify-start',
+            'vui-justify-center',
+            'vui-justify-end',
+            'vui-justify-between',
+            'vui-justify-around',
+          ]) +
           '<p class="doc-tok-h">Layout helpers</p>' +
-          refChips([['vui-row', 'flex row, centered'], ['vui-row--wrap', 'wrapping row'], ['vui-col', 'flex column'], ['vui-stack', 'vertical rhythm'], ['vui-cluster', 'wrapping cluster'], ['vui-center', 'grid place-items'], ['vui-between', 'space-between'], ['vui-spacer', 'flex spacer'], ['vui-container', 'max-width + gutter'], ['vui-container--narrow', 'tighter measure'], ['vui-container--fluid', 'edge-to-edge']]) +
+          refChips([
+            ['vui-row', 'flex row, centered'],
+            ['vui-row--wrap', 'wrapping row'],
+            ['vui-col', 'flex column'],
+            ['vui-stack', 'vertical rhythm'],
+            ['vui-cluster', 'wrapping cluster'],
+            ['vui-center', 'grid place-items'],
+            ['vui-between', 'space-between'],
+            ['vui-spacer', 'flex spacer'],
+            ['vui-container', 'max-width + gutter'],
+            ['vui-container--narrow', 'tighter measure'],
+            ['vui-container--fluid', 'edge-to-edge'],
+          ]) +
           '<p class="doc-tok-h">Gap · 8px scale</p>' +
-          refChips([['vui-gap-0', '0'], ['vui-gap-1', '2px'], ['vui-gap-2', '4px'], ['vui-gap-3', '8px'], ['vui-gap-4', '12px'], ['vui-gap-5', '16px'], ['vui-gap-6', '20px'], ['vui-gap-7', '24px'], ['vui-gap-8', '32px']]) +
+          refChips([
+            ['vui-gap-0', '0'],
+            ['vui-gap-1', '2px'],
+            ['vui-gap-2', '4px'],
+            ['vui-gap-3', '8px'],
+            ['vui-gap-4', '12px'],
+            ['vui-gap-5', '16px'],
+            ['vui-gap-6', '20px'],
+            ['vui-gap-7', '24px'],
+            ['vui-gap-8', '32px'],
+          ]) +
           '<p class="doc-tok-h">Padding · <code>vui-p / vui-pi / vui-pb</code></p>' +
           refChips(['vui-p-0…8', 'vui-pi-0…8', 'vui-pb-0…8']) +
           '<p class="doc-tok-h">Margin · <code>vui-m / vui-mi / vui-mb / vui-mbe</code></p>' +
           refChips(['vui-m-0…6', 'vui-m-auto', 'vui-mi-auto', 'vui-mb-0…8', 'vui-mbe-3…6']) +
           '<p class="doc-tok-h">Font size · clamp() fluid</p>' +
-          refTiles(['vui-text-2xs', 'vui-text-xs', 'vui-text-sm', 'vui-text-base', 'vui-text-md', 'vui-text-lg', 'vui-text-xl', 'vui-text-2xl', 'vui-text-3xl', 'vui-text-4xl', 'vui-text-5xl'].map(size)) +
+          refTiles(
+            [
+              'vui-text-2xs',
+              'vui-text-xs',
+              'vui-text-sm',
+              'vui-text-base',
+              'vui-text-md',
+              'vui-text-lg',
+              'vui-text-xl',
+              'vui-text-2xl',
+              'vui-text-3xl',
+              'vui-text-4xl',
+              'vui-text-5xl',
+            ].map(size),
+          ) +
           '<p class="doc-tok-h">Text colour</p>' +
-          refTiles(['vui-text-primary', 'vui-text-secondary', 'vui-text-muted', 'vui-text-faint', 'vui-text-cyan', 'vui-text-amber', 'vui-text-red', 'vui-text-green'].map(color)) +
+          refTiles(
+            [
+              'vui-text-primary',
+              'vui-text-secondary',
+              'vui-text-muted',
+              'vui-text-faint',
+              'vui-text-cyan',
+              'vui-text-amber',
+              'vui-text-red',
+              'vui-text-green',
+            ].map(color),
+          ) +
           '<p class="doc-tok-h">Font · weight · tracking · align</p>' +
-          refChips(['vui-font-display', 'vui-font-ui', 'vui-font-hud', 'vui-font-mono', 'vui-fw-light', 'vui-fw-regular', 'vui-fw-medium', 'vui-fw-semibold', 'vui-fw-bold', 'vui-tracked', 'vui-tracked-wider', 'vui-tracked-widest', 'vui-upper', 'vui-text-start', 'vui-text-center', 'vui-text-end', 'vui-truncate', 'vui-nowrap-text']) +
+          refChips([
+            'vui-font-display',
+            'vui-font-ui',
+            'vui-font-hud',
+            'vui-font-mono',
+            'vui-fw-light',
+            'vui-fw-regular',
+            'vui-fw-medium',
+            'vui-fw-semibold',
+            'vui-fw-bold',
+            'vui-tracked',
+            'vui-tracked-wider',
+            'vui-tracked-widest',
+            'vui-upper',
+            'vui-text-start',
+            'vui-text-center',
+            'vui-text-end',
+            'vui-truncate',
+            'vui-nowrap-text',
+          ]) +
           '<p class="doc-tok-h">Surfaces</p>' +
-          refTiles(['vui-bg-void', 'vui-bg-base', 'vui-bg-raised', 'vui-bg-panel', 'vui-bg-inset'].map(surf)) +
+          refTiles(
+            ['vui-bg-void', 'vui-bg-base', 'vui-bg-raised', 'vui-bg-panel', 'vui-bg-inset'].map(
+              surf,
+            ),
+          ) +
           '<p class="doc-tok-h">Borders</p>' +
           refChips(['vui-border', 'vui-border-strong', 'vui-border-accent', 'vui-border-0']) +
           '<p class="doc-tok-h">Glows</p>' +
-          refTiles(['vui-glow-cyan', 'vui-glow-amber', 'vui-glow-red', 'vui-glow-green'].map(glow)) +
+          refTiles(
+            ['vui-glow-cyan', 'vui-glow-amber', 'vui-glow-red', 'vui-glow-green'].map(glow),
+          ) +
           '<p class="doc-tok-h">Position · sizing · misc</p>' +
-          refChips(['vui-relative', 'vui-absolute', 'vui-sticky', 'vui-w-full', 'vui-h-full', 'vui-w-auto', 'vui-min-w-0', 'vui-overflow-auto', 'vui-overflow-hidden', 'vui-pointer', 'vui-select-none', 'vui-text-glow', 'vui-flicker', 'vui-scanning']) +
+          refChips([
+            'vui-relative',
+            'vui-absolute',
+            'vui-sticky',
+            'vui-w-full',
+            'vui-h-full',
+            'vui-w-auto',
+            'vui-min-w-0',
+            'vui-overflow-auto',
+            'vui-overflow-hidden',
+            'vui-pointer',
+            'vui-select-none',
+            'vui-text-glow',
+            'vui-flicker',
+            'vui-scanning',
+          ]) +
           '<p class="doc-tok-h">Responsive show / hide</p>' +
-          refChips([['vui-until-s', 'hide ≥ 36rem'], ['vui-from-s', 'hide &lt; 36rem'], ['vui-until-m', 'hide ≥ 48rem'], ['vui-from-m', 'hide &lt; 48rem'], ['vui-until-l', 'hide ≥ 64rem'], ['vui-from-l', 'hide &lt; 64rem'], ['vui-until-xl', 'hide ≥ 80rem'], ['vui-from-xl', 'hide &lt; 80rem']])
+          refChips([
+            ['vui-until-s', 'hide ≥ 36rem'],
+            ['vui-from-s', 'hide &lt; 36rem'],
+            ['vui-until-m', 'hide ≥ 48rem'],
+            ['vui-from-m', 'hide &lt; 48rem'],
+            ['vui-until-l', 'hide ≥ 64rem'],
+            ['vui-from-l', 'hide &lt; 64rem'],
+            ['vui-until-xl', 'hide ≥ 80rem'],
+            ['vui-from-xl', 'hide &lt; 80rem'],
+          ])
         );
       },
     },
@@ -297,14 +459,47 @@
       blurb:
         'A <code>&lt;header&gt;</code> containing a <code>&lt;nav&gt;</code> becomes an app bar with no class required. The first <code>&lt;a&gt;</code> is the brand; the first <code>&lt;nav&gt;</code> pushes trailing actions right; a <code>&lt;form role="search"&gt;</code> is the search shell; a <code>&lt;menu&gt;</code> is the trailing cluster. A container query collapses the nav to a burger when the bar itself is narrow.',
       play: {
-        state: { tone: '', shape: '', align: '', size: '', sticky: false, search: false },
+        state: {tone: '', shape: '', align: '', size: '', sticky: false, search: false},
         controls: [
-          { type: 'select', key: 'tone', label: 'Surface', options: [{ label: 'Default', value: '' }, { label: 'Glow', value: 'glow' }, { label: 'Bare', value: 'bare' }] },
-          { type: 'select', key: 'shape', label: 'Shape', options: [{ label: 'Attached', value: '' }, { label: 'Float', value: 'float' }] },
-          { type: 'select', key: 'align', label: 'Nav', options: [{ label: 'Leading', value: '' }, { label: 'Centered', value: 'center' }] },
-          { type: 'select', key: 'size', label: 'Height', options: [{ label: 'Default', value: '' }, { label: 'Tall', value: 'tall' }] },
-          { type: 'toggle', key: 'search', label: 'Search field' },
-          { type: 'toggle', key: 'sticky', label: 'Sticky' },
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Surface',
+            options: [
+              {label: 'Default', value: ''},
+              {label: 'Glow', value: 'glow'},
+              {label: 'Bare', value: 'bare'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'shape',
+            label: 'Shape',
+            options: [
+              {label: 'Attached', value: ''},
+              {label: 'Float', value: 'float'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'align',
+            label: 'Nav',
+            options: [
+              {label: 'Leading', value: ''},
+              {label: 'Centered', value: 'center'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'size',
+            label: 'Height',
+            options: [
+              {label: 'Default', value: ''},
+              {label: 'Tall', value: 'tall'},
+            ],
+          },
+          {type: 'toggle', key: 'search', label: 'Search field'},
+          {type: 'toggle', key: 'sticky', label: 'Sticky'},
         ],
         render: function (s) {
           var c = [s.tone, s.shape, s.align, s.size, s.sticky && 'sticky'].filter(Boolean);
@@ -313,10 +508,13 @@
             ? '\n  <form role="search">\n    <i>search</i>\n    <input type="search" placeholder="Search sectors…">\n  </form>'
             : '';
           return (
-            '<header' + cls + '>\n' +
+            '<header' +
+            cls +
+            '>\n' +
             '  <a>VANTA<b>UI</b></a>\n' +
             '  <nav>\n    <a aria-current="page">Command</a>\n    <a>Intel</a>\n    <a>Comms</a>\n  </nav>' +
-            search + '\n' +
+            search +
+            '\n' +
             '  <menu>\n    <span class="badge green dot">Online</span>\n    <button aria-label="Account"><i>account_circle</i></button>\n  </menu>\n' +
             '</header>'
           );
@@ -330,18 +528,29 @@
       blurb:
         'A bare <code>&lt;footer&gt;</code> (outside an <code>&lt;article&gt;</code>/<code>&lt;dialog&gt;</code>) is the page footer. Pick a shape: the default hairline strip, <code>status</code> (a dense telemetry bar where each child is a cell, where you can add <code>signal</code> for the accent tone), or <code>columns</code> (an auto-fit sitemap; a <code>.bottom</code> child spans full width).',
       play: {
-        state: { shape: '', glow: false, base: false },
+        state: {shape: '', glow: false, base: false},
         controls: [
-          { type: 'select', key: 'shape', label: 'Shape', options: [{ label: 'Strip', value: '' }, { label: 'Status bar', value: 'status' }, { label: 'Columns', value: 'columns' }] },
-          { type: 'toggle', key: 'glow', label: 'Glow edge' },
-          { type: 'toggle', key: 'base', label: 'Base surface' },
+          {
+            type: 'select',
+            key: 'shape',
+            label: 'Shape',
+            options: [
+              {label: 'Strip', value: ''},
+              {label: 'Status bar', value: 'status'},
+              {label: 'Columns', value: 'columns'},
+            ],
+          },
+          {type: 'toggle', key: 'glow', label: 'Glow edge'},
+          {type: 'toggle', key: 'base', label: 'Base surface'},
         ],
         render: function (s) {
           var mods = [s.shape, s.glow && 'glow', s.base && 'base'].filter(Boolean);
           var cls = mods.length ? ' class="' + mods.join(' ') + '"' : '';
           if (s.shape === 'status') {
             return (
-              '<footer' + cls + '>\n' +
+              '<footer' +
+              cls +
+              '>\n' +
               '  <span><small>UPLINK</small>04:18:22</span>\n' +
               '  <span class="signal"><small>THREAT</small>HIGH</span>\n' +
               '  <span><small>SECTOR</small>14-C</span>\n' +
@@ -353,7 +562,9 @@
           }
           if (s.shape === 'columns') {
             return (
-              '<footer' + cls + '>\n' +
+              '<footer' +
+              cls +
+              '>\n' +
               '  <section>\n    <h6>Framework</h6>\n    <nav><a>Install</a><a>Vue</a><a>Nuxt</a></nav>\n  </section>\n' +
               '  <section>\n    <h6>Components</h6>\n    <nav><a>Buttons</a><a>Panels</a><a>Forms</a></nav>\n  </section>\n' +
               '  <section>\n    <h6>Resources</h6>\n    <nav><a>GitHub</a><a>Changelog</a><a>License</a></nav>\n  </section>\n' +
@@ -362,7 +573,9 @@
             );
           }
           return (
-            '<footer' + cls + '>\n' +
+            '<footer' +
+            cls +
+            '>\n' +
             '  <a><b>VANTA</b>UI</a>\n' +
             '  <nav>\n    <a>Docs</a>\n    <a>GitHub</a>\n    <a>Changelog</a>\n  </nav>\n' +
             '  <span class="max"></span>\n' +
@@ -379,16 +592,29 @@
       blurb:
         'Patterns from bare semantics. The <strong>bottom tab bar</strong> below is <code>&lt;nav class="bottom"&gt;</code> where items are <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> with an <code>&lt;i&gt;</code> + label; mark the current one <code>active</code>. Add <code>fixed</code> to pin it to the viewport floor. A <strong>breadcrumb</strong> is any <code>&lt;nav&gt;</code> wrapping an <code>&lt;ol&gt;</code>, which is automatically detected using <code>:has()</code> with no classes or manual separators.',
       play: {
-        state: { active: 0 },
+        state: {active: 0},
         controls: [],
         render: function (s) {
-          var items = [['space_dashboard', 'Ops'], ['folder', 'Files'], ['map', 'Map'], ['settings', 'Setup']];
+          var items = [
+            ['space_dashboard', 'Ops'],
+            ['folder', 'Files'],
+            ['map', 'Map'],
+            ['settings', 'Setup'],
+          ];
           var active = Number(s.active);
           return (
             '<nav class="bottom">\n' +
             items
               .map(function (it, i) {
-                return '  <a' + (i === active ? ' class="active"' : '') + '><i>' + it[0] + '</i>' + it[1] + '</a>';
+                return (
+                  '  <a' +
+                  (i === active ? ' class="active"' : '') +
+                  '><i>' +
+                  it[0] +
+                  '</i>' +
+                  it[1] +
+                  '</a>'
+                );
               })
               .join('\n') +
             '\n</nav>'
@@ -417,14 +643,26 @@
       blurb:
         '<code>&lt;dialog class="left"&gt;</code> / <code>&lt;dialog class="right"&gt;</code> is an edge drawer that slides in with a <code>@starting-style</code> transition. Open with <code>showModal()</code>; close with <code>close()</code>, <code>Esc</code>, or a backdrop click. Inside: a <code>&lt;header&gt;</code> (brand + close), a <code>&lt;nav&gt;</code> (links + optional <code>&lt;h5&gt;</code> group headings), an optional <code>&lt;footer&gt;</code>.',
       play: {
-        state: { side: 'left' },
+        state: {side: 'left'},
         controls: [
-          { type: 'select', key: 'side', label: 'Edge', options: [{ label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
+          {
+            type: 'select',
+            key: 'side',
+            label: 'Edge',
+            options: [
+              {label: 'Left', value: 'left'},
+              {label: 'Right', value: 'right'},
+            ],
+          },
         ],
         render: function (s) {
           return (
-            '<button onclick="this.nextElementSibling.showModal()">Open ' + s.side + ' drawer</button>\n\n' +
-            '<dialog class="' + s.side + '">\n' +
+            '<button onclick="this.nextElementSibling.showModal()">Open ' +
+            s.side +
+            ' drawer</button>\n\n' +
+            '<dialog class="' +
+            s.side +
+            '">\n' +
             '  <header>\n    <a>VANTA<b>UI</b></a>\n' +
             '    <button class="icon" aria-label="Close"\n      onclick="this.closest(\'dialog\').close()"><i>close</i></button>\n  </header>\n' +
             '  <nav>\n' +
@@ -475,15 +713,19 @@
         '<code>vui-autogrid</code> is the responsive-by-default card flow: it fits as many cards as the space allows at your <code>--vui-min</code> width, and reflows to a single full-width card on a phone without using breakpoints. Add <code>--fit</code> so a short last row stretches to fill.',
       play: {
         resize: true,
-        state: { min: 13, fit: false },
+        state: {min: 13, fit: false},
         controls: [
-          { type: 'range', key: 'min', label: 'Min card', min: 7, max: 22, suffix: 'rem' },
-          { type: 'toggle', key: 'fit', label: 'Stretch last row (--fit)' },
+          {type: 'range', key: 'min', label: 'Min card', min: 7, max: 22, suffix: 'rem'},
+          {type: 'toggle', key: 'fit', label: 'Stretch last row (--fit)'},
         ],
         render: function (s) {
           var cls = 'vui-autogrid' + (s.fit ? ' vui-autogrid--fit' : '');
           return (
-            '<div class="' + cls + '" style="--vui-min:' + s.min + 'rem">\n' +
+            '<div class="' +
+            cls +
+            '" style="--vui-min:' +
+            s.min +
+            'rem">\n' +
             '  <article>Sector 14-C</article>\n' +
             '  <article>Sector 22-A</article>\n' +
             '  <article>Sector 09-F</article>\n' +
@@ -535,14 +777,51 @@
       blurb:
         'A bare <code>&lt;button&gt;</code> is a chamfered outline control; <code>type="submit"</code> (the <em>Filled</em> style) auto-promotes to the primary CTA. Re-tone or resize with one word; a lone <code>&lt;i&gt;</code> collapses it to a square.',
       play: {
-        state: { style: '', tone: '', size: '', icon: false, block: false, disabled: false },
+        state: {style: '', tone: '', size: '', icon: '', block: false, disabled: false},
         controls: [
-          { type: 'select', key: 'style', label: 'Style', options: [{ label: 'Outline', value: '' }, { label: 'Filled', value: 'fill' }, { label: 'Ghost', value: 'ghost' }] },
-          { type: 'select', key: 'tone', label: 'Tone', options: [{ label: 'Cyan', value: '' }, { label: 'Amber', value: 'amber' }, { label: 'Danger', value: 'danger' }, { label: 'Secure', value: 'secure' }] },
-          { type: 'select', key: 'size', label: 'Size', options: [{ label: 'Medium', value: '' }, { label: 'Small', value: 'small' }, { label: 'Large', value: 'large' }] },
-          { type: 'toggle', key: 'icon', label: 'Icon only' },
-          { type: 'toggle', key: 'block', label: 'Full width' },
-          { type: 'toggle', key: 'disabled', label: 'Disabled' },
+          {
+            type: 'select',
+            key: 'style',
+            label: 'Style',
+            options: [
+              {label: 'Outline', value: ''},
+              {label: 'Filled', value: 'fill'},
+              {label: 'Ghost', value: 'ghost'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: ''},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Danger', value: 'danger'},
+              {label: 'Secure', value: 'secure'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'size',
+            label: 'Size',
+            options: [
+              {label: 'Medium', value: ''},
+              {label: 'Small', value: 'small'},
+              {label: 'Large', value: 'large'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'icon',
+            label: 'Icon',
+            options: [
+              {label: 'None', value: ''},
+              {label: 'Icon + text', value: 'with-text'},
+              {label: 'Icon only', value: 'only'},
+            ],
+          },
+          {type: 'toggle', key: 'block', label: 'Full width'},
+          {type: 'toggle', key: 'disabled', label: 'Disabled'},
         ],
         render: function (s) {
           var isFill = s.style === 'fill';
@@ -550,12 +829,15 @@
           if (s.style === 'ghost') c.push('ghost');
           if (s.tone) c.push(s.tone);
           if (s.size) c.push(s.size);
-          if (s.icon) c.push('icon');
+          if (s.icon === 'only') c.push('icon');
           else if (s.block) c.push('block');
           var cls = c.length ? ' class="' + c.join(' ') + '"' : '';
-          var type = isFill && !s.icon ? ' type="submit"' : '';
+          var type = isFill && s.icon !== 'only' ? ' type="submit"' : '';
           var dis = s.disabled ? ' disabled' : '';
-          if (s.icon) return '<button' + type + cls + dis + ' aria-label="Scan"><i>radar</i></button>';
+          if (s.icon === 'only')
+            return '<button' + type + cls + dis + ' aria-label="Scan"><i>radar</i></button>';
+          if (s.icon === 'with-text')
+            return '<button' + type + cls + dis + '><i>radar</i>Authorize</button>';
           return '<button' + type + cls + dis + '>Authorize</button>';
         },
       },
@@ -567,31 +849,87 @@
       blurb:
         'A bare <code>&lt;article&gt;</code> is a chamfered plate; a nested <code>&lt;header&gt;</code>/<code>&lt;footer&gt;</code> auto-spans with a hairline divider. Tune depth, tint and intensity independently and combine freely.',
       play: {
-        state: { surface: '', tint: '', intensity: '', glow: false, notch: false, brackets: false, sections: false, filled: false },
+        state: {
+          surface: '',
+          tint: '',
+          intensity: '',
+          glow: false,
+          notch: false,
+          brackets: false,
+          sections: false,
+          filled: false,
+        },
         controls: [
-          { type: 'select', key: 'surface', label: 'Surface', options: [{ label: 'Panel', value: '' }, { label: 'Raised', value: 'raised' }, { label: 'Inset', value: 'inset' }, { label: 'Flat', value: 'flat' }] },
-          { type: 'select', key: 'tint', label: 'Tint', options: [{ label: 'None', value: '' }, { label: 'Cyan', value: 'cyan' }, { label: 'Amber', value: 'amber' }, { label: 'Red', value: 'red' }, { label: 'Green', value: 'green' }] },
-          { type: 'select', key: 'intensity', label: 'Intensity', options: [{ label: 'Default', value: '' }, { label: 'Dim', value: 'dim' }, { label: 'Vivid', value: 'vivid' }] },
-          { type: 'toggle', key: 'glow', label: 'Glow' },
-          { type: 'toggle', key: 'notch', label: 'Notch' },
-          { type: 'toggle', key: 'brackets', label: 'Brackets' },
-          { type: 'toggle', key: 'sections', label: 'Header & footer' },
-          { type: 'toggle', key: 'filled', label: 'Filled bar (header/footer)' },
+          {
+            type: 'select',
+            key: 'surface',
+            label: 'Surface',
+            options: [
+              {label: 'Panel', value: ''},
+              {label: 'Raised', value: 'raised'},
+              {label: 'Inset', value: 'inset'},
+              {label: 'Flat', value: 'flat'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'tint',
+            label: 'Tint',
+            options: [
+              {label: 'None', value: ''},
+              {label: 'Cyan', value: 'cyan'},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Red', value: 'red'},
+              {label: 'Green', value: 'green'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'intensity',
+            label: 'Intensity',
+            options: [
+              {label: 'Default', value: ''},
+              {label: 'Dim', value: 'dim'},
+              {label: 'Vivid', value: 'vivid'},
+            ],
+          },
+          {type: 'toggle', key: 'glow', label: 'Glow'},
+          {type: 'toggle', key: 'notch', label: 'Notch'},
+          {type: 'toggle', key: 'brackets', label: 'Brackets'},
+          {type: 'toggle', key: 'sections', label: 'Header & footer'},
+          {type: 'toggle', key: 'filled', label: 'Filled bar (header/footer)'},
         ],
         render: function (s) {
-          var c = [s.surface, s.tint, s.intensity, s.glow && 'glow', s.notch && 'notch', s.brackets && 'brackets'].filter(Boolean);
+          var c = [
+            s.surface,
+            s.tint,
+            s.intensity,
+            s.glow && 'glow',
+            s.notch && 'notch',
+            s.brackets && 'brackets',
+          ].filter(Boolean);
           var cls = c.length ? ' class="' + c.join(' ') + '"' : '';
           if (s.sections) {
             var bar = s.filled ? ' class="filled"' : '';
             return (
-              '<article' + cls + '>\n' +
-              '  <header' + bar + '>\n    <small class="vui-eyebrow">Case File</small>\n    <small>14-C</small>\n  </header>\n' +
+              '<article' +
+              cls +
+              '>\n' +
+              '  <header' +
+              bar +
+              '>\n    <small class="vui-eyebrow">Case File</small>\n    <small>14-C</small>\n  </header>\n' +
               '  <p>Recovered intel from the broker drop. Chain of custody verified.</p>\n' +
-              '  <footer' + bar + '><button class="small">Open</button></footer>\n' +
+              '  <footer' +
+              bar +
+              '><button class="small">Open</button></footer>\n' +
               '</article>'
             );
           }
-          return '<article' + cls + '>\n  <p>Recovered intel from the broker drop. Chain of custody verified.</p>\n</article>';
+          return (
+            '<article' +
+            cls +
+            '>\n  <p>Recovered intel from the broker drop. Chain of custody verified.</p>\n</article>'
+          );
         },
       },
     },
@@ -602,11 +940,22 @@
       blurb:
         'Notched status tags on a <code>&lt;span&gt;</code>, <code>&lt;a&gt;</code> or <code>&lt;mark&gt;</code>. Tone with one word; add <code>dot</code> for a live indicator or <code>solid</code> to fill.',
       play: {
-        state: { tone: 'cyan', dot: false, solid: false },
+        state: {tone: 'cyan', dot: false, solid: false},
         controls: [
-          { type: 'select', key: 'tone', label: 'Tone', options: [{ label: 'Cyan', value: 'cyan' }, { label: 'Amber', value: 'amber' }, { label: 'Red', value: 'red' }, { label: 'Green', value: 'green' }, { label: 'Neutral', value: 'neutral' }] },
-          { type: 'toggle', key: 'dot', label: 'Live dot' },
-          { type: 'toggle', key: 'solid', label: 'Solid fill' },
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: 'cyan'},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Red', value: 'red'},
+              {label: 'Green', value: 'green'},
+              {label: 'Neutral', value: 'neutral'},
+            ],
+          },
+          {type: 'toggle', key: 'dot', label: 'Live dot'},
+          {type: 'toggle', key: 'solid', label: 'Solid fill'},
         ],
         render: function (s) {
           var c = ['badge', s.tone, s.dot && 'dot', s.solid && 'solid'].filter(Boolean);
@@ -621,27 +970,53 @@
       blurb:
         'Native controls are styled directly with no wrappers. A <code>&lt;label&gt;</code> wrapping a field stacks it (leading <code>&lt;span&gt;</code> label, trailing <code>&lt;small&gt;</code> hint; add <code>error</code> to the hint when <code>aria-invalid</code>). The single field below is live; switches, checkboxes, radios and the range slider follow.',
       play: {
-        state: { type: 'password', invalid: false, disabled: false, hint: true },
+        state: {type: 'password', invalid: false, disabled: false, hint: true},
         controls: [
-          { type: 'select', key: 'type', label: 'Field', options: [{ label: 'Text', value: 'text' }, { label: 'Password', value: 'password' }, { label: 'Select', value: 'select' }, { label: 'Textarea', value: 'textarea' }] },
-          { type: 'toggle', key: 'invalid', label: 'Invalid' },
-          { type: 'toggle', key: 'disabled', label: 'Disabled' },
-          { type: 'toggle', key: 'hint', label: 'Hint' },
+          {
+            type: 'select',
+            key: 'type',
+            label: 'Field',
+            options: [
+              {label: 'Text', value: 'text'},
+              {label: 'Password', value: 'password'},
+              {label: 'Select', value: 'select'},
+              {label: 'Textarea', value: 'textarea'},
+            ],
+          },
+          {type: 'toggle', key: 'invalid', label: 'Invalid'},
+          {type: 'toggle', key: 'disabled', label: 'Disabled'},
+          {type: 'toggle', key: 'hint', label: 'Hint'},
         ],
         render: function (s) {
           var inv = s.invalid ? ' aria-invalid="true"' : '';
           var dis = s.disabled ? ' disabled' : '';
           var control;
           if (s.type === 'select') {
-            control = '<select' + inv + dis + ">\n    <option>Bleake Island</option>\n    <option>Miagani</option>\n    <option>Founders'</option>\n  </select>";
+            control =
+              '<select' +
+              inv +
+              dis +
+              ">\n    <option>Bleake Island</option>\n    <option>Miagani</option>\n    <option>Founders'</option>\n  </select>";
           } else if (s.type === 'textarea') {
             control = '<textarea placeholder="Field report…"' + inv + dis + '></textarea>';
           } else {
             var val = s.type === 'password' ? 'wayne' : 'b.wayne';
-            control = '<input type="' + s.type + '" placeholder="••••••••" value="' + val + '"' + inv + dis + '>';
+            control =
+              '<input type="' +
+              s.type +
+              '" placeholder="••••••••" value="' +
+              val +
+              '"' +
+              inv +
+              dis +
+              '>';
           }
           var hint = s.hint
-            ? '\n  <small' + (s.invalid ? ' class="error"' : '') + '>' + (s.invalid ? 'Access denied: code rejected.' : '8–32 characters.') + '</small>'
+            ? '\n  <small' +
+              (s.invalid ? ' class="error"' : '') +
+              '>' +
+              (s.invalid ? 'Access denied: code rejected.' : '8–32 characters.') +
+              '</small>'
             : '';
           return '<label>\n  <span>Access code</span>\n  ' + control + hint + '\n</label>';
         },
@@ -662,16 +1037,39 @@
       blurb:
         'Inline system notices with an accent rail + glyph. <code>[role="status"]</code> reads as info, <code>[role="alert"]</code> as threat. Re-tone with one word; a nested <code>&lt;strong&gt;</code> becomes the title. Override the glyph with <code>--vui-alert-glyph</code>.',
       play: {
-        state: { role: 'status', tone: '', title: true },
+        resize: true,
+        state: {role: 'status', tone: '', title: true},
         controls: [
-          { type: 'select', key: 'role', label: 'Role', options: [{ label: 'status', value: 'status' }, { label: 'alert', value: 'alert' }] },
-          { type: 'select', key: 'tone', label: 'Tone', options: [{ label: 'Default', value: '' }, { label: 'Info', value: 'info' }, { label: 'Warn', value: 'warn' }, { label: 'Threat', value: 'threat' }, { label: 'Secure', value: 'secure' }] },
-          { type: 'toggle', key: 'title', label: 'Title' },
+          {
+            type: 'select',
+            key: 'role',
+            label: 'Role',
+            options: [
+              {label: 'status', value: 'status'},
+              {label: 'alert', value: 'alert'},
+            ],
+          },
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Default', value: ''},
+              {label: 'Info', value: 'info'},
+              {label: 'Warn', value: 'warn'},
+              {label: 'Threat', value: 'threat'},
+              {label: 'Secure', value: 'secure'},
+            ],
+          },
+          {type: 'toggle', key: 'title', label: 'Title'},
         ],
         render: function (s) {
           var cls = s.tone ? ' class="' + s.tone + '"' : '';
           var title = s.title ? '\n  <strong>Uplink status</strong>' : '';
-          var body = s.role === 'alert' ? '\n  12 contacts · grid 14-C · ETA 2m\n' : '\n  Channel encrypted end-to-end.\n';
+          var body =
+            s.role === 'alert'
+              ? '\n  12 contacts · grid 14-C · ETA 2m\n'
+              : '\n  Channel encrypted end-to-end.\n';
           return '<div role="' + s.role + '"' + cls + '>' + title + body + '</div>';
         },
       },
@@ -683,15 +1081,31 @@
       blurb:
         'The <code>.meter</code> helper is a labelled, accent-toned bar driven purely by <code>--value</code> where the readout renders from a CSS counter without JavaScript. Tone it, or add <code>segmented</code> for ticks. Native <code>&lt;meter&gt;</code> (threshold-coloured) and <code>&lt;progress&gt;</code> are restyled too; add <code>data-animate</code> (with the JS helper) to count up on view.',
       play: {
-        state: { tone: '', segmented: false, value: 73 },
+        state: {tone: '', segmented: false, value: 73},
         controls: [
-          { type: 'select', key: 'tone', label: 'Tone', options: [{ label: 'Cyan', value: '' }, { label: 'Amber', value: 'amber' }, { label: 'Red', value: 'red' }, { label: 'Green', value: 'green' }] },
-          { type: 'toggle', key: 'segmented', label: 'Segmented' },
-          { type: 'range', key: 'value', label: 'Value', min: 0, max: 100 },
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: ''},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Red', value: 'red'},
+              {label: 'Green', value: 'green'},
+            ],
+          },
+          {type: 'toggle', key: 'segmented', label: 'Segmented'},
+          {type: 'range', key: 'value', label: 'Value', min: 0, max: 100},
         ],
         render: function (s) {
           var c = ['meter', s.tone, s.segmented && 'segmented'].filter(Boolean);
-          return '<div class="' + c.join(' ') + '" style="--value:' + s.value + '">\n  <span>Suit Integrity</span>\n  <b></b>\n</div>';
+          return (
+            '<div class="' +
+            c.join(' ') +
+            '" style="--value:' +
+            s.value +
+            '">\n  <span>Suit Integrity</span>\n  <b></b>\n</div>'
+          );
         },
       },
       examples: [
@@ -712,15 +1126,33 @@
         'A 270° arc readout built from a single conic-gradient with no SVG and no JavaScript. The value renders from <code>--value</code>; leave <code>&lt;b&gt;</code> empty and a counter fills it. Fluid by default — it scales with the viewport; set <code>--size</code> for a fixed footprint. Tone with a colour word.',
       play: {
         resize: true,
-        state: { tone: '', value: 87, size: 8 },
+        state: {tone: '', value: 87, size: 8},
         controls: [
-          { type: 'select', key: 'tone', label: 'Tone', options: [{ label: 'Cyan', value: '' }, { label: 'Amber', value: 'amber' }, { label: 'Red', value: 'red' }, { label: 'Green', value: 'green' }] },
-          { type: 'range', key: 'value', label: 'Value', min: 0, max: 100 },
-          { type: 'range', key: 'size', label: 'Size (--size)', min: 6, max: 11, suffix: 'rem' },
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: ''},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Red', value: 'red'},
+              {label: 'Green', value: 'green'},
+            ],
+          },
+          {type: 'range', key: 'value', label: 'Value', min: 0, max: 100},
+          {type: 'range', key: 'size', label: 'Size (--size)', min: 6, max: 11, suffix: 'rem'},
         ],
         render: function (s) {
           var c = ['gauge', s.tone].filter(Boolean);
-          return '<div class="' + c.join(' ') + '" style="--value:' + s.value + '; --size:' + s.size + 'rem">\n  <b></b><small>%</small>\n  <span>Integrity</span>\n</div>';
+          return (
+            '<div class="' +
+            c.join(' ') +
+            '" style="--value:' +
+            s.value +
+            '; --size:' +
+            s.size +
+            'rem">\n  <b></b><small>%</small>\n  <span>Integrity</span>\n</div>'
+          );
         },
       },
     },
@@ -755,20 +1187,45 @@
       blurb:
         'A semantic <code>&lt;table&gt;</code> becomes a telemetry grid: uppercase eyebrow headers, hairline rows, cyan hover. Mark numeric cells with <code>data-num</code>; tint a row with a colour word. Cells <strong>wrap by default</strong> and columns are fixed-width, so a bare table never overflows. Add <code>nowrap</code> to keep cells on one line, which you can then wrap in <code>.scroll</code> to scroll instead of stretch.',
       play: {
-        state: { density: '', striped: false, ruled: false, opaque: false, flat: false, nowrap: false },
+        state: {
+          density: '',
+          striped: false,
+          ruled: false,
+          opaque: false,
+          flat: false,
+          nowrap: false,
+        },
         controls: [
-          { type: 'select', key: 'density', label: 'Density', options: [{ label: 'Default', value: '' }, { label: 'Compact', value: 'compact' }, { label: 'Relaxed', value: 'relaxed' }] },
-          { type: 'toggle', key: 'striped', label: 'Striped' },
-          { type: 'toggle', key: 'ruled', label: 'Column rules' },
-          { type: 'toggle', key: 'opaque', label: 'Opaque' },
-          { type: 'toggle', key: 'flat', label: 'No hover' },
-          { type: 'toggle', key: 'nowrap', label: 'Nowrap + scroll' },
+          {
+            type: 'select',
+            key: 'density',
+            label: 'Density',
+            options: [
+              {label: 'Default', value: ''},
+              {label: 'Compact', value: 'compact'},
+              {label: 'Relaxed', value: 'relaxed'},
+            ],
+          },
+          {type: 'toggle', key: 'striped', label: 'Striped'},
+          {type: 'toggle', key: 'ruled', label: 'Column rules'},
+          {type: 'toggle', key: 'opaque', label: 'Opaque'},
+          {type: 'toggle', key: 'flat', label: 'No hover'},
+          {type: 'toggle', key: 'nowrap', label: 'Nowrap + scroll'},
         ],
         render: function (s) {
-          var c = [s.density, s.striped && 'striped', s.ruled && 'ruled', s.opaque && 'opaque', s.flat && 'flat', s.nowrap && 'nowrap'].filter(Boolean);
+          var c = [
+            s.density,
+            s.striped && 'striped',
+            s.ruled && 'ruled',
+            s.opaque && 'opaque',
+            s.flat && 'flat',
+            s.nowrap && 'nowrap',
+          ].filter(Boolean);
           var cls = c.length ? ' class="' + c.join(' ') + '"' : '';
           var table =
-            '<table' + cls + '>\n' +
+            '<table' +
+            cls +
+            '>\n' +
             '  <caption>District status</caption>\n' +
             '  <thead><tr><th>Sector</th><th>Status</th><th data-num>Threat</th></tr></thead>\n' +
             '  <tbody>\n' +
@@ -992,17 +1449,34 @@
         'A <code>&lt;div class="carousel"&gt;</code> is a horizontal scroll-snap filmstrip where the direct children are the slides. Swipe, scroll or keyboard by default; on browsers with CSS-carousel support it also grows native prev/next arrows + a row of snap-marker dots, no JS. Size slides with <code>--vui-slide</code>; <code>peek</code> reveals the next, <code>full</code> snaps one per view, <code>clean</code> hides the scrollbar, <code>no-arrows</code>/<code>no-dots</code> drop either control. Drag the preview narrower to see the dots stay centred on the track.',
       play: {
         resize: true,
-        state: { mode: '', clean: false, arrows: true, dots: true },
+        state: {mode: '', clean: false, arrows: true, dots: true},
         controls: [
-          { type: 'select', key: 'mode', label: 'Slide fit', options: [{ label: 'Default', value: '' }, { label: 'Peek next', value: 'peek' }, { label: 'Full (one per view)', value: 'full' }] },
-          { type: 'toggle', key: 'arrows', label: 'Prev / next arrows' },
-          { type: 'toggle', key: 'dots', label: 'Marker dots' },
-          { type: 'toggle', key: 'clean', label: 'Hide scrollbar (clean)' },
+          {
+            type: 'select',
+            key: 'mode',
+            label: 'Slide fit',
+            options: [
+              {label: 'Default', value: ''},
+              {label: 'Peek next', value: 'peek'},
+              {label: 'Full (one per view)', value: 'full'},
+            ],
+          },
+          {type: 'toggle', key: 'arrows', label: 'Prev / next arrows'},
+          {type: 'toggle', key: 'dots', label: 'Marker dots'},
+          {type: 'toggle', key: 'clean', label: 'Hide scrollbar (clean)'},
         ],
         render: function (s) {
-          var cls = ['carousel', s.mode, s.clean ? 'clean' : '', s.arrows ? '' : 'no-arrows', s.dots ? '' : 'no-dots'].filter(Boolean);
+          var cls = [
+            'carousel',
+            s.mode,
+            s.clean ? 'clean' : '',
+            s.arrows ? '' : 'no-arrows',
+            s.dots ? '' : 'no-dots',
+          ].filter(Boolean);
           return (
-            '<div class="' + cls.join(' ') + '">\n' +
+            '<div class="' +
+            cls.join(' ') +
+            '">\n' +
             '  <article><div class="stat signal"><b>14-C</b><span>Sector</span></div><p>Contested · 6 contacts</p></article>\n' +
             '  <article><div class="stat amber"><b>22-A</b><span>Sector</span></div><p>Hostile · 12 contacts</p></article>\n' +
             '  <article><div class="stat"><b>09-F</b><span>Sector</span></div><p>Secure · 0 contacts</p></article>\n' +
@@ -1081,16 +1555,21 @@
     return '<span class="tk-' + cls + '">' + esc(text) + '</span>';
   }
   function hlAttrs(s) {
-    return s.replace(/([\w-]+)(?:(=)("[^"]*"|'[^']*'|[^\s"'=<>`]+))?/g, function (_, name, eq, val) {
-      var o = tk('attr', name);
-      if (eq) o += tk('pun', '=');
-      if (val) o += tk('str', val);
-      return o;
-    });
+    return s.replace(
+      /([\w-]+)(?:(=)("[^"]*"|'[^']*'|[^\s"'=<>`]+))?/g,
+      function (_, name, eq, val) {
+        var o = tk('attr', name);
+        if (eq) o += tk('pun', '=');
+        if (val) o += tk('str', val);
+        return o;
+      },
+    );
   }
   function hlHTML(code) {
     var re = /(<!--[\s\S]*?-->)|(<\/?)([a-zA-Z][\w-]*)((?:"[^"]*"|'[^']*'|[^<>])*?)(\/?>)/g;
-    var out = '', last = 0, m;
+    var out = '',
+      last = 0,
+      m;
     while ((m = re.exec(code))) {
       out += esc(code.slice(last, m.index));
       last = re.lastIndex;
@@ -1102,7 +1581,9 @@
   function hlJS(code) {
     var re =
       /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)|\b(import|from|export|default|const|let|var|function|return|new|if|else|for|while|class|extends|async|await|true|false|null|undefined|this)\b|(\b\d+(?:\.\d+)?\b)/g;
-    var out = '', last = 0, m;
+    var out = '',
+      last = 0,
+      m;
     while ((m = re.exec(code))) {
       out += esc(code.slice(last, m.index));
       last = re.lastIndex;
@@ -1123,7 +1604,12 @@
      for a given playground, it live-refreshes as you change controls.
      ============================================================ */
   var CodePanel = (function () {
-    var root, titleEl, codeEl, copyBtn, owner = null, ready = false;
+    var root,
+      titleEl,
+      codeEl,
+      copyBtn,
+      owner = null,
+      ready = false;
 
     function ensure() {
       if (ready) return;
@@ -1169,7 +1655,7 @@
     function close() {
       if (root && root.open) root.close();
     }
-    return { open: open, refresh: refresh, close: close };
+    return {open: open, refresh: refresh, close: close};
   })();
 
   /* ============================================================
@@ -1204,7 +1690,7 @@
     handle.setAttribute('title', 'Drag to resize');
     handle.tabIndex = 0;
     var readout = el('div', 'doc-resize__readout');
-    demo._resize = { handle: handle, readout: readout };
+    demo._resize = {handle: handle, readout: readout};
 
     lane.appendChild(demo);
     demo.appendChild(handle);
@@ -1222,8 +1708,11 @@
       readout.textContent = widthNow() + 'px';
     }
 
-    var startX = 0, startW = 0;
-    function onMove(e) { apply(startW + (e.clientX - startX)); }
+    var startX = 0,
+      startW = 0;
+    function onMove(e) {
+      apply(startW + (e.clientX - startX));
+    }
     function onUp() {
       lane.classList.remove('is-dragging');
       document.body.style.removeProperty('cursor');
@@ -1250,7 +1739,9 @@
       e.preventDefault();
       lane.classList.add('is-dragging');
       clearTimeout(handle._hideT);
-      handle._hideT = setTimeout(function () { lane.classList.remove('is-dragging'); }, 900);
+      handle._hideT = setTimeout(function () {
+        lane.classList.remove('is-dragging');
+      }, 900);
     });
 
     return lane;
@@ -1274,7 +1765,12 @@
     if (ctrl.type === 'range') {
       var rlab = el('label');
       var span = el('span');
-      span.innerHTML = ctrl.label + ' <b class="vui-text-cyan vui-font-hud">' + state[ctrl.key] + (ctrl.suffix || '') + '</b>';
+      span.innerHTML =
+        ctrl.label +
+        ' <b class="vui-text-cyan vui-font-hud">' +
+        state[ctrl.key] +
+        (ctrl.suffix || '') +
+        '</b>';
       var val = span.querySelector('b');
       var range = document.createElement('input');
       range.type = 'range';
@@ -1317,7 +1813,10 @@
     var state = Object.assign({}, play.state);
 
     var wrap = el('div', 'doc-play bleed vui-chamfer');
-    var stage = el('div', 'doc-demo doc-play__stage' + (play.frame ? ' doc-play__stage--frame' : ''));
+    var stage = el(
+      'div',
+      'doc-demo doc-play__stage' + (play.frame ? ' doc-play__stage--frame' : ''),
+    );
     var panel = el('div', 'doc-play__panel');
     var controls = el('div', 'doc-play__controls');
 
@@ -1346,7 +1845,9 @@
       navigator.clipboard && navigator.clipboard.writeText(code());
       var ic = copy.querySelector('i');
       ic.textContent = 'check';
-      setTimeout(function () { ic.textContent = 'content_copy'; }, 1200);
+      setTimeout(function () {
+        ic.textContent = 'content_copy';
+      }, 1200);
     });
 
     var view = el('button', 'doc-viewcode vui-notch');
@@ -1377,7 +1878,9 @@
       wrap.innerHTML =
         '<div class="doc-code">' +
         '<button class="icon small doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
-        '<pre><code>' + highlight(ex.code) + '</code></pre>' +
+        '<pre><code>' +
+        highlight(ex.code) +
+        '</code></pre>' +
         '</div>';
       return wrap;
     }
@@ -1405,7 +1908,9 @@
       navigator.clipboard && navigator.clipboard.writeText(src);
       var ic = copy.querySelector('i');
       ic.textContent = 'check';
-      setTimeout(function () { ic.textContent = 'content_copy'; }, 1200);
+      setTimeout(function () {
+        ic.textContent = 'content_copy';
+      }, 1200);
     });
 
     var view = el('button', 'doc-viewcode vui-notch');
@@ -1434,8 +1939,7 @@
       var s = el('section', 'vui-section vui-prose');
       s.id = sec.id;
       s.innerHTML =
-        '<h2>' + sec.title + '</h2>' +
-        (sec.blurb ? '<p class="blurb">' + sec.blurb + '</p>' : '');
+        '<h2>' + sec.title + '</h2>' + (sec.blurb ? '<p class="blurb">' + sec.blurb + '</p>' : '');
 
       if (sec.render) {
         var custom = el('div', 'doc-tokens bleed');
@@ -1507,7 +2011,7 @@
           }
         });
       },
-      { rootMargin: '-12% 0px -78% 0px', threshold: 0 },
+      {rootMargin: '-12% 0px -78% 0px', threshold: 0},
     );
     document.querySelectorAll('.vui-section').forEach(function (s) {
       io.observe(s);
@@ -1531,6 +2035,6 @@
 
   /* test hook (Node): never runs in the browser, where `module` is undefined */
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { SECTIONS: SECTIONS, highlight: highlight };
+    module.exports = {SECTIONS: SECTIONS, highlight: highlight};
   }
 })();

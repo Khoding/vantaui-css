@@ -99,8 +99,17 @@
   grid-template-columns: repeat(auto-fill, minmax(min(var(--vui-min, 16rem), 100%), 1fr));
   gap: var(--gutter);
 }
+/* --fit: the trailing (partial) row's items stretch to fill the width.
+   CSS grid can't do this — auto-fit only collapses tracks that are empty
+   across the WHOLE grid, so a partial last row sitting under full rows
+   never stretches. A wrapping flex track does: every item grows to share
+   the leftover space on its own row, the last row included. */
 .vui-autogrid--fit {
-  grid-template-columns: repeat(auto-fit, minmax(min(var(--vui-min, 16rem), 100%), 1fr));
+  display: flex;
+  flex-wrap: wrap;
+}
+.vui-autogrid--fit > * {
+  flex: 1 1 min(var(--vui-min, 16rem), 100%);
 }
 
 /* ---------- 12-column grid ---------- */

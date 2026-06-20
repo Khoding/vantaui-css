@@ -1,6 +1,6 @@
 # VantaUI CSS: Data Display
 
-> Surfaces and data components: panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, and segmented controls. Authoritative as of v1.7.1.
+> Surfaces and data components: panels, tables, description lists, badges, avatars, key/value & stat readouts, timelines, steppers, trees, carousels, ratings, and segmented controls. Authoritative as of v1.7.2.
 
 Prerequisites: opt in with `class="vui"` on a root element. Bare semantic HTML is styled with NO prefix; helpers are single element-scoped words. A leading `<i>text</i>` is a Material Symbols icon. Mark the current/selected item `aria-current="page"` (alias `.active`). See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -18,6 +18,7 @@ A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-
 - **Tint intensity** (with a color): `dim` · `vivid`.
 - **Linked / tappable**: `linked` makes the hover action shift the border to the accent color and raise the background. Use this on panels that are wrapped in or function as links.
 - Combine freely: `"amber glow"`, `"green raised"`, `"red notch brackets"`, `"cyan vivid linked"`.
+- **Incompatibility — `filled` + color tint**: the tint is a `background-image` layer on the `<article>`; CSS backgrounds do not inherit, so a `filled` bar renders its own opaque `background-color` with no tint applied. Do not combine `filled` headers/footers with a color tint class if you need a consistent tinted surface — use the plain (unfilled) bar or tint the header/footer separately via inline style.
 
 ```html
 <article class="raised">

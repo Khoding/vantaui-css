@@ -11,6 +11,10 @@
                  [data-value] (sets the --value custom property).
      • Clock   — live HH:MM:SS into [data-vui-clock].
 
+   Top-layer overlays (dropdown menus, tooltips, comboboxes) are placed off
+   their anchor's viewport rect and kept pinned across scroll/resize via
+   trackAnchor() — they FOLLOW the page and never close on scroll.
+
    API:  VantaUI.init(root?)  ·  VantaUI.setValue(el, n)  ·  VantaUI.tabs(root?)  ·  VantaUI.tooltips(root?)
    ============================================================ */
 
@@ -123,15 +127,29 @@ export function tooltips(root = document) {
     document.body.appendChild(tip);
   }
 
-  const show = el => {
-    tip.textContent = el.dataset.tip;
+  let untrack = null;
+  const place = el => {
     const r = el.getBoundingClientRect();
     tip.style.left = (r.left + r.width / 2) + 'px';
     tip.style.top = r.top + 'px';
-    tip.classList.add('is-visible');
   };
 
-  const hide = () => tip.classList.remove('is-visible');
+  const show = el => {
+    tip.textContent = el.dataset.tip;
+    place(el);
+    tip.classList.add('is-visible');
+    // Follow the anchor as the page scrolls; the tip stays open until blur/leave.
+    if (untrack) untrack();
+    untrack = trackAnchor(() => place(el), () => tip.classList.contains('is-visible'));
+  };
+
+  const hide = () => {
+    tip.classList.remove('is-visible');
+    if (untrack) {
+      untrack();
+      untrack = null;
+    }
+  };
 
   root.querySelectorAll('[data-tip]').forEach(el => {
     if (el.classList.contains('vui-tip-js')) return;
@@ -247,6 +265,31 @@ export function placePopover(panel, anchor, opts = {}) {
   }
 }
 
+/* ---------- Keep a floating panel pinned to its anchor on scroll/resize -------
+   A top-layer popover (position:fixed) or the body-level tooltip is placed once
+   off the anchor's viewport rect — then the document scrolls out from under it
+   and it drifts away ("stuck on the page"). Re-run the placement on every
+   scroll/resize while the panel is open.
+   The contract the rest of the library relies on: scrolling REPOSITIONS, it
+   NEVER dismisses — so menus, tooltips and comboboxes follow the page instead of
+   snapping shut. `reposition()` re-places the panel; `isOpen()` reports whether
+   it is still showing; the returned stop() detaches the listeners (call it when
+   the panel closes). scroll is captured (so a scroll on ANY ancestor scroller is
+   seen) and passive (so it never blocks the scroll). */
+export function trackAnchor(reposition, isOpen) {
+  const onMove = () => {
+    if (isOpen()) reposition();
+    else stop();
+  };
+  function stop() {
+    removeEventListener('scroll', onMove, true);
+    removeEventListener('resize', onMove);
+  }
+  addEventListener('scroll', onMove, {capture: true, passive: true});
+  addEventListener('resize', onMove);
+  return stop;
+}
+
 /* ---------- Dropdown menus (<details class="dropdown">) ---------- */
 export function menus(root = document) {
   const hasPopover = typeof HTMLElement.prototype.showPopover === 'function';
@@ -274,6 +317,7 @@ export function menus(root = document) {
         });
 
       // Drive state via Popover API; prevent <details> native toggle.
+      let untrack = null;
       summary.addEventListener('click', e => {
         e.preventDefault();
         if (panel.matches(':popover-open')) {
@@ -281,13 +325,23 @@ export function menus(root = document) {
         } else {
           panel.showPopover();
           placePanel();
+          // Follow the trigger while the page scrolls; never close on scroll.
+          untrack = trackAnchor(placePanel, () => panel.matches(':popover-open'));
         }
       });
 
-      // Sync <details open> for CSS trigger/chevron styling.
+      // Sync <details open> for CSS trigger/chevron styling, and drop the
+      // scroll tracker on close (covers Esc / outside-click light-dismiss too).
       panel.addEventListener('toggle', e => {
-        if (e.newState === 'open') details.setAttribute('open', '');
-        else details.removeAttribute('open');
+        if (e.newState === 'open') {
+          details.setAttribute('open', '');
+        } else {
+          details.removeAttribute('open');
+          if (untrack) {
+            untrack();
+            untrack = null;
+          }
+        }
       });
     });
   }
@@ -456,7 +510,7 @@ export function init(root = document) {
   toolbars(root);
 }
 
-const VantaUI = {init, tabs, setValue, drawers, tooltips, menus, placePopover, toolbars, toast};
+const VantaUI = {init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, toast};
 export default VantaUI;
 
 if (isBrowser) {

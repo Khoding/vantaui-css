@@ -2,7 +2,7 @@
 
 > A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
 
-This is the complete, single-file reference. Reading it in full is sufficient to use the library correctly without following any links. For a lean index linking to focused topic files, see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.7.1.
+This is the complete, single-file reference. Reading it in full is sufficient to use the library correctly without following any links. For a lean index linking to focused topic files, see https://vantaui-css.khodok.com/llms.txt. Authoritative as of v1.7.2.
 
 ## Critical facts (read first)
 
@@ -16,10 +16,10 @@ This is the complete, single-file reference. Reading it in full is sufficient to
 
 ## Install
 
-Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.7.1"`:
+Since it is not on npm or a CDN yet, you can install it directly from GitHub by tag. This adds a dependency that resolves like `"vantaui-css": "github:Khoding/vantaui-css#v1.7.2"`:
 
 ```bash
-npm i github:Khoding/vantaui-css#v1.7.1
+npm i github:Khoding/vantaui-css#v1.7.2
 ```
 
 ```js
@@ -368,7 +368,7 @@ A text `<input>` combined with a `<ul popover="manual" class="listbox" role="lis
 
 ## Panel (`<article>`)
 
-A bare `<article>` is a chamfered plate; an inner `<header>`/`<footer>` auto-divides. Add `filled` to a `<header>`/`<footer>` to give that strip its own raised surface (a toolbar bar) distinct from the body. Depth: `raised` · `inset` · `flat`. Shape: `notch` · `brackets`. Glow: `glow`. Color tint: `cyan` · `amber` · `red` · `green`. Tint intensity: `dim` · `vivid`. Linked/tappable: `linked` (hover shifts border to accent, raises background). Combine freely (`"amber glow"`, `"green raised"`, `"cyan linked"`).
+A bare `<article>` is a chamfered plate; an inner `<header>`/`<footer>` auto-divides. Add `filled` to a `<header>`/`<footer>` to give that strip its own raised surface (a toolbar bar) distinct from the body. Depth: `raised` · `inset` · `flat`. Shape: `notch` · `brackets`. Glow: `glow`. Color tint: `cyan` · `amber` · `red` · `green`. Tint intensity: `dim` · `vivid`. Linked/tappable: `linked` (hover shifts border to accent, raises background). Combine freely (`"amber glow"`, `"green raised"`, `"cyan linked"`). **Incompatibility**: `filled` bars do not pick up a color tint — the tint is a `background-image` layer on the `<article>` and CSS backgrounds do not inherit to children. Do not combine `filled` with a color tint class if you need a uniformly tinted surface.
 
 ```html
 <article class="raised">
@@ -481,7 +481,7 @@ Initials on `<span>`/`<div>` or an `<img>`. Shape: `round` · `hex`. Size: `smal
 
 ## Alerts (inline)
 
-`[role="status"]` = info (cyan); `[role="alert"]` = threat (red). Accent rail + leading glyph; an optional `<strong>`/`<h*>` is the title. Re-tone: `info` · `warn` · `threat` · `secure`. Override the glyph with `--vui-alert-glyph`.
+`[role="status"]` = info (cyan); `[role="alert"]` = threat (red). Accent rail + leading glyph; an optional `<strong>`/`<h*>` is the title — it stacks above the body on a narrow alert and goes inline once wide enough (container query on the alert's own width). Re-tone: `info` · `warn` · `threat` · `secure`. Override the glyph with `--vui-alert-glyph`.
 
 ```html
 <div role="status"><strong>Online</strong> Telemetry uplink restored.</div>
@@ -595,10 +595,11 @@ ES module exports (also attached to `window.vui` as a plain script; auto-inits o
 - **`setValue(el, n, duration = 600)`**: animates a `.meter` or `.gauge` `--value` using an ease-out cubic curve (respecting reduced motion). The maximum is read from `--max` or `data-max` (defaulting to 100).
 - Auto-animate (via `init`): elements with `data-value` + `data-animate` fill from 0 on scroll into view.
 - **`drawers(root)`**: registers click handlers where `[data-open="id"]` opens a `<dialog id>` using `showModal()` (or toggles `.active` or `.open` on non-dialog drawers), `[data-close]` closes the nearest drawer, a backdrop click dismisses a dialog (which you can disable with `data-no-dismiss`), and links inside drawers automatically close them when clicked.
-- **`menus(root)`**: handles `<details class="dropdown">` dropdowns. Where the Popover API is available, it upgrades the panel to the top layer (supporting light-dismiss, Esc key dismissal, and exclusive opening), positioning it below the trigger (adding `.right` to right-align).
-- **`placePopover(panel, anchor, opts?)`**: positions a top-layer `[popover]` under an anchor off its viewport rectangle (called after `showPopover()` and again on scroll or resize). Options include `{ align = 'start' | 'end', gap = 6, matchWidth = false }`. This is the primitive behind `menus()`, useful for building a `<ul popover class="listbox">` autocomplete component that escapes ancestor `clip-path` constraints.
+- **`menus(root)`**: handles `<details class="dropdown">` dropdowns. Where the Popover API is available, it upgrades the panel to the top layer (supporting light-dismiss, Esc key dismissal, and exclusive opening), positioning it below the trigger (adding `.right` to right-align). The open panel stays pinned to its trigger on scroll/resize (via `trackAnchor`) — it follows the page and never closes on scroll. The no-Popover fallback panel is in-flow `position: absolute`, so it already moves with the page.
+- **`placePopover(panel, anchor, opts?)`**: positions a top-layer `[popover]` under an anchor off its viewport rectangle (called after `showPopover()` and again on scroll or resize — see `trackAnchor`). Options include `{ align = 'start' | 'end', gap = 6, matchWidth = false }`. This is the primitive behind `menus()`, useful for building a `<ul popover class="listbox">` autocomplete component that escapes ancestor `clip-path` constraints.
+- **`trackAnchor(reposition, isOpen)`**: keeps a floating panel pinned to its anchor across `scroll` (captured + passive) and `resize`, re-running `reposition()` while `isOpen()` holds. Scrolling repositions, never dismisses — the mechanism behind dropdowns, tooltips, and comboboxes following the page instead of drifting or snapping shut. Returns `stop()` to detach. (Native `<select>` popups are OS-drawn and may still close on scroll — outside library control.)
 - **`toolbars(root)`**: roving tabindex for `[role="toolbar"]` (with `.vertical` enabling up/down arrow navigation).
-- **`tooltips(root)`**: renders `[data-tip="text"]` on hover or focus using a body-level fixed element to prevent clipping.
+- **`tooltips(root)`**: renders `[data-tip="text"]` on hover or focus using a body-level fixed element to prevent clipping; it follows the anchor across scroll/resize (via `trackAnchor`) and only hides on leave/blur, not on scroll.
 - Live clock (via `init`): writes `HH:MM:SS` into `[data-vui-clock]` every second.
 - **`toast(message, options?)`**: programmatic snackbar. Options include `{ tone, title, duration = 4000, role = 'status', dismissible = true, placement }`. The `tone` option accepts a bare string shorthand.
 
@@ -608,7 +609,7 @@ init();
 toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
 ```
 
-Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, toolbars, toast }`. Entry points: `vantaui-css/js` (ESM), `vantaui-css/js/global` (plain-script global).
+Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, toast }`. Entry points: `vantaui-css/js` (ESM), `vantaui-css/js/global` (plain-script global).
 
 ## Vue 3
 

@@ -1,6 +1,6 @@
 # VantaUI CSS: Optional JavaScript & Framework Integration
 
-> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with no JavaScript, as the scripts only add interactive enhancements. Authoritative as of v1.7.1.
+> The optional behaviours module (tabs, animated meters, drawers, dropdown menus, toolbars, tooltips, live clock, toasts) and the Vue 3 plugin + Nuxt 3 module. The CSS is fully usable with no JavaScript, as the scripts only add interactive enhancements. Authoritative as of v1.7.2.
 
 Prerequisites: the CSS works on its own. Load the JS only for the interactions below. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -24,10 +24,11 @@ Package entry points (`exports`): `vantaui-css/js` (ES module), `vantaui-css/js/
 - **`setValue(el, n, duration = 600)`**: animates a `.meter` or `.gauge`'s `--value` using an ease-out cubic curve (respecting `prefers-reduced-motion` and `duration <= 0`). It reads the maximum value from `--max` or `data-max` (defaulting to 100) and clamps the result to `[0, max]`.
 - **Auto-animate (via `init`)**: elements with both `data-value` and `data-animate` fill from 0 when scrolled into view (using an IntersectionObserver with a threshold of 0.4, falling back to an immediate fill if the observer is unavailable).
 - **`drawers(root)`**: registers a global click handler where `[data-open="id"]` opens a `<dialog id>` using `showModal()` (or toggles `.active` or `.open` on a non-dialog drawer), `[data-close]` closes the nearest dialog or drawer, a backdrop click dismisses a dialog (which you can disable with `data-no-dismiss`), and clicking a link inside a drawer automatically closes it.
-- **`menus(root)`**: handles `<details class="dropdown">` dropdowns. Where the Popover API is available, it upgrades the panel to the top layer (supporting light-dismiss, the Esc key, and exclusive opening) and positions it below the trigger (add `class="right"` on the `<details>` to right-align). Without the Popover API, it falls back to standard `<details>` toggle handling, which ensures only one dropdown is open at a time, closes the dropdown on click-outside or Esc, and closes it when an item is clicked.
-- **`placePopover(panel, anchor, opts?)`**: positions a top-layer popover under an anchor element. Top-layer popovers (`[popover]`) escape all ancestor `clip-path` and `overflow` constraints, but the browser does not position them automatically. Call this function after `panel.showPopover()` (and again on scroll or resize while open) to align the panel under the `anchor` based on its viewport bounding rectangle. Available options are: `{ align = 'start' | 'end', gap = 6, matchWidth = false }` where `'end'` right-aligns, `gap` is the pixel offset below the anchor, and `matchWidth` sets the panel's minimum width to the anchor's width. This is the underlying primitive for `menus()`, and it is the recommended way to build an autocomplete `<ul popover class="listbox">` component.
+- **`menus(root)`**: handles `<details class="dropdown">` dropdowns. Where the Popover API is available, it upgrades the panel to the top layer (supporting light-dismiss, the Esc key, and exclusive opening) and positions it below the trigger (add `class="right"` on the `<details>` to right-align). While the panel is open it stays pinned to its trigger on scroll/resize (via `trackAnchor`) — it follows the page and never closes on scroll. Without the Popover API, it falls back to standard `<details>` toggle handling, which ensures only one dropdown is open at a time, closes the dropdown on click-outside or Esc, and closes it when an item is clicked (the fallback panel is in-flow `position: absolute`, so it already moves with the page).
+- **`placePopover(panel, anchor, opts?)`**: positions a top-layer popover under an anchor element. Top-layer popovers (`[popover]`) escape all ancestor `clip-path` and `overflow` constraints, but the browser does not position them automatically. Call this function after `panel.showPopover()` (and again on scroll or resize while open — see `trackAnchor`) to align the panel under the `anchor` based on its viewport bounding rectangle. Available options are: `{ align = 'start' | 'end', gap = 6, matchWidth = false }` where `'end'` right-aligns, `gap` is the pixel offset below the anchor, and `matchWidth` sets the panel's minimum width to the anchor's width. This is the underlying primitive for `menus()`, and it is the recommended way to build an autocomplete `<ul popover class="listbox">` component.
+- **`trackAnchor(reposition, isOpen)`**: keeps a floating panel pinned to its anchor while the page moves. It listens for `scroll` (captured, so any ancestor scroller counts; passive) and `resize` and re-runs `reposition()` whenever `isOpen()` is still true. **Scrolling repositions, it never dismisses** — this is how dropdown menus, tooltips, and comboboxes follow the page instead of drifting away or snapping shut. Returns a `stop()` that detaches the listeners; call it when the panel closes. `menus()` and `tooltips()` use it internally; pair it with `placePopover()` for your own popovers. (Native `<select>` popups are drawn by the OS and are outside any library's control — they may close on scroll regardless.)
 - **`toolbars(root)`**: roving tabindex for `[role="toolbar"]` (providing one tab stop where arrow keys move focus and `Home`/`End` jump). Add `class="vertical"` on the toolbar to enable Up/Down arrow navigation.
-- **`tooltips(root)`**: renders `[data-tip="text"]` on hover or focus using a single body-level `#vui-tooltip` element. It uses `position: fixed` so it is never clipped by an ancestor's `overflow` or `clip-path`. It also marks target elements with `.vui-tip-js` to suppress the CSS-only `::after` fallback.
+- **`tooltips(root)`**: renders `[data-tip="text"]` on hover or focus using a single body-level `#vui-tooltip` element. It uses `position: fixed` so it is never clipped by an ancestor's `overflow` or `clip-path`, and follows the anchor across scroll/resize (via `trackAnchor`) — it stays put under the cursor target and only hides on mouse-leave/blur, not on scroll. It also marks target elements with `.vui-tip-js` to suppress the CSS-only `::after` fallback.
 - **Live clock (via `init`)**: writes `HH:MM:SS` into every element with `[data-vui-clock]` once per second.
 - **`toast(message, options?)`**: programmatic snackbar that returns `{ el, dismiss }`. It automatically creates an `aria-live` `.toaster` region on its first invocation.
   - Options: `{ tone = '', title = '', duration = 4000, role = 'status', dismissible = true, placement = '' }`.
@@ -45,23 +46,24 @@ toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
 setValue(document.querySelector('.gauge'), 92, 800);
 ```
 
-Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, toolbars, toast }`.
+Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, toast }`.
 
-### Autocomplete with placePopover
+### Autocomplete with placePopover + trackAnchor
 
 ```js
-import { placePopover } from 'vantaui-css/js';
+import { placePopover, trackAnchor } from 'vantaui-css/js';
 const input = document.querySelector('#names');
 const list  = document.querySelector('#names-ac'); // <ul popover="manual" class="listbox">
+const place = () => placePopover(list, input, { matchWidth: true }); // align under, match field width
+let untrack = null;
 
 function open() {
   list.showPopover();
-  placePopover(list, input, { matchWidth: true }); // align under, match field width
+  place();
+  // follow the field as the page scrolls/resizes; scrolling never closes it
+  untrack = trackAnchor(place, () => list.matches(':popover-open'));
 }
-// keep it pinned while the page moves
-addEventListener('scroll', () => list.matches(':popover-open') && placePopover(list, input, { matchWidth: true }), true);
-addEventListener('resize', () => list.matches(':popover-open') && placePopover(list, input, { matchWidth: true }));
-input.addEventListener('blur', () => list.hidePopover());
+input.addEventListener('blur', () => { list.hidePopover(); untrack?.(); untrack = null; });
 ```
 
 The `<ul>` lives in the top layer, so it is never clipped by the chamfer/notch `clip-path` of a surrounding panel. No teleport-to-body logic is required.
