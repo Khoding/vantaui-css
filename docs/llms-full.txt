@@ -368,13 +368,13 @@ A text `<input>` combined with a `<ul popover="manual" class="listbox" role="lis
 
 ## Panel (`<article>`)
 
-A bare `<article>` is a chamfered plate; an inner `<header>`/`<footer>` auto-divides. Add `filled` to a `<header>`/`<footer>` to give that strip its own raised surface (a toolbar bar) distinct from the body. Depth: `raised` · `inset` · `flat`. Shape: `notch` · `brackets`. Glow: `glow`. Color tint: `cyan` · `amber` · `red` · `green`. Tint intensity: `dim` · `vivid`. Linked/tappable: `linked` (hover shifts border to accent, raises background). Combine freely (`"amber glow"`, `"green raised"`, `"cyan linked"`). **Incompatibility**: `filled` bars do not pick up a color tint — the tint is a `background-image` layer on the `<article>` and CSS backgrounds do not inherit to children. Do not combine `filled` with a color tint class if you need a uniformly tinted surface.
+A bare `<article>` is a chamfered plate; an inner `<header>`/`<footer>` auto-divides. Depth: `raised` · `inset` · `flat`. Stage: `stage` recesses the body into a dark ink+scanlines viewport while header/footer rise to the panel surface and frame it (framed-console / readout look). Shape: `notch` · `brackets`. Glow: `glow`. Color tint: `cyan` · `amber` · `red` · `green`. Tint intensity: `dim` · `vivid`. Linked/tappable: `linked` (hover shifts border to accent, raises background). Combine freely (`"amber glow"`, `"green raised"`, `"cyan linked"`).
 
 ```html
 <article class="raised">
   <header><small class="vui-eyebrow">Diagnostics</small> <small>v2.1</small></header>
   <p>A chamfered panel; the header drew its own divider.</p>
-  <footer class="filled"><button type="submit">Authorize</button></footer>
+  <footer><button type="submit">Authorize</button></footer>
 </article>
 ```
 

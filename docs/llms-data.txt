@@ -10,21 +10,20 @@ Related: alerts/toasts/meters/spinners → https://vantaui-css.khodok.com/llms-f
 
 A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-spans edge-to-edge with a hairline divider (detected via `:has`). A trailing `<small>` in the header is a meta note.
 
-- **Filled bar**: add `filled` to a `<header>` or `<footer>` to give that strip its own raised surface (a toolbar look), distinct from the panel body — e.g. a plain panel + `<footer class="filled">` reads as a card with an action bar.
 - **Depth**: `raised` · `inset` · `flat` (no shadow).
+- **Stage**: `stage` recesses the body into a dark ink + scanlines viewport while any `<header>`/`<footer>` rise to the panel surface and frame it — the framed-console / readout look (e.g. `<article class="stage">`).
 - **Shape**: `notch` (all corners cut) · `brackets` (glowing corner ticks).
 - **Glow**: `glow` (accent rim glow).
 - **Color tint**: `cyan`, `amber`, `red`, or `green` (these are admonition tones that tint the surface, recolor the text, and set the panel's accent color so that child buttons inherit the same tone).
 - **Tint intensity** (with a color): `dim` · `vivid`.
 - **Linked / tappable**: `linked` makes the hover action shift the border to the accent color and raise the background. Use this on panels that are wrapped in or function as links.
 - Combine freely: `"amber glow"`, `"green raised"`, `"red notch brackets"`, `"cyan vivid linked"`.
-- **Incompatibility — `filled` + color tint**: the tint is a `background-image` layer on the `<article>`; CSS backgrounds do not inherit, so a `filled` bar renders its own opaque `background-color` with no tint applied. Do not combine `filled` headers/footers with a color tint class if you need a consistent tinted surface — use the plain (unfilled) bar or tint the header/footer separately via inline style.
 
 ```html
 <article class="raised">
   <header><small class="vui-eyebrow">Diagnostics</small> <small>v2.1</small></header>
   <p>A chamfered panel; the header drew its own divider.</p>
-  <footer class="filled"><button type="submit">Authorize</button></footer>
+  <footer><button type="submit">Authorize</button></footer>
 </article>
 <article class="amber glow"><strong>Caution</strong><p>Tinted admonition panel.</p></article>
 ```

@@ -857,7 +857,6 @@
           notch: false,
           brackets: false,
           sections: false,
-          filled: false,
         },
         controls: [
           {
@@ -869,6 +868,7 @@
               {label: 'Raised', value: 'raised'},
               {label: 'Inset', value: 'inset'},
               {label: 'Flat', value: 'flat'},
+              {label: 'Stage', value: 'stage'},
             ],
           },
           {
@@ -897,7 +897,6 @@
           {type: 'toggle', key: 'notch', label: 'Notch'},
           {type: 'toggle', key: 'brackets', label: 'Brackets'},
           {type: 'toggle', key: 'sections', label: 'Header & footer'},
-          {type: 'toggle', key: 'filled', label: 'Filled bar (header/footer)'},
         ],
         render: function (s) {
           var c = [
@@ -910,18 +909,13 @@
           ].filter(Boolean);
           var cls = c.length ? ' class="' + c.join(' ') + '"' : '';
           if (s.sections) {
-            var bar = s.filled ? ' class="filled"' : '';
             return (
               '<article' +
               cls +
               '>\n' +
-              '  <header' +
-              bar +
-              '>\n    <small class="vui-eyebrow">Case File</small>\n    <small>14-C</small>\n  </header>\n' +
+              '  <header>\n    <small class="vui-eyebrow">Case File</small>\n    <small>14-C</small>\n  </header>\n' +
               '  <p>Recovered intel from the broker drop. Chain of custody verified.</p>\n' +
-              '  <footer' +
-              bar +
-              '><button class="small">Open</button></footer>\n' +
+              '  <footer><button class="small">Open</button></footer>\n' +
               '</article>'
             );
           }
@@ -2192,12 +2186,12 @@
     var play = sec.play;
     var state = Object.assign({}, play.state);
 
-    var wrap = el('div', 'doc-play bleed vui-chamfer');
+    var wrap = el('article', 'doc-play bleed stage');
     var stage = el(
       'div',
       'doc-demo doc-play__stage' + (play.frame ? ' doc-play__stage--frame' : ''),
     );
-    var panel = el('div', 'doc-play__panel');
+    var panel = el('footer', 'doc-play__panel');
     var controls = el('div', 'doc-play__controls');
 
     function code() {
@@ -2251,25 +2245,27 @@
 
   /* ---- a static example: live demo + view-code (or inline code for snippets) ---- */
   function exampleNode(ex, sec) {
-    var wrap = el('div', 'doc-example bleed vui-chamfer');
-
     if (ex.noDemo) {
-      /* reference snippet: keep the code inline, it IS the content */
-      wrap.innerHTML =
+      /* reference snippet: keep the code inline, it IS the content (no stage —
+         there is no recessed demo body, just a code block in a chamfered box) */
+      var snippet = el('div', 'doc-example bleed vui-chamfer');
+      snippet.innerHTML =
         '<div class="doc-code">' +
         '<button class="icon small doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
         '<pre><code>' +
         highlight(ex.code) +
         '</code></pre>' +
         '</div>';
-      return wrap;
+      return snippet;
     }
+
+    var wrap = el('article', 'doc-example bleed stage');
 
     var demo = el('div', 'doc-demo' + (ex.frame ? ' doc-demo--frame' : ''));
     demo.innerHTML = ex.demo || ex.code;
     wrap.appendChild(ex.resize ? resizableLane(demo) : demo);
 
-    var foot = el('div', 'doc-example__foot');
+    var foot = el('footer', 'doc-example__foot');
     if (ex.label) {
       var l = el('span', 'doc-example__label');
       l.textContent = ex.label;

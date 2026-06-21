@@ -130,18 +130,22 @@
       margin-inline: 0;
     }
 
-    /* ---------- Example: live demo + code ---------- */
+    /* ---------- Example: live demo + code ----------
+       The demo wrapper is a native `<article class="stage">`: the library paints
+       the chamfered plate, the recessed ink + scanlines body, and the surface
+       footer bar. We only zero the panel padding (children are full-bleed here)
+       and keep overflow:hidden so demo content is clipped to the plate in both
+       corner mechanisms (the static .doc-example.vui-chamfer code snippet — the
+       noDemo path — is a plain div and still needs this border + shape). */
     .doc-example {
       margin-block-end: var(--space-6);
+      padding: 0;
       border: 1px solid var(--hairline);
       overflow: hidden;
-      /* shape from the .vui-chamfer class in markup (corner-shape + fallback) */
     }
 
     .doc-demo {
       padding: clamp(var(--space-5), 3vw, var(--space-7));
-      background-color: var(--bg-base);
-      background-image: var(--scanlines);
       display: flex;
       flex-direction: column;
       gap: 14px;

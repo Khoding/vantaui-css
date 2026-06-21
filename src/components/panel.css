@@ -3,10 +3,9 @@
    A bare <article> is a chamfered plate. A <header>/<footer> inside it
    auto-spans edge-to-edge with a hairline divider (detected via :has,
    laid out with negative margins). Tune the surface with one word:
-     raised · inset · flat · glow · notch · brackets
+     raised · inset · flat · stage · glow · notch · brackets
    Tint with a color word: cyan · amber · red · green
    Combine freely: "amber glow", "green raised", "red notch brackets".
-   Give a header/footer its own bar surface (toolbar look) with `filled`.
    ============================================================ */
 
 :where(.vui article:not(.vui-prose):not(.prose)) {
@@ -66,16 +65,6 @@
   }
 }
 
-/* ---- Filled header / footer bar ----
-   Gives the strip its own surface, distinct from the panel body, for a
-   toolbar-style bar — e.g. a plain panel + <footer class="filled"> reads as a
-   card with an action bar. Sits a step up from the body surface so it reads on
-   raised/inset/tinted panels alike. */
-:where(.vui article > header.filled),
-:where(.vui article > footer.filled) {
-  background-color: var(--surface-panel-2);
-}
-
 /* ---- Depth variants ---- */
 :where(.vui article.raised) {
   --_surface: var(--surface-panel-2);
@@ -87,6 +76,21 @@
 }
 :where(.vui article.flat) {
   box-shadow: none;
+}
+
+/* ---- Stage / framed viewport ----
+   Inverts the panel's figure/ground: the body becomes a recessed dark
+   "viewport" (ink + scanlines, like vui-bg-scan) while any header/footer rise
+   to the panel surface and read as chrome framing it. The framed-console look —
+   a readout, terminal, or live-demo stage bounded by its own bars. */
+:where(.vui article.stage) {
+  --_surface: var(--bg-base);
+  background-image: var(--scanlines);
+  box-shadow: var(--shadow-inset);
+}
+:where(.vui article.stage > header),
+:where(.vui article.stage > footer) {
+  background-color: var(--surface-panel);
 }
 
 /* ---- Notched plate ---- */
@@ -232,5 +236,31 @@
   :where(.vui article.notch:not(.vui-clip):not(.vui-clip *)) {
     border-radius: var(--bevel-sm);
     corner-shape: bevel;
+  }
+  /* Stage chrome must echo the plate's cut corners. corner-shape clips the
+     article's own background/border but NOT its children, so the opaque
+     header/footer bar in a stage panel would otherwise square off the bevelled
+     corners. Give the top bar the plate's top-start cut and the bottom bar its
+     bottom-end cut (notch cuts both ends of each bar). The clip-path fallback
+     needs none of this — it clips the whole subtree. */
+  :where(.vui article.stage:not(.vui-clip):not(.vui-clip *) > header) {
+    border-start-start-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+  }
+  :where(.vui article.stage:not(.vui-clip):not(.vui-clip *) > footer) {
+    border-end-end-radius: var(--bevel-md);
+    corner-end-end-shape: bevel;
+  }
+  :where(.vui article.stage.notch:not(.vui-clip):not(.vui-clip *) > header) {
+    border-start-start-radius: var(--bevel-sm);
+    border-start-end-radius: var(--bevel-sm);
+    corner-start-start-shape: bevel;
+    corner-start-end-shape: bevel;
+  }
+  :where(.vui article.stage.notch:not(.vui-clip):not(.vui-clip *) > footer) {
+    border-end-start-radius: var(--bevel-sm);
+    border-end-end-radius: var(--bevel-sm);
+    corner-end-start-shape: bevel;
+    corner-end-end-shape: bevel;
   }
 }

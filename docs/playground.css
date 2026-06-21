@@ -10,11 +10,16 @@
 /* ============================================================
    1 — Interactive playground (stage + controls)
    ============================================================ */
+/* The wrapper is a native `<article class="stage">`: the library paints the
+   chamfered plate, the recessed ink + scanlines stage body, and the surface
+   footer bar (the control panel below). We zero its panel padding (the stage +
+   control bar are full-bleed) and keep overflow:hidden so the live demo is
+   clipped to the plate. */
 .doc-play {
   margin-block-end: var(--space-6);
+  padding: 0;
   border: 1px solid var(--hairline);
   overflow: hidden;
-  /* shape comes from the .vui-chamfer class in markup (corner-shape + fallback) */
 }
 
 /* The live stage reuses the demo look (.doc-demo) and adds a min height so
@@ -37,15 +42,20 @@
 }
 
 /* ---------- Control bar ---------- */
+/* This bar is the stage panel's `<footer>` — the library gives it the surface
+   colour, the top hairline divider, and the bevelled bottom-end corner. We undo
+   the native footer's edge-spanning negative margins (the wrapper has zero
+   padding) and its flex-end alignment (controls read left, actions push right),
+   and layer the scanline texture the docs use on the bar. */
 .doc-play__panel {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
+  justify-content: flex-start;
   gap: var(--space-5) var(--space-6);
+  margin: 0;
   padding-inline: clamp(var(--space-5), 3vw, var(--space-6));
   padding-block: var(--space-5);
-  border-block-start: 1px solid var(--hairline);
-  background-color: var(--surface-panel);
   background-image: var(--scanlines);
 }
 
@@ -120,14 +130,17 @@
 }
 
 /* ---------- Static example footer (demo with no inline code) ---------- */
+/* Static-example `<footer>`: the library supplies surface, divider and the
+   bevelled bottom-end corner; we undo the native footer's negative margins and
+   flex-end so the label reads left and the actions push right. */
 .doc-example__foot {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: var(--space-4);
+  margin: 0;
   padding-inline: clamp(var(--space-5), 3vw, var(--space-6));
   padding-block: 10px;
-  border-block-start: 1px solid var(--hairline);
-  background-color: var(--surface-panel);
 }
 
 .doc-example__label {

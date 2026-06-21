@@ -1423,10 +1423,6 @@
     font-family: var(--font-mono);
   }
 
-  :where(.vui article > header.filled), :where(.vui article > footer.filled) {
-    background-color: var(--surface-panel-2);
-  }
-
   :where(.vui article.raised) {
     --_surface: var(--surface-panel-2);
     box-shadow: var(--shadow-raised);
@@ -1439,6 +1435,16 @@
 
   :where(.vui article.flat) {
     box-shadow: none;
+  }
+
+  :where(.vui article.stage) {
+    --_surface: var(--bg-base);
+    background-image: var(--scanlines);
+    box-shadow: var(--shadow-inset);
+  }
+
+  :where(.vui article.stage > header), :where(.vui article.stage > footer) {
+    background-color: var(--surface-panel);
   }
 
   :where(.vui article.notch) {
@@ -1566,6 +1572,30 @@
     :where(.vui article.notch:not(.vui-clip):not(.vui-clip *)) {
       border-radius: var(--bevel-sm);
       corner-shape: bevel;
+    }
+
+    :where(.vui article.stage:not(.vui-clip):not(.vui-clip *) > header) {
+      corner-start-start-shape: bevel;
+      border-start-start-radius: var(--bevel-md);
+    }
+
+    :where(.vui article.stage:not(.vui-clip):not(.vui-clip *) > footer) {
+      corner-end-end-shape: bevel;
+      border-end-end-radius: var(--bevel-md);
+    }
+
+    :where(.vui article.stage.notch:not(.vui-clip):not(.vui-clip *) > header) {
+      corner-start-start-shape: bevel;
+      corner-start-end-shape: bevel;
+      border-start-start-radius: var(--bevel-sm);
+      border-start-end-radius: var(--bevel-sm);
+    }
+
+    :where(.vui article.stage.notch:not(.vui-clip):not(.vui-clip *) > footer) {
+      corner-end-start-shape: bevel;
+      corner-end-end-shape: bevel;
+      border-end-end-radius: var(--bevel-sm);
+      border-end-start-radius: var(--bevel-sm);
     }
   }
 
