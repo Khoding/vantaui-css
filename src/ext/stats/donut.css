@@ -1,0 +1,50 @@
+/* ============================================================
+   Donut / pie ("cheese graph"): a share-of-total ring, pure CSS.
+     <div class="vui-donut" style="
+       --vui-donut: var(--cyan-400) 0 55%, var(--amber-500) 0 80%, var(--green-500) 0 100%;
+     "></div>
+   --vui-donut is the conic-gradient stop list: one `color 0 <end%>` per
+   segment, ends cumulative up to 100%. --vui-donut-size sets the diameter;
+   --vui-donut-hole the inner radius (0% = a full pie, no hole).
+
+   The hole is punched with a radial mask. Where masking is unsupported the
+   widget degrades to a filled pie, still a correct chart, just no hole.
+   ============================================================ */
+
+:where(.vui-donut) {
+  --vui-donut-size: 120px;
+  --vui-donut-hole: 58%;
+  inline-size: var(--vui-donut-size);
+  aspect-ratio: 1;
+  border-radius: var(--radius-pill);
+  background-image: conic-gradient(
+    from 0deg,
+    var(--vui-donut, var(--cyan-400) 0 30%, var(--surface-inset) 0 100%)
+  );
+  box-shadow: 0 0 16px -2px color-mix(in srgb, var(--cyan-400) 30%, transparent);
+  mask-image: radial-gradient(
+    closest-side,
+    transparent calc(var(--vui-donut-hole) - 0.5px),
+    #000 var(--vui-donut-hole)
+  );
+}
+
+/* A centred readout sits in the hole when the donut wraps it. */
+:where(.vui-donut-figure) {
+  display: grid;
+  place-items: center;
+  inline-size: var(--vui-donut-size, 120px);
+  aspect-ratio: 1;
+}
+:where(.vui-donut-figure > .vui-donut) {
+  grid-area: 1 / 1;
+}
+:where(.vui-donut-figure > .vui-donut-center) {
+  grid-area: 1 / 1;
+  font-family: var(--font-hud);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  text-align: center;
+  color: var(--text-primary);
+}

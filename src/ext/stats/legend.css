@@ -1,0 +1,48 @@
+/* ============================================================
+   Legend: a caption row of tone swatches for any chart above.
+     <ul class="vui-legend">
+       <li class="cyan">Notes</li>
+       <li class="amber">Edits</li>
+       <li class="green">Replies</li>
+     </ul>
+   Each item shows a colored swatch (from its tone word) before the label.
+   Tone per item: cyan (default) · amber · green · red. Override a single
+   swatch with `style="--_c: …"`.
+   ============================================================ */
+
+:where(.vui-legend) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  margin-block: 0;
+  padding-inline-start: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+:where(.vui-legend > *) {
+  --_c: var(--cyan-400);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+:where(.vui-legend > .amber) {
+  --_c: var(--amber-500);
+}
+:where(.vui-legend > .green) {
+  --_c: var(--green-500);
+}
+:where(.vui-legend > .red) {
+  --_c: var(--red-500);
+}
+
+:where(.vui-legend > *)::before {
+  inline-size: 10px;
+  block-size: 10px;
+  background-color: var(--_c);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--_c) 50%, transparent);
+  clip-path: polygon(2px 0, 100% 0, calc(100% - 2px) 100%, 0 100%);
+  content: '';
+}

@@ -1,0 +1,275 @@
+# VantaUI CSS: Extensions (opt-in add-ons)
+
+> Add-ons live outside the core bundle. You import each one separately, so core stays slim and you only ship what you use. Two ship today: VantaProse (long-form layout) and VantaStats (data-viz widgets). Both require the core tokens and author into VantaUI's cascade layers at zero specificity, so they theme from your tokens and never need `!important`.
+
+Prerequisites: load core (`class="vui"` on a root, plus the core stylesheet). Then load the add-on you want. See the hub: https://vantaui-css.khodok.com/llms.txt
+
+## The add-on model
+
+- Each add-on is its own stylesheet with its own entry point: `vantaui-css/prose`, `vantaui-css/stats`.
+- It reserves no core weight. Core ships an empty `vui.ext` cascade layer (between `components` and `utilities`); add-ons fill it. Prose authors into `vui.layout`, exactly where it sat before v2.0.
+- Plain HTML: link `dist/ext/<name>.css` (or the `.min.css`). Bundler: `import 'vantaui-css/<name>'`.
+- No JavaScript ships in any add-on. Widgets are pure CSS driven by custom properties; you feed the numbers in. The data→markup recipes are below.
+
+```js
+import 'vantaui-css';            // core (tokens + components)
+import 'vantaui-css/prose';      // VantaProse
+import 'vantaui-css/stats';      // VantaStats
+```
+
+```html
+<link rel="stylesheet" href=".../dist/vantaui.min.css" />
+<link rel="stylesheet" href=".../dist/ext/stats.min.css" />
+```
+
+---
+
+# VantaProse (`vantaui-css/prose`)
+
+The `vui-prose` long-form layout. A grid that centers text to a readable measure (`--prose-width`, default 65ch) while letting images, quotes, `<pre>`, and `<figure>` bleed wider (`--bleed-width`, default 85ch). Direct children land in the content column by default.
+
+- Bleed wider: `vui-bleed`, `bleed`, or `half-bleed`. Elements like `<img>`, `<figure>`, `<blockquote>`, and `<pre>` bleed automatically. A lone-image paragraph (`<p><img></p>`, common from Markdown) bleeds too.
+- Edge-to-edge: `vui-bleed-full` / `bleed-full`.
+- Blockquotes get an accent rail; figures style their `<figcaption>` in mono.
+
+```html
+<article class="vui-prose">
+  <h1>Mission Brief</h1>
+  <p>Readable measure…</p>
+  <figure><img src="map.png" alt=""><figcaption>Sector map</figcaption></figure>
+  <blockquote>Pulled-in accent quote.</blockquote>
+</article>
+```
+
+Note: `vui-prose` is a layout, so apply it to an `<article>` that is NOT a panel. The panel selector is `.vui article:not(.vui-prose):not(.prose)`, so the prose class opts the article out of panel styling. Migrating from v1.x: the only change is the new import; the markup is identical.
+
+---
+
+# VantaStats (`vantaui-css/stats`)
+
+A vocabulary of small chart widgets in the HUD style. Every widget is pure CSS; you write the markup and pass numbers through custom properties. Tone any widget with a color word: **cyan** (default) · **amber** · **green** · **red**. All class names use the `vui-` prefix.
+
+## Stat card (`vui-stat-card`)
+
+A single headline metric on a chamfered, standalone plate (no core panel needed).
+
+```html
+<div class="vui-stat-card cyan">
+  <small class="vui-stat-label">Notes today</small>
+  <strong class="vui-stat-value">1,284</strong>
+  <span class="vui-stat-sub">+12 vs. yesterday</span>
+</div>
+```
+
+The tone word sets the value's glow. Lay several out in a `vui-autogrid`.
+
+```js
+// stats: [{label, value, sub, tone}]
+const card = ({label, value, sub, tone = 'cyan'}) => `
+  <div class="vui-stat-card ${tone}">
+    <small class="vui-stat-label">${label}</small>
+    <strong class="vui-stat-value">${value.toLocaleString()}</strong>
+    <span class="vui-stat-sub">${sub}</span>
+  </div>`;
+grid.innerHTML = stats.map(card).join('');
+```
+
+## Bar chart (`vui-bars`)
+
+Vertical bars in a fixed-height track. `--v` is each bar's height as a 0–1 fraction of the tallest bar (you compute `value / max`). `--vui-bars-height` sets the track height.
+
+```html
+<div class="vui-bars cyan" style="--vui-bars-height: 180px">
+  <div class="vui-bar" style="--v: .82">
+    <b class="vui-bar-value">82</b>
+    <i class="vui-bar-fill"></i>
+    <small class="vui-bar-label">Mon</small>
+  </div>
+  <!-- one .vui-bar per column -->
+</div>
+```
+
+Empty state: drop a `<div class="vui-bars-empty">NO DATA</div>` in place of the bars.
+
+```js
+// data: [{label, value}]
+const max = Math.max(1, ...data.map(d => d.value));
+el.innerHTML = data.map(d => `
+  <div class="vui-bar" style="--v:${d.value / max}">
+    <b class="vui-bar-value">${d.value}</b>
+    <i class="vui-bar-fill"></i>
+    <small class="vui-bar-label">${d.label}</small>
+  </div>`).join('');
+```
+
+## Leaderboard (`vui-leaderboard`)
+
+Ranked rows, each with a proportional bar. `--v` is the bar width as a 0–1 fraction of the top row (`count / max`). Add `top` to the leading ranks to make them glow.
+
+```html
+<ol class="vui-leaderboard">
+  <li class="vui-board-row">
+    <span class="vui-board-rank top">1</span>
+    <div class="vui-board-main">
+      <div class="vui-board-head">
+        <a class="vui-board-name" href="#">Gordon</a>
+        <span class="vui-board-count">128</span>
+      </div>
+      <div class="vui-board-bar" style="--v: 1"></div>
+    </div>
+  </li>
+</ol>
+```
+
+```js
+// rows: [{name, count}], sorted high to low
+const max = Math.max(1, ...rows.map(r => r.count));
+el.innerHTML = rows.map((r, i) => `
+  <li class="vui-board-row">
+    <span class="vui-board-rank ${i < 3 ? 'top' : ''}">${i + 1}</span>
+    <div class="vui-board-main">
+      <div class="vui-board-head">
+        <a class="vui-board-name" href="#">${r.name}</a>
+        <span class="vui-board-count">${r.count}</span>
+      </div>
+      <div class="vui-board-bar" style="--v:${r.count / max}"></div>
+    </div>
+  </li>`).join('');
+```
+
+## Activity heatmap (`vui-heatmap`)
+
+A GitHub-style contribution calendar. Cells lay out as 7 rows that flow into columns automatically, so you emit day cells in order. Intensity is one custom property, `--level` 0–4: a single `color-mix` scales fill and glow from inset (0) to full accent (4).
+
+```html
+<div class="vui-heatmap">
+  <i style="--level: 0"></i>
+  <i style="--level: 3"></i>
+  <!-- one <i> per day -->
+</div>
+<div class="vui-heatmap-legend">
+  LESS
+  <i class="vui-heat-swatch" style="--level: 0"></i>
+  <i class="vui-heat-swatch" style="--level: 1"></i>
+  <i class="vui-heat-swatch" style="--level: 2"></i>
+  <i class="vui-heat-swatch" style="--level: 3"></i>
+  <i class="vui-heat-swatch" style="--level: 4"></i>
+  MORE
+</div>
+```
+
+### Recipe: build a year of daily commits
+
+Given a dataset of `{ date: 'YYYY-MM-DD', count }`, you produce the cells. CSS handles all the coloring; you only decide the level and pad the first week.
+
+1. Find `max = Math.max(...counts)`. Map each day's count to a level: `count === 0 ? 0 : Math.ceil(count / max * 4)` (clamp to 1–4 for any non-zero count).
+2. Pad the start: emit empty `<i class="vui-cell-pad"></i>` cells so Jan 1 lands on its real weekday row (grid rows are Sun→Sat, top to bottom). A pad cell paints nothing.
+3. Emit one `<i style="--level: N">` per day in date order. The grid's `grid-auto-flow: column` fills down each week, then moves to the next.
+4. Add `title` per cell for a tooltip, e.g. `title="2026-06-21: 4 notes"`.
+
+```js
+// vanilla, framework-agnostic
+const max = Math.max(1, ...days.map(d => d.count));
+const level = c => (c === 0 ? 0 : Math.min(4, Math.ceil((c / max) * 4)));
+const lead = new Date(days[0].date).getDay(); // 0=Sun
+const cells = [
+  ...Array.from({length: lead}, () => '<i class="vui-cell-pad"></i>'),
+  ...days.map(d => `<i style="--level:${level(d.count)}" title="${d.date}: ${d.count}"></i>`),
+].join('');
+heatmapEl.innerHTML = cells;
+```
+
+The container is `inline-size: max-content`, so wrap it in a scroller (`<div style="overflow-x:auto">`) for a full year on narrow screens.
+
+## Sparkline (`vui-sparkline`)
+
+A micro trend line. It styles a consumer-supplied inline `<svg>`; you compute the points, it paints them. Stroke is non-scaling, so it stays crisp under `preserveAspectRatio="none"`.
+
+```html
+<svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none">
+  <polyline class="vui-spark-area" points="0,28 0,10 50,4 100,14 100,28" />
+  <polyline class="vui-spark-line" points="0,10 50,4 100,14" />
+</svg>
+```
+
+For a single data point, use `<line class="vui-spark-flat" x1="0" y1="14" x2="100" y2="14" />`.
+
+```js
+// values: number[]  ->  SVG points across a 100x28 box
+const W = 100, H = 28, pad = 2;
+const hi = Math.max(...values), lo = Math.min(...values), span = hi - lo || 1;
+const pts = values.map((v, i) => {
+  const x = (i / (values.length - 1)) * W;
+  const y = pad + (H - pad * 2) * (1 - (v - lo) / span);
+  return `${x.toFixed(1)},${y.toFixed(1)}`;
+}).join(' ');
+svg.innerHTML = `
+  <polyline class="vui-spark-area" points="0,${H} ${pts} ${W},${H}" />
+  <polyline class="vui-spark-line" points="${pts}" />`;
+```
+
+## Donut / pie (`vui-donut`)
+
+A share-of-total ring, pure CSS via `conic-gradient`. `--vui-donut` is the stop list: one `color 0 <end%>` per segment, ends cumulative to 100%. `--vui-donut-size` sets the diameter; `--vui-donut-hole` the inner radius (0% gives a filled pie, the "cheese graph").
+
+```html
+<div class="vui-donut" style="
+  --vui-donut: var(--cyan-400) 0 55%, var(--amber-500) 0 80%, var(--green-500) 0 100%;
+"></div>
+```
+
+Put a readout in the hole by wrapping it:
+
+```html
+<div class="vui-donut-figure">
+  <div class="vui-donut" style="--vui-donut: var(--cyan-400) 0 72%, var(--surface-inset) 0 100%"></div>
+  <strong class="vui-donut-center">72%</strong>
+</div>
+```
+
+The hole is punched with a radial mask. Where masking is unsupported the widget degrades to a filled pie, which is still a correct chart.
+
+```js
+// segments: [{color, value}]  ->  cumulative conic stop list
+const total = segments.reduce((s, x) => s + x.value, 0);
+let acc = 0;
+const stops = segments.map(s => {
+  acc += s.value;
+  return `${s.color} 0 ${(acc / total * 100).toFixed(2)}%`;
+}).join(', ');
+donut.style.setProperty('--vui-donut', stops);
+```
+
+## Delta (`vui-delta`)
+
+A trend indicator: a number plus a direction glyph. The direction class colors the text and prepends a glyph (▲ ▼ ─). up = green, down = red, flat = muted. Add `vui-delta-bare` if you supply your own glyph and only want the tone.
+
+```html
+<span class="vui-delta up">+12.4%</span>
+<span class="vui-delta down">-3.1/d</span>
+<span class="vui-delta flat">0.0/d</span>
+```
+
+```js
+// n: the change value; pick direction + sign
+const dir = n > 0 ? 'up' : n < 0 ? 'down' : 'flat';
+el.className = `vui-delta ${dir}`;
+el.textContent = `${n > 0 ? '+' : ''}${n}%`;
+```
+
+## Legend (`vui-legend`)
+
+A caption row of tone swatches for any chart. Each item shows a colored swatch (from its tone word) before its label. Override a single swatch with `style="--_c: …"`.
+
+```html
+<ul class="vui-legend">
+  <li class="cyan">Notes</li>
+  <li class="amber">Edits</li>
+  <li class="green">Replies</li>
+</ul>
+```
+
+```js
+// items: [{label, tone}]
+el.innerHTML = items.map(it => `<li class="${it.tone}">${it.label}</li>`).join('');
+```

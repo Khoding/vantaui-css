@@ -14,7 +14,7 @@
 
    Opt a live demo into a resizable preview lane with `resize: true` (on a
    static example or on `play`): a grip on the trailing edge lets you shrink the
-   preview and watch the component reflow. Off by default — reserve it for demos
+   preview and watch the component reflow. Off by default; reserve it for demos
    where responsiveness is the point (layout, carousel, app shell…).
 
    Foundations / utilities use a `render()` reference gallery (swatches/chips),
@@ -157,8 +157,8 @@
           row('tooltips()', 'CSS <code>::after</code> fallback on <code>[data-tip]</code>', 'Fixed-position, viewport-clamped, follows scroll') +
           row('toolbars()', 'Default tab order', 'Roving tabindex, arrow keys, Home/End (ARIA toolbar)') +
           row('data-animate', 'Static <code>--value</code>', 'Counts up from 0 when scrolled into view') +
-          row('toast()', '—', 'Programmatic snackbar; no CSS path') +
-          row('[data-vui-clock]', '—', 'Live HH:MM:SS, updated every second') +
+          row('toast()', 'None', 'Programmatic snackbar; no CSS path') +
+          row('[data-vui-clock]', 'None', 'Live HH:MM:SS, updated every second') +
           '</tbody>' +
           '</table>'
         );
@@ -792,19 +792,6 @@
     },
     {
       group: 'Layout',
-      id: 'prose',
-      title: 'Prose layout',
-      blurb:
-        '<code>vui-prose</code> is a responsive grid for long-form text. It centres copy to a readable measure (65ch) while letting images, figures, blockquotes and code bleed wider. Use <code>bleed</code> to widen to the container sides, <code>bleed-full</code> to go edge-to-edge.',
-      examples: [
-        {
-          resize: true,
-          code: '<article class="vui-prose">\n  <h1>Knightfall Protocol</h1>\n  <p class="vui-eyebrow">Security Level: Classified</p>\n  <p>To preserve the security of Gotham City, the Knightfall Protocol has been established as a final contingency. In the event of primary identity compromise, all core assets are to be decommissioned.</p>\n\n  <blockquote>"The city needs a legend. Something worse than me."</blockquote>\n\n  <figure class="bleed">\n    <img src="preview.png" alt="Tactical HUD preview" style="aspect-ratio:16/9;object-fit:cover">\n    <figcaption>Fig. 01: VantaUI Tactical HUD telemetry.</figcaption>\n  </figure>\n\n  <p>All field agents are instructed to stand down. All communication links will be terminated.</p>\n</article>',
-        },
-      ],
-    },
-    {
-      group: 'Layout',
       id: 'overflow',
       title: 'Overflow',
       blurb:
@@ -1173,7 +1160,7 @@
       id: 'gauge',
       title: 'Radial gauge',
       blurb:
-        'A 270° arc readout built from a single conic-gradient with no SVG and no JavaScript. The value renders from <code>--value</code>; leave <code>&lt;b&gt;</code> empty and a counter fills it. Fluid by default — it scales with the viewport; set <code>--size</code> for a fixed footprint. Tone with a colour word.',
+        'A 270° arc readout built from a single conic-gradient with no SVG and no JavaScript. The value renders from <code>--value</code>; leave <code>&lt;b&gt;</code> empty and a counter fills it. Fluid by default: it scales with the viewport; set <code>--size</code> for a fixed footprint. Tone with a colour word.',
       play: {
         state: {tone: '', value: 87, size: 8},
         controls: [
@@ -1972,6 +1959,164 @@
         },
       ],
     },
+
+    /* ---------------- EXTENSIONS (opt-in add-ons) ---------------- */
+    {
+      group: 'Extensions',
+      id: 'addons',
+      title: 'Add-ons',
+      blurb:
+        'Optional features live outside the core bundle, each with its own import, so core stays slim and you ship only what you use. Two ship today: <strong>VantaProse</strong> (the prose layout above) and <strong>VantaStats</strong> (the data-viz widgets below). They are pure CSS, driven by custom properties: you feed the numbers in, no JavaScript ships. Tone any stat widget with <code>cyan</code> (default), <code>amber</code>, <code>green</code>, or <code>red</code>.',
+      examples: [
+        {
+          noDemo: true,
+          code: "import 'vantaui-css';        // core\nimport 'vantaui-css/prose';  // VantaProse: long-form layout\nimport 'vantaui-css/stats';  // VantaStats: data-viz widgets\n\n/* plain HTML, after the core stylesheet:\n   <link rel=\"stylesheet\" href=\"dist/ext/stats.min.css\"> */",
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'prose',
+      title: 'Prose layout',
+      blurb:
+        '<code>vui-prose</code> is a responsive grid for long-form text. It centres copy to a readable measure (65ch) while letting images, figures, blockquotes and code bleed wider. Use <code>bleed</code> to widen to the container sides, <code>bleed-full</code> to go edge-to-edge. It is an opt-in add-on: <code>import "vantaui-css/prose"</code> (markup unchanged from v1.x).',
+      examples: [
+        {
+          resize: true,
+          code: '<article class="vui-prose">\n  <h1>Knightfall Protocol</h1>\n  <p class="vui-eyebrow">Security Level: Classified</p>\n  <p>To preserve the security of Gotham City, the Knightfall Protocol has been established as a final contingency. In the event of primary identity compromise, all core assets are to be decommissioned.</p>\n\n  <blockquote>"The city needs a legend. Something worse than me."</blockquote>\n\n  <figure class="bleed">\n    <img src="preview.png" alt="Tactical HUD preview" style="aspect-ratio:16/9;object-fit:cover">\n    <figcaption>Fig. 01: VantaUI Tactical HUD telemetry.</figcaption>\n  </figure>\n\n  <p>All field agents are instructed to stand down. All communication links will be terminated.</p>\n</article>',
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'stat-card',
+      title: 'Stat cards',
+      blurb:
+        'A headline metric on a standalone chamfered plate (no core panel needed). <code>vui-stat-value</code> glows in the card tone. Lay several out in a <code>vui-autogrid</code>.',
+      examples: [
+        {
+          code: '<div class="vui-autogrid" style="--vui-min:11rem">\n  <div class="vui-stat-card cyan">\n    <small class="vui-stat-label">Notes today</small>\n    <strong class="vui-stat-value">1,284</strong>\n    <span class="vui-stat-sub">+12 vs. yesterday</span>\n  </div>\n  <div class="vui-stat-card amber">\n    <small class="vui-stat-label">Open cases</small>\n    <strong class="vui-stat-value">07</strong>\n    <span class="vui-stat-sub">2 escalated</span>\n  </div>\n  <div class="vui-stat-card green">\n    <small class="vui-stat-label">Uptime</small>\n    <strong class="vui-stat-value">99.9%</strong>\n    <span class="vui-stat-sub">30-day window</span>\n  </div>\n</div>',
+        },
+        {
+          label: 'JavaScript',
+          noDemo: true,
+          code: '// stats: [{label, value, sub, tone}]\nconst card = ({label, value, sub, tone = \'cyan\'}) => `\n  <div class="vui-stat-card ${tone}">\n    <small class="vui-stat-label">${label}</small>\n    <strong class="vui-stat-value">${value.toLocaleString()}</strong>\n    <span class="vui-stat-sub">${sub}</span>\n  </div>`;\ngrid.innerHTML = stats.map(card).join(\'\');',
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'bars',
+      title: 'Bar chart',
+      blurb:
+        'Vertical bars in a fixed-height track. Each <code>vui-bar</code> sets <code>--v</code>, its height as a 0–1 fraction of the tallest bar (you compute <code>value / max</code>). Track height via <code>--vui-bars-height</code>.',
+      examples: [
+        {
+          code: '<div class="vui-bars cyan" style="--vui-bars-height:160px">\n  <div class="vui-bar" style="--v:.35"><b class="vui-bar-value">14</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Mon</small></div>\n  <div class="vui-bar" style="--v:.6"><b class="vui-bar-value">24</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Tue</small></div>\n  <div class="vui-bar" style="--v:.5"><b class="vui-bar-value">20</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Wed</small></div>\n  <div class="vui-bar" style="--v:1"><b class="vui-bar-value">40</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Thu</small></div>\n  <div class="vui-bar" style="--v:.8"><b class="vui-bar-value">32</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Fri</small></div>\n</div>',
+        },
+        {
+          label: 'JavaScript',
+          noDemo: true,
+          code: '// data: [{label, value}]\nconst max = Math.max(1, ...data.map(d => d.value));\nel.innerHTML = data.map(d => `\n  <div class="vui-bar" style="--v:${d.value / max}">\n    <b class="vui-bar-value">${d.value}</b>\n    <i class="vui-bar-fill"></i>\n    <small class="vui-bar-label">${d.label}</small>\n  </div>`).join(\'\');',
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'leaderboard',
+      title: 'Leaderboard',
+      blurb:
+        'Ranked rows with proportional bars. <code>vui-board-bar</code> sets <code>--v</code> (width as a 0–1 fraction of the top row). Add <code>top</code> to the leading ranks to make them glow.',
+      examples: [
+        {
+          code: '<ol class="vui-leaderboard">\n  <li class="vui-board-row">\n    <span class="vui-board-rank top">1</span>\n    <div class="vui-board-main">\n      <div class="vui-board-head"><a class="vui-board-name" href="#">Gordon</a><span class="vui-board-count">128</span></div>\n      <div class="vui-board-bar" style="--v:1"></div>\n    </div>\n  </li>\n  <li class="vui-board-row">\n    <span class="vui-board-rank top">2</span>\n    <div class="vui-board-main">\n      <div class="vui-board-head"><a class="vui-board-name" href="#">Bullock</a><span class="vui-board-count">93</span></div>\n      <div class="vui-board-bar" style="--v:.73"></div>\n    </div>\n  </li>\n  <li class="vui-board-row">\n    <span class="vui-board-rank">3</span>\n    <div class="vui-board-main">\n      <div class="vui-board-head"><a class="vui-board-name" href="#">Montoya</a><span class="vui-board-count">61</span></div>\n      <div class="vui-board-bar" style="--v:.48"></div>\n    </div>\n  </li>\n</ol>',
+        },
+        {
+          label: 'JavaScript',
+          noDemo: true,
+          code: '// rows: [{name, count}], sorted high to low\nconst max = Math.max(1, ...rows.map(r => r.count));\nel.innerHTML = rows.map((r, i) => `\n  <li class="vui-board-row">\n    <span class="vui-board-rank ${i < 3 ? \'top\' : \'\'}">${i + 1}</span>\n    <div class="vui-board-main">\n      <div class="vui-board-head">\n        <a class="vui-board-name" href="#">${r.name}</a>\n        <span class="vui-board-count">${r.count}</span>\n      </div>\n      <div class="vui-board-bar" style="--v:${r.count / max}"></div>\n    </div>\n  </li>`).join(\'\');',
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'heatmap',
+      title: 'Activity heatmap',
+      blurb:
+        'A GitHub-style calendar. Emit one <code>&lt;i style="--level: 0..4"&gt;</code> per day; seven rows flow into week columns automatically. A single <code>color-mix</code> scales fill and glow by <code>--level</code>. Pad the first week with <code>vui-cell-pad</code>; see the extensions docs for the data→markup recipe.',
+      examples: [
+        {
+          code: '<div style="overflow-x:auto">\n  <div class="vui-heatmap">\n    <i class="vui-cell-pad"></i><i class="vui-cell-pad"></i>\n    <i style="--level:0"></i><i style="--level:1"></i><i style="--level:3"></i>\n    <i style="--level:2"></i><i style="--level:4"></i><i style="--level:1"></i>\n    <!-- …one <i> per day, in date order… -->\n  </div>\n</div>\n<div class="vui-heatmap-legend">\n  LESS\n  <i class="vui-heat-swatch" style="--level:0"></i>\n  <i class="vui-heat-swatch" style="--level:1"></i>\n  <i class="vui-heat-swatch" style="--level:2"></i>\n  <i class="vui-heat-swatch" style="--level:3"></i>\n  <i class="vui-heat-swatch" style="--level:4"></i>\n  MORE\n</div>',
+          demo:
+            '<div style="overflow-x:auto">' +
+            '<div class="vui-heatmap">' +
+            Array.from({length: 2}, function () {
+              return '<i class="vui-cell-pad"></i>';
+            }).join('') +
+            Array.from({length: 7 * 18}, function (_, i) {
+              return '<i style="--level:' + [0, 0, 1, 0, 2, 3, 1, 0, 4, 2, 1, 0, 3, 0, 1, 2][i % 16] + '"></i>';
+            }).join('') +
+            '</div></div>' +
+            '<div class="vui-heatmap-legend">LESS' +
+            '<i class="vui-heat-swatch" style="--level:0"></i>' +
+            '<i class="vui-heat-swatch" style="--level:1"></i>' +
+            '<i class="vui-heat-swatch" style="--level:2"></i>' +
+            '<i class="vui-heat-swatch" style="--level:3"></i>' +
+            '<i class="vui-heat-swatch" style="--level:4"></i>' +
+            'MORE</div>',
+        },
+        {
+          label: 'JavaScript',
+          noDemo: true,
+          code: '// days: [{date:"YYYY-MM-DD", count}]\nconst max = Math.max(1, ...days.map(d => d.count));\nconst level = c => (c === 0 ? 0 : Math.min(4, Math.ceil((c / max) * 4)));\nconst lead = new Date(days[0].date).getDay(); // 0=Sun\nel.innerHTML = [\n  ...Array.from({length: lead}, () => \'<i class="vui-cell-pad"></i>\'),\n  ...days.map(d => `<i style="--level:${level(d.count)}" title="${d.date}: ${d.count}"></i>`),\n].join(\'\');',
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'charts',
+      title: 'Sparkline · donut · delta · legend',
+      blurb:
+        'The rest of the kit. <code>vui-sparkline</code> styles a consumer-supplied inline SVG; <code>vui-donut</code> is a <code>conic-gradient</code> ring (the "cheese graph"); <code>vui-delta</code> is a trend value with an auto direction glyph; <code>vui-legend</code> captions a chart with tone swatches.',
+      examples: [
+        {
+          label: 'Sparkline',
+          code: '<svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">\n  <polyline class="vui-spark-area" points="0,28 0,18 25,12 50,16 75,4 100,9 100,28" />\n  <polyline class="vui-spark-line" points="0,18 25,12 50,16 75,4 100,9" />\n</svg>',
+        },
+        {
+          label: 'Sparkline (JS)',
+          noDemo: true,
+          code: '// values: number[]  ->  points across a 100x28 box\nconst W = 100, H = 28, pad = 2;\nconst hi = Math.max(...values), lo = Math.min(...values), span = hi - lo || 1;\nconst pts = values.map((v, i) => {\n  const x = (i / (values.length - 1)) * W;\n  const y = pad + (H - pad * 2) * (1 - (v - lo) / span);\n  return `${x.toFixed(1)},${y.toFixed(1)}`;\n}).join(\' \');\nsvg.innerHTML = `\n  <polyline class="vui-spark-area" points="0,${H} ${pts} ${W},${H}" />\n  <polyline class="vui-spark-line" points="${pts}" />`;',
+        },
+        {
+          label: 'Donut with a centre readout',
+          code: '<div class="vui-donut-figure">\n  <div class="vui-donut" style="--vui-donut: var(--cyan-400) 0 72%, var(--surface-inset) 0 100%"></div>\n  <strong class="vui-donut-center">72%</strong>\n</div>',
+        },
+        {
+          label: 'Donut (JS)',
+          noDemo: true,
+          code: '// segments: [{color, value}]  ->  cumulative conic stops\nconst total = segments.reduce((s, x) => s + x.value, 0);\nlet acc = 0;\nconst stops = segments.map(s => {\n  acc += s.value;\n  return `${s.color} 0 ${(acc / total * 100).toFixed(2)}%`;\n}).join(\', \');\ndonut.style.setProperty(\'--vui-donut\', stops);',
+        },
+        {
+          label: 'Delta indicators',
+          code: '<span class="vui-delta up">+12.4%</span>\n<span class="vui-delta down">-3.1/d</span>\n<span class="vui-delta flat">0.0/d</span>',
+        },
+        {
+          label: 'Delta (JS)',
+          noDemo: true,
+          code: '// n: the change value\nconst dir = n > 0 ? \'up\' : n < 0 ? \'down\' : \'flat\';\nel.className = `vui-delta ${dir}`;\nel.textContent = `${n > 0 ? \'+\' : \'\'}${n}%`;',
+        },
+        {
+          label: 'Legend',
+          code: '<ul class="vui-legend">\n  <li class="cyan">Notes</li>\n  <li class="amber">Edits</li>\n  <li class="green">Replies</li>\n</ul>',
+        },
+        {
+          label: 'Legend (JS)',
+          noDemo: true,
+          code: '// items: [{label, tone}]\nel.innerHTML = items.map(it => `<li class="${it.tone}">${it.label}</li>`).join(\'\');',
+        },
+      ],
+    },
   ];
 
   /* ============================================================
@@ -2026,7 +2171,11 @@
     return out + esc(code.slice(last));
   }
   function highlight(code) {
-    return /<[a-z!/]/i.test(code) ? hlHTML(code) : hlJS(code);
+    // Prefer JS when the snippet opens with a JS lead, even if it embeds HTML
+    // inside template literals (e.g. el.innerHTML = `<div …>`); otherwise an
+    // angle bracket anywhere would force the HTML tokenizer.
+    var looksJs = /^\s*(\/\/|\/\*|import |export |const |let |var |function )/.test(code);
+    return !looksJs && /<[a-z!/]/i.test(code) ? hlHTML(code) : hlJS(code);
   }
 
   /* ============================================================
@@ -2303,7 +2452,7 @@
   /* ---- a static example: live demo + view-code (or inline code for snippets) ---- */
   function exampleNode(ex, sec) {
     if (ex.noDemo) {
-      /* reference snippet: keep the code inline, it IS the content (no stage —
+      /* reference snippet: keep the code inline, it IS the content (no stage:
          there is no recessed demo body, just a code block in a chamfered box) */
       var snippet = el('div', 'doc-example bleed vui-chamfer');
       snippet.innerHTML =

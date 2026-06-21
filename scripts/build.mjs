@@ -72,6 +72,24 @@ const DOC_TERMS = {
   tree: ['tree'],
 };
 
+// Same guarantee for opt-in add-ons (src/ext/**). Each add-on component must
+// be findable by one of its terms in a topic file AND in llms-full.txt — the
+// add-ons are documented in docs/llms-extensions.txt. Pure @import manifests
+// (e.g. stats.css) carry no rules of their own, so they are skipped.
+const EXT_DOC_TERMS = {
+  prose: ['prose'],
+  'stat-card': ['stat card'],
+  bars: ['bar chart'],
+  leaderboard: ['leaderboard'],
+  heatmap: ['heatmap'],
+  sparkline: ['sparkline'],
+  donut: ['donut'],
+  delta: ['delta'],
+  legend: ['legend'],
+};
+const EXT_MANIFESTS = new Set(['stats']); // entry files that only re-export parts
+const EXT_DIRS = ['ext/prose', 'ext/stats'];
+
 function checkDocsCoverage() {
   const components = readdirSync(resolve(srcDir, 'components'))
     .filter(f => f.endsWith('.css'))
@@ -114,10 +132,33 @@ function checkDocsCoverage() {
       );
   }
 
+  // Add-on (src/ext/**) coverage — same rules, mapped via EXT_DOC_TERMS.
+  const extComponents = EXT_DIRS.flatMap(d =>
+    readdirSync(resolve(srcDir, d))
+      .filter(f => f.endsWith('.css'))
+      .map(f => basename(f, '.css'))
+      .filter(name => !EXT_MANIFESTS.has(name)),
+  );
+  for (const name of extComponents) {
+    const terms = EXT_DOC_TERMS[name];
+    if (!terms) {
+      problems.push(
+        `• ext "${name}" (src/ext/**/${name}.css) has no EXT_DOC_TERMS entry — document it in docs/llms-extensions.txt, then add a mapping in scripts/build.mjs.`,
+      );
+      continue;
+    }
+    if (!hit(terms, topicText))
+      problems.push(`• ext "${name}" not found in any topic file (expected docs/llms-extensions.txt). One of: ${terms.join(', ')}`);
+    if (fullText && !hit(terms, fullText))
+      problems.push(`• ext "${name}" missing from docs/llms-full.txt. One of: ${terms.join(', ')}`);
+  }
+
   if (problems.length) {
     throw new Error(`Docs coverage check failed (${problems.length}):\n${problems.join('\n')}`);
   }
-  console.log(`✔ docs coverage   ${components.length} components documented`);
+  console.log(
+    `✔ docs coverage   ${components.length} components + ${extComponents.length} add-on parts documented`,
+  );
 }
 
 // LightningCSS targets (major << 16 | minor << 8). This is the real feature
@@ -158,13 +199,22 @@ function withFonts(code) {
   return `${imports}\n${code}`;
 }
 
-function build({minify, outFile}) {
-  const {code} = bundle({filename: tmpEntry, minify, targets});
-  const out = withFonts(code.toString());
+function build({entry, minify, outFile, fonts = false}) {
+  const {code} = bundle({filename: entry, minify, targets});
+  const out = fonts ? withFonts(code.toString()) : code.toString();
   const dest = resolve(outDir, outFile);
+  mkdirSync(dirname(dest), {recursive: true});
   writeFileSync(dest, out);
-  console.log(`✔ ${outFile.padEnd(16)} ${(out.length / 1024).toFixed(1)} kB`);
+  console.log(`✔ ${outFile.padEnd(20)} ${(out.length / 1024).toFixed(1)} kB`);
 }
+
+// Opt-in add-ons. Each is a standalone entry that re-declares the core
+// cascade-layer order and bundles into dist/ext/. They carry no remote font
+// @import, so they skip the font-strip dance the core entry needs.
+const ADDONS = [
+  {name: 'prose', entry: resolve(srcDir, 'ext/prose/prose.css')},
+  {name: 'stats', entry: resolve(srcDir, 'ext/stats/stats.css')},
+];
 
 // Generate the classic-script build from the ES module. js/vantaui.js is the
 // single source of truth; the module already auto-inits and assigns window.vui,
@@ -193,12 +243,22 @@ function buildGlobal() {
 console.log('VantaUI — building dist/ …');
 checkDocsCoverage();
 try {
-  build({minify: false, outFile: 'vantaui.css'});
-  build({minify: true, outFile: 'vantaui.min.css'});
+  build({entry: tmpEntry, minify: false, outFile: 'vantaui.css', fonts: true});
+  build({entry: tmpEntry, minify: true, outFile: 'vantaui.min.css', fonts: true});
+  for (const a of ADDONS) {
+    build({entry: a.entry, minify: false, outFile: `ext/${a.name}.css`});
+    build({entry: a.entry, minify: true, outFile: `ext/${a.name}.min.css`});
+  }
   buildGlobal();
   mkdirSync(docsDistDir, {recursive: true});
   copyFileSync(resolve(outDir, 'vantaui.min.css'), resolve(docsDistDir, 'vantaui.min.css'));
   console.log('✔ docs/dist/vantaui.min.css');
+  // Mirror the add-on bundles into docs so the live demos can load them.
+  mkdirSync(resolve(docsDistDir, 'ext'), {recursive: true});
+  for (const a of ADDONS) {
+    copyFileSync(resolve(outDir, `ext/${a.name}.min.css`), resolve(docsDistDir, 'ext', `${a.name}.min.css`));
+    console.log(`✔ docs/dist/ext/${a.name}.min.css`);
+  }
   const docsJsDir = resolve(root, 'docs', 'js');
   mkdirSync(docsJsDir, {recursive: true});
   copyFileSync(resolve(root, 'js', 'vantaui.js'), resolve(docsJsDir, 'vantaui.js'));

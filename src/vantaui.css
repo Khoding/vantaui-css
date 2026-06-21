@@ -5,11 +5,15 @@
    Safe to drop into any Vue / Nuxt / vanilla project.
 
    Layer order (low → high priority):
-     tokens → reset → base → layout → components → utilities
+     tokens → reset → base → layout → components → ext → utilities
    Anything you write outside these layers beats all of VantaUI.
+
+   `vui.ext` is an empty slot reserved here so opt-in add-on bundles
+   (vantaui-css/stats, …) land at a deterministic cascade position.
+   Core ships nothing into it; see src/ext/ and the add-on entries.
    ============================================================ */
 
-@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components, vui.utilities;
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components, vui.ext, vui.utilities;
 
 /* Fonts stay unlayered so @font-face / the remote @import resolve globally */
 @import url('./tokens/fonts.css');
@@ -27,9 +31,8 @@
 @import url('./base/elements.css') layer(vui.base);
 @import url('./base/primitives.css') layer(vui.base);
 
-/* Layout system */
+/* Layout system. (Prose moved to an opt-in add-on: vantaui-css/prose — src/ext/prose/.) */
 @import url('./layout/layout.css') layer(vui.layout);
-@import url('./layout/prose.css') layer(vui.layout);
 
 /* Components */
 @import url('./components/button.css') layer(vui.components);

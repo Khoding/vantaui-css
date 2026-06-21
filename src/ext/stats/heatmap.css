@@ -1,0 +1,79 @@
+/* ============================================================
+   Activity heatmap: a GitHub-style contribution calendar.
+     <div class="vui-heatmap">
+       <i style="--level: 0"></i>
+       <i style="--level: 3"></i>
+       …one <i> per day, 7 rows, flowing down columns (weeks)…
+     </div>
+   Cells lay out as 7 rows that flow into columns automatically, so you just
+   emit the day cells in order (pad the first column with empty cells to land
+   day 1 on its weekday). Intensity is one custom property, --level 0–4: a
+   single color-mix scales fill and glow from inset (0) to full accent (4).
+   Tone: cyan (default) · amber · green · red. See the docs for the full
+   data→markup recipe (building a year from a {date,count}[] dataset).
+   ============================================================ */
+
+:where(.vui-heatmap) {
+  --_c: var(--cyan-400);
+  --vui-cell: 13px;
+  --vui-cell-gap: 3px;
+  display: grid;
+  grid-template-rows: repeat(7, var(--vui-cell));
+  grid-auto-flow: column;
+  grid-auto-columns: var(--vui-cell);
+  gap: var(--vui-cell-gap);
+  inline-size: max-content;
+}
+
+:where(.vui-heatmap.amber) {
+  --_c: var(--amber-500);
+}
+:where(.vui-heatmap.green) {
+  --_c: var(--green-500);
+}
+:where(.vui-heatmap.red) {
+  --_c: var(--red-500);
+}
+
+/* Every cell, all five intensities, from one variable: level 0 → inset,
+   level 4 → full accent; glow ramps in only on the busier cells. */
+:where(.vui-heatmap > *) {
+  inline-size: var(--vui-cell);
+  block-size: var(--vui-cell);
+  border: var(--border-hair) solid var(--hairline);
+  border-radius: var(--radius-xs);
+  background-color: color-mix(in srgb, var(--_c) calc(var(--level, 0) * 25%), var(--surface-inset));
+  box-shadow: 0 0 6px color-mix(in srgb, var(--_c) calc(var(--level, 0) * 15%), transparent);
+}
+
+/* Padding cell to offset the first week. Carries no data. */
+:where(.vui-heatmap > .vui-cell-pad) {
+  border-color: transparent;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Optional LESS … MORE legend: a short row of sample swatches.
+     <div class="vui-heatmap-legend">
+       LESS
+       <i class="vui-heat-swatch" style="--level: 0"></i> … <i … --level: 4></i>
+       MORE
+     </div> */
+:where(.vui-heatmap-legend) {
+  --_c: var(--cyan-400);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-block-start: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--text-secondary);
+}
+:where(.vui-heat-swatch) {
+  inline-size: 11px;
+  block-size: 11px;
+  border: var(--border-hair) solid var(--hairline);
+  border-radius: var(--radius-xs);
+  background-color: color-mix(in srgb, var(--_c) calc(var(--level, 0) * 25%), var(--surface-inset));
+}

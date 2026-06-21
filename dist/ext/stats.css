@@ -1,0 +1,440 @@
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components;
+
+@layer vui.ext {
+  :where(.vui-stat-card) {
+    --_c: var(--cyan-400);
+    gap: var(--space-3);
+    padding-block: var(--space-5);
+    padding-inline: var(--space-5);
+    border: var(--border-hair) solid var(--hairline);
+    background-color: var(--surface-panel);
+    box-shadow: var(--shadow-panel);
+    color: var(--text-primary);
+    clip-path: var(--clip-chamfer);
+    flex-direction: column;
+    display: flex;
+  }
+
+  :where(.vui-stat-card.amber) {
+    --_c: var(--amber-500);
+  }
+
+  :where(.vui-stat-card.green) {
+    --_c: var(--green-500);
+  }
+
+  :where(.vui-stat-card.red) {
+    --_c: var(--red-500);
+  }
+
+  :where(.vui-stat-label) {
+    font-family: var(--font-display);
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  :where(.vui-stat-value) {
+    font-family: var(--font-hud);
+    font-size: var(--fs-2xl);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+    color: var(--_c);
+    text-shadow: 0 0 12px color-mix(in srgb, var(--_c) 45%, transparent);
+  }
+
+  :where(.vui-stat-sub) {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+  }
+
+  @supports (corner-shape: bevel) {
+    :where(.vui-stat-card:not(.vui-clip):not(.vui-clip *)) {
+      clip-path: none;
+      corner-start-start-shape: bevel;
+      corner-end-end-shape: bevel;
+      border-start-start-radius: var(--bevel-md);
+      border-end-end-radius: var(--bevel-md);
+    }
+  }
+
+  :where(.vui-bars) {
+    --_c: var(--cyan-400);
+    --vui-bars-height: 200px;
+    inline-size: 100%;
+    block-size: var(--vui-bars-height);
+    align-items: flex-end;
+    gap: clamp(2px, .5vw, 8px);
+    display: flex;
+  }
+
+  :where(.vui-bars.amber) {
+    --_c: var(--amber-500);
+  }
+
+  :where(.vui-bars.green) {
+    --_c: var(--green-500);
+  }
+
+  :where(.vui-bars.red) {
+    --_c: var(--red-500);
+  }
+
+  :where(.vui-bar) {
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    block-size: 100%;
+    min-inline-size: 0;
+    display: flex;
+  }
+
+  :where(.vui-bar-value) {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-regular);
+    white-space: nowrap;
+    color: var(--text-muted);
+    margin-block-end: 3px;
+    line-height: 1;
+  }
+
+  :where(.vui-bar-fill) {
+    inline-size: 100%;
+    max-inline-size: 42px;
+    block-size: calc(var(--v, 0) * 100%);
+    background-color: var(--_c);
+    min-block-size: 3px;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
+    clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+    transition: block-size var(--dur-slow) var(--ease-hud);
+    margin-block-start: auto;
+  }
+
+  :where(.vui-bar-label) {
+    max-inline-size: 100%;
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-muted);
+    margin-block-start: 6px;
+    overflow: hidden;
+  }
+
+  :where(.vui-bars-empty) {
+    inline-size: 100%;
+    block-size: var(--vui-bars-height, 200px);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--text-secondary);
+    place-items: center;
+    display: grid;
+  }
+
+  :where(.vui-leaderboard) {
+    --_c: var(--cyan-400);
+    gap: var(--space-4);
+    flex-direction: column;
+    margin-block: 0;
+    padding-inline-start: 0;
+    list-style: none;
+    display: flex;
+  }
+
+  :where(.vui-leaderboard.amber) {
+    --_c: var(--amber-500);
+  }
+
+  :where(.vui-leaderboard.green) {
+    --_c: var(--green-500);
+  }
+
+  :where(.vui-leaderboard.red) {
+    --_c: var(--red-500);
+  }
+
+  :where(.vui-board-row) {
+    align-items: center;
+    gap: var(--space-4);
+    display: flex;
+  }
+
+  :where(.vui-board-rank) {
+    inline-size: 24px;
+    font-family: var(--font-mono);
+    font-weight: var(--fw-bold);
+    text-align: center;
+    color: var(--text-muted);
+    flex: none;
+  }
+
+  :where(.vui-board-rank.top) {
+    color: var(--_c);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--_c) 55%, transparent);
+  }
+
+  :where(.vui-board-main) {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  :where(.vui-board-head) {
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-block-end: 5px;
+    display: flex;
+  }
+
+  :where(.vui-board-name) {
+    font-weight: var(--fw-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-primary);
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  :where(.vui-board-name:hover) {
+    color: var(--_c);
+  }
+
+  :where(.vui-board-count) {
+    font-family: var(--font-mono);
+    font-weight: var(--fw-bold);
+    color: var(--_c);
+    flex: none;
+  }
+
+  :where(.vui-board-bar) {
+    block-size: 6px;
+    inline-size: calc(var(--v, 0) * 100%);
+    background-color: var(--_c);
+    min-inline-size: 2px;
+    box-shadow: 0 0 8px color-mix(in srgb, var(--_c) 50%, transparent);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+    transition: inline-size var(--dur-slow) var(--ease-hud);
+  }
+
+  :where(.vui-heatmap) {
+    --_c: var(--cyan-400);
+    --vui-cell: 13px;
+    --vui-cell-gap: 3px;
+    grid-template-rows: repeat(7, var(--vui-cell));
+    grid-auto-flow: column;
+    grid-auto-columns: var(--vui-cell);
+    gap: var(--vui-cell-gap);
+    inline-size: max-content;
+    display: grid;
+  }
+
+  :where(.vui-heatmap.amber) {
+    --_c: var(--amber-500);
+  }
+
+  :where(.vui-heatmap.green) {
+    --_c: var(--green-500);
+  }
+
+  :where(.vui-heatmap.red) {
+    --_c: var(--red-500);
+  }
+
+  :where(.vui-heatmap > *) {
+    inline-size: var(--vui-cell);
+    block-size: var(--vui-cell);
+    border: var(--border-hair) solid var(--hairline);
+    border-radius: var(--radius-xs);
+    background-color: color-mix(in srgb, var(--_c) calc(var(--level, 0) * 25%), var(--surface-inset));
+    box-shadow: 0 0 6px color-mix(in srgb, var(--_c) calc(var(--level, 0) * 15%), transparent);
+  }
+
+  :where(.vui-heatmap > .vui-cell-pad) {
+    box-shadow: none;
+    background-color: #0000;
+    border-color: #0000;
+  }
+
+  :where(.vui-heatmap-legend) {
+    --_c: var(--cyan-400);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    color: var(--text-secondary);
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+    margin-block-start: var(--space-3);
+    display: flex;
+  }
+
+  :where(.vui-heat-swatch) {
+    border: var(--border-hair) solid var(--hairline);
+    border-radius: var(--radius-xs);
+    background-color: color-mix(in srgb, var(--_c) calc(var(--level, 0) * 25%), var(--surface-inset));
+    block-size: 11px;
+    inline-size: 11px;
+  }
+
+  :where(.vui-sparkline) {
+    --_c: var(--cyan-400);
+    block-size: 100%;
+    inline-size: 100%;
+    overflow: visible;
+  }
+
+  :where(.vui-sparkline.amber) {
+    --_c: var(--amber-500);
+  }
+
+  :where(.vui-sparkline.green) {
+    --_c: var(--green-500);
+  }
+
+  :where(.vui-sparkline.red) {
+    --_c: var(--red-500);
+  }
+
+  :where(.vui-spark-line) {
+    fill: none;
+    stroke: var(--_c);
+    stroke-width: 1.5px;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--_c) 60%, transparent));
+  }
+
+  :where(.vui-spark-area) {
+    fill: color-mix(in srgb, var(--_c) 14%, transparent);
+    stroke: none;
+  }
+
+  :where(.vui-spark-flat) {
+    stroke: var(--hairline-strong);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  :where(.vui-donut) {
+    --vui-donut-size: 120px;
+    --vui-donut-hole: 58%;
+    inline-size: var(--vui-donut-size);
+    aspect-ratio: 1;
+    border-radius: var(--radius-pill);
+    background-image: conic-gradient(from 0deg,
+    var(--vui-donut, var(--cyan-400) 0 30%, var(--surface-inset) 0 100%));
+    box-shadow: 0 0 16px -2px color-mix(in srgb, var(--cyan-400) 30%, transparent);
+    -webkit-mask-image: radial-gradient(closest-side,
+    transparent calc(var(--vui-donut-hole) - .5px),
+    #000 var(--vui-donut-hole));
+    mask-image: radial-gradient(closest-side,
+    transparent calc(var(--vui-donut-hole) - .5px),
+    #000 var(--vui-donut-hole));
+  }
+
+  :where(.vui-donut-figure) {
+    inline-size: var(--vui-donut-size, 120px);
+    aspect-ratio: 1;
+    place-items: center;
+    display: grid;
+  }
+
+  :where(.vui-donut-figure > .vui-donut) {
+    grid-area: 1 / 1;
+  }
+
+  :where(.vui-donut-figure > .vui-donut-center) {
+    font-family: var(--font-hud);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    text-align: center;
+    color: var(--text-primary);
+    grid-area: 1 / 1;
+    line-height: 1;
+  }
+
+  :where(.vui-delta) {
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    white-space: nowrap;
+    color: var(--text-secondary);
+    display: inline-flex;
+  }
+
+  :where(.vui-delta.up) {
+    color: var(--green-500);
+  }
+
+  :where(.vui-delta.down) {
+    color: var(--red-500);
+  }
+
+  :where(.vui-delta.flat) {
+    color: var(--text-muted);
+  }
+
+  :where(.vui-delta:not(.vui-delta-bare)):before {
+    content: "";
+    font-size: .85em;
+    line-height: 1;
+  }
+
+  :where(.vui-delta.up:not(.vui-delta-bare)):before {
+    content: "▲";
+  }
+
+  :where(.vui-delta.down:not(.vui-delta-bare)):before {
+    content: "▼";
+  }
+
+  :where(.vui-delta.flat:not(.vui-delta-bare)):before {
+    content: "─";
+  }
+
+  :where(.vui-legend) {
+    gap: var(--space-3) var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+    margin-block: 0;
+    padding-inline-start: 0;
+    list-style: none;
+    display: flex;
+  }
+
+  :where(.vui-legend > *) {
+    --_c: var(--cyan-400);
+    align-items: center;
+    gap: var(--space-2);
+    display: inline-flex;
+  }
+
+  :where(.vui-legend > .amber) {
+    --_c: var(--amber-500);
+  }
+
+  :where(.vui-legend > .green) {
+    --_c: var(--green-500);
+  }
+
+  :where(.vui-legend > .red) {
+    --_c: var(--red-500);
+  }
+
+  :where(.vui-legend > *):before {
+    background-color: var(--_c);
+    block-size: 10px;
+    inline-size: 10px;
+    box-shadow: 0 0 6px color-mix(in srgb, var(--_c) 50%, transparent);
+    clip-path: polygon(2px 0, 100% 0, calc(100% - 2px) 100%, 0 100%);
+    content: "";
+  }
+}
+
+@layer vui.utilities;

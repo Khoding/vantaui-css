@@ -36,7 +36,9 @@ init();                                   // boots tabs, animated meters, drawer
 
 Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet. Note that the remote `@import` can break some build tools (like LightningCSS). If this occurs, you can vendor a copy of the stylesheet with the `@import` line removed and load the fonts separately.
 
-Package entry points (`exports`): `vantaui-css` (min css), `vantaui-css/css` (unminified), `vantaui-css/min`, `vantaui-css/js`, `vantaui-css/js/global`, `vantaui-css/vue`, `vantaui-css/nuxt`, `vantaui-css/src/*`.
+Package entry points (`exports`): `vantaui-css` (min css), `vantaui-css/css` (unminified), `vantaui-css/min`, `vantaui-css/stats` (VantaStats add-on), `vantaui-css/prose` (VantaProse add-on), `vantaui-css/js`, `vantaui-css/js/global`, `vantaui-css/vue`, `vantaui-css/nuxt`, `vantaui-css/src/*`.
+
+**Add-ons keep core slim.** Core ships only the base library. Optional features load separately, so you import only what you use: `import 'vantaui-css/stats'` for the data-viz widgets, `import 'vantaui-css/prose'` for the long-form layout. See the extensions file. **Breaking in v2.0:** the prose layout (`vui-prose`) left the core bundle and is now the `vantaui-css/prose` add-on; the markup is unchanged, you only add the import.
 
 ## Mental model: Settings, Elements, and Helpers (the BeerCSS way)
 
@@ -94,6 +96,7 @@ On `<body>` it fills the viewport; nested in a sized box it fills the box. Full 
 - [Feedback & status](https://vantaui-css.khodok.com/llms-feedback.txt): inline alerts, toasts, meters & progress, radial gauges, spinners, skeletons, empty states, status dot.
 - [Theming & tokens](https://vantaui-css.khodok.com/llms-theming.txt): the OKLCH color system and every design token, plus how to override them; the chamfer geometry (clip-path vs corner-shape engines) and the `vui-clip` switch.
 - [JavaScript & frameworks](https://vantaui-css.khodok.com/llms-js.txt): the optional behaviours module (tabs, meters, drawers, menus, toolbars, tooltips, clock, toast) and the Vue plugin + Nuxt module.
+- [Extensions (opt-in add-ons)](https://vantaui-css.khodok.com/llms-extensions.txt): VantaProse (long-form layout) and VantaStats (stat cards, bar charts, leaderboards, activity heatmaps, sparklines, donut/pie, delta indicators, legends). Loaded separately so core stays slim.
 - [Everything in one file](https://vantaui-css.khodok.com/llms-full.txt): the complete reference, no link-following needed.
 
 ## Common mistakes to avoid

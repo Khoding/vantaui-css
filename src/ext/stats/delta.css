@@ -1,0 +1,45 @@
+/* ============================================================
+   Delta: a trend or growth indicator (a number plus a direction glyph).
+     <span class="vui-delta up">+12.4%</span>
+     <span class="vui-delta down">-3.1/d</span>
+     <span class="vui-delta flat">0.0/d</span>
+   The direction class colors the text and prepends a glyph (▲ ▼ ─). Drop
+   `.vui-delta-bare` if you supply your own glyph and only want the tone.
+   up = green, down = red, flat = muted.
+   ============================================================ */
+
+:where(.vui-delta) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+:where(.vui-delta.up) {
+  color: var(--green-500);
+}
+:where(.vui-delta.down) {
+  color: var(--red-500);
+}
+:where(.vui-delta.flat) {
+  color: var(--text-muted);
+}
+
+/* Auto glyph, so the markup only carries the number. */
+:where(.vui-delta:not(.vui-delta-bare))::before {
+  font-size: 0.85em;
+  line-height: 1;
+  content: '';
+}
+:where(.vui-delta.up:not(.vui-delta-bare))::before {
+  content: '\25B2'; /* ▲ */
+}
+:where(.vui-delta.down:not(.vui-delta-bare))::before {
+  content: '\25BC'; /* ▼ */
+}
+:where(.vui-delta.flat:not(.vui-delta-bare))::before {
+  content: '\2500'; /* ─ */
+}

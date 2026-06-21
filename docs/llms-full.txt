@@ -36,7 +36,7 @@ init();                                   // boots tabs, animated meters, drawer
 
 Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet. Note that the remote `@import` can break some build tools (like LightningCSS). If this occurs, you can vendor a copy of the stylesheet with the `@import` line removed and load the fonts separately.
 
-Package entry points (`exports`): `vantaui-css` (min css), `vantaui-css/css` (unminified), `vantaui-css/min`, `vantaui-css/js`, `vantaui-css/js/global`, `vantaui-css/vue`, `vantaui-css/nuxt`, `vantaui-css/src/*`.
+Package entry points (`exports`): `vantaui-css` (min css), `vantaui-css/css` (unminified), `vantaui-css/min`, `vantaui-css/stats` (VantaStats add-on), `vantaui-css/prose` (VantaProse add-on), `vantaui-css/js`, `vantaui-css/js/global`, `vantaui-css/vue`, `vantaui-css/nuxt`, `vantaui-css/src/*`. Add-ons load separately so core stays slim. See the Extensions section. **Breaking in v2.0:** `vui-prose` moved out of core into the `vantaui-css/prose` add-on (same markup, new import).
 
 ## Mental model: Settings, Elements, and Helpers (the BeerCSS way)
 
@@ -174,9 +174,9 @@ Spacing index N → `--space-N`. Scale: 0=0, 1=2px, 2=4px, 3=8px, 4=12px, 5=16px
 - **Status dot**: `vui-dot` (default online/green, pulsing) + `vui-dot--warn` `vui-dot--threat` `vui-dot--cyan` `vui-dot--idle`.
 - **Labelled divider**: `<div class="divider" data-label="SECTOR">` (label between fading hairlines; drop `data-label` for a plain divider).
 
-## Prose layout (`vui-prose`) for long-form articles
+## Prose layout (`vui-prose`): moved to an add-on in v2.0
 
-A grid that centers text to a readable measure (`--prose-width`, 65ch) while letting assets bleed wider (`--bleed-width`, 85ch). Bleed wider: `vui-bleed`, `bleed`, or `half-bleed` (elements like `<img>`, `<figure>`, `<blockquote>`, and `<pre>` bleed automatically). Edge-to-edge: `vui-bleed-full` or `bleed-full`. Apply this to an `<article>`: the prose class opts that article out of panel styling.
+The prose layout left the core bundle in v2.0 and is now the VantaProse add-on (`import 'vantaui-css/prose'`). Full reference is in the Extensions section below.
 
 ---
 
@@ -481,7 +481,7 @@ Initials on `<span>`/`<div>` or an `<img>`. Shape: `round` · `hex`. Size: `smal
 
 ## Alerts (inline)
 
-`[role="status"]` = info (cyan); `[role="alert"]` = threat (red). Accent rail + leading glyph; an optional `<strong>`/`<h*>` is the title — it stacks above the body on a narrow alert and goes inline once wide enough (container query on the alert's own width). Re-tone: `info` · `warn` · `threat` · `secure`. Override the glyph with `--vui-alert-glyph`.
+`[role="status"]` = info (cyan); `[role="alert"]` = threat (red). Accent rail + leading glyph; an optional `<strong>`/`<h*>` is the title: it stacks above the body on a narrow alert and goes inline once wide enough (container query on the alert's own width). Re-tone: `info` · `warn` · `threat` · `secure`. Override the glyph with `--vui-alert-glyph`.
 
 ```html
 <div role="status"><strong>Online</strong> Telemetry uplink restored.</div>
@@ -509,7 +509,7 @@ toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
 
 ## Radial gauge
 
-`.gauge`: a 270-degree arc in pure CSS driven by `--value`. The structure is a `<b>` tag for the number (leave it empty to use a CSS counter), an optional `<small>` unit, and a `<span>` caption. Fluid by default — it scales with the viewport (clamped ~6rem–11rem), ring thickness included; set `--size` for a fixed footprint and `--thickness` for a thinner/heavier ring. Tone with color helpers.
+`.gauge`: a 270-degree arc in pure CSS driven by `--value`. The structure is a `<b>` tag for the number (leave it empty to use a CSS counter), an optional `<small>` unit, and a `<span>` caption. Fluid by default: it scales with the viewport (clamped ~6rem–11rem), ring thickness included; set `--size` for a fixed footprint and `--thickness` for a thinner/heavier ring. Tone with color helpers.
 
 ```html
 <div class="gauge" style="--value:72"><b></b><small>%</small><span>Integrity</span></div>
@@ -568,7 +568,7 @@ Every `src/` token ships twice (sRGB hex fallback, then `oklch()`). Palette mean
 
 ## Spacing & geometry
 
-`--space-0…--space-13`, `--radius-{none,xs,sm,pill}`, `--bevel-{sm,md,lg,xl}`, `--clip-chamfer` / `--clip-notch`, `--border-{hair,thin,bold}`, `--container-max`, `--container-narrow`, `--container-pad`, `--gutter`, `--hud-edge`, `--drawer-width`, and `--bp-{s,m,l,xl}`. Every beveled component upgrades its chamfer/notch from `clip-path` to `border-radius` and `corner-shape: bevel` where supported (Chromium 139+) — `<article>`/`.vui-panel`, `.vui-chamfer`/`.vui-notch`, `<pre>`, buttons, badges, inputs/select/textarea/checkbox, tables, menus & dropdowns, dialogs & tooltips, tabs, alerts, toasts, avatars, toolbars, segmented controls, pagination, steppers, skeletons, and carousel controls. This offers the same look, but shapes only the box so overflowing text or dropdown menus are never clipped. Elsewhere (Firefox/Safari as of 2026), `clip-path` remains the fallback. The `.vui-clip` class forces the clip-path engine, preserving the open, unstroked diagonal corner, though its content will be clipped (which you must manage yourself). It works on a single element (opts just that element out) or on a root/ancestor: `<body class="vui vui-clip">` flips the whole subtree to clip-path, so one class switches the entire UI between the two engines. One-sided diagonals (drawer trailing edge, meter/progress bars, range/switch thumbs) are not corner bevels and stay on clip-path everywhere.
+`--space-0…--space-13`, `--radius-{none,xs,sm,pill}`, `--bevel-{sm,md,lg,xl}`, `--clip-chamfer` / `--clip-notch`, `--border-{hair,thin,bold}`, `--container-max`, `--container-narrow`, `--container-pad`, `--gutter`, `--hud-edge`, `--drawer-width`, and `--bp-{s,m,l,xl}`. Every beveled component upgrades its chamfer/notch from `clip-path` to `border-radius` and `corner-shape: bevel` where supported (Chromium 139+): `<article>`/`.vui-panel`, `.vui-chamfer`/`.vui-notch`, `<pre>`, buttons, badges, inputs/select/textarea/checkbox, tables, menus & dropdowns, dialogs & tooltips, tabs, alerts, toasts, avatars, toolbars, segmented controls, pagination, steppers, skeletons, and carousel controls. This offers the same look, but shapes only the box so overflowing text or dropdown menus are never clipped. Elsewhere (Firefox/Safari as of 2026), `clip-path` remains the fallback. The `.vui-clip` class forces the clip-path engine, preserving the open, unstroked diagonal corner, though its content will be clipped (which you must manage yourself). It works on a single element (opts just that element out) or on a root/ancestor: `<body class="vui vui-clip">` flips the whole subtree to clip-path, so one class switches the entire UI between the two engines. One-sided diagonals (drawer trailing edge, meter/progress bars, range/switch thumbs) are not corner bevels and stay on clip-path everywhere.
 
 ## Typography
 
@@ -614,9 +614,9 @@ The CSS is fully standalone. The behaviours module layers interactivity on top; 
 - **`setValue(el, n, duration = 600)`**: animates a `.meter` or `.gauge` `--value` using an ease-out cubic curve (respecting reduced motion). The maximum is read from `--max` or `data-max` (defaulting to 100).
 - Auto-animate (via `init`): elements with `data-value` + `data-animate` fill from 0 on scroll into view.
 - **`drawers(root)`**: registers click handlers where `[data-open="id"]` opens a `<dialog id>` using `showModal()` (or toggles `.active` or `.open` on non-dialog drawers), `[data-close]` closes the nearest drawer, a backdrop click dismisses a dialog (which you can disable with `data-no-dismiss`), and links inside drawers automatically close them when clicked.
-- **`menus(root)`**: handles `<details class="dropdown">` dropdowns. Where the Popover API is available, it upgrades the panel to the top layer (supporting light-dismiss, Esc key dismissal, and exclusive opening), positioning it below the trigger (adding `.right` to right-align). The open panel stays pinned to its trigger on scroll/resize (via `trackAnchor`) — it follows the page and never closes on scroll. The no-Popover fallback panel is in-flow `position: absolute`, so it already moves with the page.
-- **`placePopover(panel, anchor, opts?)`**: positions a top-layer `[popover]` under an anchor off its viewport rectangle (called after `showPopover()` and again on scroll or resize — see `trackAnchor`). Options include `{ align = 'start' | 'end', gap = 6, matchWidth = false }`. This is the primitive behind `menus()`, useful for building a `<ul popover class="listbox">` autocomplete component that escapes ancestor `clip-path` constraints.
-- **`trackAnchor(reposition, isOpen)`**: keeps a floating panel pinned to its anchor across `scroll` (captured + passive) and `resize`, re-running `reposition()` while `isOpen()` holds. Scrolling repositions, never dismisses — the mechanism behind dropdowns, tooltips, and comboboxes following the page instead of drifting or snapping shut. Returns `stop()` to detach. (Native `<select>` popups are OS-drawn and may still close on scroll — outside library control.)
+- **`menus(root)`**: handles `<details class="dropdown">` dropdowns. Where the Popover API is available, it upgrades the panel to the top layer (supporting light-dismiss, Esc key dismissal, and exclusive opening), positioning it below the trigger (adding `.right` to right-align). The open panel stays pinned to its trigger on scroll/resize (via `trackAnchor`). It follows the page and never closes on scroll. The no-Popover fallback panel is in-flow `position: absolute`, so it already moves with the page.
+- **`placePopover(panel, anchor, opts?)`**: positions a top-layer `[popover]` under an anchor off its viewport rectangle (called after `showPopover()` and again on scroll or resize, see `trackAnchor`). Options include `{ align = 'start' | 'end', gap = 6, matchWidth = false }`. This is the primitive behind `menus()`, useful for building a `<ul popover class="listbox">` autocomplete component that escapes ancestor `clip-path` constraints.
+- **`trackAnchor(reposition, isOpen)`**: keeps a floating panel pinned to its anchor across `scroll` (captured + passive) and `resize`, re-running `reposition()` while `isOpen()` holds. Scrolling repositions, never dismisses: the mechanism behind dropdowns, tooltips, and comboboxes following the page instead of drifting or snapping shut. Returns `stop()` to detach. (Native `<select>` popups are OS-drawn and may still close on scroll, outside library control.)
 - **`toolbars(root)`**: roving tabindex for `[role="toolbar"]` (with `.vertical` enabling up/down arrow navigation).
 - **`carousels(root)`**: graceful fallback controls for `.carousel`. No-op where the native CSS carousel exists (Chrome 135+ draws arrows + dots itself). Where it does not (Firefox/Safari today), it wraps the track in `.vui-carousel-shell` and injects matching prev/next buttons and a dot per slide, wired to scroll and reflect the current slide (arrows disable at the ends, `prefers-reduced-motion` respected, honours `.no-arrows` / `.no-dots`, idempotent). Detection is `CSS.supports('scroll-marker-group: after')`. The strip stays scroll/swipe/keyboard navigable even without the script.
 - **`tooltips(root)`**: renders `[data-tip="text"]` on hover or focus using a body-level fixed element to prevent clipping; it follows the anchor across scroll/resize (via `trackAnchor`), clamps within the viewport and flips below the anchor when there isn't room above, and only hides on leave/blur, not on scroll.
@@ -687,6 +687,37 @@ The module registers the stylesheet, adds `.vui` to `<body>` app-wide, and (clie
 - Do NOT use `!important` to override VantaUI. Write an unlayered class, which will always take precedence.
 - The package is named `vantaui-css` and must be installed from GitHub because it is not yet available on npm or any CDN.
 - The default `main` is the minified CSS; use `vantaui-css/css` for the unminified build.
+
+---
+
+# Extensions (opt-in add-ons)
+
+Add-ons live outside the core bundle, each with its own import, so core stays slim and you ship only what you use. Core reserves an empty `vui.ext` cascade layer (between `components` and `utilities`) that add-ons fill. No JavaScript ships in any add-on: widgets are pure CSS driven by custom properties, and you feed the numbers in.
+
+```js
+import 'vantaui-css';            // core
+import 'vantaui-css/prose';      // VantaProse: long-form layout
+import 'vantaui-css/stats';      // VantaStats: data-viz widgets
+```
+
+Plain HTML: link `dist/ext/prose.css` / `dist/ext/stats.css` (or `.min.css`) after the core stylesheet.
+
+## VantaProse (`vantaui-css/prose`)
+
+The `vui-prose` long-form layout: a grid that centers text to a readable measure (`--prose-width`, 65ch) while letting assets bleed wider (`--bleed-width`, 85ch). Bleed wider with `vui-bleed`, `bleed`, or `half-bleed` (`<img>`, `<figure>`, `<blockquote>`, `<pre>` bleed automatically; a lone-image paragraph bleeds too). Edge-to-edge: `vui-bleed-full` / `bleed-full`. Apply to an `<article>`; the prose class opts that article out of panel styling. Migrating from v1.x: add the import, the markup is unchanged.
+
+## VantaStats (`vantaui-css/stats`)
+
+Small chart widgets in the HUD style. Tone any with a color word: cyan (default) · amber · green · red. All classes use the `vui-` prefix.
+
+- **Stat card** (`vui-stat-card`): a headline metric on a standalone chamfered plate. Children: `vui-stat-label`, `vui-stat-value` (glows in the tone), `vui-stat-sub`.
+- **Bar chart** (`vui-bars`): vertical bars. Each `vui-bar` sets `--v` (height as a 0–1 fraction of the max); children `vui-bar-value`, `vui-bar-fill`, `vui-bar-label`. Track height via `--vui-bars-height`. Empty state: `vui-bars-empty`.
+- **Leaderboard** (`vui-leaderboard`, an `<ol>`): ranked `vui-board-row`s. Each holds `vui-board-rank` (add `top` to glow), `vui-board-main` > `vui-board-head` (`vui-board-name` + `vui-board-count`) and a `vui-board-bar` whose `--v` is width as a 0–1 fraction.
+- **Activity heatmap** (`vui-heatmap`): a GitHub-style calendar. Emit one `<i style="--level: 0..4">` per day; 7 rows flow into week columns automatically. A single `color-mix` scales fill and glow by `--level`. Empty pad cells: `vui-cell-pad`. Optional `vui-heatmap-legend` with `vui-heat-swatch` samples. Recipe: map `count` to a level (`count===0 ? 0 : Math.ceil(count/max*4)`), pad the first week so day 1 lands on its weekday, emit cells in date order; wrap in an `overflow-x:auto` scroller for a full year.
+- **Sparkline** (`vui-sparkline`): styles a consumer-supplied inline `<svg>` (`vui-spark-area` polygon + `vui-spark-line` polyline; `vui-spark-flat` for one point). Non-scaling stroke.
+- **Donut / pie** (`vui-donut`): a `conic-gradient` ring. `--vui-donut` is the segment stop list (`color 0 <end%>`, cumulative); `--vui-donut-size` the diameter; `--vui-donut-hole` the inner radius (0% = filled pie). Wrap in `vui-donut-figure` with a `vui-donut-center` readout. The hole uses a radial mask; without masking it degrades to a filled pie.
+- **Delta** (`vui-delta`): a trend value with an auto direction glyph. `up` (green ▲), `down` (red ▼), `flat` (muted ─); add `vui-delta-bare` to supply your own glyph.
+- **Legend** (`vui-legend`, a `<ul>`): tone-swatch captions; per-item tone word, or override `--_c`.
 
 ## Browser support
 

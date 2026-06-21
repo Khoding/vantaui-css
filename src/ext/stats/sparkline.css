@@ -1,0 +1,47 @@
+/* ============================================================
+   Sparkline: a micro trend line. Styles a consumer-supplied inline
+   <svg>; you compute the points, this paints them in the HUD style.
+     <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none">
+       <polyline class="vui-spark-area" points="0,28 0,10 50,4 100,14 100,28" />
+       <polyline class="vui-spark-line" points="0,10 50,4 100,14" />
+     </svg>
+   For a single point use <line class="vui-spark-flat" …>. Tone: cyan
+   (default) · amber · green · red. Stroke is non-scaling so it stays crisp
+   under preserveAspectRatio="none".
+   ============================================================ */
+
+:where(.vui-sparkline) {
+  --_c: var(--cyan-400);
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+
+:where(.vui-sparkline.amber) {
+  --_c: var(--amber-500);
+}
+:where(.vui-sparkline.green) {
+  --_c: var(--green-500);
+}
+:where(.vui-sparkline.red) {
+  --_c: var(--red-500);
+}
+
+:where(.vui-spark-line) {
+  fill: none;
+  stroke: var(--_c);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--_c) 60%, transparent));
+}
+
+:where(.vui-spark-area) {
+  fill: color-mix(in srgb, var(--_c) 14%, transparent);
+  stroke: none;
+}
+
+:where(.vui-spark-flat) {
+  stroke: var(--hairline-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}

@@ -1,0 +1,90 @@
+/* ============================================================
+   Bar chart: vertical bars in a fixed-height track.
+     <div class="vui-bars cyan" style="--vui-bars-height: 180px">
+       <div class="vui-bar" style="--v: .82">
+         <b class="vui-bar-value">82</b>
+         <i class="vui-bar-fill"></i>
+         <small class="vui-bar-label">Mon</small>
+       </div>
+       …one .vui-bar per column…
+     </div>
+   --v is the bar's height as a 0–1 fraction of the tallest bar; you compute
+   it (value / max). --vui-bars-height sets the track height. Tone: cyan
+   (default) · amber · green · red.
+   ============================================================ */
+
+:where(.vui-bars) {
+  --_c: var(--cyan-400);
+  --vui-bars-height: 200px;
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(2px, 0.5vw, 8px);
+  inline-size: 100%;
+  block-size: var(--vui-bars-height);
+}
+
+:where(.vui-bars.amber) {
+  --_c: var(--amber-500);
+}
+:where(.vui-bars.green) {
+  --_c: var(--green-500);
+}
+:where(.vui-bars.red) {
+  --_c: var(--red-500);
+}
+
+:where(.vui-bar) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 100%;
+}
+
+:where(.vui-bar-value) {
+  margin-block-end: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-regular);
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+/* The fill anchors to the bottom; auto top-margin pushes it down so the
+   value label sits just above the bar's top edge. */
+:where(.vui-bar-fill) {
+  inline-size: 100%;
+  max-inline-size: 42px;
+  block-size: calc(var(--v, 0) * 100%);
+  min-block-size: 3px;
+  margin-block-start: auto;
+  background-color: var(--_c);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
+  clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+  transition: block-size var(--dur-slow) var(--ease-hud);
+}
+
+:where(.vui-bar-label) {
+  margin-block-start: 6px;
+  max-inline-size: 100%;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+/* Empty state: drop a .vui-bars-empty in place of the bars. */
+:where(.vui-bars-empty) {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: var(--vui-bars-height, 200px);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}

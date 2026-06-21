@@ -1,6 +1,6 @@
 # VantaUI CSS: Layout & Utilities
 
-> Containers, flex composites, grids, breakpoint show/hide, the full utility-class catalogue, HUD primitives (type roles, plates, brackets, backdrops, status dot), and the prose layout for long-form text. All free-floating helpers in this file use the `vui-` prefix.
+> Containers, flex composites, grids, breakpoint show/hide, the full utility-class catalogue, and HUD primitives (type roles, plates, brackets, backdrops, status dot). All free-floating helpers in this file use the `vui-` prefix. (The prose layout moved to an opt-in add-on as of v2.0, see the extensions file.)
 
 Prerequisites: opt in with `class="vui"` on a root element (usually `<body>`). Bare semantic HTML is styled with NO prefix; the `vui-` prefix marks free-floating layout/utility/primitive helpers (collision-safe). All VantaUI styles are zero-specificity (`:where()`) inside cascade layers, so your own unlayered classes always win. You should never use `!important`. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -101,21 +101,8 @@ The vocabulary every component is built from is also useful on its own.
 - **Status dot**: `vui-dot` (default online/green, pulsing) + `vui-dot--warn` `vui-dot--threat` `vui-dot--cyan` `vui-dot--idle`.
 - **Labelled divider** (in a `.vui` scope): `<div class="divider" data-label="SECTOR">` draws a centered, uppercase label between two fading hairlines; without `data-label` it's a plain hairline divider.
 
-## Prose layout (`vui-prose`) for long-form articles
+## Prose layout (`vui-prose`): now an opt-in add-on
 
-A grid that centers text to a readable measure (`--prose-width`, default 65ch) while letting images, quotes, `<pre>`, and `<figure>` bleed wider (`--bleed-width`, default 85ch). Direct children land in the content column by default.
+The prose layout (`vui-prose`, the readable-measure grid with bleed columns for long-form articles) moved out of the core bundle in v2.0. It is now the **VantaProse** add-on: `import 'vantaui-css/prose'`. Full reference, including the bleed helpers and the panel-opt-out note, lives in the extensions file → https://vantaui-css.khodok.com/llms-extensions.txt
 
-- Bleed wider: `vui-bleed`, `bleed`, or `half-bleed` (elements like `<img>`, `<figure>`, `<blockquote>`, and `<pre>` bleed automatically). A lone-image paragraph (`<p><img></p>`, common from Markdown) bleeds too.
-- Edge-to-edge: `vui-bleed-full` / `bleed-full`.
-- Blockquotes get an accent rail; figures style their `<figcaption>` in mono.
-
-```html
-<article class="vui-prose">
-  <h1>Mission Brief</h1>
-  <p>Readable measure…</p>
-  <figure><img src="map.png" alt=""><figcaption>Sector map</figcaption></figure>
-  <blockquote>Pulled-in accent quote.</blockquote>
-</article>
-```
-
-Note: `vui-prose` is a layout, so apply it to an `<article>` that is NOT a panel. Since `.vui article:not(.vui-prose):not(.prose)` is the panel selector, the prose class opts the article out of panel styling.
+The `vui-section` example above still composes with `vui-prose`; just load the add-on alongside core.

@@ -2,6 +2,8 @@
 
 VantaUI is a semantic-first, dark "tactical HUD" CSS library (BeerCSS-style: write plain semantic HTML inside `.vui`, get a styled UI; one short helper word to deviate). Source lives in `src/`, builds to `dist/`, optional behaviours in `js/`, framework adapters in `vue/` and `nuxt/`, docs + LLM files in `docs/`.
 
+**Slim core + opt-in add-ons.** Core ships only the base library. Optional features live in `src/ext/<name>/` and bundle to `dist/ext/<name>.css`, each loaded by its own subpath export (`vantaui-css/stats`, `vantaui-css/prose`) so consumers import only what they use. Add-ons are standalone bundles: they re-declare the core cascade-layer order and author into it (stats → the reserved empty `vui.ext` layer; prose → `vui.layout`). They are CSS-only and token-driven on purpose; no JS ships in an add-on. To add one: create `src/ext/<name>/`, register it in `ADDONS` in `scripts/build.mjs`, add a `./<name>` export in `package.json`, and document it in `docs/llms-extensions.txt` (the build's docs gate enforces this).
+
 ## The rule that matters most: docs are part of the change, not a follow-up
 
 The library is documented for both humans and LLMs in `docs/`. These files are **hand-curated prose** — they do not regenerate from source. They drift the moment code changes without them (a third of the library once shipped undocumented this way). So:
@@ -22,7 +24,8 @@ If you are unsure whether a change is "doc-worthy": if it changes what a consume
 
 | You changed in `src/` (or `js/`) … | Update this topic file (+ `llms-full.txt`) |
 | --- | --- |
-| `layout/layout.css`, `layout/prose.css`, `utilities/utilities.css`, `base/primitives.css` | `docs/llms-layout.txt` |
+| `layout/layout.css`, `utilities/utilities.css`, `base/primitives.css` | `docs/llms-layout.txt` |
+| `ext/prose/prose.css`, `ext/stats/*.css` (the opt-in add-ons) | `docs/llms-extensions.txt` |
 | `components/{header,footer,navigation,overlay,menu,tabs,pagination,toolbar}.css`, `components/appshell.css` | `docs/llms-navigation.txt` |
 | `components/{button,forms}.css` | `docs/llms-forms.txt` |
 | `components/{panel,table,badge,lists,avatar,timeline,stepper,tree,carousel,rating,segmented}.css`, the `.kv`/`.stat` helpers in `overlay.css` | `docs/llms-data.txt` |
@@ -39,7 +42,7 @@ The human docs site is `docs/index.html` (+ `docs/playground.css`, `docs/js/vant
 This repo follows the global CSS conventions in `~/.claude/CLAUDE.md` (Vanilla CSS, LightningCSS, OKLCH colors, logical properties, longhand, `clamp()` typography, mobile-first `min-width`, attribute selectors, native nesting). In addition, VantaUI-specific invariants:
 
 - **Zero specificity:** author component styles inside `:where(.vui …)` so a consumer's unlayered classes always win. Never rely on `!important`.
-- **Cascade layers:** everything is imported into `vui.{tokens,reset,base,layout,components,utilities}` (order set in `src/vantaui.css`). Keep new files in the correct layer; import order within `components` matters for `:where()` ties (see the comments in `src/vantaui.css`).
+- **Cascade layers:** everything is imported into `vui.{tokens,reset,base,layout,components,ext,utilities}` (order set in `src/vantaui.css`). `vui.ext` is an empty slot reserved for opt-in add-ons; core ships nothing into it. Keep new files in the correct layer; import order within `components` matters for `:where()` ties (see the comments in `src/vantaui.css`).
 - **Prefix discipline:** bare semantic elements get NO prefix; free-floating layout/utility/primitive helpers use the `vui-` prefix. Component helper words (e.g. `glow`, `danger`) are unprefixed and element-scoped.
 - **Tokens drive everything:** use the `--*` custom properties (colors, spacing, bevels, fonts) rather than hard-coded values, so theming works by overriding tokens.
 - **Overflow philosophy:** contain at the source (`min-inline-size:0`, clipped house-shapes), let genuine misuse scroll visibly; never `overflow: clip` destructively.

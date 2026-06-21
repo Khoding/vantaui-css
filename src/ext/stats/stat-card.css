@@ -1,0 +1,72 @@
+/* ============================================================
+   Stat card: a single headline metric on a chamfered plate.
+     <div class="vui-stat-card cyan">
+       <small class="vui-stat-label">Notes today</small>
+       <strong class="vui-stat-value">1,284</strong>
+       <span class="vui-stat-sub">+12 vs. yesterday</span>
+     </div>
+   Tone (cyan default · amber · green · red) sets the value glow.
+   Standalone surface (chamfer via clip-path, corner-shape where supported),
+   so it needs no core panel underneath.
+   ============================================================ */
+
+:where(.vui-stat-card) {
+  --_c: var(--cyan-400);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-block: var(--space-5);
+  padding-inline: var(--space-5);
+  border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-panel);
+  box-shadow: var(--shadow-panel);
+  color: var(--text-primary);
+  clip-path: var(--clip-chamfer);
+}
+
+:where(.vui-stat-card.amber) {
+  --_c: var(--amber-500);
+}
+:where(.vui-stat-card.green) {
+  --_c: var(--green-500);
+}
+:where(.vui-stat-card.red) {
+  --_c: var(--red-500);
+}
+
+:where(.vui-stat-label) {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+:where(.vui-stat-value) {
+  font-family: var(--font-hud);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--_c);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--_c) 45%, transparent);
+}
+
+:where(.vui-stat-sub) {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+/* Progressive enhancement: shape the box with corner-shape instead of
+   clip-path where supported, so the value's glow is never clipped at the
+   cut corners. Same chamfer; clip-path stays the fallback (Firefox/Safari). */
+@supports (corner-shape: bevel) {
+  :where(.vui-stat-card:not(.vui-clip):not(.vui-clip *)) {
+    clip-path: none;
+    border-start-start-radius: var(--bevel-md);
+    border-end-end-radius: var(--bevel-md);
+    corner-start-start-shape: bevel;
+    corner-end-end-shape: bevel;
+  }
+}

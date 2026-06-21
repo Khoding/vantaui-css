@@ -1,0 +1,100 @@
+/* ============================================================
+   Leaderboard: ranked rows, each with a proportional bar.
+     <ol class="vui-leaderboard">
+       <li class="vui-board-row">
+         <span class="vui-board-rank top">1</span>
+         <div class="vui-board-main">
+           <div class="vui-board-head">
+             <a class="vui-board-name" href="…">Gordon</a>
+             <span class="vui-board-count">128</span>
+           </div>
+           <div class="vui-board-bar" style="--v: 1"></div>
+         </div>
+       </li>
+       …
+     </ol>
+   --v is the bar width as a 0–1 fraction of the top row (count / max). Add
+   `top` to the first few ranks to make them glow. Tone: cyan (default) ·
+   amber · green · red.
+   ============================================================ */
+
+:where(.vui-leaderboard) {
+  --_c: var(--cyan-400);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-block: 0;
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+:where(.vui-leaderboard.amber) {
+  --_c: var(--amber-500);
+}
+:where(.vui-leaderboard.green) {
+  --_c: var(--green-500);
+}
+:where(.vui-leaderboard.red) {
+  --_c: var(--red-500);
+}
+
+:where(.vui-board-row) {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+:where(.vui-board-rank) {
+  flex: 0 0 auto;
+  inline-size: 24px;
+  font-family: var(--font-mono);
+  font-weight: var(--fw-bold);
+  text-align: center;
+  color: var(--text-muted);
+}
+:where(.vui-board-rank.top) {
+  color: var(--_c);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--_c) 55%, transparent);
+}
+
+:where(.vui-board-main) {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+:where(.vui-board-head) {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-end: 5px;
+}
+
+:where(.vui-board-name) {
+  overflow: hidden;
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+:where(.vui-board-name:hover) {
+  color: var(--_c);
+}
+
+:where(.vui-board-count) {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-weight: var(--fw-bold);
+  color: var(--_c);
+}
+
+:where(.vui-board-bar) {
+  block-size: 6px;
+  inline-size: calc(var(--v, 0) * 100%);
+  min-inline-size: 2px;
+  background-color: var(--_c);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--_c) 50%, transparent);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+  transition: inline-size var(--dur-slow) var(--ease-hud);
+}

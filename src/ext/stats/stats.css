@@ -1,0 +1,32 @@
+/* ============================================================
+   VantaStats: opt-in data-viz add-on (CSS only, no JS).
+   Not part of the core bundle. Load it on its own, alongside core:
+     import 'vantaui-css';                  // core
+     import 'vantaui-css/stats';            // this add-on
+     <link rel="stylesheet" href=".../dist/ext/stats.css">  // plain HTML
+
+   A vocabulary of small, free-floating chart widgets in the HUD style.
+   Every widget is pure CSS driven by custom properties: you write the
+   markup and feed numbers in via --v / --level / --vui-donut. No data
+   binding ships here on purpose. Wiring the numbers is the consumer's
+   job (any framework, or none). The docs carry the data→markup recipes.
+
+   Widgets: .vui-stat-card · .vui-bars · .vui-leaderboard · .vui-heatmap
+            · .vui-sparkline · .vui-donut · .vui-delta · .vui-legend
+   Tone on any of them with a color word: cyan (default) · amber · green · red.
+
+   Self-contained bundle: re-declares the core layer order (so cascade
+   position holds even if this loads before core) and authors every rule
+   into vui.ext at zero specificity. Requires the core tokens.
+   ============================================================ */
+
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components, vui.ext, vui.utilities;
+
+@import url('./stat-card.css') layer(vui.ext);
+@import url('./bars.css') layer(vui.ext);
+@import url('./leaderboard.css') layer(vui.ext);
+@import url('./heatmap.css') layer(vui.ext);
+@import url('./sparkline.css') layer(vui.ext);
+@import url('./donut.css') layer(vui.ext);
+@import url('./delta.css') layer(vui.ext);
+@import url('./legend.css') layer(vui.ext);

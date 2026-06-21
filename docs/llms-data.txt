@@ -11,7 +11,7 @@ Related: alerts/toasts/meters/spinners → https://vantaui-css.khodok.com/llms-f
 A bare `<article>` is a chamfered plate. A `<header>`/`<footer>` inside it auto-spans edge-to-edge with a hairline divider (detected via `:has`). A trailing `<small>` in the header is a meta note.
 
 - **Depth**: `raised` · `inset` · `flat` (no shadow).
-- **Stage**: `stage` recesses the body into a dark ink + scanlines viewport while any `<header>`/`<footer>` rise to the panel surface and frame it — the framed-console / readout look (e.g. `<article class="stage">`).
+- **Stage**: `stage` recesses the body into a dark ink + scanlines viewport while any `<header>`/`<footer>` rise to the panel surface and frame it: the framed-console / readout look (e.g. `<article class="stage">`).
 - **Shape**: `notch` (all corners cut) · `brackets` (glowing corner ticks).
 - **Glow**: `glow` (accent rim glow).
 - **Color tint**: `cyan`, `amber`, `red`, or `green` (these are admonition tones that tint the surface, recolor the text, and set the panel's accent color so that child buttons inherit the same tone).
