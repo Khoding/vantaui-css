@@ -590,6 +590,25 @@ Fonts (Chakra Petch, Rajdhani, Share Tech Mono, and Material Symbols) load via a
 
 ES module exports (also attached to `window.vui` as a plain script; auto-inits on `DOMContentLoaded`). Every function takes an optional `root` (default `document`) and is idempotent.
 
+### When is JS required?
+
+The CSS is fully standalone. The behaviours module layers interactivity on top; some things need it and others are only enhanced by it:
+
+**Always needs the script (no CSS path exists)**
+- **Tabs:** without the script, tabs are just styled buttons with no panel switching or keyboard navigation.
+- **Toast:** programmatic only, no CSS equivalent.
+- **Live clock:** `[data-vui-clock]` stays empty.
+- **Animated meters / gauges:** `data-animate` is a no-op; `--value` stays static.
+
+**Needs the script on Firefox and Safari (Chrome handles it natively)**
+- **Carousel:** Chrome 135+ renders prev/next buttons and a dot row natively via the CSS carousel API. Firefox and Safari do not. Without `carousels()`, the strip scrolls and accepts keyboard focus but has no visible controls.
+
+**Enhanced by the script; a working CSS fallback applies**
+- **Dropdown menus:** without `menus()`, `<details class="dropdown">` still opens natively, but the panel is in-flow and may be clipped by an ancestor `overflow` / `clip-path`, with no Popover light-dismiss, Esc, or scroll-pinning.
+- **Drawers / dialogs:** without `drawers()`, wire open/close with `onclick="…showModal()"` inline; all visual and animation CSS still applies.
+- **Tooltips:** without `tooltips()`, `[data-tip]` gets a CSS `::after` fallback with no viewport clamping or scroll-tracking.
+- **Toolbar keyboard:** without `toolbars()`, arrow-key navigation does not work and standard tab order applies.
+
 - **`init(root = document)`**: runs all behaviours below.
 - **`tabs(root)`**: wires `[role="tablist"]`/`[role="tab"]` (click and arrow keys). Panels are matched by `aria-controls` or `data-tab`, and it toggles `[hidden]` while setting `aria-selected` and `tabindex`.
 - **`setValue(el, n, duration = 600)`**: animates a `.meter` or `.gauge` `--value` using an ease-out cubic curve (respecting reduced motion). The maximum is read from `--max` or `data-max` (defaulting to 100).
@@ -611,6 +630,30 @@ toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
 ```
 
 Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, carousels, toast }`. Entry points: `vantaui-css/js` (ESM), `vantaui-css/js/global` (plain-script global).
+
+### Scrollspy (active nav link)
+
+Mark the sidebar nav link for the currently visible section using `IntersectionObserver`. This is how the VantaUI docs sync their `<aside class="drawer">` nav. No library export needed.
+
+```js
+const links = [...document.querySelectorAll('nav a[href^="#"]')];
+const map = Object.fromEntries(links.map(l => [l.getAttribute('href').slice(1), l]));
+
+const io = new IntersectionObserver(
+  entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      links.forEach(l => l.classList.remove('active'));
+      map[en.target.id]?.classList.add('active');
+    });
+  },
+  { rootMargin: '-12% 0px -78% 0px', threshold: 0 },
+);
+
+document.querySelectorAll('section[id]').forEach(s => io.observe(s));
+```
+
+The `rootMargin` creates a trigger band roughly 12%–22% from the top of the viewport. A section becomes active when its top edge crosses into that band, so only one link is highlighted at a time and it reflects where the reader actually is. The `active` class is the same one VantaUI's navigation CSS already styles for current-page links.
 
 ## Vue 3
 

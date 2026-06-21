@@ -17,6 +17,25 @@ Works as an ES module or a plain `<script>` (then it's attached to `window.vui` 
 
 Package entry points (`exports`): `vantaui-css/js` (ES module), `vantaui-css/js/global` (plain-script global build).
 
+## When is JS required?
+
+The CSS is fully standalone. The behaviours module layers interactivity on top; some things need it and others are only enhanced by it:
+
+**Always needs the script (no CSS path exists)**
+- **Tabs:** without the script, tabs are just styled buttons with no panel switching or keyboard navigation.
+- **Toast:** programmatic only, no CSS equivalent.
+- **Live clock:** `[data-vui-clock]` stays empty.
+- **Animated meters / gauges:** `data-animate` is a no-op; `--value` stays static.
+
+**Needs the script on Firefox and Safari (Chrome handles it natively)**
+- **Carousel:** Chrome 135+ renders prev/next buttons and a dot row natively via the CSS carousel API. Firefox and Safari do not. Without `carousels()`, the strip scrolls and accepts keyboard focus but has no visible controls.
+
+**Enhanced by the script; a working CSS fallback applies**
+- **Dropdown menus:** without `menus()`, `<details class="dropdown">` still opens natively, but the panel is in-flow and may be clipped by an ancestor `overflow` / `clip-path`, with no Popover light-dismiss, Esc, or scroll-pinning.
+- **Drawers / dialogs:** without `drawers()`, wire open/close with `onclick="…showModal()"` inline; all visual and animation CSS still applies.
+- **Tooltips:** without `tooltips()`, `[data-tip]` gets a CSS `::after` fallback with no viewport clamping or scroll-tracking.
+- **Toolbar keyboard:** without `toolbars()`, arrow-key navigation does not work and standard tab order applies.
+
 ## API
 
 - **`init(root = document)`**: runs all behaviours below.
@@ -68,6 +87,30 @@ input.addEventListener('blur', () => { list.hidePopover(); untrack?.(); untrack 
 ```
 
 The `<ul>` lives in the top layer, so it is never clipped by the chamfer/notch `clip-path` of a surrounding panel. No teleport-to-body logic is required.
+
+### Scrollspy (active nav link)
+
+Mark the sidebar nav link for the currently visible section using `IntersectionObserver`. This is how the VantaUI docs sync their `<aside class="drawer">` nav. No library export needed.
+
+```js
+const links = [...document.querySelectorAll('nav a[href^="#"]')];
+const map = Object.fromEntries(links.map(l => [l.getAttribute('href').slice(1), l]));
+
+const io = new IntersectionObserver(
+  entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      links.forEach(l => l.classList.remove('active'));
+      map[en.target.id]?.classList.add('active');
+    });
+  },
+  { rootMargin: '-12% 0px -78% 0px', threshold: 0 },
+);
+
+document.querySelectorAll('section[id]').forEach(s => io.observe(s));
+```
+
+The `rootMargin` creates a trigger band roughly 12%–22% from the top of the viewport. A section becomes active when its top edge crosses into that band, so only one link is highlighted at a time and it reflects where the reader actually is. The `active` class is the same one VantaUI's navigation CSS already styles for current-page links.
 
 ## Vue 3
 

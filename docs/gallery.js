@@ -134,6 +134,57 @@
       ],
     },
 
+    {
+      group: 'Getting started',
+      id: 'javascript',
+      title: 'Optional JavaScript',
+      blurb:
+        'The CSS is fully usable without JavaScript. Load the behaviours module only when you need the interactions below. Everything auto-inits on <code>DOMContentLoaded</code> when you include the script, or call <code>VantaUI.init()</code> manually. All functions accept an optional <code>root</code> element so they work on dynamically inserted markup.',
+      render: function () {
+        function row(label, without, withJs) {
+          return (
+            '<tr><td><code>' + label + '</code></td><td>' + without + '</td><td>' + withJs + '</td></tr>'
+          );
+        }
+        return (
+          '<table>' +
+          '<thead><tr><th>Component</th><th>Without JS</th><th>With JS</th></tr></thead>' +
+          '<tbody>' +
+          row('tabs()', 'Styled buttons, no panel switching', 'Click + arrow-key wiring, panel show/hide, ARIA') +
+          row('carousels() on Firefox / Safari', 'Scrollable and swipeable, no navigation controls', 'Prev/next arrows + dot row injected (Chrome 135+ does this natively, so carousels() is a no-op there)') +
+          row('menus()', 'Native <code>&lt;details&gt;</code> open/close; may be clipped by <code>clip-path</code>', 'Top-layer Popover, light-dismiss, Esc, scroll-pinned') +
+          row('drawers()', 'Use inline <code>onclick="…showModal()"</code>', '<code>[data-open]</code> / <code>[data-close]</code> declarative wiring') +
+          row('tooltips()', 'CSS <code>::after</code> fallback on <code>[data-tip]</code>', 'Fixed-position, viewport-clamped, follows scroll') +
+          row('toolbars()', 'Default tab order', 'Roving tabindex, arrow keys, Home/End (ARIA toolbar)') +
+          row('data-animate', 'Static <code>--value</code>', 'Counts up from 0 when scrolled into view') +
+          row('toast()', '—', 'Programmatic snackbar; no CSS path') +
+          row('[data-vui-clock]', '—', 'Live HH:MM:SS, updated every second') +
+          '</tbody>' +
+          '</table>'
+        );
+      },
+      examples: [
+        {
+          label: 'Scrollspy: highlight the active nav link as the page scrolls',
+          noDemo: true,
+          code:
+            'const links = [...document.querySelectorAll(\'nav a[href^="#"]\')];\n' +
+            'const map = Object.fromEntries(links.map(l => [l.getAttribute(\'href\').slice(1), l]));\n\n' +
+            'const io = new IntersectionObserver(\n' +
+            '  entries => {\n' +
+            '    entries.forEach(en => {\n' +
+            '      if (!en.isIntersecting) return;\n' +
+            '      links.forEach(l => l.classList.remove(\'active\'));\n' +
+            '      map[en.target.id]?.classList.add(\'active\');\n' +
+            '    });\n' +
+            '  },\n' +
+            '  { rootMargin: \'-12% 0px -78% 0px\', threshold: 0 },\n' +
+            ');\n\n' +
+            'document.querySelectorAll(\'section[id]\').forEach(s => io.observe(s));',
+        },
+      ],
+    },
+
     /* ---------------- FOUNDATIONS ---------------- */
     {
       group: 'Foundations',
@@ -2256,6 +2307,7 @@
          there is no recessed demo body, just a code block in a chamfered box) */
       var snippet = el('div', 'doc-example bleed vui-chamfer');
       snippet.innerHTML =
+        (ex.label ? '<footer class="doc-example__foot"><span class="doc-example__label">' + ex.label + '</span></footer>' : '') +
         '<div class="doc-code">' +
         '<button class="icon small doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
         '<pre><code>' +

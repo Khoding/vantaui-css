@@ -117,18 +117,15 @@
       font-size: 0.85em;
     }
 
-    /* The prose grid's minmax(space-5, 1fr) side tracks are the sole source of
-     horizontal gutters here. Remove main's inline padding so the two don't
-     stack, and suppress the appshell bleed (which targets the same pair) since
-     the prose already sits flush against main's edges. */
-    .doc-main {
-      padding-inline: 0;
-    }
-
-    .doc-main .vui-prose,
-    .doc-main .vui-container {
-      margin-inline: 0;
-    }
+    /* Gutters are the framework's job, not ours. <main> carries the page gutter
+     (`padding: var(--hud-edge)`), so every direct child — including the
+     non-prose .doc-hero — keeps clear of the rail. The appshell then pulls
+     .vui-prose / .vui-container back out with `margin-inline: -hud-edge`, so
+     prose cancels main's padding and supplies its OWN gutter via its grid's
+     minmax(space-5, 1fr) side tracks: single gutter, no stacking.
+     (The old double-margin came from a CUSTOM, oversized main padding that the
+     -hud-edge negation couldn't fully cancel — never override these. To widen
+     the stage gutter, override the --hud-edge token, not main's padding.) */
 
     /* ---------- Example: live demo + code ----------
        The demo wrapper is a native `<article class="stage">`: the library paints
