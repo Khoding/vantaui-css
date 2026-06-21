@@ -118,20 +118,20 @@
     --bevel-md: 10px;
     --bevel-lg: 16px;
     --bevel-xl: 24px;
-    --clip-chamfer: polygon(var(--bevel-md) 0,
-    100% 0,
-    100% calc(100% - var(--bevel-md)),
-    calc(100% - var(--bevel-md)) 100%,
-    0 100%,
-    0 var(--bevel-md));
-    --clip-notch: polygon(var(--bevel-sm) 0,
-    calc(100% - var(--bevel-sm)) 0,
-    100% var(--bevel-sm),
-    100% calc(100% - var(--bevel-sm)),
-    calc(100% - var(--bevel-sm)) 100%,
-    var(--bevel-sm) 100%,
-    0 calc(100% - var(--bevel-sm)),
-    0 var(--bevel-sm));
+    --clip-chamfer: polygon(var(--bevel-md) -1px,
+    calc(100% + 1px) -1px,
+    calc(100% + 1px) calc(100% - var(--bevel-md)),
+    calc(100% - var(--bevel-md)) calc(100% + 1px),
+    -1px calc(100% + 1px),
+    -1px var(--bevel-md));
+    --clip-notch: polygon(var(--bevel-sm) -1px,
+    calc(100% - var(--bevel-sm)) -1px,
+    calc(100% + 1px) var(--bevel-sm),
+    calc(100% + 1px) calc(100% - var(--bevel-sm)),
+    calc(100% - var(--bevel-sm)) calc(100% + 1px),
+    var(--bevel-sm) calc(100% + 1px),
+    -1px calc(100% - var(--bevel-sm)),
+    -1px var(--bevel-sm));
     --border-hair: 1px;
     --border-thin: 1.5px;
     --border-bold: 2px;

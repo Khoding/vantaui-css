@@ -44,23 +44,23 @@
   /* Ready-made clip paths for chamfered corners.
      Cut top-left + bottom-right (the VantaUI default asymmetric cut). */
   --clip-chamfer: polygon(
-    var(--bevel-md) 0,
-    100% 0,
-    100% calc(100% - var(--bevel-md)),
-    calc(100% - var(--bevel-md)) 100%,
-    0 100%,
-    0 var(--bevel-md)
+    var(--bevel-md) -1px,
+    calc(100% + 1px) -1px,
+    calc(100% + 1px) calc(100% - var(--bevel-md)),
+    calc(100% - var(--bevel-md)) calc(100% + 1px),
+    -1px calc(100% + 1px),
+    -1px var(--bevel-md)
   );
   /* Cut all four corners (notched plate) */
   --clip-notch: polygon(
-    var(--bevel-sm) 0,
-    calc(100% - var(--bevel-sm)) 0,
-    100% var(--bevel-sm),
-    100% calc(100% - var(--bevel-sm)),
-    calc(100% - var(--bevel-sm)) 100%,
-    var(--bevel-sm) 100%,
-    0 calc(100% - var(--bevel-sm)),
-    0 var(--bevel-sm)
+    var(--bevel-sm) -1px,
+    calc(100% - var(--bevel-sm)) -1px,
+    calc(100% + 1px) var(--bevel-sm),
+    calc(100% + 1px) calc(100% - var(--bevel-sm)),
+    calc(100% - var(--bevel-sm)) calc(100% + 1px),
+    var(--bevel-sm) calc(100% + 1px),
+    -1px calc(100% - var(--bevel-sm)),
+    -1px var(--bevel-sm)
   );
 
   /* ---- Border widths ---- */
