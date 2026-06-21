@@ -508,6 +508,124 @@ export function toast(message, options = {}) {
   return {el, dismiss};
 }
 
+/* ---------- Carousel controls (graceful fallback) ---------- */
+/* Browsers WITH the native CSS carousel (Chrome 135+) grow ::scroll-button
+   arrows and a ::scroll-marker dot row on their own — no JS, the better path.
+   Browsers WITHOUT it (Firefox / Safari today) get none of that, so a `.clean`
+   carousel with its scrollbar hidden can be impossible to navigate. Only there,
+   inject matching prev/next buttons and one dot per slide as real DOM; CSS
+   styles them under `@supports not (scroll-marker-group: after)`. This is a
+   no-op when the native API exists. Without this file the strip still scrolls,
+   swipes and takes keyboard focus — nothing here is required, it restores parity. */
+export function carousels(root = document) {
+  // Native CSS carousel present → the UA already draws arrows + dots. Leave it.
+  if (window.CSS && CSS.supports('scroll-marker-group: after')) return;
+
+  const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  const scope = root === document ? document : root;
+
+  const icon = glyph => {
+    const i = document.createElement('i');
+    i.textContent = glyph;
+    return i;
+  };
+  const button = (cls, label, glyph) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = cls;
+    b.setAttribute('aria-label', label);
+    b.appendChild(icon(glyph));
+    return b;
+  };
+
+  scope.querySelectorAll('.vui .carousel, .vui.carousel').forEach(track => {
+    if (track.dataset.vuiCarouselReady) return;
+    track.dataset.vuiCarouselReady = '1';
+
+    const slides = [...track.children];
+    if (!slides.length) return;
+
+    // Wrap the scroller so arrows can overlap its edges without being clipped by
+    // its own overflow. The shell takes the carousel's place in the flow.
+    const shell = document.createElement('div');
+    shell.className = 'vui-carousel-shell';
+    track.parentNode.insertBefore(shell, track);
+    shell.appendChild(track);
+
+    // Nearest slide to the track's leading edge (works in any positioning context).
+    const current = () => {
+      const base = track.getBoundingClientRect().left;
+      let best = 0;
+      let min = Infinity;
+      slides.forEach((s, i) => {
+        const d = Math.abs(s.getBoundingClientRect().left - base);
+        if (d < min) {
+          min = d;
+          best = i;
+        }
+      });
+      return best;
+    };
+    const goto = i => {
+      const slide = slides[Math.max(0, Math.min(slides.length - 1, i))];
+      const delta = slide.getBoundingClientRect().left - track.getBoundingClientRect().left;
+      track.scrollBy({left: delta, behavior});
+    };
+
+    let prev = null;
+    let next = null;
+    if (!track.classList.contains('no-arrows')) {
+      prev = button('vui-carousel-prev', 'Previous', 'chevron_left');
+      next = button('vui-carousel-next', 'Next', 'chevron_right');
+      prev.addEventListener('click', () => goto(current() - 1));
+      next.addEventListener('click', () => goto(current() + 1));
+      shell.append(prev, next);
+    }
+
+    let dots = [];
+    if (!track.classList.contains('no-dots')) {
+      const group = document.createElement('div');
+      group.className = 'vui-carousel-dots';
+      group.setAttribute('aria-label', 'Choose slide');
+      dots = slides.map((s, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'vui-carousel-dot';
+        dot.setAttribute('aria-label', `Slide ${i + 1}`);
+        dot.addEventListener('click', () => goto(i));
+        group.appendChild(dot);
+        return dot;
+      });
+      shell.appendChild(group);
+    }
+
+    // Reflect the current slide on the dots, and disable arrows at the ends.
+    const sync = () => {
+      const i = current();
+      dots.forEach((dot, j) => {
+        const on = j === i;
+        dot.classList.toggle('is-current', on);
+        if (on) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+      if (prev) prev.disabled = i === 0;
+      if (next) next.disabled = i === slides.length - 1;
+    };
+
+    let raf = 0;
+    track.addEventListener(
+      'scroll',
+      () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(sync);
+      },
+      {passive: true},
+    );
+    addEventListener('resize', sync);
+    sync();
+  });
+}
+
 /* ---------- Init everything ---------- */
 export function init(root = document) {
   if (!isBrowser) return;
@@ -518,9 +636,10 @@ export function init(root = document) {
   tooltips(root);
   menus(root);
   toolbars(root);
+  carousels(root);
 }
 
-const VantaUI = {init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, toast};
+const VantaUI = {init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, carousels, toast};
 export default VantaUI;
 
 if (isBrowser) {

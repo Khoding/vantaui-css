@@ -1,6 +1,6 @@
 # VantaUI CSS
 
-> A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock.
+> A dark, angular, military-telemetry **tactical HUD** CSS library. Semantic-first, similar to BeerCSS: you write standard, plain semantic HTML to get a tactical UI without using component classes. Reach for one short helper word only to deviate. Responsive by default, OKLCH colors, zero runtime dependencies, framework-agnostic (Vue / Nuxt / vanilla). Optional tiny JS adds tabs, animated meters, drawers, dropdowns, toasts, tooltips, a live clock, and carousel fallback controls for Firefox/Safari.
 
 This file is a HUB. It carries the core information (rules, installation, and mental model) and links to focused topic files so you only read what is relevant to your current task. For instance, a nav bar needs the navigation file, not the whole library. Fetch the topic files by URL as needed; or read the single-file complete reference: https://vantaui-css.khodok.com/llms-full.txt.
 
@@ -107,7 +107,7 @@ On `<body>` it fills the viewport; nested in a sized box it fills the box. Full 
 
 ## Browser support
 
-Evergreen browsers from ~2023. Requires `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, `conic-gradient`: Chrome/Edge 111+, Firefox 121+, Safari 16.4+. Some progressive enhancements (animated `<details>`, native CSS carousel controls, anchor-positioned popovers) light up on newer engines and degrade gracefully.
+Evergreen browsers from ~2023: Chrome/Edge 111+, Firefox 121+, Safari 16.4+. The Baseline floor is `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, and `conic-gradient`. VantaUI is CSS-first and works in Firefox and Safari, not only Chrome. Where Chrome ships a newer feature the others lack (native CSS carousel controls, anchor-positioned popovers, `corner-shape` bevels, animated `<details>`), Chrome uses that no-JS path and the others degrade gracefully; where a plain fallback would be unusable, the optional JS restores parity (e.g. the carousel arrows and dots). A Baseline gate (`npm run lint`, ESLint + `@eslint/css` + `eslint-plugin-compat`) keeps contributions inside this contract.
 
 ## License
 

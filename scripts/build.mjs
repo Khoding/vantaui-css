@@ -14,6 +14,7 @@
    ============================================================ */
 
 import {bundle} from 'lightningcss';
+import {buildSync as esbuild} from 'esbuild';
 import {mkdirSync, writeFileSync, readFileSync, rmSync, copyFileSync, readdirSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {dirname, resolve, basename} from 'node:path';
@@ -165,11 +166,36 @@ function build({minify, outFile}) {
   console.log(`✔ ${outFile.padEnd(16)} ${(out.length / 1024).toFixed(1)} kB`);
 }
 
+// Generate the classic-script build from the ES module. js/vantaui.js is the
+// single source of truth; the module already auto-inits and assigns window.vui,
+// so an ESM→IIFE conversion is all the plain-<script> / file:// build needs.
+// (Same browser floor as the CSS targets above.)
+function buildGlobal() {
+  const srcJs = resolve(root, 'js', 'vantaui.js');
+  const destJs = resolve(root, 'js', 'vantaui.global.js');
+  const banner =
+    '/* GENERATED from js/vantaui.js by scripts/build.mjs — do not edit by hand.\n' +
+    '   Classic-script build: plain <script src="vantaui.global.js"> (works over\n' +
+    '   file:// too). Exposes window.vui and auto-inits. The CSS works without it. */';
+  esbuild({
+    entryPoints: [srcJs],
+    outfile: destJs,
+    bundle: true,
+    format: 'iife',
+    target: ['chrome111', 'edge111', 'firefox121', 'safari16.4'],
+    banner: {js: banner},
+    legalComments: 'inline',
+  });
+  const bytes = readFileSync(destJs).length;
+  console.log(`✔ ${'js/vantaui.global.js'.padEnd(16)} ${(bytes / 1024).toFixed(1)} kB`);
+}
+
 console.log('VantaUI — building dist/ …');
 checkDocsCoverage();
 try {
   build({minify: false, outFile: 'vantaui.css'});
   build({minify: true, outFile: 'vantaui.min.css'});
+  buildGlobal();
   mkdirSync(docsDistDir, {recursive: true});
   copyFileSync(resolve(outDir, 'vantaui.min.css'), resolve(docsDistDir, 'vantaui.min.css'));
   console.log('✔ docs/dist/vantaui.min.css');

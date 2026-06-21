@@ -25,7 +25,7 @@ npm i github:Khoding/vantaui-css
 ```js
 import 'vantaui-css';                     // the stylesheet (package "main"/"style")
 import { init } from 'vantaui-css/js';    // optional behaviours
-init();                                   // boots tabs, animated meters, drawers, menus, toolbars, tooltips, clock
+init();                                   // boots tabs, animated meters, drawers, menus, toolbars, tooltips, clock, carousels
 ```
 
 ```html
@@ -452,7 +452,7 @@ Initials on `<span>`/`<div>` or an `<img>`. Shape: `round` · `hex`. Size: `smal
 
 ## Carousel
 
-`<div class="carousel">`: a horizontal scroll-snap track where the direct children are the slides. It supports swipe, scroll, and keyboard navigation. Native arrows and dots are automatically added on compatible CSS-carousel browsers. Size slides using `--vui-slide`, and customize with `.peek`, `.full`, `.clean`, `.no-arrows`, or `.no-dots`.
+`<div class="carousel">`: a horizontal scroll-snap track where the direct children are the slides. It supports swipe, scroll, and keyboard navigation. On native CSS-carousel browsers (Chrome 135+) arrows and a dot row are added automatically with no JavaScript. On browsers without it (Firefox and Safari today), the optional `vantaui-css/js` (`carousels()`) injects matching arrows and dots; without that script the track still scrolls, swipes, and takes keyboard focus. Size slides using `--vui-slide`, and customize with `.peek`, `.full`, `.clean`, `.no-arrows`, or `.no-dots`.
 
 ```html
 <div class="carousel peek" style="--vui-slide: 18rem">
@@ -599,6 +599,7 @@ ES module exports (also attached to `window.vui` as a plain script; auto-inits o
 - **`placePopover(panel, anchor, opts?)`**: positions a top-layer `[popover]` under an anchor off its viewport rectangle (called after `showPopover()` and again on scroll or resize — see `trackAnchor`). Options include `{ align = 'start' | 'end', gap = 6, matchWidth = false }`. This is the primitive behind `menus()`, useful for building a `<ul popover class="listbox">` autocomplete component that escapes ancestor `clip-path` constraints.
 - **`trackAnchor(reposition, isOpen)`**: keeps a floating panel pinned to its anchor across `scroll` (captured + passive) and `resize`, re-running `reposition()` while `isOpen()` holds. Scrolling repositions, never dismisses — the mechanism behind dropdowns, tooltips, and comboboxes following the page instead of drifting or snapping shut. Returns `stop()` to detach. (Native `<select>` popups are OS-drawn and may still close on scroll — outside library control.)
 - **`toolbars(root)`**: roving tabindex for `[role="toolbar"]` (with `.vertical` enabling up/down arrow navigation).
+- **`carousels(root)`**: graceful fallback controls for `.carousel`. No-op where the native CSS carousel exists (Chrome 135+ draws arrows + dots itself). Where it does not (Firefox/Safari today), it wraps the track in `.vui-carousel-shell` and injects matching prev/next buttons and a dot per slide, wired to scroll and reflect the current slide (arrows disable at the ends, `prefers-reduced-motion` respected, honours `.no-arrows` / `.no-dots`, idempotent). Detection is `CSS.supports('scroll-marker-group: after')`. The strip stays scroll/swipe/keyboard navigable even without the script.
 - **`tooltips(root)`**: renders `[data-tip="text"]` on hover or focus using a body-level fixed element to prevent clipping; it follows the anchor across scroll/resize (via `trackAnchor`), clamps within the viewport and flips below the anchor when there isn't room above, and only hides on leave/blur, not on scroll.
 - Live clock (via `init`): writes `HH:MM:SS` into `[data-vui-clock]` every second.
 - **`toast(message, options?)`**: programmatic snackbar. Options include `{ tone, title, duration = 4000, role = 'status', dismissible = true, placement }`. The `tone` option accepts a bare string shorthand.
@@ -609,7 +610,7 @@ init();
 toast('Telemetry uplink restored', { tone: 'secure', title: 'ONLINE' });
 ```
 
-Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, toast }`. Entry points: `vantaui-css/js` (ESM), `vantaui-css/js/global` (plain-script global).
+Default export: `VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, carousels, toast }`. Entry points: `vantaui-css/js` (ESM), `vantaui-css/js/global` (plain-script global).
 
 ## Vue 3
 
@@ -646,7 +647,11 @@ The module registers the stylesheet, adds `.vui` to `<body>` app-wide, and (clie
 
 ## Browser support
 
-Evergreen browsers from ~2023. Requires `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, `conic-gradient`: Chrome/Edge 111+, Firefox 121+, Safari 16.4+. Progressive enhancements (animated `<details>`, native CSS carousel controls, anchor-positioned popovers) degrade gracefully on older engines.
+Evergreen browsers from ~2023: Chrome/Edge 111+, Firefox 121+, Safari 16.4+. The Baseline floor is `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, and `conic-gradient`, all interoperable across those engines.
+
+VantaUI is built CSS-first and works in Firefox and Safari, not only Chrome. Where Chrome ships a newer feature that the others lack (native CSS carousel controls, anchor-positioned popovers, `corner-shape` bevels, animated `<details>`), Chrome uses that superior no-JS path while the other browsers fall back: the feature either degrades to a plain but working state, or, where a plain state would be unusable, the optional JS restores parity (see the carousel `carousels()` behaviour). The rule is CSS-first: JS is only used where CSS cannot do the job yet, and every feature has a fallback.
+
+Contributors: a Baseline gate runs in CI and on pre-commit. `npm run lint` uses ESLint with `@eslint/css` (`use-baseline`, reading the official web-features dataset) for CSS and `eslint-plugin-compat` for JS, so a non-Baseline feature added without a fallback is flagged at the exact line. The known-and-handled features above Baseline are listed with their fallbacks in `eslint.config.js`.
 
 ## License
 

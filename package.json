@@ -1,6 +1,6 @@
 {
   "name": "vantaui-css",
-  "version": "1.7.5",
+  "version": "1.8.0",
   "description": "VantaUI — a dark, angular, military-telemetry HUD CSS library. Semantic-first like BeerCSS: write proper HTML, get a tactical UI. Responsive, OKLCH, zero-dependency, framework-agnostic (Vue / Nuxt / vanilla).",
   "type": "module",
   "license": "MIT",
@@ -51,13 +51,28 @@
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
+    "lint": "eslint .",
+    "lint:css": "eslint \"src/**/*.css\"",
+    "lint:js": "eslint \"js/vantaui.js\" \"vue/**/*.js\"",
     "palette": "node scripts/palette-oklch.mjs",
     "shot": "node scripts/shot.mjs",
     "audit:overflow": "node scripts/audit-overflow.mjs",
+    "prepare": "husky",
     "prepublishOnly": "node scripts/build.mjs"
   },
+  "lint-staged": {
+    "src/**/*.css": "eslint",
+    "js/vantaui.js": "eslint",
+    "vue/**/*.js": "eslint"
+  },
   "devDependencies": {
+    "@eslint/css": "^1.3.0",
+    "esbuild": "^0.28.1",
+    "eslint": "^10.5.0",
+    "eslint-plugin-compat": "^7.0.2",
+    "husky": "^9.1.7",
     "lightningcss": "^1.29.1",
+    "lint-staged": "^17.0.8",
     "playwright": "^1.60.0",
     "prettier": "^3.8.3",
     "prettier-plugin-css-order": "^2.2.0"
@@ -67,5 +82,8 @@
     "Edge >= 105",
     "Firefox >= 121",
     "Safari >= 16.4"
-  ]
+  ],
+  "allowScripts": {
+    "esbuild@0.28.1": true
+  }
 }

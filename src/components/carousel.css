@@ -169,6 +169,106 @@
   }
 }
 
+/* ---- JS fallback controls (Firefox / Safari today) ----
+   Browsers without the native CSS carousel get no ::scroll-button arrows and no
+   ::scroll-marker dots. There, the optional js/vantaui.js wraps the track in a
+   .vui-carousel-shell and injects matching prev/next buttons and a dot row as
+   real DOM; these rules style them to mirror the native controls. Scoped to
+   browsers that lack the native API so they never double up in Chrome. The CSS
+   is otherwise plain Baseline, so the controls render everywhere the script runs. */
+@supports not (scroll-marker-group: after) {
+  :where(.vui .vui-carousel-shell) {
+    position: relative;
+  }
+
+  /* prev / next arrows, overlapping the track edges (the shell is the
+     positioning context, so the scroller's overflow can't clip them) */
+  :where(.vui .vui-carousel-prev),
+  :where(.vui .vui-carousel-next) {
+    position: absolute;
+    inset-block-start: 50%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    inline-size: 38px;
+    block-size: 38px;
+    padding: 0;
+    border: var(--border-hair) solid var(--hairline-accent);
+    background-color: color-mix(in srgb, var(--bg-void) 82%, transparent);
+    color: var(--accent);
+    line-height: 1;
+    cursor: pointer;
+    clip-path: var(--clip-notch);
+    --bevel-sm: 6px;
+    transition:
+      color var(--dur-fast) var(--ease-hud),
+      border-color var(--dur-fast) var(--ease-hud),
+      background-color var(--dur-fast) var(--ease-hud);
+  }
+  :where(.vui .vui-carousel-prev) {
+    inset-inline-start: 0;
+    translate: 10px -50%;
+  }
+  :where(.vui .vui-carousel-next) {
+    inset-inline-end: 0;
+    translate: -10px -50%;
+  }
+  :where(.vui .vui-carousel-prev) > i,
+  :where(.vui .vui-carousel-next) > i {
+    font-size: 1.25rem;
+  }
+  :where(.vui .vui-carousel-prev):hover,
+  :where(.vui .vui-carousel-next):hover {
+    border-color: var(--accent);
+    background-color: var(--surface-panel);
+    box-shadow: var(--glow-cyan-sm);
+  }
+  :where(.vui .vui-carousel-prev):focus-visible,
+  :where(.vui .vui-carousel-next):focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+  :where(.vui .vui-carousel-prev):disabled,
+  :where(.vui .vui-carousel-next):disabled {
+    opacity: 0.3;
+    color: var(--text-faint);
+    cursor: default;
+    box-shadow: none;
+  }
+
+  /* the marker dots, centred below the track */
+  :where(.vui .vui-carousel-dots) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    inline-size: 100%;
+    padding-block: var(--space-4) 0;
+  }
+  :where(.vui .vui-carousel-dot) {
+    inline-size: 12px;
+    block-size: 12px;
+    padding: 0;
+    border: var(--border-thin) solid var(--hairline-strong);
+    background-color: transparent;
+    clip-path: var(--clip-notch);
+    --bevel-sm: 2px;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-hud),
+      border-color var(--dur-fast) var(--ease-hud);
+  }
+  :where(.vui .vui-carousel-dot):hover {
+    border-color: var(--hairline-accent);
+  }
+  :where(.vui .vui-carousel-dot).is-current {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: var(--glow-cyan-sm);
+  }
+}
+
 /* ---- Progressive enhancement: corner-shape instead of clip-path ----
    The arrows and marker dots are pseudo-elements, so they convert
    unconditionally; clip-path on them is the fallback. See panel.css. */

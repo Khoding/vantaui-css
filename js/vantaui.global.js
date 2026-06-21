@@ -1,401 +1,500 @@
-/* ============================================================
-   optional behaviours, classic-script build.
-   Same features as js/vantaui.js but as a plain <script> (no module),
-   so it works with a simple tag and even over file://:
-     <script src="vantaui.global.js"></script>
-   Exposes window.vui = { init, tabs, setValue } and auto-inits.
-   The CSS is fully usable without this file.
-   ============================================================ */
-(function () {
-  'use strict';
-  if (typeof document === 'undefined') return;
-
-  function tabs(root) {
-    root = root || document;
-    root.querySelectorAll('[role="tablist"]').forEach(function (list) {
+/* GENERATED from js/vantaui.js by scripts/build.mjs — do not edit by hand.
+   Classic-script build: plain <script src="vantaui.global.js"> (works over
+   file:// too). Exposes window.vui and auto-inits. The CSS works without it. */
+(() => {
+  // js/vantaui.js
+  var isBrowser = typeof document !== "undefined";
+  function tabs(root = document) {
+    root.querySelectorAll('[role="tablist"]').forEach((list) => {
       if (list.dataset.vuiTabsReady) return;
-      list.dataset.vuiTabsReady = '1';
-      var tabEls = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
-      var panelFor = function (tab) {
-        var id = tab.getAttribute('aria-controls') || tab.dataset.tab;
+      list.dataset.vuiTabsReady = "1";
+      const tabEls = [...list.querySelectorAll('[role="tab"]')];
+      const panelFor = (tab) => {
+        const id = tab.getAttribute("aria-controls") || tab.dataset.tab;
         return id ? document.getElementById(id) : null;
       };
-      var activate = function (tab, focus) {
-        tabEls.forEach(function (t) {
-          var selected = t === tab;
-          t.setAttribute('aria-selected', String(selected));
+      const activate = (tab, focus = true) => {
+        tabEls.forEach((t) => {
+          const selected = t === tab;
+          t.setAttribute("aria-selected", String(selected));
           t.tabIndex = selected ? 0 : -1;
-          var panel = panelFor(t);
+          const panel = panelFor(t);
           if (panel) panel.hidden = !selected;
         });
         if (focus) tab.focus();
       };
-      tabEls.forEach(function (tab, i) {
-        tab.addEventListener('click', function () {
-          activate(tab, false);
-        });
-        tab.addEventListener('keydown', function (e) {
-          var dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      tabEls.forEach((tab, i) => {
+        tab.addEventListener("click", () => activate(tab, false));
+        tab.addEventListener("keydown", (e) => {
+          const dir = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
           if (!dir) return;
           e.preventDefault();
-          activate(tabEls[(i + dir + tabEls.length) % tabEls.length], true);
+          activate(tabEls[(i + dir + tabEls.length) % tabEls.length]);
         });
       });
-      var current = list.querySelector('[aria-selected="true"]');
-      activate(current || tabEls[0], false);
+      if (!tabEls.some((t) => t.getAttribute("aria-selected") === "true")) {
+        if (tabEls[0]) activate(tabEls[0], false);
+      } else {
+        activate(list.querySelector('[aria-selected="true"]'), false);
+      }
     });
   }
-
-  function setValue(el, target, duration) {
-    duration = duration == null ? 600 : duration;
-    var max = parseFloat(el.style.getPropertyValue('--max') || el.dataset.max || 100);
-    var from = parseFloat(el.style.getPropertyValue('--value')) || 0;
-    var to = Math.max(0, Math.min(max, target));
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches || duration <= 0) {
-      el.style.setProperty('--value', String(to));
+  function setValue(el, target, duration = 600) {
+    const max = parseFloat(el.style.getPropertyValue("--max") || el.dataset.max || 100);
+    const from = parseFloat(el.style.getPropertyValue("--value")) || 0;
+    const to = Math.max(0, Math.min(max, target));
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || duration <= 0) {
+      el.style.setProperty("--value", String(to));
       return;
     }
-    var start = performance.now();
-    var step = function (now) {
-      var t = Math.min(1, (now - start) / duration);
-      var eased = 1 - Math.pow(1 - t, 3);
-      el.style.setProperty('--value', (from + (to - from) * eased).toFixed(2));
+    const start = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.style.setProperty("--value", (from + (to - from) * eased).toFixed(2));
       if (t < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
   }
-
-  function animateOnView(root) {
-    root = root || document;
-    var targets = root.querySelectorAll('[data-value][data-animate]');
+  function animateOnView(root = document) {
+    const targets = root.querySelectorAll("[data-value][data-animate]");
     if (!targets.length) return;
-    var reveal = function (el) {
-      setValue(el, parseFloat(el.dataset.value));
-    };
-    if (!('IntersectionObserver' in window)) {
+    const reveal = (el) => setValue(el, parseFloat(el.dataset.value));
+    if (!("IntersectionObserver" in window)) {
       targets.forEach(reveal);
       return;
     }
-    var io = new IntersectionObserver(
-      function (entries, obs) {
-        entries.forEach(function (e) {
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((e) => {
           if (e.isIntersecting) {
             reveal(e.target);
             obs.unobserve(e.target);
           }
         });
       },
-      {threshold: 0.4},
+      { threshold: 0.4 }
     );
-    targets.forEach(function (el) {
-      io.observe(el);
-    });
+    targets.forEach((el) => io.observe(el));
   }
-
-  function clocks(root) {
-    root = root || document;
-    var els = root.querySelectorAll('[data-vui-clock]');
+  function clocks(root = document) {
+    const els = root.querySelectorAll("[data-vui-clock]");
     if (!els.length) return;
-    var pad = function (n) {
-      return String(n).padStart(2, '0');
-    };
-    var tick = function () {
-      var d = new Date();
-      var t = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
-      els.forEach(function (el) {
-        el.textContent = t;
-      });
+    const pad = (n) => String(n).padStart(2, "0");
+    const tick = () => {
+      const d = /* @__PURE__ */ new Date();
+      const t = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      els.forEach((el) => el.textContent = t);
     };
     tick();
     clearInterval(window.__vuiClock);
-    window.__vuiClock = setInterval(tick, 1000);
+    window.__vuiClock = setInterval(tick, 1e3);
   }
-
-  function drawers(root) {
-    root = root || document;
-    var targetEl = root.documentElement || root;
+  function tooltips(root = document) {
+    let tip = document.getElementById("vui-tooltip");
+    if (!tip) {
+      tip = document.createElement("div");
+      tip.id = "vui-tooltip";
+      tip.setAttribute("role", "tooltip");
+      document.body.appendChild(tip);
+    }
+    let untrack = null;
+    const GAP = 8;
+    const place = (el) => {
+      const r = el.getBoundingClientRect();
+      const tw = tip.offsetWidth;
+      const th = tip.offsetHeight;
+      const half = tw / 2;
+      let cx = r.left + r.width / 2;
+      cx = Math.max(GAP + half, Math.min(cx, window.innerWidth - GAP - half));
+      const below = r.top - th - GAP < 0;
+      tip.classList.toggle("is-below", below);
+      tip.style.left = cx + "px";
+      tip.style.top = (below ? r.bottom : r.top) + "px";
+    };
+    const show = (el) => {
+      tip.textContent = el.dataset.tip;
+      place(el);
+      tip.classList.add("is-visible");
+      if (untrack) untrack();
+      untrack = trackAnchor(() => place(el), () => tip.classList.contains("is-visible"));
+    };
+    const hide = () => {
+      tip.classList.remove("is-visible");
+      if (untrack) {
+        untrack();
+        untrack = null;
+      }
+    };
+    root.querySelectorAll("[data-tip]").forEach((el) => {
+      if (el.classList.contains("vui-tip-js")) return;
+      el.classList.add("vui-tip-js");
+      el.addEventListener("mouseenter", () => show(el));
+      el.addEventListener("mouseleave", hide);
+      el.addEventListener("focusin", () => show(el));
+      el.addEventListener("focusout", hide);
+    });
+  }
+  function drawers(root = document) {
+    const targetEl = root.documentElement || root;
     if (targetEl.dataset.vuiDrawersReady) return;
-    targetEl.dataset.vuiDrawersReady = '1';
-
-    root.addEventListener('click', function (e) {
-      // 1. Trigger Open
-      var opener = e.target.closest('[data-open]');
+    targetEl.dataset.vuiDrawersReady = "1";
+    root.addEventListener("click", (e) => {
+      const opener = e.target.closest("[data-open]");
       if (opener) {
-        var targetId = opener.getAttribute('data-open');
-        var target = document.getElementById(targetId);
+        const targetId = opener.getAttribute("data-open");
+        const target = document.getElementById(targetId);
         if (target) {
           e.preventDefault();
-          if (typeof target.showModal === 'function') {
+          if (typeof target.showModal === "function") {
             target.showModal();
           } else {
-            target.classList.add('active', 'open');
+            target.classList.add("active", "open");
           }
         }
         return;
       }
-
-      // 2. Trigger Close
-      var closer = e.target.closest('[data-close]');
+      const closer = e.target.closest("[data-close]");
       if (closer) {
-        var dlg = closer.closest('dialog');
+        const dlg = closer.closest("dialog");
         if (dlg) {
           e.preventDefault();
           dlg.close();
         } else {
-          var drawer = closer.closest('.drawer');
+          const drawer = closer.closest(".drawer");
           if (drawer) {
             e.preventDefault();
-            drawer.classList.remove('active', 'open');
+            drawer.classList.remove("active", "open");
           }
         }
         return;
       }
-
-      // 3. Dialog Backdrop click closes it
-      if (e.target.matches('dialog.left, dialog.right')) {
-        e.target.close();
-        return;
-      }
-
-      // 4. Click outside non-dialog drawer closes it
-      if (!e.target.closest('.drawer')) {
-        var activeDrawers = document.querySelectorAll('.drawer.active, .drawer.open');
-        for (var i = 0; i < activeDrawers.length; i++) {
-          activeDrawers[i].classList.remove('active', 'open');
+      if (e.target.tagName === "DIALOG" && e.target.open && !e.target.hasAttribute("data-no-dismiss")) {
+        const r = e.target.getBoundingClientRect();
+        const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!inside) {
+          e.target.close();
+          return;
         }
       }
-
-      // 5. Drawer/Dialog link click closes the drawer
-      var link = e.target.closest('.drawer a, dialog.left nav a, dialog.right nav a');
+      if (!e.target.closest(".drawer")) {
+        document.querySelectorAll(".drawer.active, .drawer.open").forEach((drawer) => {
+          drawer.classList.remove("active", "open");
+        });
+      }
+      const link = e.target.closest(".drawer a, dialog.left nav a, dialog.right nav a");
       if (link) {
-        var dlgElement = link.closest('dialog');
-        if (dlgElement) {
-          setTimeout(function () { dlgElement.close(); }, 80);
+        const dlg = link.closest("dialog");
+        if (dlg) {
+          setTimeout(() => dlg.close(), 80);
         } else {
-          var drawerElement = link.closest('.drawer');
-          if (drawerElement) {
-            setTimeout(function () { drawerElement.classList.remove('active', 'open'); }, 80);
+          const drawer = link.closest(".drawer");
+          if (drawer) {
+            setTimeout(() => drawer.classList.remove("active", "open"), 80);
           }
         }
       }
     });
   }
-
-  function menus(root) {
-    root = root || document;
-    var hasPopover = typeof HTMLElement.prototype.showPopover === 'function';
-
+  function placePopover(panel, anchor, opts = {}) {
+    const { align = "start", gap = 6, matchWidth = false } = opts;
+    const r = anchor.getBoundingClientRect();
+    panel.style.top = r.bottom + gap + "px";
+    if (matchWidth) panel.style.minInlineSize = r.width + "px";
+    if (align === "end") {
+      panel.style.left = "";
+      panel.style.right = window.innerWidth - r.right + "px";
+    } else {
+      panel.style.right = "";
+      panel.style.left = r.left + "px";
+    }
+  }
+  function trackAnchor(reposition, isOpen) {
+    const onMove = () => {
+      if (isOpen()) reposition();
+      else stop();
+    };
+    function stop() {
+      removeEventListener("scroll", onMove, true);
+      removeEventListener("resize", onMove);
+    }
+    addEventListener("scroll", onMove, { capture: true, passive: true });
+    addEventListener("resize", onMove);
+    return stop;
+  }
+  function menus(root = document) {
+    const hasPopover = typeof HTMLElement.prototype.showPopover === "function";
     if (hasPopover) {
-      var scope = root === document ? document : root;
-      scope.querySelectorAll('.vui details.dropdown').forEach(function (details) {
-        var panel = details.querySelector(':scope > menu, :scope > nav, :scope > ul');
-        var summary = details.querySelector(':scope > summary');
-        if (!panel || !summary || panel.hasAttribute('popover')) return;
-
-        panel.setAttribute('popover', 'auto');
-        panel.classList.add('menu');
-
-        var placePanel = function () {
-          var r = summary.getBoundingClientRect();
-          panel.style.top = (r.bottom + 6) + 'px';
-          if (details.classList.contains('right')) {
-            panel.style.left = '';
-            panel.style.right = (window.innerWidth - r.right) + 'px';
-          } else {
-            panel.style.right = '';
-            panel.style.left = r.left + 'px';
-          }
-        };
-
-        summary.addEventListener('click', function (e) {
+      (root === document ? document : root).querySelectorAll(".vui details.dropdown").forEach((details) => {
+        const panel = details.querySelector(":scope > menu, :scope > nav, :scope > ul");
+        const summary = details.querySelector(":scope > summary");
+        if (!panel || !summary || panel.hasAttribute("popover")) return;
+        panel.setAttribute("popover", "auto");
+        panel.classList.add("menu");
+        const placePanel = () => placePopover(panel, summary, {
+          align: details.classList.contains("right") ? "end" : "start"
+        });
+        let untrack = null;
+        summary.addEventListener("click", (e) => {
           e.preventDefault();
-          if (panel.matches(':popover-open')) {
+          if (panel.matches(":popover-open")) {
             panel.hidePopover();
           } else {
             panel.showPopover();
             placePanel();
+            untrack = trackAnchor(placePanel, () => panel.matches(":popover-open"));
           }
         });
-
-        panel.addEventListener('toggle', function (e) {
-          if (e.newState === 'open') details.setAttribute('open', '');
-          else details.removeAttribute('open');
+        panel.addEventListener("toggle", (e) => {
+          if (e.newState === "open") {
+            details.setAttribute("open", "");
+          } else {
+            details.removeAttribute("open");
+            if (untrack) {
+              untrack();
+              untrack = null;
+            }
+          }
         });
       });
     }
-
-    var targetEl = root.documentElement || root;
-    if (targetEl.dataset.vuiMenusReady) return;
-    targetEl.dataset.vuiMenusReady = '1';
-
+    const target = root.documentElement || root;
+    if (target.dataset.vuiMenusReady) return;
+    target.dataset.vuiMenusReady = "1";
     document.addEventListener(
-      'toggle',
-      function (e) {
-        var d = e.target;
-        if (d.matches && d.matches('details.dropdown') && d.open) {
-          document.querySelectorAll('details.dropdown[open]').forEach(function (o) {
+      "toggle",
+      (e) => {
+        const d = e.target;
+        if (d.matches && d.matches("details.dropdown") && d.open) {
+          document.querySelectorAll("details.dropdown[open]").forEach((o) => {
             if (o !== d) o.open = false;
           });
         }
       },
-      true,
+      true
     );
-
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('details.dropdown')) {
-        document.querySelectorAll('details.dropdown[open]').forEach(function (o) {
-          o.open = false;
-        });
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest("details.dropdown")) {
+        document.querySelectorAll("details.dropdown[open]").forEach((o) => o.open = false);
         return;
       }
-      var item = e.target.closest('details.dropdown a, details.dropdown button');
-      if (item && !e.target.closest('summary')) {
-        var d = item.closest('details.dropdown');
-        if (d) setTimeout(function () { d.open = false; }, 80);
+      const item = e.target.closest("details.dropdown a, details.dropdown button");
+      if (item && !e.target.closest("summary")) {
+        const d = item.closest("details.dropdown");
+        if (d) setTimeout(() => d.open = false, 80);
       }
     });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      var open = document.querySelector('details.dropdown[open]');
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      const open = document.querySelector("details.dropdown[open]");
       if (!open) return;
       open.open = false;
-      var summary = open.querySelector(':scope > summary');
+      const summary = open.querySelector(":scope > summary");
       if (summary) summary.focus();
     });
   }
-
-  function toolbars(root) {
-    root = root || document;
-    root.querySelectorAll('[role="toolbar"]').forEach(function (bar) {
+  function toolbars(root = document) {
+    root.querySelectorAll('[role="toolbar"]').forEach((bar) => {
       if (bar.dataset.vuiToolbarReady) return;
-      bar.dataset.vuiToolbarReady = '1';
-
-      var items = function () {
-        return Array.prototype.slice
-          .call(bar.querySelectorAll('button, a[href], select, [tabindex]'))
-          .filter(function (el) {
-            return !el.disabled && el.offsetParent !== null;
-          });
-      };
-      var setStop = function (active) {
-        items().forEach(function (el) {
-          el.tabIndex = el === active ? 0 : -1;
-        });
-      };
-      var list = items();
+      bar.dataset.vuiToolbarReady = "1";
+      const items = () => [...bar.querySelectorAll("button, a[href], select, [tabindex]")].filter(
+        (el) => !el.disabled && el.offsetParent !== null
+      );
+      const setStop = (active) => items().forEach((el) => el.tabIndex = el === active ? 0 : -1);
+      const list = items();
       if (list.length) setStop(list[0]);
-
-      bar.addEventListener('keydown', function (e) {
-        var vertical = bar.classList.contains('vertical');
-        var fwd = vertical ? 'ArrowDown' : 'ArrowRight';
-        var back = vertical ? 'ArrowUp' : 'ArrowLeft';
-        var cur = items();
-        var i = cur.indexOf(document.activeElement);
+      bar.addEventListener("keydown", (e) => {
+        const vertical = bar.classList.contains("vertical");
+        const fwd = vertical ? "ArrowDown" : "ArrowRight";
+        const back = vertical ? "ArrowUp" : "ArrowLeft";
+        const cur = items();
+        const i = cur.indexOf(document.activeElement);
         if (i === -1) return;
-        var n;
+        let n;
         if (e.key === fwd) n = (i + 1) % cur.length;
         else if (e.key === back) n = (i - 1 + cur.length) % cur.length;
-        else if (e.key === 'Home') n = 0;
-        else if (e.key === 'End') n = cur.length - 1;
+        else if (e.key === "Home") n = 0;
+        else if (e.key === "End") n = cur.length - 1;
         else return;
         e.preventDefault();
         setStop(cur[n]);
         cur[n].focus();
       });
-      bar.addEventListener('focusin', function (e) {
-        if (items().indexOf(e.target) !== -1) setStop(e.target);
+      bar.addEventListener("focusin", (e) => {
+        if (items().includes(e.target)) setStop(e.target);
       });
     });
   }
-
   function ensureToaster(placement) {
-    var region = document.querySelector('.vui.toaster, .vui .toaster');
+    let region = document.querySelector(".vui.toaster, .vui .toaster");
     if (!region) {
-      region = document.createElement('div');
-      region.className = 'vui toaster' + (placement ? ' ' + placement : '');
-      region.setAttribute('aria-live', 'polite');
-      region.setAttribute('aria-atomic', 'false');
+      region = document.createElement("div");
+      region.className = "vui toaster" + (placement ? " " + placement : "");
+      region.setAttribute("aria-live", "polite");
+      region.setAttribute("aria-atomic", "false");
       document.body.appendChild(region);
     }
     return region;
   }
-
-  function toast(message, options) {
-    options = options || {};
-    if (typeof options === 'string') options = {tone: options};
-    var tone = options.tone || '';
-    var title = options.title || '';
-    var duration = options.duration == null ? 4000 : options.duration;
-    var role = options.role || 'status';
-    var dismissible = options.dismissible !== false;
-
-    var region = ensureToaster(options.placement || '');
-    var el = document.createElement('div');
-    el.className = 'toast' + (tone ? ' ' + tone : '');
-    el.setAttribute('role', role === 'alert' ? 'alert' : 'status');
-
-    var body = document.createElement('div');
+  function toast(message, options = {}) {
+    if (!isBrowser) return null;
+    if (typeof options === "string") options = { tone: options };
+    const {
+      tone = "",
+      title = "",
+      duration = 4e3,
+      role = "status",
+      dismissible = true,
+      placement = ""
+    } = options;
+    const region = ensureToaster(placement);
+    const el = document.createElement("div");
+    el.className = "toast" + (tone ? " " + tone : "");
+    el.setAttribute("role", role === "alert" ? "alert" : "status");
+    const body = document.createElement("div");
     if (title) {
-      var strong = document.createElement('strong');
+      const strong = document.createElement("strong");
       strong.textContent = title;
       body.appendChild(strong);
     }
-    body.appendChild(document.createTextNode(message == null ? '' : String(message)));
+    body.appendChild(document.createTextNode(message == null ? "" : String(message)));
     el.appendChild(body);
-
-    var timer;
-    var dismiss = function () {
+    let timer;
+    const dismiss = () => {
       if (el.dataset.leaving) return;
-      el.dataset.leaving = '1';
+      el.dataset.leaving = "1";
       clearTimeout(timer);
-      el.classList.add('is-leaving');
-      var done = function () { el.remove(); };
-      el.addEventListener('animationend', done, {once: true});
+      el.classList.add("is-leaving");
+      const done = () => el.remove();
+      el.addEventListener("animationend", done, { once: true });
       setTimeout(done, 400);
     };
-
     if (dismissible) {
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'icon small';
-      btn.setAttribute('aria-label', 'Dismiss');
-      btn.setAttribute('data-close', '');
-      btn.innerHTML = '<i>close</i>';
-      btn.addEventListener('click', dismiss);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "icon small";
+      btn.setAttribute("aria-label", "Dismiss");
+      btn.setAttribute("data-close", "");
+      btn.innerHTML = "<i>close</i>";
+      btn.addEventListener("click", dismiss);
       el.appendChild(btn);
     }
-
     region.appendChild(el);
     if (duration > 0) timer = setTimeout(dismiss, duration);
-
-    return {el: el, dismiss: dismiss};
+    return { el, dismiss };
   }
-
-  function init(root) {
+  function carousels(root = document) {
+    if (window.CSS && CSS.supports("scroll-marker-group: after")) return;
+    const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    const scope = root === document ? document : root;
+    const icon = (glyph) => {
+      const i = document.createElement("i");
+      i.textContent = glyph;
+      return i;
+    };
+    const button = (cls, label, glyph) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = cls;
+      b.setAttribute("aria-label", label);
+      b.appendChild(icon(glyph));
+      return b;
+    };
+    scope.querySelectorAll(".vui .carousel, .vui.carousel").forEach((track) => {
+      if (track.dataset.vuiCarouselReady) return;
+      track.dataset.vuiCarouselReady = "1";
+      const slides = [...track.children];
+      if (!slides.length) return;
+      const shell = document.createElement("div");
+      shell.className = "vui-carousel-shell";
+      track.parentNode.insertBefore(shell, track);
+      shell.appendChild(track);
+      const current = () => {
+        const base = track.getBoundingClientRect().left;
+        let best = 0;
+        let min = Infinity;
+        slides.forEach((s, i) => {
+          const d = Math.abs(s.getBoundingClientRect().left - base);
+          if (d < min) {
+            min = d;
+            best = i;
+          }
+        });
+        return best;
+      };
+      const goto = (i) => {
+        const slide = slides[Math.max(0, Math.min(slides.length - 1, i))];
+        const delta = slide.getBoundingClientRect().left - track.getBoundingClientRect().left;
+        track.scrollBy({ left: delta, behavior });
+      };
+      let prev = null;
+      let next = null;
+      if (!track.classList.contains("no-arrows")) {
+        prev = button("vui-carousel-prev", "Previous", "chevron_left");
+        next = button("vui-carousel-next", "Next", "chevron_right");
+        prev.addEventListener("click", () => goto(current() - 1));
+        next.addEventListener("click", () => goto(current() + 1));
+        shell.append(prev, next);
+      }
+      let dots = [];
+      if (!track.classList.contains("no-dots")) {
+        const group = document.createElement("div");
+        group.className = "vui-carousel-dots";
+        group.setAttribute("aria-label", "Choose slide");
+        dots = slides.map((s, i) => {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "vui-carousel-dot";
+          dot.setAttribute("aria-label", `Slide ${i + 1}`);
+          dot.addEventListener("click", () => goto(i));
+          group.appendChild(dot);
+          return dot;
+        });
+        shell.appendChild(group);
+      }
+      const sync = () => {
+        const i = current();
+        dots.forEach((dot, j) => {
+          const on = j === i;
+          dot.classList.toggle("is-current", on);
+          if (on) dot.setAttribute("aria-current", "true");
+          else dot.removeAttribute("aria-current");
+        });
+        if (prev) prev.disabled = i === 0;
+        if (next) next.disabled = i === slides.length - 1;
+      };
+      let raf = 0;
+      track.addEventListener(
+        "scroll",
+        () => {
+          cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(sync);
+        },
+        { passive: true }
+      );
+      addEventListener("resize", sync);
+      sync();
+    });
+  }
+  function init(root = document) {
+    if (!isBrowser) return;
     tabs(root);
     animateOnView(root);
     clocks(root);
     drawers(root);
+    tooltips(root);
     menus(root);
     toolbars(root);
+    carousels(root);
   }
-
-  window.vui = {
-    init: init,
-    tabs: tabs,
-    setValue: setValue,
-    drawers: drawers,
-    menus: menus,
-    toolbars: toolbars,
-    toast: toast,
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
+  var VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, carousels, toast };
+  var vantaui_default = VantaUI;
+  if (isBrowser) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => init());
+    } else {
       init();
-    });
-  } else {
-    init();
+    }
+    window.vui = VantaUI;
   }
 })();

@@ -136,10 +136,12 @@ For a full ARIA tree widget (roving tabindex, type-ahead, arrow-key walk) add `r
 
 ## Carousel (scroll-snap filmstrip)
 
-A `<div class="carousel">` is a horizontal scroll-snap track where the direct child elements are the slides. It supports swipe, scroll, and keyboard navigation by default. On browsers that support native CSS carousels, it automatically adds navigation arrows and a row of snap-marker dots without requiring any JavaScript or external libraries.
+A `<div class="carousel">` is a horizontal scroll-snap track where the direct child elements are the slides. It supports swipe, scroll, and keyboard navigation by default. On browsers that support native CSS carousels (Chrome 135+), it automatically adds navigation arrows and a row of snap-marker dots with no JavaScript and no external library.
+
+On browsers without the native CSS carousel (Firefox and Safari today), load the optional `vantaui-css/js` and its `carousels()` behaviour injects matching arrows and dots so the carousel stays navigable. Without that script the track still scrolls, swipes, and takes keyboard focus, so it always works; the script only restores the arrows and dots where the browser cannot draw them yet. See the JS reference: https://vantaui-css.khodok.com/llms-js.txt
 
 - Size slides with `--vui-slide`.
-- `.peek` shows a sliver of the next slide · `.full` snaps one slide per view · `.clean` hides the scrollbar · `.no-arrows` / `.no-dots` drop either native control.
+- `.peek` shows a sliver of the next slide · `.full` snaps one slide per view · `.clean` hides the scrollbar · `.no-arrows` / `.no-dots` drop either control (native or injected).
 
 ```html
 <div class="carousel peek" style="--vui-slide: 18rem">

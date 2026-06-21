@@ -5206,6 +5206,98 @@
     }
   }
 
+  @supports not (scroll-marker-group: after) {
+    :where(.vui .vui-carousel-shell) {
+      position: relative;
+    }
+
+    :where(.vui .vui-carousel-prev), :where(.vui .vui-carousel-next) {
+      z-index: 2;
+      border: var(--border-hair) solid var(--hairline-accent);
+      background-color: color-mix(in srgb, var(--bg-void) 82%, transparent);
+      block-size: 38px;
+      inline-size: 38px;
+      color: var(--accent);
+      cursor: pointer;
+      clip-path: var(--clip-notch);
+      --bevel-sm: 6px;
+      transition: color var(--dur-fast) var(--ease-hud),
+      border-color var(--dur-fast) var(--ease-hud),
+      background-color var(--dur-fast) var(--ease-hud);
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      line-height: 1;
+      display: flex;
+      position: absolute;
+      inset-block-start: 50%;
+    }
+
+    :where(.vui .vui-carousel-prev) {
+      inset-inline-start: 0;
+      translate: 10px -50%;
+    }
+
+    :where(.vui .vui-carousel-next) {
+      inset-inline-end: 0;
+      translate: -10px -50%;
+    }
+
+    :where(.vui .vui-carousel-prev) > i, :where(.vui .vui-carousel-next) > i {
+      font-size: 1.25rem;
+    }
+
+    :where(.vui .vui-carousel-prev):hover, :where(.vui .vui-carousel-next):hover {
+      border-color: var(--accent);
+      background-color: var(--surface-panel);
+      box-shadow: var(--glow-cyan-sm);
+    }
+
+    :where(.vui .vui-carousel-prev):focus-visible, :where(.vui .vui-carousel-next):focus-visible {
+      box-shadow: var(--focus-ring);
+      outline: none;
+    }
+
+    :where(.vui .vui-carousel-prev):disabled, :where(.vui .vui-carousel-next):disabled {
+      opacity: .3;
+      color: var(--text-faint);
+      cursor: default;
+      box-shadow: none;
+    }
+
+    :where(.vui .vui-carousel-dots) {
+      inline-size: 100%;
+      padding-block: var(--space-4) 0;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      display: flex;
+    }
+
+    :where(.vui .vui-carousel-dot) {
+      border: var(--border-thin) solid var(--hairline-strong);
+      block-size: 12px;
+      inline-size: 12px;
+      clip-path: var(--clip-notch);
+      --bevel-sm: 2px;
+      cursor: pointer;
+      transition: background-color var(--dur-fast) var(--ease-hud),
+      border-color var(--dur-fast) var(--ease-hud);
+      background-color: #0000;
+      padding: 0;
+    }
+
+    :where(.vui .vui-carousel-dot):hover {
+      border-color: var(--hairline-accent);
+    }
+
+    :where(.vui .vui-carousel-dot).is-current {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      box-shadow: var(--glow-cyan-sm);
+    }
+  }
+
   @supports (corner-shape: bevel) {
     :where(.vui .carousel:not(.vui-clip):not(.vui-clip *))::scroll-button(inline-start) {
       clip-path: none;

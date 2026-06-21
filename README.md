@@ -220,15 +220,24 @@ Colors are **OKLCH** (the `dist` build targets engines that support it; the `src
 ## Develop
 
 ```bash
-npm run build     # bundle src/ → dist/vantaui.css + dist/vantaui.min.css (LightningCSS)
+npm run build     # bundle src/ → dist/vantaui.css + dist/vantaui.min.css (LightningCSS); also regenerates js/vantaui.global.js
+npm run lint      # Baseline gate: @eslint/css use-baseline (CSS) + eslint-plugin-compat (JS)
 npm run palette   # regenerate the OKLCH palette from the source hex values
 ```
 
 Source lives in `src/` (tokens → reset → base → layout → components → utilities), wired into cascade layers by `src/vantaui.css`. Open `docs/index.html` for the full gallery.
 
+`js/vantaui.js` is the single source of truth for the optional behaviours; `js/vantaui.global.js` (the plain-`<script>` build) is generated from it by `npm run build`, so do not edit it by hand. A husky pre-commit hook runs `lint-staged` over changed files.
+
+### Baseline gate
+
+`npm run lint` flags any non-Baseline web feature added without a fallback, so compatibility is not a guess. CSS is checked by `@eslint/css`'s `use-baseline` rule (reading the official [web-features](https://github.com/web-platform-dx/web-features) dataset) at the "newly available" level; JS is checked by `eslint-plugin-compat` against the `browserslist` in `package.json`. Features we knowingly ship above Baseline are listed with their fallbacks in `eslint.config.js`; a new one that is not listed warns until you give it a fallback (or, once reviewed, add it there). The caniuse-based `stylelint-no-unsupported-browser-features` is intentionally not used: it does not track the newest features (scroll-marker, `corner-shape`, anchor positioning), which is exactly where guesswork hurts.
+
 ## Browser support
 
-Targets evergreen browsers from ~2023: requires `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, and `conic-gradient` (specifically Chrome/Edge 111+, Firefox 121+, and Safari 16.4+).
+Targets evergreen browsers from ~2023: Chrome/Edge 111+, Firefox 121+, and Safari 16.4+. The Baseline floor is `:has()`, cascade layers, container queries, `color-mix()`, `oklch()`, `mask`, and `conic-gradient`.
+
+VantaUI is CSS-first and works in Firefox and Safari, not only Chrome. Where Chrome ships a newer feature the others lack (native CSS carousel controls, anchor-positioned popovers, `corner-shape` bevels, animated `<details>`), Chrome uses that superior no-JS path and the others fall back. The feature either degrades to a plain but working state, or, where a plain state would be unusable, the optional JS restores parity. The clearest example is the carousel: Chrome draws the arrows and dots natively, and on Firefox/Safari the optional `carousels()` behaviour injects matching controls. JS is only ever used where CSS cannot do the job yet.
 
 ## Acknowledgements
 
