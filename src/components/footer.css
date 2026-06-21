@@ -154,6 +154,12 @@
     align-items: start;
     gap: 10px;
   }
+  & :where(nav) {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 6px;
+  }
   /* a brand block in the lead column (first link + its emblem) */
   & :where(section > a:first-child) {
     display: inline-flex;

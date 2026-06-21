@@ -3,10 +3,10 @@
     {
       "path": ".",
     },
-    {
-      "path": "../AKStrats",
-      "name": "Arkham Knight Strats",
-    },
+    // {
+    //   "path": "../AKStrats",
+    //   "name": "Arkham Knight Strats",
+    // },
   ],
   "settings": {
     "liveServer.settings.multiRootWorkspaceName": "vantaui-css",

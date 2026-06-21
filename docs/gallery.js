@@ -459,6 +459,7 @@
       blurb:
         'A <code>&lt;header&gt;</code> containing a <code>&lt;nav&gt;</code> becomes an app bar with no class required. The first <code>&lt;a&gt;</code> is the brand; the first <code>&lt;nav&gt;</code> pushes trailing actions right; a <code>&lt;form role="search"&gt;</code> is the search shell; a <code>&lt;menu&gt;</code> is the trailing cluster. A container query collapses the nav to a burger when the bar itself is narrow.',
       play: {
+        resize: true,
         state: {tone: '', shape: '', align: '', size: '', sticky: false, search: false},
         controls: [
           {
@@ -528,6 +529,7 @@
       blurb:
         'A bare <code>&lt;footer&gt;</code> (outside an <code>&lt;article&gt;</code>/<code>&lt;dialog&gt;</code>) is the page footer. Pick a shape: the default hairline strip, <code>status</code> (a dense telemetry bar where each child is a cell, where you can add <code>signal</code> for the accent tone), or <code>columns</code> (an auto-fit sitemap; a <code>.bottom</code> child spans full width).',
       play: {
+        resize: true,
         state: {shape: '', glow: false, base: false},
         controls: [
           {
@@ -686,6 +688,7 @@
       examples: [
         {
           frame: true,
+          resize: true,
           code: '<aside class="drawer" id="demoDrawer">\n  <header>\n    <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n    <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n  </header>\n  <nav>\n    <h6>Telemetry</h6>\n    <a class="active"><i>space_dashboard</i>Overview</a>\n    <a><i>radar</i>Scan</a>\n    <a><i>map</i>City Map</a>\n    <h6>System</h6>\n    <a><i>handyman</i>Loadout</a>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <footer>\n    <button class="ghost block"><i>home</i>Sign out</button>\n  </footer>\n</aside>',
           demo: '<div class="vui" style="block-size:600px">\n  <aside class="drawer" id="demoDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <a><i>map</i>City Map</a>\n      <h6>System</h6>\n      <a><i>handyman</i>Loadout</a>\n      <a><i>settings</i>Setup</a>\n    </nav>\n    <footer>\n      <button class="ghost block"><i>home</i>Sign out</button>\n    </footer>\n  </aside>\n  <header>\n    <button class="icon vui-until-m" data-open="demoDrawer" aria-label="Open menu"><i>menu</i></button>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button aria-label="Profile"><i>account_circle</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Command Center</h1>\n      <p>The sidebar is pinned on desktop and collapses to an off-canvas drawer on phones (resize to see it switch).</p>\n    </div>\n  </main>\n</div>',
         },
@@ -701,6 +704,7 @@
         'Mobile-first like BeerCSS: children stack on the smallest screen, then opt into spans with <code>vui-s* / vui-m* / vui-l*</code> (small / medium / large breakpoints).',
       examples: [
         {
+          resize: true,
           code: '<div class="vui-grid">\n  <article class="vui-s12 vui-m6 vui-l4">A</article>\n  <article class="vui-s12 vui-m6 vui-l4">B</article>\n  <article class="vui-s12 vui-m12 vui-l4">C</article>\n</div>',
         },
       ],
@@ -743,6 +747,7 @@
         '<code>vui-prose</code> is a responsive grid for long-form text. It centres copy to a readable measure (65ch) while letting images, figures, blockquotes and code bleed wider. Use <code>bleed</code> to widen to the container sides, <code>bleed-full</code> to go edge-to-edge.',
       examples: [
         {
+          resize: true,
           code: '<article class="vui-prose">\n  <h1>Knightfall Protocol</h1>\n  <p class="vui-eyebrow">Security Level: Classified</p>\n  <p>To preserve the security of Gotham City, the Knightfall Protocol has been established as a final contingency. In the event of primary identity compromise, all core assets are to be decommissioned.</p>\n\n  <blockquote>"The city needs a legend. Something worse than me."</blockquote>\n\n  <figure class="bleed">\n    <img src="preview.png" alt="Tactical HUD preview" style="aspect-ratio:16/9;object-fit:cover">\n    <figcaption>Fig. 01: VantaUI Tactical HUD telemetry.</figcaption>\n  </figure>\n\n  <p>All field agents are instructed to stand down. All communication links will be terminated.</p>\n</article>',
         },
       ],
@@ -1119,7 +1124,6 @@
       blurb:
         'A 270° arc readout built from a single conic-gradient with no SVG and no JavaScript. The value renders from <code>--value</code>; leave <code>&lt;b&gt;</code> empty and a counter fills it. Fluid by default — it scales with the viewport; set <code>--size</code> for a fixed footprint. Tone with a colour word.',
       play: {
-        resize: true,
         state: {tone: '', value: 87, size: 8},
         controls: [
           {
@@ -1157,6 +1161,7 @@
       blurb:
         'Semantic <code>nav[role=tablist]</code> + <code>button[role=tab]</code>. The optional JS wires clicks, arrow keys, and panel visibility via <code>aria-controls</code>. A trailing <code>&lt;small&gt;</code> is a count chip. (Clicking a tab here is the live JS at work.)',
       play: {
+        resize: true,
         state: {active: 0, count: true},
         controls: [
           {
@@ -1236,6 +1241,7 @@
       blurb:
         'A semantic <code>&lt;table&gt;</code> becomes a telemetry grid: uppercase eyebrow headers, hairline rows, cyan hover. Mark numeric cells with <code>data-num</code>; tint a row with a colour word. Cells <strong>wrap by default</strong> and columns are fixed-width, so a bare table never overflows. Add <code>nowrap</code> to keep cells on one line, which you can then wrap in <code>.scroll</code> to scroll instead of stretch.',
       play: {
+        resize: true,
         state: {
           density: '',
           striped: false,

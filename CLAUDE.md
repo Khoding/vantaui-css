@@ -47,6 +47,31 @@ This repo follows the global CSS conventions in `~/.claude/CLAUDE.md` (Vanilla C
 
 ## Build & checks
 
-- Build: `npm run build` (LightningCSS → `dist/vantaui.css` + `dist/vantaui.min.css`).
+- Build: `npm run build` (LightningCSS → `dist/vantaui.css` + `dist/vantaui.min.css`; also regenerates `js/vantaui.global.js` via esbuild).
+- Lint: `npm run lint` (ESLint Baseline gate — run this after any CSS or JS change).
 - Overflow audit: `npm run audit:overflow`. Screenshots: `npm run shot`. Palette: `npm run palette`.
-- Do not edit `dist/` by hand — it is generated.
+- Do not edit `dist/` or `js/vantaui.global.js` by hand — both are generated.
+
+## Cross-browser compatibility
+
+VantaUI targets Chrome/Edge 111+, Firefox 121+, and Safari 16.4+. Chrome often ships features the others lack; the rules below keep that from becoming a silent regression.
+
+**The Baseline gate**
+
+`npm run lint` runs `@eslint/css` with `use-baseline: ['warn', { available: 'newly' }]` (reading the official `web-features` dataset) for CSS and `eslint-plugin-compat` for JS. It understands `@supports`, so already-guarded features stay quiet. Features knowingly shipped above Baseline are listed with their fallbacks in `eslint.config.js`; any new one warns until it gets a fallback (or is reviewed and added there). Run the gate after every CSS/JS change.
+
+**The CSS-first rule**
+
+Where Chrome ships a CSS feature that Firefox/Safari lack, use it inside `@supports (feature: value)`. Outside that block write a fallback that keeps the component usable. JS is only ever used to restore parity where CSS cannot do the job yet — never to replace a pure-CSS path that already works.
+
+**`@supports not` for JS-backed fallbacks**
+
+When a JS behaviour injects DOM to compensate for a missing CSS feature, scope its fallback styles under `@supports not (feature: value)` so Chrome never loads them. The gate (`eslint.config.js`) should list the feature in `allowSelectors` or `allowProperties` with a note pointing to the `@supports` guard.
+
+**clip-path and borders in Firefox**
+
+Firefox treats polygon clip-path edges as exclusive: a 1px border exactly at `y=0` or `y=100%` falls on the boundary and gets sub-pixel-clipped. The `--clip-chamfer` and `--clip-notch` tokens in `src/tokens/spacing.css` compensate by extending every flat polygon edge 1px beyond the border-box (`-1px` / `calc(100% + 1px)`). Keep this extension in place if you modify those tokens. Chrome is unaffected because `@supports (corner-shape: bevel)` removes `clip-path` on those elements entirely.
+
+**`js/vantaui.js` is the single source of truth**
+
+`js/vantaui.global.js` is generated from it by `npm run build`. Never hand-edit the global file — add any new behaviour to `vantaui.js`, then rebuild.
