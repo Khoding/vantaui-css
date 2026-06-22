@@ -61,7 +61,7 @@ A single headline metric on a chamfered, standalone plate (no core panel needed)
 </div>
 ```
 
-The tone word sets the value's glow. Lay several out in a `vui-autogrid`.
+The tone word sets the value's glow, the value is readout-sized, and the label renders as a `//` system eyebrow. Lay several out in a `vui-autogrid`.
 
 ```js
 // stats: [{label, value, sub, tone}]

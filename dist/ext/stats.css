@@ -1,3 +1,4 @@
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components, vui.ext, vui.utilities;
 @layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components;
 
 @layer vui.ext {
@@ -30,19 +31,29 @@
   :where(.vui-stat-label) {
     font-family: var(--font-display);
     font-size: var(--fs-2xs);
-    font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-wide);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
     text-transform: uppercase;
     color: var(--text-muted);
+    align-items: center;
+    gap: 8px;
+    display: inline-flex;
+  }
+
+  :where(.vui-stat-label):before {
+    content: "//";
+    letter-spacing: 0;
+    color: var(--_c, var(--accent));
   }
 
   :where(.vui-stat-value) {
     font-family: var(--font-hud);
-    font-size: var(--fs-2xl);
+    font-size: var(--fs-3xl);
     font-weight: var(--fw-bold);
-    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-wide);
     color: var(--_c);
     text-shadow: 0 0 12px color-mix(in srgb, var(--_c) 45%, transparent);
+    line-height: 1;
   }
 
   :where(.vui-stat-sub) {
@@ -86,6 +97,7 @@
   :where(.vui-bar) {
     flex-direction: column;
     flex: 1;
+    justify-content: flex-end;
     align-items: center;
     block-size: 100%;
     min-inline-size: 0;
@@ -108,10 +120,11 @@
     block-size: calc(var(--v, 0) * 100%);
     background-color: var(--_c);
     min-block-size: 3px;
+    max-block-size: calc(100% - 2.2rem);
     box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
     clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
     transition: block-size var(--dur-slow) var(--ease-hud);
-    margin-block-start: auto;
+    flex-shrink: 0;
   }
 
   :where(.vui-bar-label) {
@@ -251,7 +264,7 @@
     border: var(--border-hair) solid var(--hairline);
     border-radius: var(--radius-xs);
     background-color: color-mix(in srgb, var(--_c) calc(var(--level, 0) * 25%), var(--surface-inset));
-    box-shadow: 0 0 6px color-mix(in srgb, var(--_c) calc(var(--level, 0) * 15%), transparent);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--_c) calc((var(--level, 0) - 3) * 55%), transparent);
   }
 
   :where(.vui-heatmap > .vui-cell-pad) {

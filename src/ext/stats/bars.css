@@ -36,6 +36,7 @@
 :where(.vui-bar) {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
   flex: 1;
   min-inline-size: 0;
@@ -52,14 +53,16 @@
   color: var(--text-muted);
 }
 
-/* The fill anchors to the bottom; auto top-margin pushes it down so the
-   value label sits just above the bar's top edge. */
+/* The bar (and its value above it) sit at the bottom via the column's
+   justify-content. flex-shrink:0 keeps the proportional height; max-block-size
+   leaves headroom at the top for the value label and below for the axis label. */
 :where(.vui-bar-fill) {
   inline-size: 100%;
   max-inline-size: 42px;
   block-size: calc(var(--v, 0) * 100%);
   min-block-size: 3px;
-  margin-block-start: auto;
+  max-block-size: calc(100% - 2.2rem);
+  flex-shrink: 0;
   background-color: var(--_c);
   box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
   clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);

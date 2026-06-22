@@ -143,20 +143,54 @@
       render: function () {
         function row(label, without, withJs) {
           return (
-            '<tr><td><code>' + label + '</code></td><td>' + without + '</td><td>' + withJs + '</td></tr>'
+            '<tr><td><code>' +
+            label +
+            '</code></td><td>' +
+            without +
+            '</td><td>' +
+            withJs +
+            '</td></tr>'
           );
         }
         return (
           '<table>' +
           '<thead><tr><th>Component</th><th>Without JS</th><th>With JS</th></tr></thead>' +
           '<tbody>' +
-          row('tabs()', 'Styled buttons, no panel switching', 'Click + arrow-key wiring, panel show/hide, ARIA') +
-          row('carousels() on Firefox / Safari', 'Scrollable and swipeable, no navigation controls', 'Prev/next arrows + dot row injected (Chrome 135+ does this natively, so carousels() is a no-op there)') +
-          row('menus()', 'Native <code>&lt;details&gt;</code> open/close; may be clipped by <code>clip-path</code>', 'Top-layer Popover, light-dismiss, Esc, scroll-pinned') +
-          row('drawers()', 'Use inline <code>onclick="…showModal()"</code>', '<code>[data-open]</code> / <code>[data-close]</code> declarative wiring') +
-          row('tooltips()', 'CSS <code>::after</code> fallback on <code>[data-tip]</code>', 'Fixed-position, viewport-clamped, follows scroll') +
-          row('toolbars()', 'Default tab order', 'Roving tabindex, arrow keys, Home/End (ARIA toolbar)') +
-          row('data-animate', 'Static <code>--value</code>', 'Counts up from 0 when scrolled into view') +
+          row(
+            'tabs()',
+            'Styled buttons, no panel switching',
+            'Click + arrow-key wiring, panel show/hide, ARIA',
+          ) +
+          row(
+            'carousels() on Firefox / Safari',
+            'Scrollable and swipeable, no navigation controls',
+            'Prev/next arrows + dot row injected (Chrome 135+ does this natively, so carousels() is a no-op there)',
+          ) +
+          row(
+            'menus()',
+            'Native <code>&lt;details&gt;</code> open/close; may be clipped by <code>clip-path</code>',
+            'Top-layer Popover, light-dismiss, Esc, scroll-pinned',
+          ) +
+          row(
+            'drawers()',
+            'Use inline <code>onclick="…showModal()"</code>',
+            '<code>[data-open]</code> / <code>[data-close]</code> declarative wiring',
+          ) +
+          row(
+            'tooltips()',
+            'CSS <code>::after</code> fallback on <code>[data-tip]</code>',
+            'Fixed-position, viewport-clamped, follows scroll',
+          ) +
+          row(
+            'toolbars()',
+            'Default tab order',
+            'Roving tabindex, arrow keys, Home/End (ARIA toolbar)',
+          ) +
+          row(
+            'data-animate',
+            'Static <code>--value</code>',
+            'Counts up from 0 when scrolled into view',
+          ) +
           row('toast()', 'None', 'Programmatic snackbar; no CSS path') +
           row('[data-vui-clock]', 'None', 'Live HH:MM:SS, updated every second') +
           '</tbody>' +
@@ -169,18 +203,18 @@
           noDemo: true,
           code:
             'const links = [...document.querySelectorAll(\'nav a[href^="#"]\')];\n' +
-            'const map = Object.fromEntries(links.map(l => [l.getAttribute(\'href\').slice(1), l]));\n\n' +
+            "const map = Object.fromEntries(links.map(l => [l.getAttribute('href').slice(1), l]));\n\n" +
             'const io = new IntersectionObserver(\n' +
             '  entries => {\n' +
             '    entries.forEach(en => {\n' +
             '      if (!en.isIntersecting) return;\n' +
-            '      links.forEach(l => l.classList.remove(\'active\'));\n' +
-            '      map[en.target.id]?.classList.add(\'active\');\n' +
+            "      links.forEach(l => l.classList.remove('active'));\n" +
+            "      map[en.target.id]?.classList.add('active');\n" +
             '    });\n' +
             '  },\n' +
-            '  { rootMargin: \'-12% 0px -78% 0px\', threshold: 0 },\n' +
+            "  { rootMargin: '-12% 0px -78% 0px', threshold: 0 },\n" +
             ');\n\n' +
-            'document.querySelectorAll(\'section[id]\').forEach(s => io.observe(s));',
+            "document.querySelectorAll('section[id]').forEach(s => io.observe(s));",
         },
       ],
     },
@@ -1225,18 +1259,27 @@
             .map(function (t, i) {
               var chip = s.count && t[2] ? ' <small>' + t[2] + '</small>' : '';
               return (
-                '  <button role="tab" aria-controls="' + t[0] + '"' +
+                '  <button role="tab" aria-controls="' +
+                t[0] +
+                '"' +
                 (i === active ? ' aria-selected="true"' : '') +
-                '>' + t[1] + chip + '</button>'
+                '>' +
+                t[1] +
+                chip +
+                '</button>'
               );
             })
             .join('\n');
           var panels = tabs
             .map(function (t, i) {
               return (
-                '<div role="tabpanel" id="' + t[0] + '"' +
+                '<div role="tabpanel" id="' +
+                t[0] +
+                '"' +
                 (i === active ? '' : ' hidden') +
-                '>' + t[3] + '</div>'
+                '>' +
+                t[3] +
+                '</div>'
               );
             })
             .join('\n');
@@ -1260,11 +1303,16 @@
           var name = s.exclusive ? ' name="brief"' : '';
           var open = s.open ? ' open' : '';
           return (
-            '<details' + name + open + '>\n' +
+            '<details' +
+            name +
+            open +
+            '>\n' +
             '  <summary>Mission briefing</summary>\n' +
             '  Intercept the broker at pier 14-C before the data drive changes hands.\n' +
             '</details>\n' +
-            '<details' + name + '>\n' +
+            '<details' +
+            name +
+            '>\n' +
             '  <summary>Known associates</summary>\n' +
             '  Ironhand · The Chemist · Night Courier.\n' +
             '</details>'
@@ -1388,7 +1436,11 @@
           var c = ['spinner', s.tone, s.size, s.block && 'block'].filter(Boolean);
           var label = s.label ? 'Scanning sector…' : '';
           return (
-            '<span class="' + c.join(' ') + '" role="status" aria-label="Loading">' + label + '</span>'
+            '<span class="' +
+            c.join(' ') +
+            '" role="status" aria-label="Loading">' +
+            label +
+            '</span>'
           );
         },
       },
@@ -1419,7 +1471,9 @@
           /* skeletons fill their container, so size the group, not the element */
           return (
             '<div aria-hidden="true" style="inline-size:320px">\n' +
-            '  <div class="' + c.join(' ') + '"></div>\n' +
+            '  <div class="' +
+            c.join(' ') +
+            '"></div>\n' +
             '</div>'
           );
         },
@@ -1508,10 +1562,18 @@
             var g = ['avatar', s.shape, s.size].filter(Boolean).join(' ');
             return (
               '<div class="avatar-group">\n' +
-              '  <span class="' + g + '">A1</span>\n' +
-              '  <span class="' + g + '">B2</span>\n' +
-              '  <span class="' + g + '">C3</span>\n' +
-              '  <span class="' + g + '">+5</span>\n' +
+              '  <span class="' +
+              g +
+              '">A1</span>\n' +
+              '  <span class="' +
+              g +
+              '">B2</span>\n' +
+              '  <span class="' +
+              g +
+              '">C3</span>\n' +
+              '  <span class="' +
+              g +
+              '">+5</span>\n' +
               '</div>'
             );
           }
@@ -1532,7 +1594,9 @@
         render: function (s) {
           var cls = s.stacked ? ' class="stacked"' : '';
           return (
-            '<dl' + cls + '>\n' +
+            '<dl' +
+            cls +
+            '>\n' +
             '  <dt>Operator</dt>\n  <dd>B. Wayne</dd>\n' +
             '  <dt>Clearance</dt>\n  <dd>OMEGA-7</dd>\n' +
             '  <dt>Sector</dt>\n  <dd>14-C</dd>\n' +
@@ -1594,13 +1658,25 @@
           var pips = '';
           for (var i = 1; i <= 5; i++) {
             pips +=
-              '\n  <label for="th' + i + '"><i>warning</i></label>' +
-              '<input type="radio" name="threat" id="th' + i + '" value="' + i + '"' +
+              '\n  <label for="th' +
+              i +
+              '"><i>warning</i></label>' +
+              '<input type="radio" name="threat" id="th' +
+              i +
+              '" value="' +
+              i +
+              '"' +
               (i === Number(s.value) ? ' checked' : '') +
               (s.readonly ? ' disabled' : '') +
               '>';
           }
-          return '<fieldset class="' + c.join(' ') + '">\n  <legend>Threat level</legend>' + pips + '\n</fieldset>';
+          return (
+            '<fieldset class="' +
+            c.join(' ') +
+            '">\n  <legend>Threat level</legend>' +
+            pips +
+            '\n</fieldset>'
+          );
         },
       },
     },
@@ -1650,12 +1726,18 @@
               return (
                 '  <label><input type="radio" name="view"' +
                 (i === Number(s.active) ? ' checked' : '') +
-                '><i>' + it[0] + '</i>' + it[1] + '</label>'
+                '><i>' +
+                it[0] +
+                '</i>' +
+                it[1] +
+                '</label>'
               );
             })
             .join('\n');
           return (
-            '<div class="' + c.join(' ') + '" role="radiogroup" aria-label="View mode">\n' +
+            '<div class="' +
+            c.join(' ') +
+            '" role="radiogroup" aria-label="View mode">\n' +
             labels +
             '\n</div>'
           );
@@ -1690,15 +1772,17 @@
           var items = [1, 2, 3]
             .map(function (n) {
               return (
-                '    <li><a' +
-                (n === page ? ' aria-current="page"' : '') +
-                '>' + n + '</a></li>'
+                '    <li><a' + (n === page ? ' aria-current="page"' : '') + '>' + n + '</a></li>'
               );
             })
             .join('\n');
           return (
-            '<nav class="' + cls + '" aria-label="Pagination">\n' +
-            '  <a aria-label="Previous page"' + prevDis + '><i>chevron_left</i></a>\n' +
+            '<nav class="' +
+            cls +
+            '" aria-label="Pagination">\n' +
+            '  <a aria-label="Previous page"' +
+            prevDis +
+            '><i>chevron_left</i></a>\n' +
             '  <ul>\n' +
             items +
             '\n    <li><span>…</span></li>\n    <li><a>12</a></li>\n' +
@@ -1767,7 +1851,9 @@
             ? '\n    <hr>\n    <button class="danger"><i>delete</i>Decommission</button>'
             : '';
           return (
-            '<details class="' + cls + '">\n' +
+            '<details class="' +
+            cls +
+            '">\n' +
             '  <summary>Actions <i>expand_more</i></summary>\n' +
             '  <menu>' +
             heading +
@@ -1793,7 +1879,9 @@
         render: function (s) {
           var attr = s.vertical ? ' class="vertical"' : '';
           return (
-            '<div role="toolbar"' + attr + ' aria-label="Map tools">\n' +
+            '<div role="toolbar"' +
+            attr +
+            ' aria-label="Map tools">\n' +
             '  <button class="icon" aria-label="Pan"><i>pan_tool</i></button>\n' +
             '  <button class="icon" aria-label="Measure"><i>straighten</i></button>\n' +
             '  <button class="icon" aria-label="Mark"><i>add_location</i></button>\n' +
@@ -1840,13 +1928,23 @@
           return (
             '<ul class="tree">\n' +
             '  <li>\n    <details open>\n      <summary><i>folder_open</i>Sector 14-C</summary>\n      <ul>\n' +
-            '        <li>' + leaf('description', 'case-001.dat') + '</li>\n' +
-            '        <li>' + leaf('description', 'case-002.dat') + '</li>\n' +
-            '        <li>\n          <details' + archiveOpen + '>\n            <summary><i>folder</i>archive</summary>\n            <ul>\n' +
-            '              <li>' + leaf('lock', 'sealed-07.dat') + '</li>\n' +
+            '        <li>' +
+            leaf('description', 'case-001.dat') +
+            '</li>\n' +
+            '        <li>' +
+            leaf('description', 'case-002.dat') +
+            '</li>\n' +
+            '        <li>\n          <details' +
+            archiveOpen +
+            '>\n            <summary><i>folder</i>archive</summary>\n            <ul>\n' +
+            '              <li>' +
+            leaf('lock', 'sealed-07.dat') +
+            '</li>\n' +
             '            </ul>\n          </details>\n        </li>\n' +
             '      </ul>\n    </details>\n  </li>\n' +
-            '  <li>' + leaf('map', 'city-grid.geo') + '</li>\n' +
+            '  <li>' +
+            leaf('map', 'city-grid.geo') +
+            '</li>\n' +
             '</ul>'
           );
         },
@@ -2054,7 +2152,11 @@
               return '<i class="vui-cell-pad"></i>';
             }).join('') +
             Array.from({length: 7 * 18}, function (_, i) {
-              return '<i style="--level:' + [0, 0, 1, 0, 2, 3, 1, 0, 4, 2, 1, 0, 3, 0, 1, 2][i % 16] + '"></i>';
+              return (
+                '<i style="--level:' +
+                [0, 0, 1, 0, 2, 3, 1, 0, 4, 2, 1, 0, 3, 0, 1, 2][i % 16] +
+                '"></i>'
+              );
             }).join('') +
             '</div></div>' +
             '<div class="vui-heatmap-legend">LESS' +
@@ -2095,7 +2197,7 @@
         {
           label: 'Donut (JS)',
           noDemo: true,
-          code: '// segments: [{color, value}]  ->  cumulative conic stops\nconst total = segments.reduce((s, x) => s + x.value, 0);\nlet acc = 0;\nconst stops = segments.map(s => {\n  acc += s.value;\n  return `${s.color} 0 ${(acc / total * 100).toFixed(2)}%`;\n}).join(\', \');\ndonut.style.setProperty(\'--vui-donut\', stops);',
+          code: "// segments: [{color, value}]  ->  cumulative conic stops\nconst total = segments.reduce((s, x) => s + x.value, 0);\nlet acc = 0;\nconst stops = segments.map(s => {\n  acc += s.value;\n  return `${s.color} 0 ${(acc / total * 100).toFixed(2)}%`;\n}).join(', ');\ndonut.style.setProperty('--vui-donut', stops);",
         },
         {
           label: 'Delta indicators',
@@ -2104,16 +2206,11 @@
         {
           label: 'Delta (JS)',
           noDemo: true,
-          code: '// n: the change value\nconst dir = n > 0 ? \'up\' : n < 0 ? \'down\' : \'flat\';\nel.className = `vui-delta ${dir}`;\nel.textContent = `${n > 0 ? \'+\' : \'\'}${n}%`;',
+          code: "// n: the change value\nconst dir = n > 0 ? 'up' : n < 0 ? 'down' : 'flat';\nel.className = `vui-delta ${dir}`;\nel.textContent = `${n > 0 ? '+' : ''}${n}%`;",
         },
         {
           label: 'Legend',
           code: '<ul class="vui-legend">\n  <li class="cyan">Notes</li>\n  <li class="amber">Edits</li>\n  <li class="green">Replies</li>\n</ul>',
-        },
-        {
-          label: 'Legend (JS)',
-          noDemo: true,
-          code: '// items: [{label, tone}]\nel.innerHTML = items.map(it => `<li class="${it.tone}">${it.label}</li>`).join(\'\');',
         },
       ],
     },
@@ -2171,11 +2268,7 @@
     return out + esc(code.slice(last));
   }
   function highlight(code) {
-    // Prefer JS when the snippet opens with a JS lead, even if it embeds HTML
-    // inside template literals (e.g. el.innerHTML = `<div …>`); otherwise an
-    // angle bracket anywhere would force the HTML tokenizer.
-    var looksJs = /^\s*(\/\/|\/\*|import |export |const |let |var |function )/.test(code);
-    return !looksJs && /<[a-z!/]/i.test(code) ? hlHTML(code) : hlJS(code);
+    return /<[a-z!/]/i.test(code) ? hlHTML(code) : hlJS(code);
   }
 
   /* ============================================================
@@ -2456,7 +2549,11 @@
          there is no recessed demo body, just a code block in a chamfered box) */
       var snippet = el('div', 'doc-example bleed vui-chamfer');
       snippet.innerHTML =
-        (ex.label ? '<footer class="doc-example__foot"><span class="doc-example__label">' + ex.label + '</span></footer>' : '') +
+        (ex.label
+          ? '<footer class="doc-example__foot"><span class="doc-example__label">' +
+            ex.label +
+            '</span></footer>'
+          : '') +
         '<div class="doc-code">' +
         '<button class="icon small doc-copy" type="button" aria-label="Copy code"><i>content_copy</i></button>' +
         '<pre><code>' +

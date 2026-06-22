@@ -710,7 +710,7 @@ The `vui-prose` long-form layout: a grid that centers text to a readable measure
 
 Small chart widgets in the HUD style. Tone any with a color word: cyan (default) · amber · green · red. All classes use the `vui-` prefix.
 
-- **Stat card** (`vui-stat-card`): a headline metric on a standalone chamfered plate. Children: `vui-stat-label`, `vui-stat-value` (glows in the tone), `vui-stat-sub`.
+- **Stat card** (`vui-stat-card`): a headline metric on a standalone chamfered plate. Children: `vui-stat-label` (a `//` system eyebrow), `vui-stat-value` (readout-sized, glows in the tone), `vui-stat-sub`.
 - **Bar chart** (`vui-bars`): vertical bars. Each `vui-bar` sets `--v` (height as a 0–1 fraction of the max); children `vui-bar-value`, `vui-bar-fill`, `vui-bar-label`. Track height via `--vui-bars-height`. Empty state: `vui-bars-empty`.
 - **Leaderboard** (`vui-leaderboard`, an `<ol>`): ranked `vui-board-row`s. Each holds `vui-board-rank` (add `top` to glow), `vui-board-main` > `vui-board-head` (`vui-board-name` + `vui-board-count`) and a `vui-board-bar` whose `--v` is width as a 0–1 fraction.
 - **Activity heatmap** (`vui-heatmap`): a GitHub-style calendar. Emit one `<i style="--level: 0..4">` per day; 7 rows flow into week columns automatically. A single `color-mix` scales fill and glow by `--level`. Empty pad cells: `vui-cell-pad`. Optional `vui-heatmap-legend` with `vui-heat-swatch` samples. Recipe: map `count` to a level (`count===0 ? 0 : Math.ceil(count/max*4)`), pad the first week so day 1 lands on its weekday, emit cells in date order; wrap in an `overflow-x:auto` scroller for a full year.

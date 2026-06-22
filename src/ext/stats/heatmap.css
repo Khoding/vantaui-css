@@ -43,7 +43,9 @@
   border: var(--border-hair) solid var(--hairline);
   border-radius: var(--radius-xs);
   background-color: color-mix(in srgb, var(--_c) calc(var(--level, 0) * 25%), var(--surface-inset));
-  box-shadow: 0 0 6px color-mix(in srgb, var(--_c) calc(var(--level, 0) * 15%), transparent);
+  /* Glow only the busiest cells (level 4). Lower levels resolve to a negative
+     mix percentage, which color-mix clamps to 0% — so no glow, like the original. */
+  box-shadow: 0 0 6px color-mix(in srgb, var(--_c) calc((var(--level, 0) - 3) * 55%), transparent);
 }
 
 /* Padding cell to offset the first week. Carries no data. */
