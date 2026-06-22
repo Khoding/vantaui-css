@@ -186,22 +186,31 @@ const fontsCss = readFileSync(resolve(srcDir, 'tokens/fonts.css'), 'utf8');
 const fontImports = fontsCss.match(REMOTE_IMPORT) || [];
 writeFileSync(tmpEntry, entryText.replace(LOCAL_FONTS_IMPORT, ''));
 
-// Re-insert the font import right after the leading `@layer …;` statement
-// (still a legal position for @import), else at the very top.
-function withFonts(code) {
-  if (!fontImports.length) return code;
-  const imports = fontImports.join('\n');
-  const m = code.match(/@layer[^;{]*;/);
-  if (m) {
-    const at = m.index + m[0].length;
-    return `${code.slice(0, at)}\n${imports}\n${code.slice(at)}`;
-  }
-  return `${imports}\n${code}`;
+// The canonical cascade-layer order, taken straight from the entry so it can
+// never drift from src/vantaui.css.
+const LAYER_ORDER = (entryText.match(/@layer[^{}]*?;/) || [''])[0].trim();
+
+// Re-assert the layer order + font @import at the very TOP of the bundle.
+// Why this is needed: LightningCSS drops our leading `@layer …;` ordering
+// statement, and because `vui.ext` is an empty (reserved) layer it re-emits it
+// as a trailing `@layer vui.ext;` at the END of the file. That broke two things:
+//   1. the cascade order — ext ended up ranked AFTER utilities (it must sit
+//      between components and utilities), and
+//   2. the font @import — anchored to that trailing statement, it landed after
+//      every rule, which is invalid (@import must precede all rules).
+// Prepending the explicit order statement fixes (1); putting the @import right
+// after it (a legal leading position, before any rule) fixes (2). The trailing
+// `@layer vui.ext;` LightningCSS still emits then becomes a harmless re-declare.
+function withHeader(code, {fonts}) {
+  const head = [];
+  if (LAYER_ORDER) head.push(LAYER_ORDER);
+  if (fonts && fontImports.length) head.push(...fontImports);
+  return head.length ? `${head.join('\n')}\n${code}` : code;
 }
 
 function build({entry, minify, outFile, fonts = false}) {
   const {code} = bundle({filename: entry, minify, targets});
-  const out = fonts ? withFonts(code.toString()) : code.toString();
+  const out = withHeader(code.toString(), {fonts});
   const dest = resolve(outDir, outFile);
   mkdirSync(dirname(dest), {recursive: true});
   writeFileSync(dest, out);

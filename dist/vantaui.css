@@ -1,3 +1,6 @@
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components, vui.ext, vui.utilities;
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block');
 @layer vui.tokens {
   :root {
     --ink-1000: oklch(12.5% .016 245.5);
@@ -5389,9 +5392,6 @@
 }
 
 @layer vui.ext;
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block');
-
 
 @layer vui.utilities {
   .vui-block {
