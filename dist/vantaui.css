@@ -257,7 +257,6 @@
     font-family: var(--font-ui);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overscroll-behavior-y: contain;
     text-rendering: optimizelegibility;
     min-block-size: 100dvh;
     margin: 0;

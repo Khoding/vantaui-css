@@ -33,11 +33,11 @@ body {
      app frame then scrolls up inside that too-tall body and drops its bottom
      command bar off-screen — most visibly right after an Android Chrome
      pull-to-refresh. Matching the frame's dvh keeps body == visible viewport,
-     so nothing scrolls. */
+     so nothing scrolls. (Pull-to-refresh is left intact: the stage's own
+     `overscroll-behavior: contain` keeps inner scroll from chaining out, and
+     with body == viewport there is no document scroll for the gesture to
+     displace.) */
   min-block-size: 100dvh;
-  /* Keep a pull-to-refresh / rubber-band overscroll from chaining to the
-     document and nudging the fixed app frame out of place. */
-  overscroll-behavior-y: contain;
   text-rendering: optimizeLegibility;
 }
 
