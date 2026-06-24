@@ -202,7 +202,7 @@ Any `.vui` element that directly holds a `<main>` becomes an app frame and place
 - `header.inset` flips the default: rail(s) rise full-height, the header is confined beside them.
 - The stage shows a faint hex-grid backdrop by default. Opt into vignette + scanlines with `.vignette` on the frame or `<body>` (off by default).
 - A `<footer>` and a bottom command bar (a side rail dropped to the floor, or `<nav class="bottom">`) can coexist: on phones they stack in separate rows — footer just above the command bar — instead of overlapping. From the `m` breakpoint up the rail returns to a column.
-- Mobile viewport hardening: the frame and `<body>` are both sized in `svh` (not `vh`/`dvh`) so the shell never exceeds the visible viewport — on mobile `vh`/`dvh` resolve to the toolbar-retracted (large) height, making the document scrollable and letting the bottom command bar drop below the fold (after an Android pull-to-refresh). The stage (`<main>`) sets `overscroll-behavior: contain` so its scroll never chains out to the document; pull-to-refresh stays intact.
+- Mobile viewport hardening: the frame and `<body>` are both sized in `svh` (not `vh`/`dvh`) so the shell never exceeds the visible viewport — on mobile `vh`/`dvh` resolve to the toolbar-retracted (large) height, making the document scrollable and letting the bottom command bar drop below the fold (after an Android pull-to-refresh). Nothing scrolls at the document level, so the bottom bar stays put and pull-to-refresh keeps working; `<main>` does all the scrolling.
 - Overflow philosophy: `<main>` is the scroll container; `min-inline-size: 0` confines wide children so chrome never slides. Genuine misuse scrolls visibly rather than being silently clipped.
 
 ## Header / app bar

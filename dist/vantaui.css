@@ -2803,7 +2803,6 @@
   :where(.vui:has( > main)) > main {
     min-inline-size: 0;
     padding: var(--hud-edge);
-    overscroll-behavior: contain;
     grid-area: main;
     position: relative;
     overflow-y: auto;

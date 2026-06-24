@@ -33,8 +33,8 @@ body {
      app frame drops its bottom command bar below the fold (most visibly after
      an Android Chrome pull-to-refresh). `svh` is the small, always-visible
      height; matching the frame keeps body == visible viewport so nothing
-     scrolls. (Pull-to-refresh stays intact: the stage's own
-     `overscroll-behavior: contain` keeps inner scroll from chaining out.) */
+     scrolls — and because nothing scrolls at the document level, the browser's
+     pull-to-refresh keeps working normally. */
   min-block-size: 100svh;
   text-rendering: optimizeLegibility;
 }
