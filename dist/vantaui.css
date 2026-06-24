@@ -2817,12 +2817,12 @@
     grid-template-rows: auto 1fr auto auto;
     grid-template-areas: "top"
                          "main"
-                         "foot"
-                         "bar";
+                         "status"
+                         "foot";
   }
 
-  :where(.vui:has( > main):has( > footer)) > :where(nav.left:not(.drawer), nav.right:not(.drawer), nav.bottom, aside:not(.drawer)) {
-    grid-area: bar;
+  :where(.vui:has( > main):has( > footer):has( > nav.left:not(.drawer),  > nav.right:not(.drawer),  > nav.bottom,  > aside:not(.drawer))) > footer {
+    grid-area: status;
   }
 
   :where(.vui:has( > main)):before {

@@ -102,10 +102,22 @@
 /* …but a <footer> and a bottom command bar (a side rail dropped to the floor,
    or a <nav class="bottom">) would then land in the SAME `foot` cell and
    overlap — one bar painting over the other. When BOTH are present, open a
-   dedicated `bar` row beneath the footer so each keeps its own space: the
-   footer sits just above the command bar, which stays pinned to the floor.
-   The `m`-up rules below restore a side rail to a vertical column and reset
-   the row track, so this only takes effect on phones. */
+   dedicated `status` row ABOVE the command bar and move the FOOTER up into it,
+   leaving the command bar in `foot`.
+
+   Why the footer moves and not the command bar: `foot` is the one bottom row
+   that EVERY template (mobile and desktop) defines, whereas `status` only
+   exists while this rule matches. A grid item assigned to a named area that
+   isn't currently defined is auto-placed into an IMPLICIT track past the last
+   explicit row — i.e. below the 100dvh frame, off-screen. Browsers re-run
+   `:has()` style invalidation a tick late after DOM swaps (e.g. a router
+   changing <main>), so for a beat the area can be assigned before its row is
+   declared. Keeping the command bar (the primary nav) in the always-defined
+   `foot` row means that transient beat can only ever drop the secondary
+   footer, never the nav. Both the row and the footer's placement are gated by
+   the SAME selector so they resolve together.
+   The `m`-up rules below restore a side rail to a vertical column, return the
+   footer to `foot`, and reset the row track, so this only bites on phones. */
 :where(
   .vui:has(> main):has(> footer):has(
       > nav.left:not(.drawer),
@@ -118,12 +130,19 @@
   grid-template-areas:
     'top'
     'main'
-    'foot'
-    'bar';
+    'status'
+    'foot';
 }
-:where(.vui:has(> main):has(> footer))
-  > :where(nav.left:not(.drawer), nav.right:not(.drawer), nav.bottom, aside:not(.drawer)) {
-  grid-area: bar;
+:where(
+    .vui:has(> main):has(> footer):has(
+        > nav.left:not(.drawer),
+        > nav.right:not(.drawer),
+        > nav.bottom,
+        > aside:not(.drawer)
+      )
+  )
+  > footer {
+  grid-area: status;
 }
 
 /* ---------- Stage backdrop ----------
