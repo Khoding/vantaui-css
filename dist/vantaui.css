@@ -2813,6 +2813,18 @@
     grid-area: foot;
   }
 
+  :where(.vui:has( > main):has( > footer):has( > nav.left:not(.drawer),  > nav.right:not(.drawer),  > nav.bottom,  > aside:not(.drawer))) {
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas: "top"
+                         "main"
+                         "foot"
+                         "bar";
+  }
+
+  :where(.vui:has( > main):has( > footer)) > :where(nav.left:not(.drawer), nav.right:not(.drawer), nav.bottom, aside:not(.drawer)) {
+    grid-area: bar;
+  }
+
   :where(.vui:has( > main)):before {
     z-index: 0;
     background-image: var(--grid-fine);
@@ -2844,6 +2856,7 @@
     :where(.vui:has( > main)) {
       --rail-left-width: auto;
       --rail-right-width: auto;
+      grid-template-rows: auto 1fr auto;
     }
 
     :where(.vui:has( > main):has( > nav.left.drawer)), :where(.vui:has( > main):has( > aside.drawer:not(.right))) {

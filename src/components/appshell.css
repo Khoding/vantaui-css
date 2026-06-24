@@ -87,7 +87,8 @@
   overflow-y: auto;
 }
 /* footer, an explicit bottom bar, AND a side rail all live along the bottom
-   on phones (use a footer OR a rail/bottom-nav on small screens, not both).
+   on phones. A lone one fills `foot`; a footer PLUS a command bar are split
+   into two rows by the rule below so they never overlap.
    Excluded: any side drawer, which stays off-canvas.
    NB: these landmark→slot selectors must use :where() (not :is()) for the
    child list. :is() would inherit the specificity of its most specific arg
@@ -97,6 +98,32 @@
   > :where(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
   z-index: 3;
   grid-area: foot;
+}
+/* …but a <footer> and a bottom command bar (a side rail dropped to the floor,
+   or a <nav class="bottom">) would then land in the SAME `foot` cell and
+   overlap — one bar painting over the other. When BOTH are present, open a
+   dedicated `bar` row beneath the footer so each keeps its own space: the
+   footer sits just above the command bar, which stays pinned to the floor.
+   The `m`-up rules below restore a side rail to a vertical column and reset
+   the row track, so this only takes effect on phones. */
+:where(
+  .vui:has(> main):has(> footer):has(
+      > nav.left:not(.drawer),
+      > nav.right:not(.drawer),
+      > nav.bottom,
+      > aside:not(.drawer)
+    )
+) {
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-areas:
+    'top'
+    'main'
+    'foot'
+    'bar';
+}
+:where(.vui:has(> main):has(> footer))
+  > :where(nav.left:not(.drawer), nav.right:not(.drawer), nav.bottom, aside:not(.drawer)) {
+  grid-area: bar;
 }
 
 /* ---------- Stage backdrop ----------
@@ -144,6 +171,10 @@
   :where(.vui:has(> main)) {
     --rail-left-width: auto;
     --rail-right-width: auto;
+    /* Collapse the mobile-only `bar` row (footer + bottom command bar stack):
+       from `m` up a side rail becomes a column and a <nav class="bottom">
+       returns to `foot`, so three rows is always correct here. */
+    grid-template-rows: auto 1fr auto;
   }
   /* Set column widths to drawer width if it's a drawer sidebar */
   :where(.vui:has(> main):has(> nav.left.drawer)),

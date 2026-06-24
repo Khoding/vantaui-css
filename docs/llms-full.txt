@@ -201,6 +201,7 @@ Any `.vui` element that directly holds a `<main>` becomes an app frame and place
 - A drawer sidebar (`<nav class="left drawer">` / `<aside class="drawer">`) sizes the rail column to `--drawer-width` (default 16.5rem).
 - `header.inset` flips the default: rail(s) rise full-height, the header is confined beside them.
 - The stage shows a faint hex-grid backdrop by default. Opt into vignette + scanlines with `.vignette` on the frame or `<body>` (off by default).
+- A `<footer>` and a bottom command bar (a side rail dropped to the floor, or `<nav class="bottom">`) can coexist: on phones they stack in separate rows — footer just above the command bar — instead of overlapping. From the `m` breakpoint up the rail returns to a column.
 - Overflow philosophy: `<main>` is the scroll container; `min-inline-size: 0` confines wide children so chrome never slides. Genuine misuse scrolls visibly rather than being silently clipped.
 
 ## Header / app bar
