@@ -2821,7 +2821,7 @@
                          "foot";
   }
 
-  :where(.vui:has( > main):has( > footer):has( > nav.left:not(.drawer),  > nav.right:not(.drawer),  > nav.bottom,  > aside:not(.drawer))) > footer {
+  :where(.vui:has( > main):has( > footer):has( > nav.left:not(.drawer),  > nav.right:not(.drawer),  > nav.bottom,  > aside:not(.drawer))) > :where(footer) {
     grid-area: status;
   }
 

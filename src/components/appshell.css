@@ -144,6 +144,13 @@
     'status'
     'foot';
 }
+/* `> :where(footer)`, not a bare `> footer`: the bare type selector would carry
+   (0,0,1) specificity and outrank the zero-specificity desktop rule below that
+   returns the footer to `foot` — trapping the footer in `status` even from `m`
+   up, where that row doesn't exist, so it auto-places into an implicit track off
+   to the side. Wrapping it in :where() keeps this at (0,0,0) like every other
+   landmark→slot rule, so plain source order resolves the tie: status wins on
+   phones (this rule is later), foot wins from `m` up (that rule is later still). */
 :where(
     .vui:has(> main):has(> footer):has(
         > nav.left:not(.drawer),
@@ -152,7 +159,7 @@
         > aside:not(.drawer)
       )
   )
-  > footer {
+  > :where(footer) {
   grid-area: status;
 }
 
