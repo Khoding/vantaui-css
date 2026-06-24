@@ -21,15 +21,26 @@
    ============================================================ */
 
 /* ---------- The frame ---------- */
-/* The frame claims the whole viewport with dvh. A viewport unit is
+/* The frame claims the visible viewport with `svh`. A viewport unit is
    self-sufficient — it needs NO height on any ancestor — so the frame fills
    the screen whether it sits on <body> or is mounted into a wrapper like
    <div id="app"> (Vue / Nuxt / etc). That's the whole height story: no
    html/body/#app chain to own, in any setup.
 
+   Why `svh` and not `dvh`/`vh`: on mobile (notably Chrome Android at load /
+   after a pull-to-refresh) `dvh` and `vh` resolve to the LARGE, toolbar-
+   retracted viewport, so a frame sized that way is TALLER than the currently
+   visible area — the document turns scrollable and the bottom command bar gets
+   pushed below the fold (you can scroll down to find it). `svh` is the SMALL
+   (toolbar-shown) viewport, i.e. the height that is guaranteed to be on screen.
+   Sizing the shell to `svh` keeps it within the fold, which also means the
+   document never scrolls, so the toolbar never retracts and no gap opens at the
+   bottom — the stage (<main>) does all the scrolling.
+
    (We can't detect "an ancestor wrapper that contains a frame" in CSS to size
-   it, because that needs :has() inside :has(), which the spec forbids — so dvh
-   on the frame itself is both simpler and the only thing that actually works.) */
+   it, because that needs :has() inside :has(), which the spec forbids — so the
+   viewport unit on the frame itself is both simpler and the only thing that
+   actually works.) */
 :where(.vui:has(> main)) {
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -38,8 +49,8 @@
     'top'
     'main'
     'foot';
-  block-size: 100dvh;
-  max-block-size: 100dvh;
+  block-size: 100svh;
+  max-block-size: 100svh;
   /* No `overflow-x: hidden` here. The frame doesn't need to clip the inline axis:
      overflow is contained at the source — `min-inline-size: 0` on <main> (below)
      confines a wide child to the stage, clipped house-shapes (panels, chamfer
@@ -87,7 +98,7 @@
   overflow-y: auto;
   /* The stage owns the scroll. `contain` stops that scroll from chaining out to
      the document when it hits an end — which on mobile would otherwise scroll
-     the whole shell and toggle the browser toolbar, knocking the dvh-sized
+     the whole shell and toggle the browser toolbar, knocking the svh-sized
      frame (and its bottom command bar) out of alignment with the viewport. */
   overscroll-behavior: contain;
 }
@@ -114,7 +125,7 @@
    that EVERY template (mobile and desktop) defines, whereas `status` only
    exists while this rule matches. A grid item assigned to a named area that
    isn't currently defined is auto-placed into an IMPLICIT track past the last
-   explicit row — i.e. below the 100dvh frame, off-screen. Browsers re-run
+     explicit row — i.e. below the 100svh frame, off-screen. Browsers re-run
    `:has()` style invalidation a tick late after DOM swaps (e.g. a router
    changing <main>), so for a beat the area can be assigned before its row is
    declared. Keeping the command bar (the primary nav) in the always-defined

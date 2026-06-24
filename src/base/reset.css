@@ -27,17 +27,15 @@ body {
   font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* `dvh`, NOT `vh`: `100vh` is the toolbar-RETRACTED (large) viewport height
-     on mobile, so while the URL bar is showing it overhangs the screen and
-     makes the whole document scrollable by the toolbar's height. A dvh-sized
-     app frame then scrolls up inside that too-tall body and drops its bottom
-     command bar off-screen — most visibly right after an Android Chrome
-     pull-to-refresh. Matching the frame's dvh keeps body == visible viewport,
-     so nothing scrolls. (Pull-to-refresh is left intact: the stage's own
-     `overscroll-behavior: contain` keeps inner scroll from chaining out, and
-     with body == viewport there is no document scroll for the gesture to
-     displace.) */
-  min-block-size: 100dvh;
+  /* `svh`, NOT `vh`/`dvh`: on mobile `vh` and `dvh` resolve to the toolbar-
+     RETRACTED (large) viewport, so while the URL bar is showing the body
+     overhangs the screen, the document turns scrollable, and a viewport-sized
+     app frame drops its bottom command bar below the fold (most visibly after
+     an Android Chrome pull-to-refresh). `svh` is the small, always-visible
+     height; matching the frame keeps body == visible viewport so nothing
+     scrolls. (Pull-to-refresh stays intact: the stage's own
+     `overscroll-behavior: contain` keeps inner scroll from chaining out.) */
+  min-block-size: 100svh;
   text-rendering: optimizeLegibility;
 }
 

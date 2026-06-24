@@ -8,7 +8,7 @@ Related: interactive behaviours (drawers/menus/tabs/toolbars JS) → https://van
 
 ## App frame ("write the landmarks, get the layout")
 
-Any `.vui` element that DIRECTLY holds a `<main>` becomes an app frame and places landmarks by element without requiring wrapper classes. On `<body>` it fills the viewport (`100dvh`); nested in a sized box it fills the box.
+Any `.vui` element that DIRECTLY holds a `<main>` becomes an app frame and places landmarks by element without requiring wrapper classes. On `<body>` it fills the visible viewport (`100svh`); nested in a sized box it fills the box.
 
 ```html
 <body class="vui">
@@ -25,7 +25,7 @@ Any `.vui` element that DIRECTLY holds a `<main>` becomes an app frame and place
 - The stage shows a faint hex-grid backdrop by default. Opt into the atmospheric vignette + scanlines with `.vignette` on the frame or on `<body>` (which is off by default because it can hurt readability over scrolling text).
 - Drop the rail for a simple stacked header / main / footer shell.
 - A `<footer>` and a bottom command bar (a side rail dropped to the floor, or `<nav class="bottom">`) can coexist: on phones they stack in separate rows — footer just above the command bar — instead of overlapping. From the `m` breakpoint up the rail returns to a column, so they no longer share the floor.
-- Mobile viewport hardening: the frame is sized in `dvh` and `<body>` matches (`min-block-size: 100dvh`, not `100vh`) so the page never reserves more height than the visible viewport while the browser toolbar is shown — otherwise the document becomes scrollable and the bottom command bar can scroll off-screen (e.g. after an Android Chrome pull-to-refresh). The stage (`<main>`) sets `overscroll-behavior: contain` so its scroll never chains out to the document; pull-to-refresh is left intact.
+- Mobile viewport hardening: the frame is sized in `svh` and `<body>` matches (`min-block-size: 100svh`, not `100vh`/`100dvh`) so the shell never exceeds the visible viewport — on mobile `vh`/`dvh` resolve to the toolbar-retracted (large) height, which makes the document scrollable and pushes the bottom command bar below the fold (most visibly after an Android Chrome pull-to-refresh). The stage (`<main>`) sets `overscroll-behavior: contain` so its scroll never chains out to the document; pull-to-refresh is left intact.
 
 Overflow philosophy: the stage (`<main>`) is the scroll container; `min-inline-size: 0` confines wide children inside it so chrome never slides. Genuine misuse scrolls visibly rather than being silently clipped.
 

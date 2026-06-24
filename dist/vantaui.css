@@ -258,7 +258,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizelegibility;
-    min-block-size: 100dvh;
+    min-block-size: 100svh;
     margin: 0;
   }
 
@@ -2779,8 +2779,8 @@
 
   :where(.vui:has( > main)) {
     background-color: var(--bg-base);
-    block-size: 100dvh;
-    max-block-size: 100dvh;
+    block-size: 100svh;
+    max-block-size: 100svh;
     color: var(--text-primary);
     font-family: var(--font-ui);
     grid-template: "top"
