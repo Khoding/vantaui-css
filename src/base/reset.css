@@ -27,7 +27,17 @@ body {
   font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-block-size: 100vh;
+  /* `dvh`, NOT `vh`: `100vh` is the toolbar-RETRACTED (large) viewport height
+     on mobile, so while the URL bar is showing it overhangs the screen and
+     makes the whole document scrollable by the toolbar's height. A dvh-sized
+     app frame then scrolls up inside that too-tall body and drops its bottom
+     command bar off-screen — most visibly right after an Android Chrome
+     pull-to-refresh. Matching the frame's dvh keeps body == visible viewport,
+     so nothing scrolls. */
+  min-block-size: 100dvh;
+  /* Keep a pull-to-refresh / rubber-band overscroll from chaining to the
+     document and nudging the fixed app frame out of place. */
+  overscroll-behavior-y: contain;
   text-rendering: optimizeLegibility;
 }
 
@@ -84,8 +94,28 @@ a:hover {
    only the targeted rule above runs, and genuine misuse still scrolls (visible
    and reachable) rather than being silently broken here. */
 @media (max-width: 20rem) {
-  :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, th, td,
-         caption, figcaption, blockquote, a, button, label, summary, legend) {
+  :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    dt,
+    dd,
+    th,
+    td,
+    caption,
+    figcaption,
+    blockquote,
+    a,
+    button,
+    label,
+    summary,
+    legend
+  ) {
     overflow-wrap: anywhere;
   }
 }

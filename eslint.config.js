@@ -48,6 +48,9 @@ export default defineConfig([
           // fallback is the clip-path path (see `@supports (corner-shape: bevel)`).
           // position-anchor: native carousel arrows, JS fallback in carousels().
           // interpolate-size: height animation behind `@supports selector(::details-content)`.
+          // overscroll-behavior(-x/-y): app-frame pull-to-refresh / scroll-chain
+          // containment; an unsupporting browser simply keeps its default
+          // overscroll, no layout impact.
           // The rest degrade to the UA default with no layout impact.
           allowProperties: [
             'corner-start-start-shape',
@@ -56,7 +59,9 @@ export default defineConfig([
             'corner-end-end-shape',
             'position-anchor',
             'interpolate-size',
+            'overscroll-behavior',
             'overscroll-behavior-x',
+            'overscroll-behavior-y',
             'text-size-adjust',
             'user-select',
             'accent-color',

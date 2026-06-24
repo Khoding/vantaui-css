@@ -257,8 +257,9 @@
     font-family: var(--font-ui);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: contain;
     text-rendering: optimizelegibility;
-    min-block-size: 100vh;
+    min-block-size: 100dvh;
     margin: 0;
   }
 
@@ -2803,6 +2804,7 @@
   :where(.vui:has( > main)) > main {
     min-inline-size: 0;
     padding: var(--hud-edge);
+    overscroll-behavior: contain;
     grid-area: main;
     position: relative;
     overflow-y: auto;

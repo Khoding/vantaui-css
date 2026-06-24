@@ -85,6 +85,11 @@
   min-inline-size: 0;
   padding: var(--hud-edge);
   overflow-y: auto;
+  /* The stage owns the scroll. `contain` stops that scroll from chaining out to
+     the document when it hits an end — which on mobile would otherwise scroll
+     the whole shell and toggle the browser toolbar, knocking the dvh-sized
+     frame (and its bottom command bar) out of alignment with the viewport. */
+  overscroll-behavior: contain;
 }
 /* footer, an explicit bottom bar, AND a side rail all live along the bottom
    on phones. A lone one fills `foot`; a footer PLUS a command bar are split
