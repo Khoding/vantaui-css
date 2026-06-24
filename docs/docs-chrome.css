@@ -1,0 +1,321 @@
+/* ============================================================
+   Docs chrome (unlayered → always wins over the framework).
+   Shared by index.html and extensions.html.
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+}
+
+/* The dark base must live on the document itself so it shows through every
+   gutter and reflow gap, ensuring no stray light colors leak between cards. */
+html,
+body {
+  background: var(--bg-void);
+}
+
+/* ---------- Main column ----------
+   Horizontal padding is the page gutter. It never drops below 20px, so on the
+   smallest phone the content always keeps a margin from the screen edge. */
+.doc-main > * {
+  max-inline-size: 1080px;
+}
+
+/* ---------- Hero ---------- */
+.doc-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(var(--space-8), 6vw, var(--space-11)) clamp(var(--space-6), 5vw, var(--space-8)) clamp(var(--space-7), 5vw, var(--space-10));
+  border: 1px solid var(--hairline);
+  --bevel-md: 16px;
+  /* shape from the .vui-chamfer class in markup */
+  margin-block-end: var(--space-9);
+  background-color: var(--bg-void);
+  background-image: var(--grid-fine);
+  background-size: var(--grid-fine-size);
+}
+
+.doc-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--vignette);
+  pointer-events: none;
+}
+
+.doc-hero__in {
+  position: relative;
+  z-index: 1;
+}
+
+.doc-hero h1 {
+  font-size: var(--fs-5xl);
+  margin: 0 0 16px;
+  text-wrap: balance;
+}
+
+.doc-hero h1 b {
+  color: var(--cyan-400);
+  text-shadow: var(--text-glow-cyan);
+}
+
+.doc-hero p {
+  max-inline-size: 56ch;
+  font-size: var(--fs-md);
+  color: var(--text-secondary);
+  margin: 0 0 24px;
+  text-wrap: pretty;
+}
+
+.doc-hero__meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Sections ----------
+   Each section is the framework's .vui-section (hairline divider, block
+   rhythm, scroll anchor, first-child reset) composed with .vui-prose for the
+   measure (see gallery.js). The docs only widen the measure/bleed, set the
+   grid's row rhythm, and size the lead .blurb — everything else is inherited
+   from the framework, so the section chrome matches the rest of the library. */
+.doc-main .vui-section {
+  --prose-width: 72ch;
+  --bleed-width: 1100px;
+  row-gap: var(--space-7);
+}
+
+.doc-main .vui-section.vui-prose > * {
+  margin-block: 0;
+}
+
+.doc-main .vui-section > .blurb {
+  font-size: var(--fs-base);
+}
+
+.doc-main .vui-section > .blurb code {
+  font-size: 0.85em;
+}
+
+/* ---------- Example: live demo + code ----------
+   The demo wrapper is a native `<article class="stage">`: the library paints
+   the chamfered plate, the recessed ink + scanlines body, and the surface
+   footer bar. We only zero the panel padding (children are full-bleed here)
+   and keep overflow:hidden so demo content is clipped to the plate in both
+   corner mechanisms (the static .doc-example.vui-chamfer code snippet — the
+   noDemo path — is a plain div and still needs this border + shape). */
+.doc-example {
+  margin-block-end: var(--space-6);
+  padding: 0;
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+}
+
+.doc-demo {
+  padding: clamp(var(--space-5), 3vw, var(--space-7));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.doc-demo > * {
+  max-inline-size: 100%;
+}
+
+/* Full-bleed chrome (header/footer) must stretch to a definite width:
+   the demo column is align-items:flex-start, and a header is a size
+   container (container-type:inline-size), so without a definite width it
+   would collapse while its content overflows. Stretch fixes both. */
+.doc-demo > header,
+.doc-demo > footer,
+.doc-demo > .vui-prose,
+.doc-demo > nav,
+/* Disclosure widgets shrink-wrap in this flex-start column, so opening one
+   resizes its width instantly (only block-size transitions). Stretching them
+   to a definite width keeps the open/close animation purely vertical. The
+   dropdown is an inline-block menu trigger, so it stays out. */
+.doc-demo > details:not(.dropdown),
+.doc-demo > ul.tree {
+  align-self: stretch;
+  inline-size: auto;
+}
+
+/* Any bare card cluster a demo drops in flows responsively by default:
+   as many ~13rem cards as fit, collapsing to a single full-width card. */
+.doc-demo .vui-autogrid {
+  inline-size: 100%;
+  --vui-min: 13rem;
+}
+
+.doc-demo--frame {
+  padding: 0;
+  display: block;
+}
+
+.doc-demo--frame .vui {
+  block-size: 440px;
+  min-block-size: 0;
+}
+
+.doc-code {
+  position: relative;
+  border-block-start: 1px solid var(--hairline);
+}
+
+.doc-code pre {
+  margin: 0;
+  border: 0;
+  clip-path: none;
+  border-radius: 0;
+  background: var(--ink-1000);
+  max-block-size: 360px;
+  overflow: auto;
+}
+
+/* Inline copy button: the framework's `button.icon small` supplies the
+   square notched control + hover; we only place it and tint when copied. */
+.doc-copy {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  z-index: 2;
+}
+
+.doc-copy.is-copied {
+  color: var(--green-500);
+  border-color: var(--green-500);
+}
+
+/* ---------- Syntax highlight (tactical palette) ---------- */
+.doc-code .tk-tag {
+  color: var(--cyan-400);
+}
+
+.doc-code .tk-attr {
+  color: var(--amber-400);
+}
+
+.doc-code .tk-str {
+  color: var(--green-400);
+}
+
+.doc-code .tk-com {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.doc-code .tk-pun {
+  color: var(--text-muted);
+}
+
+.doc-code .tk-kw {
+  color: var(--cyan-400);
+  font-weight: 600;
+}
+
+.doc-code .tk-num {
+  color: var(--amber-400);
+}
+
+/* ---------- Token galleries ---------- */
+.doc-tok-h {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: var(--space-6) 0 10px;
+}
+
+.doc-tokens .doc-tok-h:first-child {
+  margin-block-start: 0;
+}
+
+.doc-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(110px, 100%), 1fr));
+  gap: 8px;
+}
+
+.doc-swatch {
+  block-size: 72px;
+  border: 1px solid var(--hairline);
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+  --bevel-md: 7px;
+  /* shape from the .vui-chamfer class in markup */
+}
+
+.doc-swatch__name {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.doc-spaces {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-block-end: var(--space-7);
+}
+
+.doc-space {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.doc-space__bar {
+  block-size: 14px;
+  background: var(--cyan-400);
+  box-shadow: var(--glow-cyan-sm);
+  flex: none;
+}
+
+.doc-space__tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.doc-geo {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.doc-geo__plate {
+  inline-size: 150px;
+  block-size: 84px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-panel);
+  border: 1px solid var(--hairline-strong);
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--cyan-400);
+}
+
+/* Phones: tighten the rhythm so content breathes without ever shrinking type
+   into illegibility. Layout reflows; gutters stay. */
+@media (max-width: 40rem) {
+  .doc-main .vui-section {
+    padding-block: var(--space-7);
+  }
+
+  .doc-geo {
+    gap: 10px;
+  }
+
+  .doc-geo__plate {
+    inline-size: 100%;
+    flex: 1 1 130px;
+  }
+
+  .doc-hero__meta {
+    gap: 8px;
+  }
+}

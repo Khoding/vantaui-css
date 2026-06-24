@@ -117,10 +117,9 @@
   :where(.vui-bar-fill) {
     inline-size: 100%;
     max-inline-size: 42px;
-    block-size: calc(var(--v, 0) * 100%);
+    block-size: calc(var(--v, 0) * .8 * 100%);
     background-color: var(--_c);
     min-block-size: 3px;
-    max-block-size: calc(100% - 2.2rem);
     box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);
     clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
     transition: block-size var(--dur-slow) var(--ease-hud);

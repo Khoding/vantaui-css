@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VantaUI CSS: Tactical HUD design system</title>
+  <title>VantaUI CSS: Extensions (VantaStats &amp; VantaProse)</title>
   <meta name="description"
-    content="VantaUI CSS is a dark, angular, military-telemetry tactical HUD design system. It is a semantic-first CSS library that is framework-agnostic with Vue & Nuxt adapters." />
+    content="Opt-in VantaUI add-ons: VantaStats data-viz widgets (stat cards, bar charts, leaderboards, activity heatmaps, sparklines, donuts, deltas) and the VantaProse long-form layout. Interactive, play with the data." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <meta name="theme-color" content="#03070c" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,17 +14,17 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" />
   <link rel="stylesheet" href="dist/vantaui.min.css" />
-  <!-- Prose add-on powers the doc section layout (.vui-section.vui-prose); the
-       extension demos themselves live on extensions.html. -->
+  <!-- Both add-ons: prose powers the doc section layout + the prose demo; stats powers the widget playgrounds. -->
   <link rel="stylesheet" href="dist/ext/prose.min.css" />
+  <link rel="stylesheet" href="dist/ext/stats.min.css" />
   <link rel="stylesheet" href="playground.css" />
   <link rel="stylesheet" href="docs-chrome.css" />
 </head>
 
-<body class="vui vignette">
+<body class="vui vignette" data-doc-page="extensions">
   <header>
     <button class="icon vui-until-m" data-open="doc-side" aria-label="Open navigation"><i>menu</i></button>
-    <a href="#"><img src="assets/logo-mark.svg" alt="" width="28" height="28" /><span class="vui-from-s">
+    <a href="index.html"><img src="assets/logo-mark.svg" alt="" width="28" height="28" /><span class="vui-from-s">
         Vanta<b>UI</b>
         CSS
       </span></a>
@@ -32,8 +32,7 @@
       <button id="geo-toggle" class="ghost small" type="button" aria-pressed="false"
         title="Corner geometry: shape engine (click to force clip-path)"><i>deployed_code</i><span
           class="vui-from-s">Shape</span></button>
-      <a class="vui-from-s" href="extensions.html"><i>extension</i><span class="vui-from-s">Extensions</span></a>
-      <a class="badge cyan vui-from-s" href="https://github.com/Khoding/vantaui-css/releases">Releases</a>
+      <a class="vui-from-s" href="index.html"><i>arrow_back</i><span class="vui-from-s">Docs</span></a>
       <a class="icon" href="https://github.com/Khoding/vantaui-css" aria-label="GitHub repository" target="_blank"
         rel="noopener"><i>code</i></a>
     </menu>
@@ -44,22 +43,21 @@
       <span><img src="assets/logo-mark.svg" alt="" width="28" height="28" />Vanta<b>UI</b> CSS</span>
       <button class="icon" data-close aria-label="Close navigation"><i>close</i></button>
     </header>
-    <nav id="doc-nav" aria-label="Documentation"></nav>
+    <nav id="doc-nav" aria-label="Extensions"></nav>
   </aside>
 
   <main class="doc-main">
     <header class="doc-hero vui-chamfer">
       <div class="doc-hero__in">
-        <p class="vui-eyebrow">KHODTECH Tactical Interface</p>
-        <h1>Vanta<b>UI</b> CSS</h1>
-        <p>A dark, angular, military-telemetry <strong>tactical HUD</strong> design system, built as a semantic-first
-          CSS
-          library. Write proper HTML, get a HUD. Framework-agnostic, with first-class Vue &amp; Nuxt adapters and a
-          zero-dependency JS layer.</p>
+        <p class="vui-eyebrow">Opt-in add-ons</p>
+        <h1>Vanta<b>Stats</b> &amp; Vanta<b>Prose</b></h1>
+        <p>Optional features that live outside the core bundle, each loaded by its own import so the core stays slim.
+          VantaStats is a kit of pure-CSS data-viz widgets driven by custom properties; VantaProse is the long-form
+          layout. Drag the controls below to feed each one data.</p>
         <div class="doc-hero__meta">
-          <span class="badge green dot">Zero-CLS fonts</span>
-          <span class="badge cyan">Cascade layers</span>
-          <span class="badge neutral">No build required</span>
+          <span class="badge cyan">vantaui-css/stats</span>
+          <span class="badge cyan">vantaui-css/prose</span>
+          <span class="badge neutral">CSS-only, no JS shipped</span>
         </div>
       </div>
     </header>
@@ -67,9 +65,7 @@
     <div id="doc-main"></div>
   </main>
 
-  <!-- Shared source panel, featuring a native edge drawer (<dialog class="right">).
-       The framework supplies the slide-in, scrim, Esc + backdrop close;
-       gallery.js fills it with the current variant's clean code. -->
+  <!-- Shared source panel (same as the main docs). -->
   <dialog class="right" id="doc-codepanel" aria-label="Source code">
     <header>
       <div class="doc-codepanel__id">

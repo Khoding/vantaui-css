@@ -54,14 +54,15 @@
 }
 
 /* The bar (and its value above it) sit at the bottom via the column's
-   justify-content. flex-shrink:0 keeps the proportional height; max-block-size
-   leaves headroom at the top for the value label and below for the axis label. */
+   justify-content. The tallest bar fills 80% of the track; every bar scales by
+   the same factor, so proportional differences are preserved (a cap would
+   flatten the tall ones) while the top 20% holds the value label. flex-shrink:0
+   keeps that height from collapsing. */
 :where(.vui-bar-fill) {
   inline-size: 100%;
   max-inline-size: 42px;
-  block-size: calc(var(--v, 0) * 100%);
+  block-size: calc(var(--v, 0) * 0.8 * 100%);
   min-block-size: 3px;
-  max-block-size: calc(100% - 2.2rem);
   flex-shrink: 0;
   background-color: var(--_c);
   box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 55%, transparent);

@@ -2058,30 +2058,17 @@
       ],
     },
 
-    /* ---------------- EXTENSIONS (opt-in add-ons) ---------------- */
+    /* ---------------- EXTENSIONS (interactive; rendered on extensions.html) ---------------- */
     {
       group: 'Extensions',
       id: 'addons',
       title: 'Add-ons',
       blurb:
-        'Optional features live outside the core bundle, each with its own import, so core stays slim and you ship only what you use. Two ship today: <strong>VantaProse</strong> (the prose layout above) and <strong>VantaStats</strong> (the data-viz widgets below). They are pure CSS, driven by custom properties: you feed the numbers in, no JavaScript ships. Tone any stat widget with <code>cyan</code> (default), <code>amber</code>, <code>green</code>, or <code>red</code>.',
+        'Optional features live outside the core bundle, each with its own import, so core stays slim and you ship only what you use. Everything below is pure CSS driven by custom properties — drag the controls to feed it data. Tone any widget with <code>cyan</code> (default), <code>amber</code>, <code>green</code>, or <code>red</code>.',
       examples: [
         {
           noDemo: true,
-          code: "import 'vantaui-css';        // core\nimport 'vantaui-css/prose';  // VantaProse: long-form layout\nimport 'vantaui-css/stats';  // VantaStats: data-viz widgets\n\n/* plain HTML, after the core stylesheet:\n   <link rel=\"stylesheet\" href=\"dist/ext/stats.min.css\"> */",
-        },
-      ],
-    },
-    {
-      group: 'Extensions',
-      id: 'prose',
-      title: 'Prose layout',
-      blurb:
-        '<code>vui-prose</code> is a responsive grid for long-form text. It centres copy to a readable measure (65ch) while letting images, figures, blockquotes and code bleed wider. Use <code>bleed</code> to widen to the container sides, <code>bleed-full</code> to go edge-to-edge. It is an opt-in add-on: <code>import "vantaui-css/prose"</code> (markup unchanged from v1.x).',
-      examples: [
-        {
-          resize: true,
-          code: '<article class="vui-prose">\n  <h1>Knightfall Protocol</h1>\n  <p class="vui-eyebrow">Security Level: Classified</p>\n  <p>To preserve the security of Gotham City, the Knightfall Protocol has been established as a final contingency. In the event of primary identity compromise, all core assets are to be decommissioned.</p>\n\n  <blockquote>"The city needs a legend. Something worse than me."</blockquote>\n\n  <figure class="bleed">\n    <img src="preview.png" alt="Tactical HUD preview" style="aspect-ratio:16/9;object-fit:cover">\n    <figcaption>Fig. 01: VantaUI Tactical HUD telemetry.</figcaption>\n  </figure>\n\n  <p>All field agents are instructed to stand down. All communication links will be terminated.</p>\n</article>',
+          code: "import 'vantaui-css';        // core\nimport 'vantaui-css/prose';  // VantaProse: long-form layout\nimport 'vantaui-css/stats';  // VantaStats: data-viz widgets",
         },
       ],
     },
@@ -2090,13 +2077,27 @@
       id: 'stat-card',
       title: 'Stat cards',
       blurb:
-        'A headline metric on a standalone chamfered plate (no core panel needed). <code>vui-stat-value</code> glows in the card tone. Lay several out in a <code>vui-autogrid</code>.',
+        'A headline metric on a standalone chamfered plate. The label is a <code>//</code> eyebrow; the value is readout-sized and glows in the card tone.',
+      play: {
+        state: {tone: 'cyan', value: 1284, sub: true},
+        controls: [
+          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {type: 'range', key: 'value', label: 'Value', min: 0, max: 9999},
+          {type: 'toggle', key: 'sub', label: 'Sub-label'},
+        ],
+        render: function (s) {
+          var sub = s.sub ? '\n  <span class="vui-stat-sub">+12 vs. yesterday</span>' : '';
+          return (
+            '<div class="vui-stat-card ' + s.tone + '">\n' +
+            '  <small class="vui-stat-label">Notes today</small>\n' +
+            '  <strong class="vui-stat-value">' + s.value.toLocaleString() + '</strong>' + sub + '\n' +
+            '</div>'
+          );
+        },
+      },
       examples: [
         {
-          code: '<div class="vui-autogrid" style="--vui-min:11rem">\n  <div class="vui-stat-card cyan">\n    <small class="vui-stat-label">Notes today</small>\n    <strong class="vui-stat-value">1,284</strong>\n    <span class="vui-stat-sub">+12 vs. yesterday</span>\n  </div>\n  <div class="vui-stat-card amber">\n    <small class="vui-stat-label">Open cases</small>\n    <strong class="vui-stat-value">07</strong>\n    <span class="vui-stat-sub">2 escalated</span>\n  </div>\n  <div class="vui-stat-card green">\n    <small class="vui-stat-label">Uptime</small>\n    <strong class="vui-stat-value">99.9%</strong>\n    <span class="vui-stat-sub">30-day window</span>\n  </div>\n</div>',
-        },
-        {
-          label: 'JavaScript',
+          label: 'Wiring (JS)',
           noDemo: true,
           code: '// stats: [{label, value, sub, tone}]\nconst card = ({label, value, sub, tone = \'cyan\'}) => `\n  <div class="vui-stat-card ${tone}">\n    <small class="vui-stat-label">${label}</small>\n    <strong class="vui-stat-value">${value.toLocaleString()}</strong>\n    <span class="vui-stat-sub">${sub}</span>\n  </div>`;\ngrid.innerHTML = stats.map(card).join(\'\');',
         },
@@ -2107,13 +2108,39 @@
       id: 'bars',
       title: 'Bar chart',
       blurb:
-        'Vertical bars in a fixed-height track. Each <code>vui-bar</code> sets <code>--v</code>, its height as a 0–1 fraction of the tallest bar (you compute <code>value / max</code>). Track height via <code>--vui-bars-height</code>.',
+        'Vertical bars in a fixed-height track. Each bar\'s <code>--v</code> is its height as a 0–1 fraction of the tallest (you compute <code>value / max</code>). Drag the values — the proportions hold and the labels track each bar.',
+      play: {
+        resize: true,
+        state: {b0: 62, b1: 88, b2: 74, b3: 95, b4: 70, tone: 'cyan', height: 180},
+        controls: [
+          {type: 'range', key: 'b0', label: 'Mon', min: 0, max: 100},
+          {type: 'range', key: 'b1', label: 'Tue', min: 0, max: 100},
+          {type: 'range', key: 'b2', label: 'Wed', min: 0, max: 100},
+          {type: 'range', key: 'b3', label: 'Thu', min: 0, max: 100},
+          {type: 'range', key: 'b4', label: 'Fri', min: 0, max: 100},
+          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {type: 'range', key: 'height', label: 'Height', min: 120, max: 260, suffix: 'px'},
+        ],
+        render: function (s) {
+          var labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+          var vals = [s.b0, s.b1, s.b2, s.b3, s.b4];
+          var max = Math.max.apply(null, vals) || 1;
+          var bars = vals
+            .map(function (v, i) {
+              return (
+                '  <div class="vui-bar" style="--v:' + Math.round((v / max) * 100) / 100 + '">' +
+                '<b class="vui-bar-value">' + v + '</b>' +
+                '<i class="vui-bar-fill"></i>' +
+                '<small class="vui-bar-label">' + labels[i] + '</small></div>'
+              );
+            })
+            .join('\n');
+          return '<div class="vui-bars ' + s.tone + '" style="--vui-bars-height:' + s.height + 'px">\n' + bars + '\n</div>';
+        },
+      },
       examples: [
         {
-          code: '<div class="vui-bars cyan" style="--vui-bars-height:160px">\n  <div class="vui-bar" style="--v:.35"><b class="vui-bar-value">14</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Mon</small></div>\n  <div class="vui-bar" style="--v:.6"><b class="vui-bar-value">24</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Tue</small></div>\n  <div class="vui-bar" style="--v:.5"><b class="vui-bar-value">20</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Wed</small></div>\n  <div class="vui-bar" style="--v:1"><b class="vui-bar-value">40</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Thu</small></div>\n  <div class="vui-bar" style="--v:.8"><b class="vui-bar-value">32</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Fri</small></div>\n</div>',
-        },
-        {
-          label: 'JavaScript',
+          label: 'Wiring (JS)',
           noDemo: true,
           code: '// data: [{label, value}]\nconst max = Math.max(1, ...data.map(d => d.value));\nel.innerHTML = data.map(d => `\n  <div class="vui-bar" style="--v:${d.value / max}">\n    <b class="vui-bar-value">${d.value}</b>\n    <i class="vui-bar-fill"></i>\n    <small class="vui-bar-label">${d.label}</small>\n  </div>`).join(\'\');',
         },
@@ -2124,15 +2151,117 @@
       id: 'leaderboard',
       title: 'Leaderboard',
       blurb:
-        'Ranked rows with proportional bars. <code>vui-board-bar</code> sets <code>--v</code> (width as a 0–1 fraction of the top row). Add <code>top</code> to the leading ranks to make them glow.',
+        'Ranked rows with proportional bars. <code>--v</code> is the bar width as a 0–1 fraction of the top row; <code>top</code> makes the leading ranks glow.',
+      play: {
+        state: {r0: 128, r1: 93, r2: 61, r3: 42, tone: 'cyan'},
+        controls: [
+          {type: 'range', key: 'r0', label: 'Gordon', min: 0, max: 200},
+          {type: 'range', key: 'r1', label: 'Bullock', min: 0, max: 200},
+          {type: 'range', key: 'r2', label: 'Montoya', min: 0, max: 200},
+          {type: 'range', key: 'r3', label: 'Bard', min: 0, max: 200},
+          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+        ],
+        render: function (s) {
+          var names = ['Gordon', 'Bullock', 'Montoya', 'Bard'];
+          var vals = [s.r0, s.r1, s.r2, s.r3];
+          var max = Math.max.apply(null, vals) || 1;
+          var rows = vals
+            .map(function (v, i) {
+              return (
+                '  <li class="vui-board-row">\n' +
+                '    <span class="vui-board-rank' + (i < 3 ? ' top' : '') + '">' + (i + 1) + '</span>\n' +
+                '    <div class="vui-board-main">\n' +
+                '      <div class="vui-board-head"><a class="vui-board-name" href="#">' + names[i] + '</a><span class="vui-board-count">' + v + '</span></div>\n' +
+                '      <div class="vui-board-bar" style="--v:' + Math.round((v / max) * 100) / 100 + '"></div>\n' +
+                '    </div>\n  </li>'
+              );
+            })
+            .join('\n');
+          return '<ol class="vui-leaderboard ' + s.tone + '">\n' + rows + '\n</ol>';
+        },
+      },
       examples: [
         {
-          code: '<ol class="vui-leaderboard">\n  <li class="vui-board-row">\n    <span class="vui-board-rank top">1</span>\n    <div class="vui-board-main">\n      <div class="vui-board-head"><a class="vui-board-name" href="#">Gordon</a><span class="vui-board-count">128</span></div>\n      <div class="vui-board-bar" style="--v:1"></div>\n    </div>\n  </li>\n  <li class="vui-board-row">\n    <span class="vui-board-rank top">2</span>\n    <div class="vui-board-main">\n      <div class="vui-board-head"><a class="vui-board-name" href="#">Bullock</a><span class="vui-board-count">93</span></div>\n      <div class="vui-board-bar" style="--v:.73"></div>\n    </div>\n  </li>\n  <li class="vui-board-row">\n    <span class="vui-board-rank">3</span>\n    <div class="vui-board-main">\n      <div class="vui-board-head"><a class="vui-board-name" href="#">Montoya</a><span class="vui-board-count">61</span></div>\n      <div class="vui-board-bar" style="--v:.48"></div>\n    </div>\n  </li>\n</ol>',
-        },
-        {
-          label: 'JavaScript',
+          label: 'Wiring (JS)',
           noDemo: true,
           code: '// rows: [{name, count}], sorted high to low\nconst max = Math.max(1, ...rows.map(r => r.count));\nel.innerHTML = rows.map((r, i) => `\n  <li class="vui-board-row">\n    <span class="vui-board-rank ${i < 3 ? \'top\' : \'\'}">${i + 1}</span>\n    <div class="vui-board-main">\n      <div class="vui-board-head">\n        <a class="vui-board-name" href="#">${r.name}</a>\n        <span class="vui-board-count">${r.count}</span>\n      </div>\n      <div class="vui-board-bar" style="--v:${r.count / max}"></div>\n    </div>\n  </li>`).join(\'\');',
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'donut',
+      title: 'Donut / pie + legend',
+      blurb:
+        'A share-of-total ring via <code>conic-gradient</code> (the "cheese graph"). <code>--vui-donut</code> is the cumulative segment stop list; <code>--vui-donut-hole</code> the inner radius (0% = a filled pie). A <code>vui-legend</code> captions the segments.',
+      play: {
+        state: {a: 55, b: 25, c: 20, hole: 58},
+        controls: [
+          {type: 'range', key: 'a', label: 'Notes', min: 0, max: 100},
+          {type: 'range', key: 'b', label: 'Edits', min: 0, max: 100},
+          {type: 'range', key: 'c', label: 'Replies', min: 0, max: 100},
+          {type: 'range', key: 'hole', label: 'Hole', min: 0, max: 80, suffix: '%'},
+        ],
+        render: function (s) {
+          var total = s.a + s.b + s.c || 1;
+          var p1 = Math.round((s.a / total) * 10000) / 100;
+          var p2 = Math.round(((s.a + s.b) / total) * 10000) / 100;
+          var stops = 'var(--cyan-400) 0 ' + p1 + '%, var(--amber-500) 0 ' + p2 + '%, var(--green-500) 0 100%';
+          return (
+            '<div class="vui-donut-figure">\n' +
+            '  <div class="vui-donut" style="--vui-donut: ' + stops + '; --vui-donut-hole: ' + s.hole + '%"></div>\n' +
+            '  <strong class="vui-donut-center">' + Math.round((s.a / total) * 100) + '%</strong>\n' +
+            '</div>\n' +
+            '<ul class="vui-legend">\n  <li class="cyan">Notes</li>\n  <li class="amber">Edits</li>\n  <li class="green">Replies</li>\n</ul>'
+          );
+        },
+      },
+      examples: [
+        {
+          label: 'Wiring (JS)',
+          noDemo: true,
+          code: '// segments: [{color, value}]  ->  cumulative conic stops\nconst total = segments.reduce((s, x) => s + x.value, 0);\nlet acc = 0;\nconst stops = segments.map(s => {\n  acc += s.value;\n  return `${s.color} 0 ${(acc / total * 100).toFixed(2)}%`;\n}).join(\', \');\ndonut.style.setProperty(\'--vui-donut\', stops);',
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'sparkline',
+      title: 'Sparkline',
+      blurb:
+        'A micro trend line that styles a consumer-supplied inline SVG. You compute the points; it paints them with a non-scaling stroke. Hit Randomize for a new series.',
+      play: {
+        state: {tone: 'cyan', points: 12, seed: 7},
+        controls: [
+          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {type: 'range', key: 'points', label: 'Points', min: 4, max: 24},
+          {type: 'button', key: 'seed', label: 'Randomize', icon: 'casino', onClick: function (s) { s.seed = Math.floor(Math.random() * 1e5); }},
+        ],
+        render: function (s) {
+          var seed = s.seed + 1;
+          function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+          var n = Math.max(2, s.points), W = 100, H = 28, pad = 2, vals = [];
+          for (var i = 0; i < n; i++) vals.push(rnd());
+          var hi = Math.max.apply(null, vals), lo = Math.min.apply(null, vals), span = hi - lo || 1;
+          var pts = vals
+            .map(function (v, i) {
+              var x = (i / (n - 1)) * W;
+              var y = pad + (H - pad * 2) * (1 - (v - lo) / span);
+              return Math.round(x * 10) / 10 + ',' + Math.round(y * 10) / 10;
+            })
+            .join(' ');
+          return (
+            '<svg class="vui-sparkline ' + s.tone + '" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:52px">\n' +
+            '  <polyline class="vui-spark-area" points="0,28 ' + pts + ' 100,28" />\n' +
+            '  <polyline class="vui-spark-line" points="' + pts + '" />\n</svg>'
+          );
+        },
+      },
+      examples: [
+        {
+          label: 'Wiring (JS)',
+          noDemo: true,
+          code: '// values: number[]  ->  points across a 100x28 box\nconst W = 100, H = 28, pad = 2;\nconst hi = Math.max(...values), lo = Math.min(...values), span = hi - lo || 1;\nconst pts = values.map((v, i) => {\n  const x = (i / (values.length - 1)) * W;\n  const y = pad + (H - pad * 2) * (1 - (v - lo) / span);\n  return `${x.toFixed(1)},${y.toFixed(1)}`;\n}).join(\' \');\nsvg.innerHTML = `\n  <polyline class="vui-spark-area" points="0,${H} ${pts} ${W},${H}" />\n  <polyline class="vui-spark-line" points="${pts}" />`;',
         },
       ],
     },
@@ -2141,34 +2270,38 @@
       id: 'heatmap',
       title: 'Activity heatmap',
       blurb:
-        'A GitHub-style calendar. Emit one <code>&lt;i style="--level: 0..4"&gt;</code> per day; seven rows flow into week columns automatically. A single <code>color-mix</code> scales fill and glow by <code>--level</code>. Pad the first week with <code>vui-cell-pad</code>; see the extensions docs for the data→markup recipe.',
-      examples: [
-        {
-          code: '<div style="overflow-x:auto">\n  <div class="vui-heatmap">\n    <i class="vui-cell-pad"></i><i class="vui-cell-pad"></i>\n    <i style="--level:0"></i><i style="--level:1"></i><i style="--level:3"></i>\n    <i style="--level:2"></i><i style="--level:4"></i><i style="--level:1"></i>\n    <!-- …one <i> per day, in date order… -->\n  </div>\n</div>\n<div class="vui-heatmap-legend">\n  LESS\n  <i class="vui-heat-swatch" style="--level:0"></i>\n  <i class="vui-heat-swatch" style="--level:1"></i>\n  <i class="vui-heat-swatch" style="--level:2"></i>\n  <i class="vui-heat-swatch" style="--level:3"></i>\n  <i class="vui-heat-swatch" style="--level:4"></i>\n  MORE\n</div>',
-          demo:
-            '<div style="overflow-x:auto">' +
-            '<div class="vui-heatmap">' +
-            Array.from({length: 2}, function () {
-              return '<i class="vui-cell-pad"></i>';
-            }).join('') +
-            Array.from({length: 7 * 18}, function (_, i) {
-              return (
-                '<i style="--level:' +
-                [0, 0, 1, 0, 2, 3, 1, 0, 4, 2, 1, 0, 3, 0, 1, 2][i % 16] +
-                '"></i>'
-              );
-            }).join('') +
-            '</div></div>' +
+        'A GitHub-style calendar. Emit one cell per day; seven rows flow into week columns automatically, and a single <code>color-mix</code> scales each cell by its <code>--level</code> (0–4). Drag the density or Randomize the data.',
+      play: {
+        state: {tone: 'cyan', density: 55, seed: 3},
+        controls: [
+          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {type: 'range', key: 'density', label: 'Density', min: 10, max: 100, suffix: '%'},
+          {type: 'button', key: 'seed', label: 'Randomize', icon: 'casino', onClick: function (s) { s.seed = Math.floor(Math.random() * 1e5); }},
+        ],
+        render: function (s) {
+          var seed = s.seed + 1;
+          function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+          var weeks = 18, cells = [];
+          for (var i = 0; i < weeks * 7; i++) {
+            var lvl = rnd() < s.density / 100 ? 1 + Math.floor(rnd() * 4) : 0;
+            cells.push('<i style="--level:' + lvl + '"></i>');
+          }
+          return (
+            '<div style="overflow-x:auto">\n' +
+            '  <div class="vui-heatmap ' + s.tone + '">' + cells.join('') + '</div>\n' +
+            '</div>\n' +
             '<div class="vui-heatmap-legend">LESS' +
             '<i class="vui-heat-swatch" style="--level:0"></i>' +
             '<i class="vui-heat-swatch" style="--level:1"></i>' +
             '<i class="vui-heat-swatch" style="--level:2"></i>' +
             '<i class="vui-heat-swatch" style="--level:3"></i>' +
-            '<i class="vui-heat-swatch" style="--level:4"></i>' +
-            'MORE</div>',
+            '<i class="vui-heat-swatch" style="--level:4"></i>MORE</div>'
+          );
         },
+      },
+      examples: [
         {
-          label: 'JavaScript',
+          label: 'Wiring (JS)',
           noDemo: true,
           code: '// days: [{date:"YYYY-MM-DD", count}]\nconst max = Math.max(1, ...days.map(d => d.count));\nconst level = c => (c === 0 ? 0 : Math.min(4, Math.ceil((c / max) * 4)));\nconst lead = new Date(days[0].date).getDay(); // 0=Sun\nel.innerHTML = [\n  ...Array.from({length: lead}, () => \'<i class="vui-cell-pad"></i>\'),\n  ...days.map(d => `<i style="--level:${level(d.count)}" title="${d.date}: ${d.count}"></i>`),\n].join(\'\');',
         },
@@ -2176,41 +2309,36 @@
     },
     {
       group: 'Extensions',
-      id: 'charts',
-      title: 'Sparkline · donut · delta · legend',
+      id: 'delta',
+      title: 'Delta indicator',
       blurb:
-        'The rest of the kit. <code>vui-sparkline</code> styles a consumer-supplied inline SVG; <code>vui-donut</code> is a <code>conic-gradient</code> ring (the "cheese graph"); <code>vui-delta</code> is a trend value with an auto direction glyph; <code>vui-legend</code> captions a chart with tone swatches.',
+        'A trend value with an auto direction glyph. The sign of the number picks <code>up</code> (green ▲), <code>down</code> (red ▼), or <code>flat</code> (muted ─).',
+      play: {
+        state: {value: 12},
+        controls: [{type: 'range', key: 'value', label: 'Change', min: -50, max: 50, suffix: '%'}],
+        render: function (s) {
+          var dir = s.value > 0 ? 'up' : s.value < 0 ? 'down' : 'flat';
+          return '<span class="vui-delta ' + dir + '">' + (s.value > 0 ? '+' : '') + s.value + '%</span>';
+        },
+      },
       examples: [
         {
-          label: 'Sparkline',
-          code: '<svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">\n  <polyline class="vui-spark-area" points="0,28 0,18 25,12 50,16 75,4 100,9 100,28" />\n  <polyline class="vui-spark-line" points="0,18 25,12 50,16 75,4 100,9" />\n</svg>',
-        },
-        {
-          label: 'Sparkline (JS)',
+          label: 'Wiring (JS)',
           noDemo: true,
-          code: '// values: number[]  ->  points across a 100x28 box\nconst W = 100, H = 28, pad = 2;\nconst hi = Math.max(...values), lo = Math.min(...values), span = hi - lo || 1;\nconst pts = values.map((v, i) => {\n  const x = (i / (values.length - 1)) * W;\n  const y = pad + (H - pad * 2) * (1 - (v - lo) / span);\n  return `${x.toFixed(1)},${y.toFixed(1)}`;\n}).join(\' \');\nsvg.innerHTML = `\n  <polyline class="vui-spark-area" points="0,${H} ${pts} ${W},${H}" />\n  <polyline class="vui-spark-line" points="${pts}" />`;',
+          code: '// n: the change value\nconst dir = n > 0 ? \'up\' : n < 0 ? \'down\' : \'flat\';\nel.className = `vui-delta ${dir}`;\nel.textContent = `${n > 0 ? \'+\' : \'\'}${n}%`;',
         },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'prose',
+      title: 'Prose layout',
+      blurb:
+        '<code>vui-prose</code> is a responsive grid for long-form text. It centres copy to a readable measure while images, figures, blockquotes and code <code>bleed</code> wider. It is an opt-in add-on: <code>import "vantaui-css/prose"</code>. Drag the lane to watch the measure and bleed reflow.',
+      examples: [
         {
-          label: 'Donut with a centre readout',
-          code: '<div class="vui-donut-figure">\n  <div class="vui-donut" style="--vui-donut: var(--cyan-400) 0 72%, var(--surface-inset) 0 100%"></div>\n  <strong class="vui-donut-center">72%</strong>\n</div>',
-        },
-        {
-          label: 'Donut (JS)',
-          noDemo: true,
-          code: "// segments: [{color, value}]  ->  cumulative conic stops\nconst total = segments.reduce((s, x) => s + x.value, 0);\nlet acc = 0;\nconst stops = segments.map(s => {\n  acc += s.value;\n  return `${s.color} 0 ${(acc / total * 100).toFixed(2)}%`;\n}).join(', ');\ndonut.style.setProperty('--vui-donut', stops);",
-        },
-        {
-          label: 'Delta indicators',
-          code: '<span class="vui-delta up">+12.4%</span>\n<span class="vui-delta down">-3.1/d</span>\n<span class="vui-delta flat">0.0/d</span>',
-        },
-        {
-          label: 'Delta (JS)',
-          noDemo: true,
-          code: "// n: the change value\nconst dir = n > 0 ? 'up' : n < 0 ? 'down' : 'flat';\nel.className = `vui-delta ${dir}`;\nel.textContent = `${n > 0 ? '+' : ''}${n}%`;",
-        },
-        {
-          label: 'Legend',
-          code: '<ul class="vui-legend">\n  <li class="cyan">Notes</li>\n  <li class="amber">Edits</li>\n  <li class="green">Replies</li>\n</ul>',
+          resize: true,
+          code: '<article class="vui-prose">\n  <p class="vui-eyebrow">Field Manual</p>\n  <h1>Lorem ipsum dolor sit amet</h1>\n  <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>\n\n  <h2>Duis aute irure</h2>\n  <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error.</p>\n\n  <blockquote>The city needs a legend. Something patient, something thorough.</blockquote>\n\n  <figure class="bleed">\n    <img src="assets/hex-mesh.svg" alt="" style="aspect-ratio:16/7;object-fit:cover">\n    <figcaption>Fig. 01 — a bleeding figure widens past the text measure.</figcaption>\n  </figure>\n\n  <h3>Totam rem aperiam</h3>\n  <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. The following list keeps the reading measure:</p>\n  <ul>\n    <li>Nemo enim ipsam voluptatem</li>\n    <li>Quia voluptas sit aspernatur</li>\n    <li>Neque porro quisquam est</li>\n  </ul>\n  <ol>\n    <li>Establish the perimeter</li>\n    <li>Sweep each sector</li>\n    <li>Hold the line</li>\n  </ol>\n\n  <table>\n    <thead><tr><th>Sector</th><th>Status</th></tr></thead>\n    <tbody>\n      <tr><td>North</td><td>Secure</td></tr>\n      <tr><td>Docks</td><td>Contested</td></tr>\n    </tbody>\n  </table>\n\n  <pre><code>const ok = audit(sectors)\n  .filter(s =&gt; s.secure)\n  .length</code></pre>\n\n  <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>\n</article>',
         },
       ],
     },
@@ -2422,6 +2550,17 @@
 
   /* ---- a single playground control (select / toggle / range) ---- */
   function controlNode(ctrl, state, onChange) {
+    if (ctrl.type === 'button') {
+      var btn = el('button', 'small ghost');
+      btn.type = 'button';
+      if (ctrl.icon) btn.innerHTML = '<i>' + ctrl.icon + '</i>';
+      btn.appendChild(document.createTextNode(ctrl.label));
+      btn.addEventListener('click', function () {
+        if (ctrl.onClick) ctrl.onClick(state);
+        onChange();
+      });
+      return btn;
+    }
     if (ctrl.type === 'toggle') {
       var lab = el('label');
       var box = document.createElement('input');
@@ -2615,7 +2754,15 @@
     var groups = {};
     var order = [];
 
-    SECTIONS.forEach(function (sec) {
+    // One gallery file drives two pages. The extensions page (body
+    // data-doc-page="extensions") renders only the Extensions group; the main
+    // page renders everything else. Each page's nav is built from its own subset.
+    var isExtPage = document.body.dataset.docPage === 'extensions';
+    var sections = SECTIONS.filter(function (sec) {
+      return (sec.group === 'Extensions') === isExtPage;
+    });
+
+    sections.forEach(function (sec) {
       var s = el('section', 'vui-section vui-prose');
       s.id = sec.id;
       s.innerHTML =

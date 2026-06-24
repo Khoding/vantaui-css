@@ -35,7 +35,7 @@ If you are unsure whether a change is "doc-worthy": if it changes what a consume
 
 (`overlay.css` and `primitives.css` are split across files — overlay's modal/drawer pieces are navigation, its `.kv`/`.stat` are data; primitives' type roles/plates are layout, its status dot is feedback. Touch whichever topic the specific feature belongs to.)
 
-The human docs site is `docs/index.html` (+ `docs/playground.css`, `docs/js/vantaui.js`, `docs/gallery.js`). If a change affects the live demos there, update them too.
+The human docs site is `docs/index.html` (core gallery) and `docs/extensions.html` (the opt-in add-on playgrounds), sharing `docs/gallery.js`, `docs/docs-chrome.css`, `docs/playground.css`, and `docs/js/vantaui.js`. One `gallery.js` drives both pages: it reads `document.body.dataset.docPage` and renders the `Extensions` group only on `extensions.html` (which sets `data-doc-page="extensions"`), everything else on `index.html`. If a change affects the live demos there, update them too.
 
 ## House style (CSS)
 

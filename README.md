@@ -2,6 +2,8 @@
 
 > A dark, angular, military-telemetry **tactical HUD** design system as a reusable CSS library. Semantic-first like [BeerCSS](https://www.beercss.com): write proper HTML, get a tactical UI. Reach for one short helper word only to deviate. Responsive by default, OKLCH, zero-dependency, framework-agnostic.
 
+Note from the dev: It looks like a Tactical HUD / Futuristic Dashboard, but you can make anything with it, even a website about dogs being good. The design is a vibe, not a theme.
+
 ![VantaUI CSS preview](docs/preview.png)
 
 The vibe: cold near-black surfaces, sharp **chamfered** corners, a single **electric cyan** signal color that glows, uppercase machine-cut type, telemetry everywhere. Color is rare and always means something.
