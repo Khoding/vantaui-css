@@ -2170,13 +2170,13 @@
                 '<small class="vui-bar-label">' +
                 labels[i] +
                 '</small>' +
-                '<template><small class="vui-tip-title">' +
+                '<span class="vui-tip-content"><small class="vui-tip-title">' +
                 labels[i] +
                 ' \u00b7 ' +
                 v +
                 '</small>' +
                 Math.round((v / total) * 100) +
-                '% of the week</template></div>'
+                '% of the week</span></div>'
               );
             })
             .join('\n');
@@ -2429,13 +2429,13 @@
                 '" style="--level:' +
                 lvl +
                 '">' +
-                '<template><small class="vui-tip-title">Week ' +
+                '<span class="vui-tip-content"><small class="vui-tip-title">Week ' +
                 (Math.floor(i / 7) + 1) +
                 ' \u00b7 day ' +
                 ((i % 7) + 1) +
                 '</small>' +
                 lvl +
-                ' / 4 active</template></i>',
+                ' / 4 active</span></i>',
             );
           }
           return (
@@ -2459,7 +2459,7 @@
         {
           label: 'Wiring (JS)',
           noDemo: true,
-          code: '// days: [{date:"YYYY-MM-DD", count}]\nconst max = Math.max(1, ...days.map(d => d.count));\nconst level = c => (c === 0 ? 0 : Math.min(4, Math.ceil((c / max) * 4)));\nconst lead = new Date(days[0].date).getDay(); // 0=Sun\nel.innerHTML = [\n  ...Array.from({length: lead}, () => \'<i class="vui-cell-pad"></i>\'),\n  ...days.map(d => `\n    <i class="vui-tip" style="--level:${level(d.count)}">\n      <template><small class="vui-tip-title">${d.date}</small>${d.count} notes</template>\n    </i>`),\n].join(\'\');\nVantaUI.tooltips(el); // body-level tooltips, never clipped by the scroller',
+          code: '// days: [{date:"YYYY-MM-DD", count}]\nconst max = Math.max(1, ...days.map(d => d.count));\nconst level = c => (c === 0 ? 0 : Math.min(4, Math.ceil((c / max) * 4)));\nconst lead = new Date(days[0].date).getDay(); // 0=Sun\nel.innerHTML = [\n  ...Array.from({length: lead}, () => \'<i class="vui-cell-pad"></i>\'),\n  ...days.map(d => `\n    <i class="vui-tip" style="--level:${level(d.count)}">\n      <span class="vui-tip-content"><small class="vui-tip-title">${d.date}</small>${d.count} notes</span>\n    </i>`),\n].join(\'\');\nVantaUI.tooltips(el); // body-level tooltips, never clipped by the scroller',
         },
       ],
     },
@@ -2492,7 +2492,7 @@
       id: 'tip',
       title: 'Rich tooltip',
       blurb:
-        'Reuses VantaUI\u2019s <strong>core</strong> tooltip (<code>VantaUI.tooltips()</code>): one body-level <code>#vui-tooltip</code> at <code>position:fixed</code>, so it is <em>never clipped</em> by a panel or scroller. Add <code>vui-tip</code> to a trigger and nest an inert <code>&lt;template&gt;</code> holding real markup \u2014 a sparkline, a donut, or a day\u2019s count. Opens on hover, focus, <em>and</em> a touch tap. <strong>Hover or tap a value, a heatmap cell, or the bar.</strong>',
+        'Reuses VantaUI\u2019s <strong>core</strong> tooltip (<code>VantaUI.tooltips()</code>): one body-level <code>#vui-tooltip</code> at <code>position:fixed</code>, so it is <em>never clipped</em> by a panel or scroller. Add <code>vui-tip</code> to a trigger and nest a hidden <code>vui-tip-content</code> element holding real markup \u2014 a sparkline, a donut, or a day\u2019s count. A plain element, so it works in hand-written HTML and any framework. Opens on hover, focus, <em>and</em> a touch tap. <strong>Hover or tap a value, a heatmap cell, or the bar.</strong>',
       play: {
         state: {tone: 'cyan'},
         controls: [
@@ -2524,20 +2524,20 @@
               '" style="--level:' +
               sample[i] +
               '">' +
-              '<template><small class="vui-tip-title">Day ' +
+              '<span class="vui-tip-content"><small class="vui-tip-title">Day ' +
               (i + 1) +
               '</small>' +
               sample[i] +
-              ' notes</template></i>';
+              ' notes</span></i>';
           }
           return (
             '<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-end;padding-block:24px">\n' +
             '  <span class="vui-tip ' +
             t +
             '" style="font-family:var(--font-hud);font-size:var(--fs-2xl)">87\n' +
-            '    <template><small class="vui-tip-title">Mon \u00b7 87 notes</small>' +
+            '    <span class="vui-tip-content"><small class="vui-tip-title">Mon \u00b7 87 notes</small>' +
             spark +
-            '</template>\n' +
+            '</span>\n' +
             '  </span>\n' +
             '  <div class="vui-heatmap ' +
             t +
@@ -2551,8 +2551,8 @@
             t +
             '" style="--v:.82">\n' +
             '      <b class="vui-bar-value">82</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Mon</small>\n' +
-            '      <template><small class="vui-tip-title">Mon \u00b7 82 total</small>' +
-            '<div class="vui-donut" style="--vui-donut-size:64px;--vui-donut:var(--cyan-400) 0 60%,var(--amber-500) 0 100%"></div></template>\n' +
+            '      <span class="vui-tip-content"><small class="vui-tip-title">Mon \u00b7 82 total</small>' +
+            '<div class="vui-donut" style="--vui-donut-size:64px;--vui-donut:var(--cyan-400) 0 60%,var(--amber-500) 0 100%"></div></span>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '</div>'
@@ -2563,17 +2563,17 @@
         {
           label: 'Heatmap cell that explains itself',
           noDemo: true,
-          code: '<i class="vui-tip green" style="--level: 3">\n  <template><small class="vui-tip-title">2026-06-21</small>4 notes</template>\n</i>',
+          code: '<i class="vui-tip green" style="--level: 3">\n  <span class="vui-tip-content"><small class="vui-tip-title">2026-06-21</small>4 notes</span>\n</i>',
         },
         {
           label: 'Value with a sparkline tooltip',
           noDemo: true,
-          code: '<span class="vui-tip cyan">87\n  <template>\n    <small class="vui-tip-title">Mon \u00b7 87 notes</small>\n    <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">\n      <polyline class="vui-spark-line" points="0,20 50,8 100,14" />\n    </svg>\n  </template>\n</span>',
+          code: '<span class="vui-tip cyan">87\n  <span class="vui-tip-content">\n    <small class="vui-tip-title">Mon \u00b7 87 notes</small>\n    <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">\n      <polyline class="vui-spark-line" points="0,20 50,8 100,14" />\n    </svg>\n  </span>\n</span>',
         },
         {
           label: 'Wiring (JS)',
           noDemo: true,
-          code: '// data: [{label, value, series}]  ->  bars, each with a sparkline tooltip\nconst max = Math.max(1, ...data.map(d => d.value));\nel.innerHTML = data.map(d => `\n  <div class="vui-bar vui-tip cyan" style="--v:${d.value / max}">\n    <b class="vui-bar-value">${d.value}</b>\n    <i class="vui-bar-fill"></i>\n    <small class="vui-bar-label">${d.label}</small>\n    <template>\n      <small class="vui-tip-title">${d.label} \u00b7 ${d.value}</small>\n      <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">\n        <polyline class="vui-spark-line" points="${sparkPoints(d.series)}" />\n      </svg>\n    </template>\n  </div>`).join(\'\');\nVantaUI.tooltips(el); // wire the freshly-injected triggers',
+          code: '// data: [{label, value, series}]  ->  bars, each with a sparkline tooltip\nconst max = Math.max(1, ...data.map(d => d.value));\nel.innerHTML = data.map(d => `\n  <div class="vui-bar vui-tip cyan" style="--v:${d.value / max}">\n    <b class="vui-bar-value">${d.value}</b>\n    <i class="vui-bar-fill"></i>\n    <small class="vui-bar-label">${d.label}</small>\n    <span class="vui-tip-content">\n      <small class="vui-tip-title">${d.label} \u00b7 ${d.value}</small>\n      <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">\n        <polyline class="vui-spark-line" points="${sparkPoints(d.series)}" />\n      </svg>\n    </span>\n  </div>`).join(\'\');\nVantaUI.tooltips(el); // first time only; delegated wiring covers later updates',
         },
       ],
     },

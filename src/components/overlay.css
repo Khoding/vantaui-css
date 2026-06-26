@@ -7,11 +7,14 @@
 
    Tooltips come in two flavours sharing one body-level #vui-tooltip
    (rendered by tooltips() at position:fixed, so NEVER clipped):
-     • [data-tip="text"]      → a plain text bubble.
-     • .vui-tip + <template>  → a RICH bubble: the template's markup is
-       cloned in; a tone word (amber/green/red) on the trigger tones it,
-       and an optional .vui-tip-title is the eyebrow. Without JS the
-       [data-tip] form degrades to a CSS ::after; .vui-tip stays inert.
+     • [data-tip="text"]      → a plain text bubble (zero-JS ::after fallback).
+     • .vui-tip + .vui-tip-content → a RICH bubble. The content is an ordinary
+       CSS-hidden child element (so it renders the same in hand-written HTML
+       and any framework, including Vue SFCs that strip <template>); its nodes
+       are cloned into the tip on show. A tone word (amber/green/red) on the
+       trigger tones it, and an optional .vui-tip-title is the eyebrow. Wiring
+       is delegated, so triggers added later (framework, htmx, innerHTML) work
+       with no re-init. Without JS a .vui-tip stays inert (no bubble).
    ============================================================ */
 
 /* ---------- Modal: native <dialog> ---------- */
@@ -112,17 +115,21 @@
 :where(.vui [data-tip]:focus-visible)::after {
   opacity: 1;
 }
-/* When JS wires a tooltip it adds .vui-tip-js — suppress the CSS ::after so
-   both never show at once. The JS tooltip uses position:fixed at body level
-   and is therefore never clipped by any ancestor clip-path or overflow. */
-:where(.vui [data-tip].vui-tip-js)::after {
+/* tooltips() marks the document root with .vui-js-tips — suppress the CSS
+   ::after so it never doubles up with the (never-clipped) body-level tip.
+   The JS tooltip uses position:fixed at body level and is therefore never
+   clipped by any ancestor clip-path or overflow. */
+:where(.vui-js-tips .vui [data-tip])::after {
   display: none;
 }
 
-/* Rich tooltip trigger: any element + .vui-tip carrying a <template> child.
-   The template's markup is rendered into the body-level #vui-tooltip by
-   tooltips(), so it never clips. The trigger itself only needs a cursor cue
-   (and a focus ring when it is focusable for keyboard / touch). */
+/* Rich tooltip trigger: any element + .vui-tip with a .vui-tip-content child
+   (an ordinary hidden element holding the markup — text, a .kv list, or a mini
+   widget). tooltips() clones it into the body-level #vui-tooltip, so it never
+   clips, and a plain element renders the same in hand-written HTML and any
+   framework (Vue SFCs strip <template>, not this). The trigger itself only
+   needs a cursor cue (and a focus ring when it is focusable for keyboard /
+   touch). */
 :where(.vui-tip) {
   cursor: help;
 }
@@ -130,7 +137,7 @@
   outline: var(--border-hair) solid currentColor;
   outline-offset: 2px;
 }
-:where(.vui-tip) > template {
+:where(.vui-tip) > .vui-tip-content {
   display: none;
 }
 
@@ -166,8 +173,9 @@
 #vui-tooltip.red {
   --_c: var(--red-500);
 }
-/* Rich content (a .vui-tip with a <template>): lay the markup out in a small
-   column. Nested widgets keep their own styling; we only own shell + spacing. */
+/* Rich content (a .vui-tip with a .vui-tip-content child): lay the markup out
+   in a small column. Nested widgets keep their own styling; we only own shell
+   + spacing. */
 #vui-tooltip.is-rich {
   display: grid;
   max-inline-size: 18rem;

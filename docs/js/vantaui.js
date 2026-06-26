@@ -122,11 +122,20 @@ function clocks(root = document) {
    document root, so it is NEVER clipped by an ancestor's overflow or
    clip-path — the whole reason it lives here instead of an ::after bubble.
    Two flavours share it:
-     • [data-tip="text"]      → a plain text bubble (textContent).
-     • .vui-tip + <template>  → a RICH bubble: the template's inert markup
-       (a mini .vui-sparkline / .vui-donut / .vui-bars, a .kv list, a
-       heatmap day's count) is cloned in. A tone word on the trigger
-       (amber/green/red) is copied onto the tip. */
+     • [data-tip="text"]            → a plain text bubble (textContent), with
+       a zero-JS CSS ::after fallback. The quick path for a short label.
+     • .vui-tip + .vui-tip-content  → a RICH bubble. The content is an
+       ordinary, CSS-hidden child element (a mini .vui-sparkline / .vui-donut
+       / .vui-bars, a .kv list, a heatmap day's count); its nodes are cloned
+       into the body-level tip on show. A plain element (not <template>) so it
+       renders the same in hand-written HTML and any framework (Vue SFCs, JSX,
+       etc.), staying reactive and auto-escaped.
+   A tone word on the trigger (amber/green/red) is copied onto the tip.
+
+   Wiring is delegated: a single set of document-level listeners (installed
+   once) drives every trigger via closest(), so triggers added LATER by a
+   framework, htmx, or innerHTML work with no re-init. Calling tooltips()
+   again is cheap and idempotent. */
 let tipAnchor = null; // the trigger whose tooltip is currently open (module-wide)
 
 export function tooltips(root = document) {
@@ -138,9 +147,19 @@ export function tooltips(root = document) {
     document.body.appendChild(tip);
   }
 
+  // Mark the tree so the CSS-only [data-tip]::after fallback steps aside in
+  // favour of the (never-clipped) body-level tip wired below.
+  document.documentElement.classList.add('vui-js-tips');
+
+  // Delegation is global; only install it once.
+  if (document.__vuiTipsWired) return;
+  document.__vuiTipsWired = true;
+
   let untrack = null;
   const GAP = 8;
   const TONES = ['cyan', 'amber', 'green', 'red'];
+  const triggerOf = node => (node && node.closest ? node.closest('[data-tip], .vui-tip') : null);
+
   const place = el => {
     const r = el.getBoundingClientRect();
     const tw = tip.offsetWidth;
@@ -158,18 +177,21 @@ export function tooltips(root = document) {
 
   const show = el => {
     tipAnchor = el;
-    // A .vui-tip carrying a <template> renders real markup; everything else
-    // falls back to the plain data-tip string.
-    const tpl = el.matches('.vui-tip') ? el.querySelector(':scope > template') : null;
-    tip.classList.toggle('is-rich', !!tpl);
+    // Rich content is a hidden .vui-tip-content child (works the same in plain
+    // HTML and any framework); otherwise fall back to the data-tip string.
+    const content = el.matches('.vui-tip') ? el.querySelector(':scope > .vui-tip-content') : null;
+    tip.classList.toggle('is-rich', !!content);
     TONES.forEach(t => tip.classList.toggle(t, el.classList.contains(t)));
-    if (tpl) tip.replaceChildren(tpl.content.cloneNode(true));
+    if (content) tip.replaceChildren(...[...content.childNodes].map(n => n.cloneNode(true)));
     else tip.textContent = el.dataset.tip || '';
     place(el);
     tip.classList.add('is-visible');
     // Follow the anchor as the page scrolls; the tip stays open until blur/leave.
     if (untrack) untrack();
-    untrack = trackAnchor(() => place(el), () => tip.classList.contains('is-visible'));
+    untrack = trackAnchor(
+      () => place(el),
+      () => tip.classList.contains('is-visible'),
+    );
   };
 
   const hide = () => {
@@ -181,33 +203,43 @@ export function tooltips(root = document) {
     }
   };
 
-  // Light-dismiss (wired once): a tap outside the open trigger closes a tip
-  // that was opened by touch. Captured so any ancestor scroller is seen.
-  if (!document.__vuiTipDismiss) {
-    document.__vuiTipDismiss = true;
-    document.addEventListener(
-      'pointerdown',
-      e => {
-        if (tipAnchor && !e.target.closest('.vui-tip-js')) hide();
-      },
-      true,
-    );
-  }
-
-  root.querySelectorAll('[data-tip], .vui-tip').forEach(el => {
-    if (el.classList.contains('vui-tip-js')) return;
-    el.classList.add('vui-tip-js');
-    el.addEventListener('mouseenter', () => show(el));
-    el.addEventListener('mouseleave', hide);
-    el.addEventListener('focusin', () => show(el));
-    el.addEventListener('focusout', hide);
-    // Touch/pen: a tap toggles the tip, so it is reachable without a hover.
-    el.addEventListener('pointerup', e => {
-      if (e.pointerType === 'mouse') return;
-      if (tipAnchor === el && tip.classList.contains('is-visible')) hide();
-      else show(el);
-    });
+  // Mouse: show when the pointer enters a trigger, hide when it leaves one.
+  document.addEventListener('mouseover', e => {
+    const el = triggerOf(e.target);
+    if (el && el !== tipAnchor) show(el);
   });
+  document.addEventListener('mouseout', e => {
+    if (!tipAnchor) return;
+    const to = e.relatedTarget;
+    // Ignore moves that stay inside the open trigger.
+    if (!to || triggerOf(to) !== tipAnchor) hide();
+  });
+  // Keyboard: show on focus, hide on blur (focus moving to another trigger
+  // re-shows via the next focusin).
+  document.addEventListener('focusin', e => {
+    const el = triggerOf(e.target);
+    if (el) show(el);
+    else if (tipAnchor) hide();
+  });
+  document.addEventListener('focusout', () => {
+    if (tipAnchor) hide();
+  });
+  // Touch/pen: a tap toggles the tip, so it is reachable without a hover.
+  document.addEventListener('pointerup', e => {
+    if (e.pointerType === 'mouse') return;
+    const el = triggerOf(e.target);
+    if (!el) return;
+    if (tipAnchor === el && tip.classList.contains('is-visible')) hide();
+    else show(el);
+  });
+  // Light-dismiss: a tap outside the open trigger closes a tap-opened tip.
+  document.addEventListener(
+    'pointerdown',
+    e => {
+      if (tipAnchor && !triggerOf(e.target)) hide();
+    },
+    true,
+  );
 }
 
 /* ---------- Dialogs & Drawer Toggles ---------- */
@@ -254,13 +286,14 @@ export function drawers(root = document) {
     //    A click on the ::backdrop reports the <dialog> itself as the target;
     //    we confirm the pointer fell outside the dialog's box so clicks on
     //    inner padding never dismiss it. Opt out with [data-no-dismiss].
-    if (e.target.tagName === 'DIALOG' && e.target.open && !e.target.hasAttribute('data-no-dismiss')) {
+    if (
+      e.target.tagName === 'DIALOG' &&
+      e.target.open &&
+      !e.target.hasAttribute('data-no-dismiss')
+    ) {
       const r = e.target.getBoundingClientRect();
       const inside =
-        e.clientX >= r.left &&
-        e.clientX <= r.right &&
-        e.clientY >= r.top &&
-        e.clientY <= r.bottom;
+        e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
       if (!inside) {
         e.target.close();
         return;
@@ -349,50 +382,52 @@ export function menus(root = document) {
   // Runs on every menus() call (idempotent: skips already-upgraded panels) so
   // dynamically rendered dropdowns are caught even on subsequent init() calls.
   if (hasPopover) {
-    (root === document ? document : root).querySelectorAll('.vui details.dropdown').forEach(details => {
-      const panel = details.querySelector(':scope > menu, :scope > nav, :scope > ul');
-      const summary = details.querySelector(':scope > summary');
-      if (!panel || !summary || panel.hasAttribute('popover')) return;
+    (root === document ? document : root)
+      .querySelectorAll('.vui details.dropdown')
+      .forEach(details => {
+        const panel = details.querySelector(':scope > menu, :scope > nav, :scope > ul');
+        const summary = details.querySelector(':scope > summary');
+        if (!panel || !summary || panel.hasAttribute('popover')) return;
 
-      panel.setAttribute('popover', 'auto');
-      panel.classList.add('menu');
+        panel.setAttribute('popover', 'auto');
+        panel.classList.add('menu');
 
-      // Position the panel below its trigger via getBoundingClientRect.
-      // JS inline styles override any CSS positioning (including position-area),
-      // so this works reliably in all browsers with the Popover API.
-      const placePanel = () =>
-        placePopover(panel, summary, {
-          align: details.classList.contains('right') ? 'end' : 'start',
+        // Position the panel below its trigger via getBoundingClientRect.
+        // JS inline styles override any CSS positioning (including position-area),
+        // so this works reliably in all browsers with the Popover API.
+        const placePanel = () =>
+          placePopover(panel, summary, {
+            align: details.classList.contains('right') ? 'end' : 'start',
+          });
+
+        // Drive state via Popover API; prevent <details> native toggle.
+        let untrack = null;
+        summary.addEventListener('click', e => {
+          e.preventDefault();
+          if (panel.matches(':popover-open')) {
+            panel.hidePopover();
+          } else {
+            panel.showPopover();
+            placePanel();
+            // Follow the trigger while the page scrolls; never close on scroll.
+            untrack = trackAnchor(placePanel, () => panel.matches(':popover-open'));
+          }
         });
 
-      // Drive state via Popover API; prevent <details> native toggle.
-      let untrack = null;
-      summary.addEventListener('click', e => {
-        e.preventDefault();
-        if (panel.matches(':popover-open')) {
-          panel.hidePopover();
-        } else {
-          panel.showPopover();
-          placePanel();
-          // Follow the trigger while the page scrolls; never close on scroll.
-          untrack = trackAnchor(placePanel, () => panel.matches(':popover-open'));
-        }
-      });
-
-      // Sync <details open> for CSS trigger/chevron styling, and drop the
-      // scroll tracker on close (covers Esc / outside-click light-dismiss too).
-      panel.addEventListener('toggle', e => {
-        if (e.newState === 'open') {
-          details.setAttribute('open', '');
-        } else {
-          details.removeAttribute('open');
-          if (untrack) {
-            untrack();
-            untrack = null;
+        // Sync <details open> for CSS trigger/chevron styling, and drop the
+        // scroll tracker on close (covers Esc / outside-click light-dismiss too).
+        panel.addEventListener('toggle', e => {
+          if (e.newState === 'open') {
+            details.setAttribute('open', '');
+          } else {
+            details.removeAttribute('open');
+            if (untrack) {
+              untrack();
+              untrack = null;
+            }
           }
-        }
+        });
       });
-    });
   }
 
   // Event listeners are registered only once per root (guard below).
@@ -678,7 +713,19 @@ export function init(root = document) {
   carousels(root);
 }
 
-const VantaUI = {init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, carousels, toast};
+const VantaUI = {
+  init,
+  tabs,
+  setValue,
+  drawers,
+  tooltips,
+  menus,
+  placePopover,
+  trackAnchor,
+  toolbars,
+  carousels,
+  toast,
+};
 export default VantaUI;
 
 if (isBrowser) {

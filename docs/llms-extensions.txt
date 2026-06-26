@@ -165,7 +165,7 @@ Given a dataset of `{ date: 'YYYY-MM-DD', count }`, you produce the cells. CSS h
 1. Find `max = Math.max(...counts)`. Map each day's count to a level: `count === 0 ? 0 : Math.ceil(count / max * 4)` (clamp to 1–4 for any non-zero count).
 2. Pad the start: emit empty `<i class="vui-cell-pad"></i>` cells so Jan 1 lands on its real weekday row (grid rows are Sun→Sat, top to bottom). A pad cell paints nothing.
 3. Emit one `<i style="--level: N">` per day in date order. The grid's `grid-auto-flow: column` fills down each week, then moves to the next.
-4. Give each cell a tooltip. The quick way is a native `title`. The better way — a HUD bubble that never clips on a tiny cell, and works on touch — is `vui-tip` (see "Rich tooltips" below): add `vui-tip` to the cell and nest an inert `<template>` with the day's readout. `VantaUI.tooltips()` renders it body-level.
+4. Give each cell a tooltip. The quick way is a native `title`. The better way — a HUD bubble that never clips on a tiny cell, and works on touch — is `vui-tip` (see "Rich tooltips" below): add `vui-tip` to the cell and nest a hidden `vui-tip-content` element with the day's readout. `VantaUI.tooltips()` renders it body-level.
 
 ```js
 // vanilla, framework-agnostic — each cell carries a rich, non-clipping tooltip
@@ -176,7 +176,7 @@ const cells = [
   ...Array.from({length: lead}, () => '<i class="vui-cell-pad"></i>'),
   ...days.map(d => `
     <i class="vui-tip" style="--level:${level(d.count)}">
-      <template><small class="vui-tip-title">${d.date}</small>${d.count} notes</template>
+      <span class="vui-tip-content"><small class="vui-tip-title">${d.date}</small>${d.count} notes</span>
     </i>`),
 ].join('');
 heatmapEl.innerHTML = cells;
@@ -282,24 +282,24 @@ el.innerHTML = items.map(it => `<li class="${it.tone}">${it.label}</li>`).join('
 
 The charts above pair with VantaUI's **core** tooltip (`VantaUI.tooltips()`), so you reuse one mechanism instead of bolting a second bubble on. It renders a single body-level `#vui-tooltip` at `position: fixed`, so it is **never clipped** by a panel, a `clip-path`, or a heatmap's `overflow:auto` scroller — the exact problem the core tooltip already solves. (Core docs: see VantaUI's `tooltips()` in the JS reference.)
 
-To make a tooltip carry real markup instead of a plain `title` string: add `vui-tip` to the trigger and nest an inert `<template>`. The template's content — plain text, a `.kv` list, or a whole mini widget (a `vui-sparkline` of the point's trend, a `vui-donut` of the part's share, `vui-bars`, or a heatmap day's count) — is cloned into the body-level bubble on hover, focus, or tap. A tone word on the trigger (**cyan** default · **amber** · **green** · **red**) is copied onto the bubble; an optional `vui-tip-title` styles a `//`-style eyebrow inside.
+To make a tooltip carry real markup instead of a plain `title` string: add `vui-tip` to the trigger and nest a hidden `vui-tip-content` element. Its content — plain text, a `.kv` list, or a whole mini widget (a `vui-sparkline` of the point's trend, a `vui-donut` of the part's share, `vui-bars`, or a heatmap day's count) — is cloned into the body-level bubble on hover, focus, or tap. It is an ordinary (CSS-hidden) element, not a `<template>`, so it renders the same in hand-written HTML and any framework (Vue SFCs strip `<template>`, not this), staying reactive and auto-escaped. A tone word on the trigger (**cyan** default · **amber** · **green** · **red**) is copied onto the bubble; an optional `vui-tip-title` styles a `//`-style eyebrow inside.
 
-Reach: it shows on `:hover` (mouse), on focus (keyboard), and on a **tap** (touch/pen toggle it, with a tap-outside to dismiss) — so it is reachable on mobile, where a native `title` is not. It needs the core behaviours loaded (`import 'vantaui-css/js'`, then `VantaUI.init()` or `VantaUI.tooltips(root)` after you inject the markup). Without the JS the `<template>` stays inert (no bubble, nothing broken).
+Reach: it shows on `:hover` (mouse), on focus (keyboard), and on a **tap** (touch/pen toggle it, with a tap-outside to dismiss) — so it is reachable on mobile, where a native `title` is not. It needs the core behaviours loaded (`import 'vantaui-css/js'`, then `VantaUI.init()`); wiring is delegated, so triggers you inject later are picked up with no re-init. Without the JS a `vui-tip` stays inert (no bubble, nothing broken).
 
 ```html
 <!-- standalone value with a sparkline tooltip -->
 <span class="vui-tip cyan">87
-  <template>
+  <span class="vui-tip-content">
     <small class="vui-tip-title">Mon · 87 notes</small>
     <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">
       <polyline class="vui-spark-line" points="0,20 50,8 100,14" />
     </svg>
-  </template>
+  </span>
 </span>
 
 <!-- a heatmap cell that explains itself on hover or tap -->
 <i class="vui-tip green" style="--level: 3">
-  <template><small class="vui-tip-title">2026-06-21</small>4 notes</template>
+  <span class="vui-tip-content"><small class="vui-tip-title">2026-06-21</small>4 notes</span>
 </i>
 
 <!-- a bar with a donut breakdown -->
@@ -307,10 +307,10 @@ Reach: it shows on `:hover` (mouse), on focus (keyboard), and on a **tap** (touc
   <b class="vui-bar-value">82</b>
   <i class="vui-bar-fill"></i>
   <small class="vui-bar-label">Mon</small>
-  <template>
+  <span class="vui-tip-content">
     <small class="vui-tip-title">Mon · 82 total</small>
     <div class="vui-donut" style="--vui-donut-size: 72px; --vui-donut: var(--cyan-400) 0 60%, var(--amber-500) 0 100%"></div>
-  </template>
+  </span>
 </div>
 ```
 
@@ -322,12 +322,12 @@ el.innerHTML = data.map(d => `
     <b class="vui-bar-value">${d.value}</b>
     <i class="vui-bar-fill"></i>
     <small class="vui-bar-label">${d.label}</small>
-    <template>
+    <span class="vui-tip-content">
       <small class="vui-tip-title">${d.label} · ${d.value}</small>
       <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">
         <polyline class="vui-spark-line" points="${sparkPoints(d.series)}" />
       </svg>
-    </template>
+    </span>
   </div>`).join('');
-VantaUI.tooltips(el); // wire the freshly-injected triggers
+VantaUI.tooltips(el); // first time only; delegated wiring covers later updates
 ```

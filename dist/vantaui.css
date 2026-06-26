@@ -2588,10 +2588,10 @@
   }
 
   :where(.vui dialog:not(.left):not(.right) > header) {
+    padding-inline: var(--space-6);
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
-    padding-inline: var(--space-6);
     border-block-end: var(--border-hair) solid var(--hairline);
     padding-block: 14px;
     display: flex;
@@ -2603,9 +2603,9 @@
   }
 
   :where(.vui dialog:not(.left):not(.right) > footer) {
+    padding-inline: var(--space-6);
     justify-content: flex-end;
     gap: var(--space-3);
-    padding-inline: var(--space-6);
     border-block-start: var(--border-hair) solid var(--hairline);
     padding-block: 14px;
     display: flex;
@@ -2673,7 +2673,7 @@
     opacity: 1;
   }
 
-  :where(.vui [data-tip].vui-tip-js):after {
+  :where(.vui-js-tips .vui [data-tip]):after {
     display: none;
   }
 
@@ -2686,7 +2686,7 @@
     outline-offset: 2px;
   }
 
-  :where(.vui-tip) > template {
+  :where(.vui-tip) > .vui-tip-content {
     display: none;
   }
 
@@ -2735,11 +2735,11 @@
 
   #vui-tooltip .vui-tip-title {
     color: var(--_c);
-    font-family: var(--font-display);
     font-size: var(--fs-2xs);
+    font-family: var(--font-display);
     letter-spacing: var(--ls-wide);
-    text-transform: uppercase;
     text-shadow: 0 0 8px color-mix(in srgb, var(--_c) 45%, transparent);
+    text-transform: uppercase;
   }
 
   #vui-tooltip.is-below {
@@ -2815,8 +2815,8 @@
     }
 
     :where(.vui [data-tip]):after, #vui-tooltip {
-      clip-path: none;
       border-radius: var(--bevel-sm);
+      clip-path: none;
       corner-shape: bevel;
     }
   }

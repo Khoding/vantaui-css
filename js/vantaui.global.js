@@ -99,9 +99,13 @@
       tip.setAttribute("role", "tooltip");
       document.body.appendChild(tip);
     }
+    document.documentElement.classList.add("vui-js-tips");
+    if (document.__vuiTipsWired) return;
+    document.__vuiTipsWired = true;
     let untrack = null;
     const GAP = 8;
     const TONES = ["cyan", "amber", "green", "red"];
+    const triggerOf = (node) => node && node.closest ? node.closest("[data-tip], .vui-tip") : null;
     const place = (el) => {
       const r = el.getBoundingClientRect();
       const tw = tip.offsetWidth;
@@ -116,15 +120,18 @@
     };
     const show = (el) => {
       tipAnchor = el;
-      const tpl = el.matches(".vui-tip") ? el.querySelector(":scope > template") : null;
-      tip.classList.toggle("is-rich", !!tpl);
+      const content = el.matches(".vui-tip") ? el.querySelector(":scope > .vui-tip-content") : null;
+      tip.classList.toggle("is-rich", !!content);
       TONES.forEach((t) => tip.classList.toggle(t, el.classList.contains(t)));
-      if (tpl) tip.replaceChildren(tpl.content.cloneNode(true));
+      if (content) tip.replaceChildren(...[...content.childNodes].map((n) => n.cloneNode(true)));
       else tip.textContent = el.dataset.tip || "";
       place(el);
       tip.classList.add("is-visible");
       if (untrack) untrack();
-      untrack = trackAnchor(() => place(el), () => tip.classList.contains("is-visible"));
+      untrack = trackAnchor(
+        () => place(el),
+        () => tip.classList.contains("is-visible")
+      );
     };
     const hide = () => {
       tipAnchor = null;
@@ -134,29 +141,37 @@
         untrack = null;
       }
     };
-    if (!document.__vuiTipDismiss) {
-      document.__vuiTipDismiss = true;
-      document.addEventListener(
-        "pointerdown",
-        (e) => {
-          if (tipAnchor && !e.target.closest(".vui-tip-js")) hide();
-        },
-        true
-      );
-    }
-    root.querySelectorAll("[data-tip], .vui-tip").forEach((el) => {
-      if (el.classList.contains("vui-tip-js")) return;
-      el.classList.add("vui-tip-js");
-      el.addEventListener("mouseenter", () => show(el));
-      el.addEventListener("mouseleave", hide);
-      el.addEventListener("focusin", () => show(el));
-      el.addEventListener("focusout", hide);
-      el.addEventListener("pointerup", (e) => {
-        if (e.pointerType === "mouse") return;
-        if (tipAnchor === el && tip.classList.contains("is-visible")) hide();
-        else show(el);
-      });
+    document.addEventListener("mouseover", (e) => {
+      const el = triggerOf(e.target);
+      if (el && el !== tipAnchor) show(el);
     });
+    document.addEventListener("mouseout", (e) => {
+      if (!tipAnchor) return;
+      const to = e.relatedTarget;
+      if (!to || triggerOf(to) !== tipAnchor) hide();
+    });
+    document.addEventListener("focusin", (e) => {
+      const el = triggerOf(e.target);
+      if (el) show(el);
+      else if (tipAnchor) hide();
+    });
+    document.addEventListener("focusout", () => {
+      if (tipAnchor) hide();
+    });
+    document.addEventListener("pointerup", (e) => {
+      if (e.pointerType === "mouse") return;
+      const el = triggerOf(e.target);
+      if (!el) return;
+      if (tipAnchor === el && tip.classList.contains("is-visible")) hide();
+      else show(el);
+    });
+    document.addEventListener(
+      "pointerdown",
+      (e) => {
+        if (tipAnchor && !triggerOf(e.target)) hide();
+      },
+      true
+    );
   }
   function drawers(root = document) {
     const targetEl = root.documentElement || root;
@@ -510,7 +525,19 @@
     toolbars(root);
     carousels(root);
   }
-  var VantaUI = { init, tabs, setValue, drawers, tooltips, menus, placePopover, trackAnchor, toolbars, carousels, toast };
+  var VantaUI = {
+    init,
+    tabs,
+    setValue,
+    drawers,
+    tooltips,
+    menus,
+    placePopover,
+    trackAnchor,
+    toolbars,
+    carousels,
+    toast
+  };
   var vantaui_default = VantaUI;
   if (isBrowser) {
     if (document.readyState === "loading") {
