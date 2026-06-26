@@ -15,7 +15,6 @@ Related: app frame & navigation rails → https://vantaui-css.khodok.com/llms-na
 - `vui-container`: centered, max-width `--container-max`, inline padding `--container-pad`.
 - `vui-container--narrow`: max-width `--container-narrow`.
 - `vui-container--fluid`: has no max-width.
-- Inside an app-frame `<main>`, a container cancels the stage's `--hud-edge` padding: centered when the stage is wide, bleeding edge-to-edge when narrow, with `--container-pad` as the sole gutter.
 
 ## Content section (`vui-section`)
 

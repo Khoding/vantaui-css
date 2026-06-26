@@ -2924,19 +2924,6 @@
     margin-inline: calc(-1 * var(--hud-edge));
   }
 
-  :where(.vui:has( > main)) > main :where(.vui-container) {
-    inline-size: min(var(--container-max), 100% + 2 * var(--hud-edge));
-    margin-inline: auto;
-  }
-
-  :where(.vui:has( > main)) > main :where(.vui-container--narrow) {
-    inline-size: min(var(--container-narrow), 100% + 2 * var(--hud-edge));
-  }
-
-  :where(.vui:has( > main)) > main :where(.vui-container--fluid) {
-    inline-size: calc(100% + 2 * var(--hud-edge));
-  }
-
   :where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header) {
     z-index: 20;
     align-items: center;

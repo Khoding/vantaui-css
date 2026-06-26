@@ -111,7 +111,6 @@ Free-floating helpers here use the `vui-` prefix.
 
 - `vui-container`: centered, max-width `--container-max`, inline padding `--container-pad`.
 - `vui-container--narrow`: max-width `--container-narrow`. · `vui-container--fluid`: has no max-width.
-- As a direct child of an app-frame `<main>`, a container cancels the stage's `--hud-edge` padding: it stays centered when the stage is wide and bleeds edge-to-edge when narrow, with `--container-pad` as the sole gutter.
 
 ## Content section (`vui-section`)
 
@@ -205,7 +204,7 @@ Any `.vui` element that directly holds a `<main>` becomes an app frame and place
 - A `<footer>` and a bottom command bar (a side rail dropped to the floor, or `<nav class="bottom">`) can coexist: on phones they stack in separate rows — footer just above the command bar — instead of overlapping. From the `m` breakpoint up the rail returns to a column.
 - Mobile viewport hardening: the frame and `<body>` are both sized in `svh` (not `vh`/`dvh`) so the shell never exceeds the visible viewport — on mobile `vh`/`dvh` resolve to the toolbar-retracted (large) height, making the document scrollable and letting the bottom command bar drop below the fold (after an Android pull-to-refresh). Nothing scrolls at the document level, so the bottom bar stays put and pull-to-refresh keeps working; `<main>` does all the scrolling.
 - Overflow philosophy: `<main>` is the scroll container; `min-inline-size: 0` confines wide children so chrome never slides. Genuine misuse scrolls visibly rather than being silently clipped.
-- Stage bleed: the stage adds `--hud-edge` padding on every side. A direct `vui-container` (and `--narrow` / `--fluid`), `vui-prose`, or a `bleed-full` child cancels that inline padding so it owns the only gutter. `vui-container` stays centered on a wide stage and bleeds symmetrically edge-to-edge on a narrow one (its `--container-pad` is the sole inset — no doubled gutter, never pinned to one side).
+- Stage bleed: the stage adds `--hud-edge` padding on every side. A `vui-prose` or `bleed-full` child cancels that inline padding to span edge-to-edge. `vui-container` is not bled — it keeps the stage gutter and stays centered within it.
 
 ## Header / app bar
 
