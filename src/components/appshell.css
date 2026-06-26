@@ -291,8 +291,36 @@
   }
 }
 
-/* ---------- Bleed overrides for the stage padding ---------- */
+/* ---------- Bleed overrides for the stage padding ----------
+   The stage (<main>) adds `--hud-edge` padding on every side. A few children
+   are meant to OWN their own inline gutter and span past that padding:
+
+   - `.vui-prose` and the `bleed-full` helpers self-center INTERNALLY (prose via
+     its grid tracks; bleed-full fills its container), so cancelling the stage
+     padding with a fixed negative margin is harmless and gives true edge-to-edge.
+
+   - `.vui-container` is different: it centers via `margin-inline: auto` against a
+     `max-inline-size` cap. A fixed negative margin would over-constrain that box
+     (capped width + two non-auto margins) and pin it to one edge, leaving a lone
+     gap on the other side. Instead we keep `margin-inline: auto` and GROW the
+     box by `2 * --hud-edge` so the auto margins resolve to `-hud-edge` per side:
+     it stays centered when there's room (wide stage → the cap wins) and bleeds
+     symmetrically edge-to-edge when there isn't (narrow stage → the grown width
+     wins, auto margins go negative), with the container's own `--container-pad`
+     as the sole gutter, no doubled inset, no lopsiding. `box-sizing: border-box`
+     (from the reset) makes `100%` the stage's content box, so the grown width
+     lands flush with the frame edges. */
 :where(.vui:has(> main)) > main :is(.vui-bleed-full, .bleed-full):not(.vui-prose *),
-:where(.vui:has(> main)) > main :is(.vui-prose, .vui-container) {
+:where(.vui:has(> main)) > main .vui-prose {
   margin-inline: calc(-1 * var(--hud-edge));
+}
+:where(.vui:has(> main)) > main :where(.vui-container) {
+  inline-size: min(var(--container-max), 100% + 2 * var(--hud-edge));
+  margin-inline: auto;
+}
+:where(.vui:has(> main)) > main :where(.vui-container--narrow) {
+  inline-size: min(var(--container-narrow), 100% + 2 * var(--hud-edge));
+}
+:where(.vui:has(> main)) > main :where(.vui-container--fluid) {
+  inline-size: calc(100% + 2 * var(--hud-edge));
 }
