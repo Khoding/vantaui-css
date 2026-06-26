@@ -117,7 +117,18 @@ function clocks(root = document) {
   window.__vuiClock = setInterval(tick, 1000);
 }
 
-/* ---------- Tooltips ---------- */
+/* ---------- Tooltips ----------
+   One body-level #vui-tooltip serves every trigger. position:fixed at the
+   document root, so it is NEVER clipped by an ancestor's overflow or
+   clip-path — the whole reason it lives here instead of an ::after bubble.
+   Two flavours share it:
+     • [data-tip="text"]      → a plain text bubble (textContent).
+     • .vui-tip + <template>  → a RICH bubble: the template's inert markup
+       (a mini .vui-sparkline / .vui-donut / .vui-bars, a .kv list, a
+       heatmap day's count) is cloned in. A tone word on the trigger
+       (amber/green/red) is copied onto the tip. */
+let tipAnchor = null; // the trigger whose tooltip is currently open (module-wide)
+
 export function tooltips(root = document) {
   let tip = document.getElementById('vui-tooltip');
   if (!tip) {
@@ -129,6 +140,7 @@ export function tooltips(root = document) {
 
   let untrack = null;
   const GAP = 8;
+  const TONES = ['cyan', 'amber', 'green', 'red'];
   const place = el => {
     const r = el.getBoundingClientRect();
     const tw = tip.offsetWidth;
@@ -145,7 +157,14 @@ export function tooltips(root = document) {
   };
 
   const show = el => {
-    tip.textContent = el.dataset.tip;
+    tipAnchor = el;
+    // A .vui-tip carrying a <template> renders real markup; everything else
+    // falls back to the plain data-tip string.
+    const tpl = el.matches('.vui-tip') ? el.querySelector(':scope > template') : null;
+    tip.classList.toggle('is-rich', !!tpl);
+    TONES.forEach(t => tip.classList.toggle(t, el.classList.contains(t)));
+    if (tpl) tip.replaceChildren(tpl.content.cloneNode(true));
+    else tip.textContent = el.dataset.tip || '';
     place(el);
     tip.classList.add('is-visible');
     // Follow the anchor as the page scrolls; the tip stays open until blur/leave.
@@ -154,6 +173,7 @@ export function tooltips(root = document) {
   };
 
   const hide = () => {
+    tipAnchor = null;
     tip.classList.remove('is-visible');
     if (untrack) {
       untrack();
@@ -161,13 +181,32 @@ export function tooltips(root = document) {
     }
   };
 
-  root.querySelectorAll('[data-tip]').forEach(el => {
+  // Light-dismiss (wired once): a tap outside the open trigger closes a tip
+  // that was opened by touch. Captured so any ancestor scroller is seen.
+  if (!document.__vuiTipDismiss) {
+    document.__vuiTipDismiss = true;
+    document.addEventListener(
+      'pointerdown',
+      e => {
+        if (tipAnchor && !e.target.closest('.vui-tip-js')) hide();
+      },
+      true,
+    );
+  }
+
+  root.querySelectorAll('[data-tip], .vui-tip').forEach(el => {
     if (el.classList.contains('vui-tip-js')) return;
     el.classList.add('vui-tip-js');
     el.addEventListener('mouseenter', () => show(el));
     el.addEventListener('mouseleave', hide);
     el.addEventListener('focusin', () => show(el));
     el.addEventListener('focusout', hide);
+    // Touch/pen: a tap toggles the tip, so it is reachable without a hover.
+    el.addEventListener('pointerup', e => {
+      if (e.pointerType === 'mouse') return;
+      if (tipAnchor === el && tip.classList.contains('is-visible')) hide();
+      else show(el);
+    });
   });
 }
 

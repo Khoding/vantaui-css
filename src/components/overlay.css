@@ -4,6 +4,14 @@
    <header>/<footer> inside it divides automatically. Plus small HUD
    pieces: a labelled divider, a tooltip, a key/value row, a big stat.
    (Edge drawers are <dialog class="left|right">; see navigation.css.)
+
+   Tooltips come in two flavours sharing one body-level #vui-tooltip
+   (rendered by tooltips() at position:fixed, so NEVER clipped):
+     • [data-tip="text"]      → a plain text bubble.
+     • .vui-tip + <template>  → a RICH bubble: the template's markup is
+       cloned in; a tone word (amber/green/red) on the trigger tones it,
+       and an optional .vui-tip-title is the eyebrow. Without JS the
+       [data-tip] form degrades to a CSS ::after; .vui-tip stays inert.
    ============================================================ */
 
 /* ---------- Modal: native <dialog> ---------- */
@@ -27,9 +35,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
   padding-inline: var(--space-6);
   padding-block: 14px;
+  gap: var(--space-4);
   border-block-end: var(--border-hair) solid var(--hairline);
 }
 :where(.vui dialog:not(.left):not(.right) > :not(header):not(footer)) {
@@ -39,9 +47,9 @@
 :where(.vui dialog:not(.left):not(.right) > footer) {
   display: flex;
   justify-content: flex-end;
-  gap: var(--space-3);
   padding-inline: var(--space-6);
   padding-block: 14px;
+  gap: var(--space-3);
   border-block-start: var(--border-hair) solid var(--hairline);
 }
 
@@ -110,26 +118,71 @@
 :where(.vui [data-tip].vui-tip-js)::after {
   display: none;
 }
+
+/* Rich tooltip trigger: any element + .vui-tip carrying a <template> child.
+   The template's markup is rendered into the body-level #vui-tooltip by
+   tooltips(), so it never clips. The trigger itself only needs a cursor cue
+   (and a focus ring when it is focusable for keyboard / touch). */
+:where(.vui-tip) {
+  cursor: help;
+}
+:where(.vui-tip:focus-visible) {
+  outline: var(--border-hair) solid currentColor;
+  outline-offset: 2px;
+}
+:where(.vui-tip) > template {
+  display: none;
+}
+
 #vui-tooltip {
-  position: fixed;
+  --_c: var(--cyan-400);
   z-index: 9999;
+  position: fixed;
   inline-size: max-content;
   max-inline-size: 16rem;
   padding-inline: 10px;
   padding-block: 6px;
-  border: var(--border-hair) solid var(--hairline-accent);
+  border: var(--border-hair) solid color-mix(in srgb, var(--_c) 60%, var(--hairline));
   background-color: var(--ink-800);
-  box-shadow: var(--glow-cyan-sm);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 35%, transparent);
   color: var(--cyan-50);
   font-size: var(--fs-xs);
   font-family: var(--font-mono);
   clip-path: var(--clip-notch);
   --bevel-sm: 5px;
-  opacity: 0;
-  pointer-events: none;
   /* center on the anchor point and float 8px above it */
   translate: -50% calc(-100% - 8px);
+  opacity: 0;
+  pointer-events: none;
   transition: opacity var(--dur-fast) var(--ease-hud);
+}
+/* Tone words are copied from the trigger onto the body-level tip by tooltips(). */
+#vui-tooltip.amber {
+  --_c: var(--amber-500);
+}
+#vui-tooltip.green {
+  --_c: var(--green-500);
+}
+#vui-tooltip.red {
+  --_c: var(--red-500);
+}
+/* Rich content (a .vui-tip with a <template>): lay the markup out in a small
+   column. Nested widgets keep their own styling; we only own shell + spacing. */
+#vui-tooltip.is-rich {
+  display: grid;
+  max-inline-size: 18rem;
+  padding-block: 8px;
+  gap: 6px;
+  color: var(--text-primary);
+  text-align: start;
+}
+#vui-tooltip .vui-tip-title {
+  color: var(--_c);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--_c) 45%, transparent);
+  text-transform: uppercase;
 }
 /* flipped below the anchor when there isn't room above (set by tooltips()) */
 #vui-tooltip.is-below {
@@ -144,8 +197,8 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--space-4);
   padding-block: 6px;
+  gap: var(--space-4);
   border-block-end: var(--border-hair) solid var(--hairline);
 }
 :where(.vui .kv) > :first-child {
@@ -196,16 +249,16 @@
    tooltips are pseudo/JS nodes, so they convert unconditionally. See panel.css. */
 @supports (corner-shape: bevel) {
   :where(.vui dialog:not(.left):not(.right):not(.vui-clip):not(.vui-clip *)) {
-    clip-path: none;
     border-start-start-radius: var(--bevel-md);
     border-end-end-radius: var(--bevel-md);
+    clip-path: none;
     corner-start-start-shape: bevel;
     corner-end-end-shape: bevel;
   }
   :where(.vui [data-tip])::after,
   #vui-tooltip {
-    clip-path: none;
     border-radius: var(--bevel-sm);
+    clip-path: none;
     corner-shape: bevel;
   }
 }

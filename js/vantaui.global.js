@@ -90,6 +90,7 @@
     clearInterval(window.__vuiClock);
     window.__vuiClock = setInterval(tick, 1e3);
   }
+  var tipAnchor = null;
   function tooltips(root = document) {
     let tip = document.getElementById("vui-tooltip");
     if (!tip) {
@@ -100,6 +101,7 @@
     }
     let untrack = null;
     const GAP = 8;
+    const TONES = ["cyan", "amber", "green", "red"];
     const place = (el) => {
       const r = el.getBoundingClientRect();
       const tw = tip.offsetWidth;
@@ -113,26 +115,47 @@
       tip.style.top = (below ? r.bottom : r.top) + "px";
     };
     const show = (el) => {
-      tip.textContent = el.dataset.tip;
+      tipAnchor = el;
+      const tpl = el.matches(".vui-tip") ? el.querySelector(":scope > template") : null;
+      tip.classList.toggle("is-rich", !!tpl);
+      TONES.forEach((t) => tip.classList.toggle(t, el.classList.contains(t)));
+      if (tpl) tip.replaceChildren(tpl.content.cloneNode(true));
+      else tip.textContent = el.dataset.tip || "";
       place(el);
       tip.classList.add("is-visible");
       if (untrack) untrack();
       untrack = trackAnchor(() => place(el), () => tip.classList.contains("is-visible"));
     };
     const hide = () => {
+      tipAnchor = null;
       tip.classList.remove("is-visible");
       if (untrack) {
         untrack();
         untrack = null;
       }
     };
-    root.querySelectorAll("[data-tip]").forEach((el) => {
+    if (!document.__vuiTipDismiss) {
+      document.__vuiTipDismiss = true;
+      document.addEventListener(
+        "pointerdown",
+        (e) => {
+          if (tipAnchor && !e.target.closest(".vui-tip-js")) hide();
+        },
+        true
+      );
+    }
+    root.querySelectorAll("[data-tip], .vui-tip").forEach((el) => {
       if (el.classList.contains("vui-tip-js")) return;
       el.classList.add("vui-tip-js");
       el.addEventListener("mouseenter", () => show(el));
       el.addEventListener("mouseleave", hide);
       el.addEventListener("focusin", () => show(el));
       el.addEventListener("focusout", hide);
+      el.addEventListener("pointerup", (e) => {
+        if (e.pointerType === "mouse") return;
+        if (tipAnchor === el && tip.classList.contains("is-visible")) hide();
+        else show(el);
+      });
     });
   }
   function drawers(root = document) {

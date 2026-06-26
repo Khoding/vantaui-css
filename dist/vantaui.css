@@ -2677,13 +2677,27 @@
     display: none;
   }
 
+  :where(.vui-tip) {
+    cursor: help;
+  }
+
+  :where(.vui-tip:focus-visible) {
+    outline: var(--border-hair) solid currentColor;
+    outline-offset: 2px;
+  }
+
+  :where(.vui-tip) > template {
+    display: none;
+  }
+
   #vui-tooltip {
+    --_c: var(--cyan-400);
     z-index: 9999;
-    border: var(--border-hair) solid var(--hairline-accent);
+    border: var(--border-hair) solid color-mix(in srgb, var(--_c) 60%, var(--hairline));
     background-color: var(--ink-800);
     inline-size: max-content;
     max-inline-size: 16rem;
-    box-shadow: var(--glow-cyan-sm);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--_c) 35%, transparent);
     color: var(--cyan-50);
     font-size: var(--fs-xs);
     font-family: var(--font-mono);
@@ -2696,6 +2710,36 @@
     padding-inline: 10px;
     position: fixed;
     translate: -50% calc(-100% - 8px);
+  }
+
+  #vui-tooltip.amber {
+    --_c: var(--amber-500);
+  }
+
+  #vui-tooltip.green {
+    --_c: var(--green-500);
+  }
+
+  #vui-tooltip.red {
+    --_c: var(--red-500);
+  }
+
+  #vui-tooltip.is-rich {
+    max-inline-size: 18rem;
+    color: var(--text-primary);
+    text-align: start;
+    gap: 6px;
+    padding-block: 8px;
+    display: grid;
+  }
+
+  #vui-tooltip .vui-tip-title {
+    color: var(--_c);
+    font-family: var(--font-display);
+    font-size: var(--fs-2xs);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    text-shadow: 0 0 8px color-mix(in srgb, var(--_c) 45%, transparent);
   }
 
   #vui-tooltip.is-below {

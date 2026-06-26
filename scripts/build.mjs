@@ -148,7 +148,9 @@ function checkDocsCoverage() {
       continue;
     }
     if (!hit(terms, topicText))
-      problems.push(`• ext "${name}" not found in any topic file (expected docs/llms-extensions.txt). One of: ${terms.join(', ')}`);
+      problems.push(
+        `• ext "${name}" not found in any topic file (expected docs/llms-extensions.txt). One of: ${terms.join(', ')}`,
+      );
     if (fullText && !hit(terms, fullText))
       problems.push(`• ext "${name}" missing from docs/llms-full.txt. One of: ${terms.join(', ')}`);
   }
@@ -265,7 +267,10 @@ try {
   // Mirror the add-on bundles into docs so the live demos can load them.
   mkdirSync(resolve(docsDistDir, 'ext'), {recursive: true});
   for (const a of ADDONS) {
-    copyFileSync(resolve(outDir, `ext/${a.name}.min.css`), resolve(docsDistDir, 'ext', `${a.name}.min.css`));
+    copyFileSync(
+      resolve(outDir, `ext/${a.name}.min.css`),
+      resolve(docsDistDir, 'ext', `${a.name}.min.css`),
+    );
     console.log(`✔ docs/dist/ext/${a.name}.min.css`);
   }
   const docsJsDir = resolve(root, 'docs', 'js');

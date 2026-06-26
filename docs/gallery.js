@@ -2081,16 +2081,32 @@
       play: {
         state: {tone: 'cyan', value: 1284, sub: true},
         controls: [
-          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: 'cyan'},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Green', value: 'green'},
+              {label: 'Red', value: 'red'},
+            ],
+          },
           {type: 'range', key: 'value', label: 'Value', min: 0, max: 9999},
           {type: 'toggle', key: 'sub', label: 'Sub-label'},
         ],
         render: function (s) {
           var sub = s.sub ? '\n  <span class="vui-stat-sub">+12 vs. yesterday</span>' : '';
           return (
-            '<div class="vui-stat-card ' + s.tone + '">\n' +
+            '<div class="vui-stat-card ' +
+            s.tone +
+            '">\n' +
             '  <small class="vui-stat-label">Notes today</small>\n' +
-            '  <strong class="vui-stat-value">' + s.value.toLocaleString() + '</strong>' + sub + '\n' +
+            '  <strong class="vui-stat-value">' +
+            s.value.toLocaleString() +
+            '</strong>' +
+            sub +
+            '\n' +
             '</div>'
           );
         },
@@ -2108,7 +2124,7 @@
       id: 'bars',
       title: 'Bar chart',
       blurb:
-        'Vertical bars in a fixed-height track. Each bar\'s <code>--v</code> is its height as a 0–1 fraction of the tallest (you compute <code>value / max</code>). Drag the values — the proportions hold and the labels track each bar.',
+        "Vertical bars in a fixed-height track. Each bar's <code>--v</code> is its height as a 0–1 fraction of the tallest (you compute <code>value / max</code>). <strong>Hover or tap a bar</strong> for a rich tooltip (core <code>VantaUI.tooltips()</code>). Drag the values — the proportions hold and the labels track each bar.",
       play: {
         resize: true,
         state: {b0: 62, b1: 88, b2: 74, b3: 95, b4: 70, tone: 'cyan', height: 180},
@@ -2118,24 +2134,61 @@
           {type: 'range', key: 'b2', label: 'Wed', min: 0, max: 100},
           {type: 'range', key: 'b3', label: 'Thu', min: 0, max: 100},
           {type: 'range', key: 'b4', label: 'Fri', min: 0, max: 100},
-          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: 'cyan'},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Green', value: 'green'},
+              {label: 'Red', value: 'red'},
+            ],
+          },
           {type: 'range', key: 'height', label: 'Height', min: 120, max: 260, suffix: 'px'},
         ],
         render: function (s) {
           var labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
           var vals = [s.b0, s.b1, s.b2, s.b3, s.b4];
           var max = Math.max.apply(null, vals) || 1;
+          var total =
+            vals.reduce(function (a, b) {
+              return a + b;
+            }, 0) || 1;
           var bars = vals
             .map(function (v, i) {
               return (
-                '  <div class="vui-bar" style="--v:' + Math.round((v / max) * 100) / 100 + '">' +
-                '<b class="vui-bar-value">' + v + '</b>' +
+                '  <div class="vui-bar vui-tip ' +
+                s.tone +
+                '" style="--v:' +
+                Math.round((v / max) * 100) / 100 +
+                '">' +
+                '<b class="vui-bar-value">' +
+                v +
+                '</b>' +
                 '<i class="vui-bar-fill"></i>' +
-                '<small class="vui-bar-label">' + labels[i] + '</small></div>'
+                '<small class="vui-bar-label">' +
+                labels[i] +
+                '</small>' +
+                '<template><small class="vui-tip-title">' +
+                labels[i] +
+                ' \u00b7 ' +
+                v +
+                '</small>' +
+                Math.round((v / total) * 100) +
+                '% of the week</template></div>'
               );
             })
             .join('\n');
-          return '<div class="vui-bars ' + s.tone + '" style="--vui-bars-height:' + s.height + 'px">\n' + bars + '\n</div>';
+          return (
+            '<div class="vui-bars ' +
+            s.tone +
+            '" style="--vui-bars-height:' +
+            s.height +
+            'px">\n' +
+            bars +
+            '\n</div>'
+          );
         },
       },
       examples: [
@@ -2159,7 +2212,17 @@
           {type: 'range', key: 'r1', label: 'Bullock', min: 0, max: 200},
           {type: 'range', key: 'r2', label: 'Montoya', min: 0, max: 200},
           {type: 'range', key: 'r3', label: 'Bard', min: 0, max: 200},
-          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: 'cyan'},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Green', value: 'green'},
+              {label: 'Red', value: 'red'},
+            ],
+          },
         ],
         render: function (s) {
           var names = ['Gordon', 'Bullock', 'Montoya', 'Bard'];
@@ -2169,10 +2232,20 @@
             .map(function (v, i) {
               return (
                 '  <li class="vui-board-row">\n' +
-                '    <span class="vui-board-rank' + (i < 3 ? ' top' : '') + '">' + (i + 1) + '</span>\n' +
+                '    <span class="vui-board-rank' +
+                (i < 3 ? ' top' : '') +
+                '">' +
+                (i + 1) +
+                '</span>\n' +
                 '    <div class="vui-board-main">\n' +
-                '      <div class="vui-board-head"><a class="vui-board-name" href="#">' + names[i] + '</a><span class="vui-board-count">' + v + '</span></div>\n' +
-                '      <div class="vui-board-bar" style="--v:' + Math.round((v / max) * 100) / 100 + '"></div>\n' +
+                '      <div class="vui-board-head"><a class="vui-board-name" href="#">' +
+                names[i] +
+                '</a><span class="vui-board-count">' +
+                v +
+                '</span></div>\n' +
+                '      <div class="vui-board-bar" style="--v:' +
+                Math.round((v / max) * 100) / 100 +
+                '"></div>\n' +
                 '    </div>\n  </li>'
               );
             })
@@ -2206,11 +2279,22 @@
           var total = s.a + s.b + s.c || 1;
           var p1 = Math.round((s.a / total) * 10000) / 100;
           var p2 = Math.round(((s.a + s.b) / total) * 10000) / 100;
-          var stops = 'var(--cyan-400) 0 ' + p1 + '%, var(--amber-500) 0 ' + p2 + '%, var(--green-500) 0 100%';
+          var stops =
+            'var(--cyan-400) 0 ' +
+            p1 +
+            '%, var(--amber-500) 0 ' +
+            p2 +
+            '%, var(--green-500) 0 100%';
           return (
             '<div class="vui-donut-figure">\n' +
-            '  <div class="vui-donut" style="--vui-donut: ' + stops + '; --vui-donut-hole: ' + s.hole + '%"></div>\n' +
-            '  <strong class="vui-donut-center">' + Math.round((s.a / total) * 100) + '%</strong>\n' +
+            '  <div class="vui-donut" style="--vui-donut: ' +
+            stops +
+            '; --vui-donut-hole: ' +
+            s.hole +
+            '%"></div>\n' +
+            '  <strong class="vui-donut-center">' +
+            Math.round((s.a / total) * 100) +
+            '%</strong>\n' +
             '</div>\n' +
             '<ul class="vui-legend">\n  <li class="cyan">Notes</li>\n  <li class="amber">Edits</li>\n  <li class="green">Replies</li>\n</ul>'
           );
@@ -2220,7 +2304,7 @@
         {
           label: 'Wiring (JS)',
           noDemo: true,
-          code: '// segments: [{color, value}]  ->  cumulative conic stops\nconst total = segments.reduce((s, x) => s + x.value, 0);\nlet acc = 0;\nconst stops = segments.map(s => {\n  acc += s.value;\n  return `${s.color} 0 ${(acc / total * 100).toFixed(2)}%`;\n}).join(\', \');\ndonut.style.setProperty(\'--vui-donut\', stops);',
+          code: "// segments: [{color, value}]  ->  cumulative conic stops\nconst total = segments.reduce((s, x) => s + x.value, 0);\nlet acc = 0;\nconst stops = segments.map(s => {\n  acc += s.value;\n  return `${s.color} 0 ${(acc / total * 100).toFixed(2)}%`;\n}).join(', ');\ndonut.style.setProperty('--vui-donut', stops);",
         },
       ],
     },
@@ -2233,16 +2317,43 @@
       play: {
         state: {tone: 'cyan', points: 12, seed: 7},
         controls: [
-          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: 'cyan'},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Green', value: 'green'},
+              {label: 'Red', value: 'red'},
+            ],
+          },
           {type: 'range', key: 'points', label: 'Points', min: 4, max: 24},
-          {type: 'button', key: 'seed', label: 'Randomize', icon: 'casino', onClick: function (s) { s.seed = Math.floor(Math.random() * 1e5); }},
+          {
+            type: 'button',
+            key: 'seed',
+            label: 'Randomize',
+            icon: 'casino',
+            onClick: function (s) {
+              s.seed = Math.floor(Math.random() * 1e5);
+            },
+          },
         ],
         render: function (s) {
           var seed = s.seed + 1;
-          function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
-          var n = Math.max(2, s.points), W = 100, H = 28, pad = 2, vals = [];
+          function rnd() {
+            seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+            return seed / 0x7fffffff;
+          }
+          var n = Math.max(2, s.points),
+            W = 100,
+            H = 28,
+            pad = 2,
+            vals = [];
           for (var i = 0; i < n; i++) vals.push(rnd());
-          var hi = Math.max.apply(null, vals), lo = Math.min.apply(null, vals), span = hi - lo || 1;
+          var hi = Math.max.apply(null, vals),
+            lo = Math.min.apply(null, vals),
+            span = hi - lo || 1;
           var pts = vals
             .map(function (v, i) {
               var x = (i / (n - 1)) * W;
@@ -2251,9 +2362,15 @@
             })
             .join(' ');
           return (
-            '<svg class="vui-sparkline ' + s.tone + '" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:52px">\n' +
-            '  <polyline class="vui-spark-area" points="0,28 ' + pts + ' 100,28" />\n' +
-            '  <polyline class="vui-spark-line" points="' + pts + '" />\n</svg>'
+            '<svg class="vui-sparkline ' +
+            s.tone +
+            '" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:52px">\n' +
+            '  <polyline class="vui-spark-area" points="0,28 ' +
+            pts +
+            ' 100,28" />\n' +
+            '  <polyline class="vui-spark-line" points="' +
+            pts +
+            '" />\n</svg>'
           );
         },
       },
@@ -2270,25 +2387,64 @@
       id: 'heatmap',
       title: 'Activity heatmap',
       blurb:
-        'A GitHub-style calendar. Emit one cell per day; seven rows flow into week columns automatically, and a single <code>color-mix</code> scales each cell by its <code>--level</code> (0–4). Drag the density or Randomize the data.',
+        'A GitHub-style calendar. Emit one cell per day; seven rows flow into week columns automatically, and a single <code>color-mix</code> scales each cell by its <code>--level</code> (0–4). <strong>Each cell carries a rich tooltip</strong> (core <code>VantaUI.tooltips()</code>, body-level so the scroller never clips it) — hover or tap one. Drag the density or Randomize the data.',
       play: {
         state: {tone: 'cyan', density: 55, seed: 3},
         controls: [
-          {type: 'select', key: 'tone', label: 'Tone', options: [{label: 'Cyan', value: 'cyan'}, {label: 'Amber', value: 'amber'}, {label: 'Green', value: 'green'}, {label: 'Red', value: 'red'}]},
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: 'cyan'},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Green', value: 'green'},
+              {label: 'Red', value: 'red'},
+            ],
+          },
           {type: 'range', key: 'density', label: 'Density', min: 10, max: 100, suffix: '%'},
-          {type: 'button', key: 'seed', label: 'Randomize', icon: 'casino', onClick: function (s) { s.seed = Math.floor(Math.random() * 1e5); }},
+          {
+            type: 'button',
+            key: 'seed',
+            label: 'Randomize',
+            icon: 'casino',
+            onClick: function (s) {
+              s.seed = Math.floor(Math.random() * 1e5);
+            },
+          },
         ],
         render: function (s) {
           var seed = s.seed + 1;
-          function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
-          var weeks = 18, cells = [];
+          function rnd() {
+            seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+            return seed / 0x7fffffff;
+          }
+          var weeks = 18,
+            cells = [];
           for (var i = 0; i < weeks * 7; i++) {
             var lvl = rnd() < s.density / 100 ? 1 + Math.floor(rnd() * 4) : 0;
-            cells.push('<i style="--level:' + lvl + '"></i>');
+            cells.push(
+              '<i class="vui-tip ' +
+                s.tone +
+                '" style="--level:' +
+                lvl +
+                '">' +
+                '<template><small class="vui-tip-title">Week ' +
+                (Math.floor(i / 7) + 1) +
+                ' \u00b7 day ' +
+                ((i % 7) + 1) +
+                '</small>' +
+                lvl +
+                ' / 4 active</template></i>',
+            );
           }
           return (
             '<div style="overflow-x:auto">\n' +
-            '  <div class="vui-heatmap ' + s.tone + '">' + cells.join('') + '</div>\n' +
+            '  <div class="vui-heatmap ' +
+            s.tone +
+            '">' +
+            cells.join('') +
+            '</div>\n' +
             '</div>\n' +
             '<div class="vui-heatmap-legend">LESS' +
             '<i class="vui-heat-swatch" style="--level:0"></i>' +
@@ -2303,7 +2459,7 @@
         {
           label: 'Wiring (JS)',
           noDemo: true,
-          code: '// days: [{date:"YYYY-MM-DD", count}]\nconst max = Math.max(1, ...days.map(d => d.count));\nconst level = c => (c === 0 ? 0 : Math.min(4, Math.ceil((c / max) * 4)));\nconst lead = new Date(days[0].date).getDay(); // 0=Sun\nel.innerHTML = [\n  ...Array.from({length: lead}, () => \'<i class="vui-cell-pad"></i>\'),\n  ...days.map(d => `<i style="--level:${level(d.count)}" title="${d.date}: ${d.count}"></i>`),\n].join(\'\');',
+          code: '// days: [{date:"YYYY-MM-DD", count}]\nconst max = Math.max(1, ...days.map(d => d.count));\nconst level = c => (c === 0 ? 0 : Math.min(4, Math.ceil((c / max) * 4)));\nconst lead = new Date(days[0].date).getDay(); // 0=Sun\nel.innerHTML = [\n  ...Array.from({length: lead}, () => \'<i class="vui-cell-pad"></i>\'),\n  ...days.map(d => `\n    <i class="vui-tip" style="--level:${level(d.count)}">\n      <template><small class="vui-tip-title">${d.date}</small>${d.count} notes</template>\n    </i>`),\n].join(\'\');\nVantaUI.tooltips(el); // body-level tooltips, never clipped by the scroller',
         },
       ],
     },
@@ -2318,14 +2474,106 @@
         controls: [{type: 'range', key: 'value', label: 'Change', min: -50, max: 50, suffix: '%'}],
         render: function (s) {
           var dir = s.value > 0 ? 'up' : s.value < 0 ? 'down' : 'flat';
-          return '<span class="vui-delta ' + dir + '">' + (s.value > 0 ? '+' : '') + s.value + '%</span>';
+          return (
+            '<span class="vui-delta ' + dir + '">' + (s.value > 0 ? '+' : '') + s.value + '%</span>'
+          );
         },
       },
       examples: [
         {
           label: 'Wiring (JS)',
           noDemo: true,
-          code: '// n: the change value\nconst dir = n > 0 ? \'up\' : n < 0 ? \'down\' : \'flat\';\nel.className = `vui-delta ${dir}`;\nel.textContent = `${n > 0 ? \'+\' : \'\'}${n}%`;',
+          code: "// n: the change value\nconst dir = n > 0 ? 'up' : n < 0 ? 'down' : 'flat';\nel.className = `vui-delta ${dir}`;\nel.textContent = `${n > 0 ? '+' : ''}${n}%`;",
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'tip',
+      title: 'Rich tooltip',
+      blurb:
+        'Reuses VantaUI\u2019s <strong>core</strong> tooltip (<code>VantaUI.tooltips()</code>): one body-level <code>#vui-tooltip</code> at <code>position:fixed</code>, so it is <em>never clipped</em> by a panel or scroller. Add <code>vui-tip</code> to a trigger and nest an inert <code>&lt;template&gt;</code> holding real markup \u2014 a sparkline, a donut, or a day\u2019s count. Opens on hover, focus, <em>and</em> a touch tap. <strong>Hover or tap a value, a heatmap cell, or the bar.</strong>',
+      play: {
+        state: {tone: 'cyan'},
+        controls: [
+          {
+            type: 'select',
+            key: 'tone',
+            label: 'Tone',
+            options: [
+              {label: 'Cyan', value: 'cyan'},
+              {label: 'Amber', value: 'amber'},
+              {label: 'Green', value: 'green'},
+              {label: 'Red', value: 'red'},
+            ],
+          },
+        ],
+        render: function (s) {
+          var t = s.tone;
+          var spark =
+            '<svg class="vui-sparkline ' +
+            t +
+            '" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">' +
+            '<polyline class="vui-spark-line" points="0,22 25,12 50,16 75,4 100,9" /></svg>';
+          var cells = '';
+          var sample = [0, 2, 4, 1, 3, 0, 2, 1, 4, 2, 0, 3, 1, 2];
+          for (var i = 0; i < sample.length; i++) {
+            cells +=
+              '<i class="vui-tip ' +
+              t +
+              '" style="--level:' +
+              sample[i] +
+              '">' +
+              '<template><small class="vui-tip-title">Day ' +
+              (i + 1) +
+              '</small>' +
+              sample[i] +
+              ' notes</template></i>';
+          }
+          return (
+            '<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-end;padding-block:24px">\n' +
+            '  <span class="vui-tip ' +
+            t +
+            '" style="font-family:var(--font-hud);font-size:var(--fs-2xl)">87\n' +
+            '    <template><small class="vui-tip-title">Mon \u00b7 87 notes</small>' +
+            spark +
+            '</template>\n' +
+            '  </span>\n' +
+            '  <div class="vui-heatmap ' +
+            t +
+            '">' +
+            cells +
+            '</div>\n' +
+            '  <div class="vui-bars ' +
+            t +
+            '" style="--vui-bars-height:120px">\n' +
+            '    <div class="vui-bar vui-tip ' +
+            t +
+            '" style="--v:.82">\n' +
+            '      <b class="vui-bar-value">82</b><i class="vui-bar-fill"></i><small class="vui-bar-label">Mon</small>\n' +
+            '      <template><small class="vui-tip-title">Mon \u00b7 82 total</small>' +
+            '<div class="vui-donut" style="--vui-donut-size:64px;--vui-donut:var(--cyan-400) 0 60%,var(--amber-500) 0 100%"></div></template>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '</div>'
+          );
+        },
+      },
+      examples: [
+        {
+          label: 'Heatmap cell that explains itself',
+          noDemo: true,
+          code: '<i class="vui-tip green" style="--level: 3">\n  <template><small class="vui-tip-title">2026-06-21</small>4 notes</template>\n</i>',
+        },
+        {
+          label: 'Value with a sparkline tooltip',
+          noDemo: true,
+          code: '<span class="vui-tip cyan">87\n  <template>\n    <small class="vui-tip-title">Mon \u00b7 87 notes</small>\n    <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">\n      <polyline class="vui-spark-line" points="0,20 50,8 100,14" />\n    </svg>\n  </template>\n</span>',
+        },
+        {
+          label: 'Wiring (JS)',
+          noDemo: true,
+          code: '// data: [{label, value, series}]  ->  bars, each with a sparkline tooltip\nconst max = Math.max(1, ...data.map(d => d.value));\nel.innerHTML = data.map(d => `\n  <div class="vui-bar vui-tip cyan" style="--v:${d.value / max}">\n    <b class="vui-bar-value">${d.value}</b>\n    <i class="vui-bar-fill"></i>\n    <small class="vui-bar-label">${d.label}</small>\n    <template>\n      <small class="vui-tip-title">${d.label} \u00b7 ${d.value}</small>\n      <svg class="vui-sparkline cyan" viewBox="0 0 100 28" preserveAspectRatio="none" style="block-size:40px">\n        <polyline class="vui-spark-line" points="${sparkPoints(d.series)}" />\n      </svg>\n    </template>\n  </div>`).join(\'\');\nVantaUI.tooltips(el); // wire the freshly-injected triggers',
         },
       ],
     },
