@@ -35,7 +35,9 @@ If you are unsure whether a change is "doc-worthy": if it changes what a consume
 
 (`overlay.css` and `primitives.css` are split across files — overlay's modal/drawer pieces are navigation, its `.kv`/`.stat` are data; primitives' type roles/plates are layout, its status dot is feedback. Touch whichever topic the specific feature belongs to.)
 
-The human docs site is `docs/index.html` (core gallery) and `docs/extensions.html` (the opt-in add-on playgrounds), sharing `docs/gallery.js`, `docs/docs-chrome.css`, `docs/playground.css`, and `docs/js/vantaui.js`. One `gallery.js` drives both pages: it reads `document.body.dataset.docPage` and renders the `Extensions` group only on `extensions.html` (which sets `data-doc-page="extensions"`), everything else on `index.html`. If a change affects the live demos there, update them too.
+**Also update the compatibility catalog.** `docs/compat-data.js` is the hand-curated data behind the compatibility-table page (`docs/compat.html`). It is NOT generated — it drifts like the prose docs if ignored. Whenever you add, rename, remove, or change a component's **trigger**, a **helper word**, a public **`--vui-*` knob**, a **combination/conflict**, or a **utility family**, mirror the edit in the matching `COMPONENTS`/`UTILITIES` entry in `docs/compat-data.js` in the SAME change. Each entry is written from the `src/` file's prose header (the API source of truth).
+
+The human docs site is `docs/index.html` (core gallery), `docs/extensions.html` (the opt-in add-on playgrounds), and `docs/compat.html` (the searchable compatibility table). The galleries share `docs/gallery.js`, `docs/docs-chrome.css`, `docs/playground.css`, and `docs/js/vantaui.js`. One `gallery.js` drives both gallery pages: it reads `document.body.dataset.docPage` and renders the `Extensions` group only on `extensions.html` (which sets `data-doc-page="extensions"`), everything else on `index.html`. The compat page is driven separately by `docs/compat.js` + `docs/compat.css` reading `docs/compat-data.js`. If a change affects the live demos or the catalog, update them too.
 
 ## House style (CSS)
 

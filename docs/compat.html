@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VantaUI CSS: Compatibility table</title>
+  <meta name="description"
+    content="Every VantaUI component, the helper words it accepts, which components combine, and which utilities apply where — a searchable compatibility table." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#03070c" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" />
+  <link rel="stylesheet" href="dist/vantaui.min.css" />
+  <!-- Prose add-on powers the doc section layout (.vui-section.vui-prose). -->
+  <link rel="stylesheet" href="dist/ext/prose.min.css" />
+  <link rel="stylesheet" href="playground.css" />
+  <link rel="stylesheet" href="docs-chrome.css" />
+  <link rel="stylesheet" href="compat.css" />
+</head>
+
+<body class="vui vignette" data-doc-page="compat">
+  <header>
+    <button class="icon vui-until-m" data-open="doc-side" aria-label="Open navigation"><i>menu</i></button>
+    <a href="index.html"><img src="assets/logo-mark.svg" alt="" width="28" height="28" /><span class="vui-from-s">
+        Vanta<b>UI</b>
+        CSS
+      </span></a>
+    <menu class="right">
+      <button id="geo-toggle" class="ghost small" type="button" aria-pressed="false"
+        title="Corner geometry: shape engine (click to force clip-path)"><i>deployed_code</i><span
+          class="vui-from-s">Shape</span></button>
+      <a class="vui-from-s" href="index.html"><i>widgets</i><span class="vui-from-s">Gallery</span></a>
+      <a class="vui-from-s" href="extensions.html"><i>extension</i><span class="vui-from-s">Extensions</span></a>
+      <a class="icon" href="https://github.com/Khoding/vantaui-css" aria-label="GitHub repository" target="_blank"
+        rel="noopener"><i>code</i></a>
+    </menu>
+  </header>
+
+  <aside class="drawer" id="doc-side">
+    <header class="vui-until-m">
+      <span><img src="assets/logo-mark.svg" alt="" width="28" height="28" />Vanta<b>UI</b> CSS</span>
+      <button class="icon" data-close aria-label="Close navigation"><i>close</i></button>
+    </header>
+    <nav id="doc-nav" aria-label="Compatibility table"></nav>
+  </aside>
+
+  <main class="doc-main">
+    <header class="doc-hero vui-chamfer">
+      <div class="doc-hero__in">
+        <p class="vui-eyebrow">Reference</p>
+        <h1>Compatibility table</h1>
+        <p>The map the gallery doesn't give you: every component's <strong>trigger</strong>, the
+          <strong>helper words</strong> it accepts, which components <strong>combine</strong>, and which
+          <strong>utilities</strong> apply where. Search it, filter it, then jump to the live demo.</p>
+        <div class="doc-hero__meta">
+          <span class="badge cyan">Searchable</span>
+          <span class="badge green dot">Hand-curated</span>
+          <span class="badge neutral">Links to live demos</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sticky filter bar; compat.js fills it from the catalog. -->
+    <div id="compat-toolbar" class="compat-toolbar"></div>
+
+    <div id="compat-main"></div>
+  </main>
+
+  <script type="module" src="js/vantaui.js"></script>
+  <script type="module" src="compat.js"></script>
+</body>
+
+</html>

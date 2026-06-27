@@ -1,0 +1,402 @@
+/* ============================================================
+   Compatibility table (unlayered → always wins over the framework).
+   Loaded only by compat.html. Reuses the shared docs chrome
+   (docs-chrome.css + playground.css) and styles the filter bar,
+   helper-word chips, the combination rows, and the applicability grid.
+   Tokens drive every colour/length; no new tokens, no corner-shape.
+   ============================================================ */
+
+/* ---------- Filter toolbar (sticky under the app bar) ---------- */
+.compat-toolbar {
+  display: flex;
+  position: sticky;
+  z-index: 5;
+  inset-block-start: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-5);
+  margin-block-end: var(--space-7);
+  padding-block: var(--space-4);
+  border-block-end: var(--border-hair) solid var(--hairline-strong);
+  background-color: color-mix(in srgb, var(--bg-void) 88%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+/* In-page jumps (nav links, "combines with" chips) must clear the sticky
+   toolbar. compat.js measures the bar into --compat-scroll-offset; the gap
+   keeps a little breathing room below it. */
+.compat-card,
+.compat-combo__row,
+.doc-main .vui-section {
+  scroll-margin-block-start: calc(var(--compat-scroll-offset, 6rem) + var(--space-6));
+}
+
+.compat-search {
+  display: inline-flex;
+  flex: 1 1 16rem;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-muted);
+}
+
+.compat-search > i {
+  font-family: var(--font-icon);
+  font-size: var(--fs-lg);
+}
+
+.compat-search input {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.compat-filter {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.compat-filter__label {
+  margin-inline-end: var(--space-2);
+  color: var(--text-faint);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+}
+
+/* Reset the bare <button> from the library's outline-button look down to a
+   compact, quiet filter pill. Unlayered, so it beats the layered :where(). */
+.compat-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding-block: 4px;
+  padding-inline: 10px;
+  border: var(--border-hair) solid var(--hairline-strong);
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-2xs);
+  line-height: 1.4;
+  font-family: var(--font-mono);
+  letter-spacing: var(--ls-normal);
+  text-transform: none;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-hud),
+    color var(--dur-fast) var(--ease-hud),
+    background-color var(--dur-fast) var(--ease-hud);
+}
+
+.compat-toggle:hover {
+  border-color: var(--hairline-accent);
+  color: var(--text-primary);
+}
+
+.compat-toggle.is-on {
+  border-color: var(--cyan-400);
+  background-color: color-mix(in srgb, var(--cyan-400) 14%, transparent);
+  color: var(--cyan-200);
+}
+
+.compat-clear {
+  margin-inline-start: auto;
+}
+
+/* ---------- Group headings ---------- */
+.compat-group__title {
+  margin-block: var(--space-6) var(--space-4);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+}
+
+.compat-group:first-of-type .compat-group__title {
+  margin-block-start: 0;
+}
+
+/* ---------- Component cards ---------- */
+.compat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr));
+  gap: var(--space-4);
+}
+
+.compat-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-panel);
+}
+
+.compat-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.compat-card__head h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--fs-base);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+.compat-card__links {
+  display: inline-flex;
+  flex: none;
+  gap: var(--space-3);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+}
+
+.compat-card__links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.compat-card__links a:hover {
+  color: var(--cyan-400);
+}
+
+.compat-card__trigger {
+  display: block;
+  padding-block: 6px;
+  padding-inline: 8px;
+  border-inline-start: 2px solid var(--hairline-accent);
+  background-color: var(--surface-inset);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-mono);
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+.compat-card__none {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: var(--fs-xs);
+  font-style: italic;
+}
+
+/* ---------- Helper-word chips (toned by kind) ---------- */
+.compat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.compat-chip {
+  --_c: var(--slate-300);
+  display: inline-flex;
+  align-items: center;
+  padding-block: 3px;
+  padding-inline: 8px;
+  border: var(--border-hair) solid color-mix(in srgb, var(--_c) 45%, transparent);
+  background-color: color-mix(in srgb, var(--_c) 12%, transparent);
+  color: var(--_c);
+  font-size: var(--fs-2xs);
+  line-height: 1.3;
+  font-family: var(--font-mono);
+  cursor: default;
+}
+
+.compat-chip[data-kind='tone'] { --_c: var(--cyan-400); }
+.compat-chip[data-kind='size'] { --_c: var(--amber-400); }
+.compat-chip[data-kind='shape'] { --_c: var(--green-400); }
+.compat-chip[data-kind='depth'] { --_c: var(--slate-300); }
+.compat-chip[data-kind='layout'] { --_c: var(--cyan-200); }
+.compat-chip[data-kind='state'] { --_c: var(--amber-300); }
+.compat-chip[data-kind='modifier'] { --_c: var(--slate-200); }
+
+.compat-chip--link {
+  --_c: var(--cyan-400);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.compat-chip--link:hover {
+  background-color: color-mix(in srgb, var(--cyan-400) 22%, transparent);
+  color: var(--cyan-200);
+}
+
+.compat-chip--conflict {
+  --_c: var(--red-400);
+  text-transform: none;
+}
+
+/* ---------- Knobs ---------- */
+.compat-knobs {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px var(--space-3);
+  margin: 0;
+  padding-block-start: var(--space-2);
+  border-block-start: var(--border-hair) solid var(--hairline);
+}
+
+.compat-knobs dt {
+  color: var(--amber-400);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+}
+
+.compat-knobs dd {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+  text-align: start;
+}
+
+/* The library styles a bare <dl> as a bordered telemetry grid; the knob list
+   is a plain two-column readout, so drop the inherited cell rules/borders. */
+.compat-knobs dt,
+.compat-knobs dd {
+  align-self: center;
+  padding: 0;
+  border: 0;
+}
+
+/* ---------- Combinations ---------- */
+.compat-combo {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-hair) solid var(--hairline);
+}
+
+.compat-combo__row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 12rem) 1fr;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-block-start: var(--border-hair) solid var(--hairline);
+}
+
+.compat-combo__row:first-child {
+  border-block-start: 0;
+}
+
+.compat-combo__name a {
+  color: var(--text-primary);
+  font-size: var(--fs-sm);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.compat-combo__name a:hover {
+  color: var(--cyan-400);
+}
+
+.compat-combo__cells {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.compat-combo__cell {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.compat-combo__tag {
+  margin-inline-end: var(--space-2);
+  color: var(--text-faint);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+}
+
+/* ---------- Utility applicability ---------- */
+.compat-util {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-hair) solid var(--hairline);
+}
+
+.compat-util__row {
+  display: grid;
+  grid-template-columns: minmax(12rem, 18rem) 1fr;
+  gap: var(--space-3) var(--space-5);
+  align-items: start;
+  padding: var(--space-4);
+  border-block-start: var(--border-hair) solid var(--hairline);
+}
+
+.compat-util__row:first-child {
+  border-block-start: 0;
+}
+
+.compat-util__label {
+  color: var(--cyan-200);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-mono);
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+.compat-util__groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.compat-grouptag {
+  padding-block: 2px;
+  padding-inline: 8px;
+  border: var(--border-hair) solid var(--hairline);
+  color: var(--text-faint);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  opacity: 0.5;
+}
+
+.compat-grouptag.is-on {
+  border-color: var(--green-500);
+  background-color: color-mix(in srgb, var(--green-500) 12%, transparent);
+  color: var(--green-400);
+  opacity: 1;
+}
+
+.compat-util__note {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* ---------- Empty state ---------- */
+.compat-empty {
+  padding-block: var(--space-9);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+/* ---------- Narrow screens ---------- */
+@media (max-width: 40rem) {
+  .compat-toolbar {
+    gap: var(--space-3);
+  }
+
+  .compat-clear {
+    margin-inline-start: 0;
+  }
+
+  .compat-combo__row,
+  .compat-util__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+}
