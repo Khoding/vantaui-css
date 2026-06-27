@@ -65,6 +65,24 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
     NAME[c.id] = c.name;
   });
 
+  /* The colour key: each helper chip is toned by its `kind`, so the legend
+     reuses the very same .compat-chip swatches the cards use — colours can
+     never drift between the key and the data. */
+  function renderLegend() {
+    var wrap = el('div', 'compat-legend bleed');
+    wrap.appendChild(el('span', 'compat-legend__title', 'Chip colours'));
+    Object.keys(KINDS).forEach(function (k) {
+      var item = el('div', 'compat-legend__item');
+      var sw = el('span', 'compat-chip');
+      sw.dataset.kind = k;
+      sw.textContent = k;
+      item.appendChild(sw);
+      item.appendChild(el('span', 'compat-legend__desc', KINDS[k]));
+      wrap.appendChild(item);
+    });
+    return wrap;
+  }
+
   /* ---------- Section 1: component reference ---------- */
   function renderComponents() {
     var sec = el('section', 'vui-section vui-prose');
@@ -78,6 +96,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
           'Helper chips are toned by kind — hover one for what it does.',
       ),
     );
+    sec.appendChild(renderLegend());
 
     GROUPS.forEach(function (group) {
       var members = COMPONENTS.filter(function (c) {

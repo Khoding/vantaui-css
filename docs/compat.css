@@ -103,6 +103,64 @@
   margin-inline-start: auto;
 }
 
+/* Per-kind accent, shared by the chips AND the Kind filter dots so the
+   colour→concept link is taught in both places from one source of truth. */
+.compat-chip[data-kind='tone'],
+.compat-toggle[data-kind='tone'] { --_c: var(--cyan-400); }
+.compat-chip[data-kind='size'],
+.compat-toggle[data-kind='size'] { --_c: var(--amber-400); }
+.compat-chip[data-kind='shape'],
+.compat-toggle[data-kind='shape'] { --_c: var(--green-400); }
+.compat-chip[data-kind='depth'],
+.compat-toggle[data-kind='depth'] { --_c: var(--slate-300); }
+.compat-chip[data-kind='layout'],
+.compat-toggle[data-kind='layout'] { --_c: var(--cyan-200); }
+.compat-chip[data-kind='state'],
+.compat-toggle[data-kind='state'] { --_c: var(--amber-300); }
+.compat-chip[data-kind='modifier'],
+.compat-toggle[data-kind='modifier'] { --_c: var(--slate-200); }
+
+/* A leading dot on each Kind toggle echoes the chip colour it filters. */
+.compat-toggle[data-kind]::before {
+  content: '';
+  inline-size: 8px;
+  block-size: 8px;
+  margin-inline-end: 6px;
+  border-radius: var(--radius-pill);
+  background-color: var(--_c, var(--slate-300));
+}
+
+/* ---------- Colour key (legend) ---------- */
+.compat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  margin-block-end: var(--space-5);
+  padding: var(--space-4);
+  border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-inset);
+}
+
+.compat-legend__title {
+  color: var(--text-faint);
+  font-size: var(--fs-2xs);
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+}
+
+.compat-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.compat-legend__desc {
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+}
+
 /* ---------- Group headings ---------- */
 .compat-group__title {
   margin-block: var(--space-6) var(--space-4);
@@ -208,14 +266,6 @@
   font-family: var(--font-mono);
   cursor: default;
 }
-
-.compat-chip[data-kind='tone'] { --_c: var(--cyan-400); }
-.compat-chip[data-kind='size'] { --_c: var(--amber-400); }
-.compat-chip[data-kind='shape'] { --_c: var(--green-400); }
-.compat-chip[data-kind='depth'] { --_c: var(--slate-300); }
-.compat-chip[data-kind='layout'] { --_c: var(--cyan-200); }
-.compat-chip[data-kind='state'] { --_c: var(--amber-300); }
-.compat-chip[data-kind='modifier'] { --_c: var(--slate-200); }
 
 .compat-chip--link {
   --_c: var(--cyan-400);
