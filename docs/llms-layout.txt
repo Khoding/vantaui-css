@@ -12,7 +12,7 @@ Related: app frame & navigation rails → https://vantaui-css.khodok.com/llms-na
 
 ## Container
 
-- `vui-container`: centered, max-width `--container-max`, inline padding `--container-pad`.
+- `vui-container`: centered, max-width `--container-max`, inline padding `--container-pad`. Inside an app frame's `<main>` (the stage) its inline padding is dropped — the stage's `--hud-edge` already provides the gutter, so the two would otherwise stack and shrink content on phones.
 - `vui-container--narrow`: max-width `--container-narrow`.
 - `vui-container--fluid`: has no max-width.
 

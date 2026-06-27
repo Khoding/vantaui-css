@@ -302,8 +302,24 @@
    edges leaves it with no outer gutter at all — the panel box kisses the edges.
    Keeping the stage's `--hud-edge` as its outer margin means it always reads as
    inset: centered and capped on a wide stage, a small symmetric gutter on a
-   narrow one. It centers itself via `margin-inline: auto` (see layout.css). */
+   narrow one. It centers itself via `margin-inline: auto` (see layout.css).
+   We DO zero its `padding-inline` here, though: the stage's `--hud-edge`
+   already provides the inset, so the container's own `--container-pad` would
+   double it (worst on phones, where the two stacked gutters shrink the
+   panels). One gutter, owned by the stage. */
 :where(.vui:has(> main)) > main :is(.vui-bleed-full, .bleed-full):not(.vui-prose *),
 :where(.vui:has(> main)) > main .vui-prose {
   margin-inline: calc(-1 * var(--hud-edge));
+}
+
+/* `.vui-container` inside the stage: drop its own inline gutter.
+   The stage already owns the outer gutter (`--hud-edge`), so the container's
+   `padding-inline: var(--container-pad)` stacks on top of it — two nested
+   insets that, on a phone, eat ~24px each side and shrink the panels. The
+   container keeps centering + capping via its own `margin-inline: auto`
+   (layout.css); here we just hand the single stage gutter the whole job.
+   Outside an app frame the container keeps its padding — there it's the only
+   gutter. */
+:where(.vui:has(> main)) > main .vui-container {
+  padding-inline: 0;
 }

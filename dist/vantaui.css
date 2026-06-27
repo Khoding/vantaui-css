@@ -2968,6 +2968,10 @@
     margin-inline: calc(-1 * var(--hud-edge));
   }
 
+  :where(.vui:has( > main)) > main .vui-container {
+    padding-inline: 0;
+  }
+
   :where(.vui header:has(nav)), :where(.vui:has( > main) > header), :where(body.vui > header) {
     z-index: 20;
     align-items: center;
