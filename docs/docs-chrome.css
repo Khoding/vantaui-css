@@ -73,26 +73,27 @@ body {
 }
 
 /* ---------- Sections ----------
-   Each section is the framework's .vui-section (hairline divider, block
-   rhythm, scroll anchor, first-child reset) composed with .vui-prose for the
-   measure (see gallery.js). The docs only widen the measure/bleed, set the
-   grid's row rhythm, and size the lead .blurb — everything else is inherited
-   from the framework, so the section chrome matches the rest of the library. */
-.doc-main .vui-section {
+   Each doc section is a bare <section> (the framework styles it: hairline
+   divider, block rhythm, scroll anchor, first-child reset) composed with
+   .vui-prose for the measure (see gallery.js). The docs only widen the
+   measure/bleed, set the grid's row rhythm, and size the lead .blurb;
+   everything else is inherited from the framework, so the section chrome
+   matches the rest of the library. */
+:is(#doc-main, #compat-main) > section {
   --prose-width: 72ch;
   --bleed-width: 1100px;
   row-gap: var(--space-7);
 }
 
-.doc-main .vui-section.vui-prose > * {
+:is(#doc-main, #compat-main) > section > * {
   margin-block: 0;
 }
 
-.doc-main .vui-section > .blurb {
+:is(#doc-main, #compat-main) > section > .blurb {
   font-size: var(--fs-base);
 }
 
-.doc-main .vui-section > .blurb code {
+:is(#doc-main, #compat-main) > section > .blurb code {
   font-size: 0.85em;
 }
 
@@ -302,7 +303,7 @@ body {
 /* Phones: tighten the rhythm so content breathes without ever shrinking type
    into illegibility. Layout reflows; gutters stay. */
 @media (max-width: 40rem) {
-  .doc-main .vui-section {
+  :is(#doc-main, #compat-main) > section {
     padding-block: var(--space-7);
   }
 

@@ -815,19 +815,33 @@
     max-inline-size: none;
   }
 
-  .vui-section {
+  :where(.vui section:not(:where(footer *))), .vui-section {
     padding-block: var(--space-9);
     border-block-start: var(--border-hair) solid var(--hairline);
     scroll-margin-block-start: var(--space-6);
   }
 
-  .vui-section:first-child {
+  :where(.vui section:not(:where(footer *))):first-child, .vui-section:first-child {
     border-block-start: 0;
   }
 
-  .vui-section > .blurb {
+  :where(.vui section:not(:where(footer *))) > .blurb, .vui-section > .blurb {
     color: var(--text-secondary);
     margin-block: 0;
+  }
+
+  :where(.vui :is(article, section) > section:not(:where(footer *))), :where(.vui :is(article, section) > .vui-section) {
+    padding-block: var(--space-6);
+  }
+
+  :where(.vui section.flush:not(:where(footer *))), .vui-section.flush {
+    border-block-start: 0;
+  }
+
+  :where(.vui section.boxed:not(:where(footer *))), .vui-section.boxed {
+    padding: var(--space-5);
+    border: var(--border-hair) solid var(--hairline);
+    background-color: var(--surface-inset);
   }
 
   .vui-row {

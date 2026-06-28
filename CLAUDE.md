@@ -50,6 +50,11 @@ This repo follows the global CSS conventions in `~/.claude/CLAUDE.md` (Vanilla C
 - **Overflow philosophy:** contain at the source (`min-inline-size:0`, clipped house-shapes), let genuine misuse scroll visibly; never `overflow: clip` destructively.
 - Each `src/` file opens with a prose header documenting its API — keep that header accurate when you change the file (it is the source of truth the docs are written from).
 
+## Writing voice (docs, comments, commits, chat)
+
+- **No em-dashes.** Never use the em-dash (`—`) in docs, code/prose headers, commit messages, or replies. Reach for a period, comma, colon, or parentheses instead. Same for the en-dash used as a sentence connector.
+- **Write like a human, not an AI.** Plain, direct grammar in the repo's terse, example-driven voice. Skip the tells: no "it's not just X, it's Y", no throat-clearing ("In order to…"), no filler praise, no needless hedging. Say the thing.
+
 ## Build & checks
 
 - Build: `npm run build` (LightningCSS → `dist/vantaui.css` + `dist/vantaui.min.css`; also regenerates `js/vantaui.global.js` via esbuild).

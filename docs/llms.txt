@@ -8,7 +8,7 @@ This file is a HUB. It carries the core information (rules, installation, and me
 
 - **The package name is `vantaui-css`.** It is not published to npm or any CDN yet, so you should install it directly from GitHub (`github:Khoding/vantaui-css`). All import specifiers start with `vantaui-css`.
 - **You opt in with one class: `class="vui"`** on a root element (usually `<body>`). Inside `.vui`, plain semantic HTML is styled automatically. Outside `.vui`, only design tokens are defined, so nothing changes globally.
-- **Semantic-first, almost zero classes.** A `<header>` containing a `<nav>` is an app bar. An `<article>` is a panel. A `<dialog class="left">` is a drawer. A `<meter>` is a telemetry bar. You rarely add classes; when you do, it is one short helper word (`glow`, `danger`, `small`, `left`).
+- **Semantic-first, almost zero classes.** A `<header>` containing a `<nav>` is an app bar. An `<article>` is a panel (self-contained). A `<section>` is a zone (a headed, thematic band). A `<dialog class="left">` is a drawer. A `<meter>` is a telemetry bar. You rarely add classes; when you do, it is one short helper word (`glow`, `danger`, `small`, `left`).
 - **All VantaUI styles live in cascade layers and are authored at zero specificity (`:where()`).** Your app's own (unlayered) classes ALWAYS win. You never need `!important` to override VantaUI.
 - **`<i>text</i>` is an ICON** (Material Symbols ligature), e.g. `<i>home</i>` draws the home glyph. Use `<em>` for italic text, never `<i>`.
 - Two prefixes exist: bare semantic styling needs **no prefix**; free-floating layout & utility helpers use the **`vui-`** prefix (collision-safe), e.g. `vui-grid`, `vui-p-4`, `vui-text-cyan`.

@@ -27,7 +27,7 @@
    keeps a little breathing room below it. */
 .compat-card,
 .compat-combo__row,
-.doc-main .vui-section {
+:is(#doc-main, #compat-main) > section {
   scroll-margin-block-start: calc(var(--compat-scroll-offset, 6rem) + var(--space-6));
 }
 

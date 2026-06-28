@@ -826,6 +826,35 @@
     },
     {
       group: 'Layout',
+      id: 'section',
+      title: 'Section (zone)',
+      blurb:
+        'A bare <code>&lt;section&gt;</code> is a titled <strong>zone</strong>: a leading hairline divider, generous block padding, and a scroll anchor, so stacked sections read as one rhythmic document (the first drops its divider). Unlike a self-contained <code>&lt;article&gt;</code> panel it has no surface, so it nests cleanly — a <code>&lt;section&gt;</code> placed directly inside a panel (or another section) lightens to a sub-zone. Tune with one word: <code>flush</code> (no divider) or <code>boxed</code> (a faint inset zone surface, lighter than a panel). <code>.vui-section</code> is the alias for non-section elements; a styling-only wrapper should be a <code>&lt;div&gt;</code>.',
+      examples: [
+        {
+          label: 'Stacked top-level zones (the first drops its divider)',
+          code:
+            '<section>\n  <h3>Diagnostics</h3>\n  <p class="blurb">Primary telemetry zone.</p>\n  <p>System nominal across all sectors.</p>\n</section>\n' +
+            '<section>\n  <h3>Telemetry</h3>\n  <p>A second zone, divided from the first by a hairline.</p>\n</section>',
+        },
+        {
+          label: 'A section directly inside a panel lightens to a sub-zone',
+          code:
+            '<article>\n  <h3>Self-contained panel</h3>\n' +
+            '  <section>\n    <h4>Sub-zone</h4>\n    <p>Lighter block rhythm — the panel owns the outer padding.</p>\n  </section>\n' +
+            '  <section>\n    <h4>Another sub-zone</h4>\n    <p>Divided from the one above.</p>\n  </section>\n</article>',
+        },
+        {
+          label: 'flush (drops the divider) and boxed (a faint bounded zone)',
+          code:
+            '<section>\n  <h3>First zone</h3>\n  <p>Sets up the rhythm.</p>\n</section>\n' +
+            '<section class="flush">\n  <h3>Flush zone</h3>\n  <p>Would normally show a leading divider — flush drops it.</p>\n</section>\n' +
+            '<section class="boxed">\n  <h3>Boxed zone</h3>\n  <p>A faint inset surface, lighter than an &lt;article&gt; panel.</p>\n</section>',
+        },
+      ],
+    },
+    {
+      group: 'Layout',
       id: 'overflow',
       title: 'Overflow',
       blurb:
@@ -3011,7 +3040,7 @@
     });
 
     sections.forEach(function (sec) {
-      var s = el('section', 'vui-section vui-prose');
+      var s = el('section', 'vui-prose');
       s.id = sec.id;
       s.innerHTML =
         '<h2>' + sec.title + '</h2>' + (sec.blurb ? '<p class="blurb">' + sec.blurb + '</p>' : '');
@@ -3088,7 +3117,7 @@
       },
       {rootMargin: '-12% 0px -78% 0px', threshold: 0},
     );
-    document.querySelectorAll('.vui-section').forEach(function (s) {
+    document.querySelectorAll('#doc-main > section').forEach(function (s) {
       io.observe(s);
     });
   }

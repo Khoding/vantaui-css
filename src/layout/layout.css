@@ -30,23 +30,71 @@
   max-inline-size: none;
 }
 
-/* ---------- Content section ----------
-   A titled content band: a leading hairline divider, generous block padding,
-   and a scroll anchor for in-page links. Stacked sections read as one rhythmic
-   document (the first drops its divider). It sets no `display`, so it composes
-   cleanly with `vui-prose` (for a readable measure) or `vui-stack` (for child
-   rhythm). A child heading is the title; a `.blurb` paragraph is the lead. */
+/* ---------- Section (semantic zone) ----------
+   A bare <section> is a titled "zone": a thematic part of a larger whole. (Per
+   HTML, a <section> should carry a heading; a styling-only wrapper is a <div>,
+   not a <section>, so this band only dresses genuinely semantic sections.) It
+   renders as a content band (a leading hairline divider, generous block
+   padding, and a scroll anchor), so stacked sections read as one rhythmic
+   document (the first drops its divider). A child heading is the title; a
+   `.blurb` paragraph is the lead.
+
+   Context-aware: a <section> nested inside an <article> panel or another
+   <section> is a SUB-zone, so it lightens to a smaller block rhythm (the parent
+   already owns the outer padding).
+
+   No surface by default, so it nests cleanly, unlike the chamfered <article>
+   panel, which is a self-contained, independently-distributable composition.
+   Tune with one word: `flush` (no divider) or `boxed` (a faint inset zone
+   surface, bounded but lighter than a panel, with no chamfer or shadow).
+
+   `.vui-section` is the explicit ALIAS: apply the same band to a non-section
+   element (e.g. a <div>). It sets no `display`, so it composes with `vui-prose`
+   (readable measure) or `vui-stack` (child rhythm).
+
+   Footer sitemap columns (a <section> inside footer.columns) are excluded,
+   because they are layout columns, not content bands (see footer.css). */
+:where(.vui section:not(:where(footer *))),
 .vui-section {
   padding-block: var(--space-9);
   border-block-start: var(--border-hair) solid var(--hairline);
   scroll-margin-block-start: var(--space-6);
 }
+:where(.vui section:not(:where(footer *))):first-child,
 .vui-section:first-child {
   border-block-start: 0;
 }
+:where(.vui section:not(:where(footer *))) > .blurb,
 .vui-section > .blurb {
   margin-block: 0;
   color: var(--text-secondary);
+}
+
+/* Nested = sub-zone: a section that is a DIRECT child of an <article> panel or
+   another <section> lightens to a smaller block rhythm (the parent owns the
+   outer padding). Direct child, not descendant: wrapping a section in its own
+   box is deliberate structure, and a descendant rule would also lighten
+   sections sitting inside any structural <article> (e.g. a demo shell). After
+   the base rule so it wins. */
+:where(.vui :is(article, section) > section:not(:where(footer *))),
+:where(.vui :is(article, section) > .vui-section) {
+  padding-block: var(--space-6);
+}
+
+/* `flush`: a zone with no leading divider. */
+:where(.vui section.flush:not(:where(footer *))),
+.vui-section.flush {
+  border-block-start: 0;
+}
+
+/* `boxed`: a faint inset zone surface. Bounded, but visibly lighter than the
+   chamfered <article> panel (no clip-path, no shadow). The full border also
+   supersedes the leading divider, so the box reads cleanly. */
+:where(.vui section.boxed:not(:where(footer *))),
+.vui-section.boxed {
+  padding: var(--space-5);
+  border: var(--border-hair) solid var(--hairline);
+  background-color: var(--surface-inset);
 }
 
 /* ---------- Flex helpers ----------

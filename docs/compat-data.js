@@ -95,15 +95,20 @@ export const COMPONENTS = [
     id: 'section',
     name: 'Section',
     group: 'Layout',
-    role: 'wrapper',
+    role: 'element',
     doc: 'llms-layout.txt',
-    trigger: '.vui-section',
+    live: 'section',
+    trigger: '<section> · .vui-section (alias)',
     helpers: [
+      { word: 'flush', kind: 'modifier', note: 'Drop the leading divider' },
+      { word: 'boxed', kind: 'modifier', note: 'Faint inset zone surface (lighter than a panel)' },
       { word: 'blurb', kind: 'modifier', note: 'Child <p> reads as the lead' },
     ],
     knobs: [],
-    combines: ['container', 'flex'],
-    conflicts: [],
+    combines: ['container', 'flex', 'panel'],
+    conflicts: [
+      'A styling-only wrapper should be a <div>, not a <section> — a <section> is a headed, thematic part (it gets the zone band)',
+    ],
     utilities: ['spacing', 'breakpoint'],
   },
   {
@@ -936,6 +941,18 @@ export const NESTINGS = [
     result: 'Centered, capped panel',
     note: 'Nest the panel INSIDE the wrapper. Never put .vui-container on the <article> itself — the wrapper owns the gutter, the panel owns its inset.',
     refs: ['container', 'panel'],
+  },
+  {
+    markup: '<article> › <section>',
+    result: 'Sub-zone inside a panel (lighter)',
+    note: 'A <section> nested in a panel is a sub-zone: it lightens to a smaller block rhythm (the panel already owns the outer padding). The article is self-contained; the section is a headed part of it.',
+    refs: ['panel', 'section'],
+  },
+  {
+    markup: '<section> › <section>',
+    result: 'Nested zones',
+    note: 'Sections nest freely; the inner one is a sub-zone and lightens. A styling-only wrapper is a <div>, not a <section>.',
+    refs: ['section'],
   },
   {
     markup: '<main> + <nav class="left"> / <aside>',

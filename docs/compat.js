@@ -103,7 +103,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS, ROLES, NESTINGS } from './compat-
 
   /* ---------- Section 1: component reference ---------- */
   function renderComponents() {
-    var sec = el('section', 'vui-section vui-prose');
+    var sec = el('section', 'vui-prose');
     sec.id = 'components';
     sec.appendChild(el('h2', null, 'Components'));
     sec.appendChild(
@@ -207,7 +207,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS, ROLES, NESTINGS } from './compat-
 
   /* ---------- Section 2: combinations + conflicts ---------- */
   function renderCombinations(adj) {
-    var sec = el('section', 'vui-section vui-prose');
+    var sec = el('section', 'vui-prose');
     sec.id = 'combinations';
     sec.appendChild(el('h2', null, 'Combinations'));
     sec.appendChild(
@@ -282,7 +282,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS, ROLES, NESTINGS } from './compat-
 
   /* ---------- Section 3: semantic nesting ---------- */
   function renderNesting() {
-    var sec = el('section', 'vui-section vui-prose');
+    var sec = el('section', 'vui-prose');
     sec.id = 'nesting';
     sec.appendChild(el('h2', null, 'Semantic nesting'));
     sec.appendChild(
@@ -350,7 +350,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS, ROLES, NESTINGS } from './compat-
 
   /* ---------- Section 4: utility applicability ---------- */
   function renderUtilities() {
-    var sec = el('section', 'vui-section vui-prose');
+    var sec = el('section', 'vui-prose');
     sec.id = 'utilities';
     sec.appendChild(el('h2', null, 'Utility applicability'));
     sec.appendChild(
@@ -556,7 +556,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS, ROLES, NESTINGS } from './compat-
       },
       { rootMargin: '-12% 0px -78% 0px', threshold: 0 },
     );
-    document.querySelectorAll('.vui-section').forEach(function (s) {
+    document.querySelectorAll('#compat-main > section').forEach(function (s) {
       io.observe(s);
     });
   }

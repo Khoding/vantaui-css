@@ -16,16 +16,27 @@ Related: app frame & navigation rails → https://vantaui-css.khodok.com/llms-na
 - `vui-container--narrow`: max-width `--container-narrow`.
 - `vui-container--fluid`: has no max-width.
 
-## Content section (`vui-section`)
+## Section (`<section>`)
 
-A titled content band: a leading hairline divider, generous block padding, and a scroll anchor for in-page links. Stacked sections read as one rhythmic document (the first drops its divider). It sets no `display`, so compose it with `vui-prose` (for a readable measure) or `vui-stack` (for child rhythm). A child heading is the title; a `<p class="blurb">` is the lead paragraph (muted, zero margin).
+A bare `<section>` is a **titled zone**: a leading hairline divider, generous block padding, and a scroll anchor for in-page links. Stacked sections read as one rhythmic document (the first drops its divider). A child heading is the title; a `<p class="blurb">` is the lead paragraph (muted, zero margin). It sets no `display`, so compose it with `vui-prose` (for a readable measure) or `vui-stack` (for child rhythm).
+
+**`<article>` vs `<section>` (per HTML):** an `<article>` is a *self-contained, independently distributable* composition (a post, a product card, a comment) → a chamfered **panel**. A `<section>` is a *headed, thematic part of a larger whole* → a **zone band**, no surface, so it nests cleanly. A styling-only wrapper is neither — use a `<div>` (the zone band only dresses real `<section>`s).
+
+- **Context-aware:** a `<section>` nested inside an `<article>` panel or another `<section>` is a sub-zone — it lightens to a smaller block rhythm (the parent already owns the outer padding).
+- **`flush`:** drop the leading divider (a zone with no separator).
+- **`boxed`:** a faint inset zone surface — bounded, but lighter than a panel (no chamfer, no shadow).
+- **`.vui-section`:** the explicit alias — apply the same band to a non-section element (e.g. a `<div>`). Footer sitemap columns (`<section>` inside `footer.columns`) are excluded; they are layout columns, not zones.
 
 ```html
-<section class="vui-section vui-prose" id="philosophy">
+<section id="philosophy">
   <h2>Philosophy</h2>
   <p class="blurb">One short framing sentence.</p>
-  <!-- section content … -->
+  <!-- zone content … -->
 </section>
+<article>
+  <h3>Self-contained panel</h3>
+  <section><h4>A sub-zone inside it (lighter)</h4>…</section>
+</article>
 ```
 
 ## Named flex composites (prefer these)
@@ -105,4 +116,4 @@ The vocabulary every component is built from is also useful on its own.
 
 The prose layout (`vui-prose`, the readable-measure grid with bleed columns for long-form articles) moved out of the core bundle in v2.0. It is now the **VantaProse** add-on: `import 'vantaui-css/prose'`. Full reference, including the bleed helpers and the panel-opt-out note, lives in the extensions file → https://vantaui-css.khodok.com/llms-extensions.txt
 
-The `vui-section` example above still composes with `vui-prose`; just load the add-on alongside core.
+The `<section>` example above still composes with `vui-prose`; just load the add-on alongside core.
