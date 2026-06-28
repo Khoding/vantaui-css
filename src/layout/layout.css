@@ -13,7 +13,11 @@
    </div>
    ============================================================ */
 
-/* ---------- Container ---------- */
+/* ---------- Container ----------
+   A layout WRAPPER, not a component: nest panels/sections INSIDE it
+   (`<div class="vui-container"><article>…</article></div>`). Don't apply it to
+   a panel `<article>` directly — inside an app frame the stage zeroes its
+   inline padding (appshell.css), which would then strip the panel's own inset. */
 .vui-container {
   max-inline-size: var(--container-max);
   margin-inline: auto;

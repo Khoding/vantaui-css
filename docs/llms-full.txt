@@ -109,7 +109,7 @@ Free-floating helpers here use the `vui-` prefix.
 
 ## Container
 
-- `vui-container`: centered, max-width `--container-max`, inline padding `--container-pad`. Inside an app frame's `<main>` (the stage) its inline padding is dropped — the stage's `--hud-edge` already provides the gutter, so the two would otherwise stack and shrink content on phones.
+- `vui-container`: centered, max-width `--container-max`, inline padding `--container-pad`. It is a layout **wrapper**, not a component — nest panels/sections inside it (`<div class="vui-container"><article>…</article></div>`); do not put it on a panel `<article>` itself. Inside an app frame's `<main>` (the stage) its inline padding is dropped — the stage's `--hud-edge` already provides the gutter, so the two would otherwise stack and shrink content on phones (and on a panel that drop would strip the panel's own inset).
 - `vui-container--narrow`: max-width `--container-narrow`. · `vui-container--fluid`: has no max-width.
 
 ## Content section (`vui-section`)

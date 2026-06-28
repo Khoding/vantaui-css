@@ -298,8 +298,9 @@
    margin is harmless and gives them true edge-to-edge.
 
    `.vui-container` is intentionally NOT bled here. It is a centered, capped,
-   gutter-owning box (often a panel `<article>`), and bleeding it to the frame
-   edges leaves it with no outer gutter at all — the panel box kisses the edges.
+   gutter-owning WRAPPER (you nest panels/sections inside it — you do NOT put it
+   on a panel `<article>`), and bleeding it to the frame edges leaves it with no
+   outer gutter at all — the box kisses the edges.
    Keeping the stage's `--hud-edge` as its outer margin means it always reads as
    inset: centered and capped on a wide stage, a small symmetric gutter on a
    narrow one. It centers itself via `margin-inline: auto` (see layout.css).

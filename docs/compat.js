@@ -1,20 +1,23 @@
 /* ============================================================
    VantaUI docs: compatibility table renderer.
 
-   Reads the canonical catalog in compat-data.js and paints three
+   Reads the canonical catalog in compat-data.js and paints four
    searchable / filterable views into #compat-main:
-     1. Components   — every trigger, its helper words (chips coloured by
-                       kind), public knobs, and links to the live demo + docs.
+     1. Components   — every trigger, its role (element/wrapper/class), helper
+                       words (chips coloured by kind), public knobs, and links
+                       to the live demo + docs.
      2. Combinations — which components nest/pair (a symmetric adjacency
                        built from each entry's `combines`) and their conflicts.
-     3. Utilities    — which free-floating helper families apply to which
+     3. Nesting      — semantic compositions ("write this markup, get this")
+                       from each entry's prose header, via NESTINGS.
+     4. Utilities    — which free-floating helper families apply to which
                        component groups.
 
    The page chrome (header, sidebar drawer, geometry switch) matches the
    gallery; this module only owns the compat content + the filter bar, and
    reuses js/vantaui.js for tooltips (helper-chip notes) and the drawer.
    ============================================================ */
-import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
+import { COMPONENTS, UTILITIES, GROUPS, KINDS, ROLES, NESTINGS } from './compat-data.js';
 
 (function () {
   'use strict';
@@ -61,8 +64,10 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
   }
 
   var NAME = {};
+  var GROUP = {};
   COMPONENTS.forEach(function (c) {
     NAME[c.id] = c.name;
+    GROUP[c.id] = c.group;
   });
 
   /* The colour key: each helper chip is toned by its `kind`, so the legend
@@ -70,6 +75,19 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
      never drift between the key and the data. */
   function renderLegend() {
     var wrap = el('div', 'compat-legend bleed');
+
+    /* Roles first: the semantics axis — what you write and where it goes. */
+    wrap.appendChild(el('span', 'compat-legend__title', 'Roles'));
+    Object.keys(ROLES).forEach(function (r) {
+      var item = el('div', 'compat-legend__item');
+      var sw = el('span', 'compat-role');
+      sw.dataset.role = r;
+      sw.textContent = r;
+      item.appendChild(sw);
+      item.appendChild(el('span', 'compat-legend__desc', ROLES[r]));
+      wrap.appendChild(item);
+    });
+
     wrap.appendChild(el('span', 'compat-legend__title', 'Chip colours'));
     Object.keys(KINDS).forEach(function (k) {
       var item = el('div', 'compat-legend__item');
@@ -131,7 +149,16 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
       .join(' ');
 
     var head = el('header', 'compat-card__head');
-    head.appendChild(el('h4', null, esc(c.name)));
+    var title = el('span', 'compat-card__title');
+    title.appendChild(el('h4', null, esc(c.name)));
+    if (c.role) {
+      var role = el('span', 'compat-role');
+      role.dataset.role = c.role;
+      role.dataset.tip = ROLES[c.role] || c.role;
+      role.textContent = c.role;
+      title.appendChild(role);
+    }
+    head.appendChild(title);
     var links = el('span', 'compat-card__links');
     if (c.live) {
       links.innerHTML +=
@@ -165,8 +192,8 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
       card.appendChild(knobs);
     }
 
-    /* searchable haystack: name, trigger, every helper word + note, knobs */
-    var hay = [c.name, c.id, c.trigger];
+    /* searchable haystack: name, role, trigger, every helper word + note, knobs */
+    var hay = [c.name, c.id, c.role || '', c.trigger];
     (c.helpers || []).forEach(function (h) {
       hay.push(h.word, h.note || '');
     });
@@ -253,7 +280,75 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
     return sec;
   }
 
-  /* ---------- Section 3: utility applicability ---------- */
+  /* ---------- Section 3: semantic nesting ---------- */
+  function renderNesting() {
+    var sec = el('section', 'vui-section vui-prose');
+    sec.id = 'nesting';
+    sec.appendChild(el('h2', null, 'Semantic nesting'));
+    sec.appendChild(
+      el(
+        'p',
+        'blurb',
+        'Compositions where meaning comes from how elements sit together — ' +
+          'write the markup, get the component — and the look-alikes they must ' +
+          'not be confused with.',
+      ),
+    );
+
+    var table = el('div', 'compat-combo bleed');
+    NESTINGS.forEach(function (n) {
+      var refs = n.refs || [];
+      var row = el('div', 'compat-combo__row');
+      row.dataset.filterable = 'nesting';
+      // group filtering treats this like a utility row: match on ANY ref's group
+      row.dataset.group = refs
+        .map(function (id) {
+          return GROUP[id];
+        })
+        .filter(Boolean)
+        .join(' ');
+
+      var label = el('div', 'compat-combo__name');
+      label.appendChild(el('code', 'compat-nest__markup', esc(n.markup)));
+      row.appendChild(label);
+
+      var cells = el('div', 'compat-combo__cells');
+
+      var res = el('div', 'compat-combo__cell');
+      res.appendChild(el('span', 'compat-combo__tag', 'becomes'));
+      res.appendChild(el('span', 'compat-nest__result', esc(n.result)));
+      cells.appendChild(res);
+
+      if (refs.length) {
+        var see = el('div', 'compat-combo__cell');
+        see.appendChild(el('span', 'compat-combo__tag', 'see'));
+        refs.forEach(function (id) {
+          var a = el('a', 'compat-chip compat-chip--link');
+          a.href = '#cmp-' + id;
+          a.textContent = NAME[id] || id;
+          see.appendChild(a);
+        });
+        cells.appendChild(see);
+      }
+
+      if (n.note) cells.appendChild(el('p', 'compat-util__note', esc(n.note)));
+
+      row.appendChild(cells);
+
+      var hay = [n.markup, n.result, n.note || ''];
+      refs.forEach(function (id) {
+        hay.push(NAME[id] || id);
+      });
+      row.dataset.search = hay.join(' ').toLowerCase();
+
+      table.appendChild(row);
+    });
+
+    sec.appendChild(table);
+    return sec;
+  }
+
+  /* ---------- Section 4: utility applicability ---------- */
   function renderUtilities() {
     var sec = el('section', 'vui-section vui-prose');
     sec.id = 'utilities';
@@ -370,8 +465,8 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
     if (state.q && node.dataset.search.indexOf(state.q) === -1) return false;
 
     if (state.groups.size) {
-      if (kind === 'utility') {
-        // utility rows carry a space-list of every group they apply to
+      if (kind === 'utility' || kind === 'nesting') {
+        // these rows carry a space-list of every group they apply to / reference
         var groups = node.dataset.group.split(' ');
         var hit = groups.some(function (g) {
           return state.groups.has(g);
@@ -409,7 +504,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
     });
 
     // hide a whole section + its nav link when it has nothing
-    ['components', 'combinations', 'utilities'].forEach(function (id) {
+    ['components', 'combinations', 'nesting', 'utilities'].forEach(function (id) {
       var section = document.getElementById(id);
       if (!section) return;
       var anyVisible = section.querySelector('[data-filterable]:not([hidden])');
@@ -430,6 +525,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
     [
       ['components', 'Components'],
       ['combinations', 'Combinations'],
+      ['nesting', 'Semantic nesting'],
       ['utilities', 'Utility applicability'],
     ].forEach(function (pair) {
       var a = el('a');
@@ -517,6 +613,7 @@ import { COMPONENTS, UTILITIES, GROUPS, KINDS } from './compat-data.js';
     var adj = buildAdjacency();
     main.appendChild(renderComponents());
     main.appendChild(renderCombinations(adj));
+    main.appendChild(renderNesting());
     main.appendChild(renderUtilities());
     var empty = el('p', 'compat-empty', 'No matches. Clear the filters to see everything.');
     empty.id = 'compat-empty';

@@ -16,6 +16,8 @@
      name      display name
      group     bucket, mirrors the llms topic split:
                Layout · Primitives · Forms · Data · Feedback · Navigation
+     role      how you reach for it (the SEMANTICS axis, see ROLES below):
+               element · wrapper · class
      doc       llms topic file documenting it (deep-linked)
      live      gallery section id on index.html for a "view live" link
                (omit when the feature has no standalone demo)
@@ -27,6 +29,10 @@
      conflicts [string, …]  mutually-exclusive words / known gotchas
      utilities [familyId, …]  utility families that meaningfully apply
    }
+
+   NESTINGS[] = the semantic-composition axis: "write these elements, get this
+   thing" idioms (and the look-alikes they must not be confused with). Each:
+     { markup, result, note?, refs:[componentId,…] }
 
    UTILITIES[] = the applicability axis: each free-floating helper family
    and which component GROUPS it sensibly targets.
@@ -52,12 +58,22 @@ export const KINDS = {
   modifier: 'A behavioural / stylistic switch.',
 };
 
+/* Role → how you reach for a thing (the semantics axis). The badge on each
+   card answers "what do I write, and where does it go?" — the distinction that
+   keeps a layout WRAPPER from being mistaken for the component you put it on. */
+export const ROLES = {
+  element: 'A bare semantic element (or ARIA role) is the trigger — write the HTML, get the component.',
+  wrapper: 'A layout box: put it on a neutral element and nest content INSIDE it. Never merge it onto a component.',
+  class: 'Opt in purely by adding a class to a generic element (e.g. .badge on a <span>).',
+};
+
 export const COMPONENTS = [
   /* ---------- Layout ---------- */
   {
     id: 'container',
     name: 'Container',
     group: 'Layout',
+    role: 'wrapper',
     doc: 'llms-layout.txt',
     trigger: '.vui-container',
     helpers: [
@@ -68,14 +84,18 @@ export const COMPONENTS = [
       { name: '--container-max', note: 'Default max measure' },
       { name: '--container-pad', note: 'Inline gutter' },
     ],
-    combines: ['section', 'flex', 'grid', 'autogrid'],
-    conflicts: ['vui-container--narrow ↔ vui-container--fluid'],
+    combines: ['section', 'flex', 'grid', 'autogrid', 'panel'],
+    conflicts: [
+      'vui-container--narrow ↔ vui-container--fluid',
+      'Layout wrapper — nest <article>/panels INSIDE it; do not put .vui-container ON a panel <article> (in an app frame the stage drops its inline padding, which then strips the panel inset)',
+    ],
     utilities: ['spacing', 'breakpoint'],
   },
   {
     id: 'section',
     name: 'Section',
     group: 'Layout',
+    role: 'wrapper',
     doc: 'llms-layout.txt',
     trigger: '.vui-section',
     helpers: [
@@ -90,6 +110,7 @@ export const COMPONENTS = [
     id: 'flex',
     name: 'Flex composites',
     group: 'Layout',
+    role: 'wrapper',
     doc: 'llms-layout.txt',
     trigger: '.vui-row / .vui-col / .vui-stack / .vui-cluster / .vui-center / .vui-between / .vui-spacer',
     helpers: [
@@ -104,6 +125,7 @@ export const COMPONENTS = [
     id: 'autogrid',
     name: 'Auto grid',
     group: 'Layout',
+    role: 'wrapper',
     doc: 'llms-layout.txt',
     live: 'autogrid',
     trigger: '.vui-autogrid',
@@ -119,6 +141,7 @@ export const COMPONENTS = [
     id: 'grid',
     name: '12-column grid',
     group: 'Layout',
+    role: 'wrapper',
     doc: 'llms-layout.txt',
     live: 'grid',
     trigger: '.vui-grid (children .vui-s1…s12 / m / l / xl)',
@@ -139,6 +162,7 @@ export const COMPONENTS = [
     id: 'type-roles',
     name: 'Type roles',
     group: 'Primitives',
+    role: 'class',
     doc: 'llms-layout.txt',
     live: 'primitives',
     trigger: '.vui-display / .vui-title / .vui-heading / .vui-mono / .vui-readout / .vui-eyebrow / .vui-label / .vui-signal',
@@ -152,6 +176,7 @@ export const COMPONENTS = [
     id: 'plates',
     name: 'Plates & brackets',
     group: 'Primitives',
+    role: 'class',
     doc: 'llms-layout.txt',
     live: 'primitives',
     trigger: '.vui-panel / .vui-chamfer / .vui-notch / .vui-brackets / .vui-rule',
@@ -171,6 +196,7 @@ export const COMPONENTS = [
     id: 'backdrops',
     name: 'Textured backdrops',
     group: 'Primitives',
+    role: 'class',
     doc: 'llms-layout.txt',
     live: 'primitives',
     trigger: '.vui-bg-grid / .vui-bg-scan / .vui-bg-hud',
@@ -184,6 +210,7 @@ export const COMPONENTS = [
     id: 'geometry',
     name: 'Geometry toggle',
     group: 'Primitives',
+    role: 'class',
     doc: 'llms-theming.txt',
     live: 'geometry',
     trigger: '.vui-clip',
@@ -199,6 +226,7 @@ export const COMPONENTS = [
     id: 'dot',
     name: 'Status dot',
     group: 'Primitives',
+    role: 'class',
     doc: 'llms-feedback.txt',
     live: 'primitives',
     trigger: '.vui-dot',
@@ -217,6 +245,7 @@ export const COMPONENTS = [
     id: 'divider',
     name: 'Labelled divider',
     group: 'Primitives',
+    role: 'class',
     doc: 'llms-navigation.txt',
     live: 'overlays',
     trigger: '.divider (optional data-label="…")',
@@ -234,6 +263,7 @@ export const COMPONENTS = [
     id: 'button',
     name: 'Button',
     group: 'Forms',
+    role: 'element',
     doc: 'llms-forms.txt',
     live: 'buttons',
     trigger: '<button> · .button',
@@ -260,6 +290,7 @@ export const COMPONENTS = [
     id: 'forms',
     name: 'Form controls',
     group: 'Forms',
+    role: 'element',
     doc: 'llms-forms.txt',
     live: 'forms',
     trigger: '<input> · <textarea> · <select> · <label> · [role="switch"]',
@@ -280,6 +311,7 @@ export const COMPONENTS = [
     id: 'panel',
     name: 'Panel',
     group: 'Data',
+    role: 'element',
     doc: 'llms-data.txt',
     live: 'panels',
     trigger: '<article> (bare, not .vui-prose)',
@@ -304,14 +336,20 @@ export const COMPONENTS = [
       { name: '--panel-glow', note: 'Glow colour' },
       { name: '--panel-hi', note: 'Highlight colour' },
     ],
-    combines: ['button', 'badge', 'dl', 'table', 'meter', 'tabs', 'timeline', 'alert', 'empty', 'kv'],
-    conflicts: ['raised ↔ inset ↔ flat ↔ stage', 'tone words mutually exclusive', 'dim ↔ vivid'],
+    combines: ['button', 'badge', 'dl', 'table', 'meter', 'tabs', 'timeline', 'alert', 'empty', 'kv', 'container'],
+    conflicts: [
+      'raised ↔ inset ↔ flat ↔ stage',
+      'tone words mutually exclusive',
+      'dim ↔ vivid',
+      'Do not add .vui-container to the <article> — wrap the panel in a container instead (<div class="vui-container"><article>…)',
+    ],
     utilities: ['glow', 'background', 'border', 'spacing', 'text-tone'],
   },
   {
     id: 'table',
     name: 'Table',
     group: 'Data',
+    role: 'element',
     doc: 'llms-data.txt',
     live: 'table',
     trigger: '<table> (bare)',
@@ -339,6 +377,7 @@ export const COMPONENTS = [
     id: 'dl',
     name: 'Description list',
     group: 'Data',
+    role: 'element',
     doc: 'llms-data.txt',
     live: 'dl',
     trigger: '<dl> (bare)',
@@ -354,6 +393,7 @@ export const COMPONENTS = [
     id: 'kv',
     name: 'Key/value & stat',
     group: 'Data',
+    role: 'class',
     doc: 'llms-data.txt',
     live: 'overlays',
     trigger: '.kv (label │ value row) · .stat (big readout)',
@@ -367,6 +407,7 @@ export const COMPONENTS = [
     id: 'badge',
     name: 'Badge',
     group: 'Data',
+    role: 'class',
     doc: 'llms-data.txt',
     live: 'badges',
     trigger: '.badge (on <span>/<a>/<mark>)',
@@ -388,6 +429,7 @@ export const COMPONENTS = [
     id: 'avatar',
     name: 'Avatar',
     group: 'Data',
+    role: 'class',
     doc: 'llms-data.txt',
     live: 'avatar',
     trigger: '.avatar (on <span>/<div>/<img>)',
@@ -411,6 +453,7 @@ export const COMPONENTS = [
     id: 'timeline',
     name: 'Timeline',
     group: 'Data',
+    role: 'element',
     doc: 'llms-data.txt',
     live: 'timeline',
     trigger: '<ol class="timeline">',
@@ -430,6 +473,7 @@ export const COMPONENTS = [
     id: 'stepper',
     name: 'Stepper',
     group: 'Data',
+    role: 'element',
     doc: 'llms-data.txt',
     live: 'stepper',
     trigger: '<ol class="stepper">',
@@ -447,6 +491,7 @@ export const COMPONENTS = [
     id: 'tree',
     name: 'Tree',
     group: 'Data',
+    role: 'element',
     doc: 'llms-data.txt',
     live: 'tree',
     trigger: '<ul class="tree">',
@@ -462,6 +507,7 @@ export const COMPONENTS = [
     id: 'carousel',
     name: 'Carousel',
     group: 'Data',
+    role: 'class',
     doc: 'llms-data.txt',
     live: 'carousel',
     trigger: '.carousel',
@@ -481,6 +527,7 @@ export const COMPONENTS = [
     id: 'rating',
     name: 'Rating',
     group: 'Data',
+    role: 'element',
     doc: 'llms-data.txt',
     live: 'rating',
     trigger: '<fieldset class="rating"> (labels + radios)',
@@ -500,6 +547,7 @@ export const COMPONENTS = [
     id: 'segmented',
     name: 'Segmented control',
     group: 'Data',
+    role: 'class',
     doc: 'llms-data.txt',
     live: 'segmented',
     trigger: '.segmented (labels wrapping radios)',
@@ -521,6 +569,7 @@ export const COMPONENTS = [
     id: 'alert',
     name: 'Alert',
     group: 'Feedback',
+    role: 'element',
     doc: 'llms-feedback.txt',
     live: 'alerts',
     trigger: '[role="status"] · [role="alert"]',
@@ -539,6 +588,7 @@ export const COMPONENTS = [
     id: 'toast',
     name: 'Toast',
     group: 'Feedback',
+    role: 'class',
     doc: 'llms-feedback.txt',
     live: 'toast',
     trigger: '.toaster / .toast (raised via VantaUI.toast())',
@@ -559,6 +609,7 @@ export const COMPONENTS = [
     id: 'meter',
     name: 'Meter & progress',
     group: 'Feedback',
+    role: 'element',
     doc: 'llms-feedback.txt',
     live: 'meters',
     trigger: '<meter> · <progress> · .meter',
@@ -581,6 +632,7 @@ export const COMPONENTS = [
     id: 'gauge',
     name: 'Radial gauge',
     group: 'Feedback',
+    role: 'class',
     doc: 'llms-feedback.txt',
     live: 'gauge',
     trigger: '.gauge',
@@ -604,6 +656,7 @@ export const COMPONENTS = [
     id: 'spinner',
     name: 'Spinner',
     group: 'Feedback',
+    role: 'class',
     doc: 'llms-feedback.txt',
     live: 'spinner',
     trigger: '.spinner (on <span>/<div>)',
@@ -625,6 +678,7 @@ export const COMPONENTS = [
     id: 'skeleton',
     name: 'Skeleton',
     group: 'Feedback',
+    role: 'class',
     doc: 'llms-feedback.txt',
     live: 'skeleton',
     trigger: '.skeleton',
@@ -643,6 +697,7 @@ export const COMPONENTS = [
     id: 'empty',
     name: 'Empty state',
     group: 'Feedback',
+    role: 'class',
     doc: 'llms-feedback.txt',
     live: 'empty',
     trigger: '.empty',
@@ -658,6 +713,7 @@ export const COMPONENTS = [
     id: 'appshell',
     name: 'App frame',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'appshell',
     trigger: '.vui element directly holding a <main>',
@@ -674,6 +730,7 @@ export const COMPONENTS = [
     id: 'header',
     name: 'Header / app bar',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'header',
     trigger: '<header> with <nav> · frame top · body > header',
@@ -695,6 +752,7 @@ export const COMPONENTS = [
     id: 'footer',
     name: 'Footer',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'footer',
     trigger: '<footer> (app-level, not article/dialog)',
@@ -713,6 +771,7 @@ export const COMPONENTS = [
     id: 'navigation',
     name: 'Nav rail / bar',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'navigation',
     trigger: '<nav class="left|right|bottom"> · <aside>',
@@ -734,6 +793,7 @@ export const COMPONENTS = [
     id: 'drawer',
     name: 'Drawer (off-canvas)',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'drawer',
     trigger: '<dialog class="left|right"> (data-open / data-close)',
@@ -750,6 +810,7 @@ export const COMPONENTS = [
     id: 'modal',
     name: 'Modal & tooltip',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'overlays',
     trigger: '<dialog> · [data-tip] · .vui-tip + .vui-tip-content',
@@ -770,6 +831,7 @@ export const COMPONENTS = [
     id: 'menu',
     name: 'Dropdown menu',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'dropdown',
     trigger: '<details class="dropdown"> · [popover].menu',
@@ -787,6 +849,7 @@ export const COMPONENTS = [
     id: 'tabs',
     name: 'Tabs',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'tabs',
     trigger: '[role="tablist"] of [role="tab"]',
@@ -802,6 +865,7 @@ export const COMPONENTS = [
     id: 'disclosure',
     name: 'Disclosure',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'disclosure',
     trigger: '<details>/<summary>',
@@ -815,6 +879,7 @@ export const COMPONENTS = [
     id: 'pagination',
     name: 'Pagination',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'pagination',
     trigger: '<nav class="pagination">',
@@ -831,6 +896,7 @@ export const COMPONENTS = [
     id: 'toolbar',
     name: 'Toolbar',
     group: 'Navigation',
+    role: 'element',
     doc: 'llms-navigation.txt',
     live: 'toolbar',
     trigger: '[role="toolbar"] · .toolbar',
@@ -842,6 +908,58 @@ export const COMPONENTS = [
     combines: ['button', 'segmented', 'menu'],
     conflicts: [],
     utilities: ['spacing'],
+  },
+];
+
+/* ============================================================
+   Semantic nesting (the composition axis)
+   "Write these elements, get this thing" — the idioms where meaning comes
+   from how elements sit together, plus the look-alikes they must not be
+   confused with. Authored from the prose headers in src/ (the API source of
+   truth); `refs` deep-link to the component cards above.
+   ============================================================ */
+export const NESTINGS = [
+  {
+    markup: '<header> › <nav>',
+    result: 'App bar',
+    note: 'A <header> containing a <nav> is the top app bar; in an app frame it fills the top slot.',
+    refs: ['header', 'navigation'],
+  },
+  {
+    markup: '<article> › <header> / <footer>',
+    result: 'Panel header / footer',
+    note: 'A <header> or <footer> inside a panel spans the plate edge-to-edge with a hairline divider (detected via :has).',
+    refs: ['panel'],
+  },
+  {
+    markup: '.vui-container › <article>',
+    result: 'Centered, capped panel',
+    note: 'Nest the panel INSIDE the wrapper. Never put .vui-container on the <article> itself — the wrapper owns the gutter, the panel owns its inset.',
+    refs: ['container', 'panel'],
+  },
+  {
+    markup: '<main> + <nav class="left"> / <aside>',
+    result: 'Side rail (bottom bar on phones)',
+    note: 'A nav.left or a bare <aside> beside <main> in an app frame becomes a side rail; it drops to a bottom command bar on small screens.',
+    refs: ['appshell', 'navigation'],
+  },
+  {
+    markup: '<dialog class="left|right">',
+    result: 'Drawer — not a modal',
+    note: 'A side-anchored native <dialog> is an off-canvas drawer; a plain <dialog> is a centered modal.',
+    refs: ['drawer', 'modal'],
+  },
+  {
+    markup: '<details class="dropdown">',
+    result: 'Menu — not an accordion',
+    note: 'Add .dropdown to make a <details> a popover menu; a bare <details> is a disclosure/accordion.',
+    refs: ['menu', 'disclosure'],
+  },
+  {
+    markup: '<table class="nowrap"> › .scroll',
+    result: 'Horizontally scrolling table',
+    note: 'A nowrap table must sit in a .scroll wrapper, or its single-line cells force page overflow.',
+    refs: ['table'],
   },
 ];
 
