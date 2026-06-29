@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VantaUI dev linter playground</title>
+  <!-- Self-contained, isolated in an <iframe> from extensions.html so the dev
+       overlay only paints THIS sample, never the docs page. Loads the core CSS,
+       the opt-in dev overlay, and the dev linter module. -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" />
+  <link rel="stylesheet" href="dist/vantaui.min.css" />
+  <link rel="stylesheet" href="dist/ext/dev.min.css" />
+  <style>
+    body {
+      padding: var(--space-6);
+    }
+
+    .pg-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-5);
+      margin-block-end: var(--space-6);
+    }
+
+    .pg-controls label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    /* room for the linter's ::after labels to sit beside flagged elements */
+    #sample {
+      display: grid;
+      gap: var(--space-6);
+      padding: var(--space-6);
+    }
+
+    .pg-status {
+      margin-block-start: var(--space-6);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: var(--fs-2xs);
+    }
+  </style>
+</head>
+
+<body class="vui">
+  <p class="vui-eyebrow">Toggle a mistake</p>
+  <div class="pg-controls" id="controls"></div>
+
+  <article id="sample"></article>
+
+  <p class="pg-status" id="status"></p>
+
+  <script type="module">
+    import { lint } from './js/vantaui-lint.js';
+
+    // Each toggle injects one deliberate mistake into the sample below.
+    const MISTAKES = [
+      { key: 'h1', label: 'Second <h1>', on: true },
+      { key: 'skip', label: 'Skip h2 → h4', on: true },
+      { key: 'conflict', label: 'fill + ghost button', on: true },
+      { key: 'alt', label: '<img> without alt', on: true },
+      { key: 'tab', label: '[role=tab] outside a tablist', on: false },
+    ];
+
+    const controls = document.getElementById('controls');
+    const sample = document.getElementById('sample');
+    const status = document.getElementById('status');
+
+    MISTAKES.forEach(function (m) {
+      const label = document.createElement('label');
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.id = 'm-' + m.key;
+      input.checked = m.on;
+      input.addEventListener('change', render);
+      label.appendChild(input);
+      label.append(' ' + m.label);
+      controls.appendChild(label);
+    });
+
+    const on = function (k) { return document.getElementById('m-' + k).checked; };
+
+    function render() {
+      let html = '<h1>Command Center</h1>';
+      if (on('h1')) html += '<h1>Duplicate title</h1>';
+      html += '<h2>Telemetry</h2>';
+      html += on('skip') ? '<h4>Skipped a level</h4>' : '<h3>Proper next level</h3>';
+      html += on('conflict')
+        ? '<p><button class="fill ghost">Conflicting</button></p>'
+        : '<p><button class="fill">Primary</button></p>';
+      html += on('alt')
+        ? '<p><img src="assets/hex-mesh.svg" width="80" height="40"></p>'
+        : '<p><img src="assets/hex-mesh.svg" alt="hex mesh" width="80" height="40"></p>';
+      if (on('tab')) html += '<div role="tab">Orphan tab</div>';
+      sample.innerHTML = html;
+
+      const found = lint(sample); // scoped to the sample container
+      status.textContent = found.length
+        ? found.length + ' issue(s) flagged — hover an outline for the message (also logged to the console).'
+        : 'No issues. Toggle a mistake above to see the linter react.';
+    }
+
+    render();
+  </script>
+</body>
+
+</html>

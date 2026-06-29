@@ -333,6 +333,10 @@ try {
   mkdirSync(docsJsDir, {recursive: true});
   copyFileSync(resolve(root, 'js', 'vantaui.js'), resolve(docsJsDir, 'vantaui.js'));
   console.log('✔ docs/js/vantaui.js');
+  // The dev linter (module + its generated rules) for the docs dev playground.
+  copyFileSync(resolve(root, 'js', 'vantaui-lint.js'), resolve(docsJsDir, 'vantaui-lint.js'));
+  copyFileSync(resolve(root, 'js', 'vantaui-lint-rules.js'), resolve(docsJsDir, 'vantaui-lint-rules.js'));
+  console.log('✔ docs/js/vantaui-lint.js (+ rules)');
   console.log('Done.');
 } finally {
   rmSync(tmpEntry, {force: true});

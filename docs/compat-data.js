@@ -726,7 +726,10 @@ export const COMPONENTS = [
       { word: 'vignette', kind: 'modifier', note: 'On the frame: edge vignette' },
       { word: 'inset', kind: 'layout', note: 'On <header>: confine beside full-height rails' },
     ],
-    knobs: [{ name: '--drawer-width', note: 'Off-canvas rail width' }],
+    knobs: [
+      { name: '--drawer-width', note: 'Off-canvas rail width' },
+      { name: '--frame-header-h', note: 'Header height; the sticky side-rail offset + scroll-padding track it (60px, 76px under header.tall)' },
+    ],
     combines: ['header', 'navigation', 'footer', 'drawer'],
     conflicts: [],
     utilities: ['breakpoint'],

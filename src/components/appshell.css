@@ -21,26 +21,23 @@
    ============================================================ */
 
 /* ---------- The frame ---------- */
-/* The frame claims the visible viewport with `svh`. A viewport unit is
-   self-sufficient — it needs NO height on any ancestor — so the frame fills
-   the screen whether it sits on <body> or is mounted into a wrapper like
-   <div id="app"> (Vue / Nuxt / etc). That's the whole height story: no
-   html/body/#app chain to own, in any setup.
+/* The document scrolls — not an inner box. The frame is a grid that is AT LEAST
+   the visible viewport tall (`min-block-size: 100svh`, so a short page still
+   fills the screen and the footer sits at the bottom) but is free to GROW past
+   it with content. The page then scrolls the way the platform expects: native
+   scroll restoration on back/forward, working `:target`/anchor jumps and
+   find-in-page, and a mobile toolbar that retracts to give back screen. The
+   chrome stays put because each landmark is `position: sticky` (header/footer
+   below, side rail under the media query), not because the whole shell is frozen.
 
-   Why `svh` and not `dvh`/`vh`: on mobile (notably Chrome Android at load /
-   after a pull-to-refresh) `dvh` and `vh` resolve to the LARGE, toolbar-
-   retracted viewport, so a frame sized that way is TALLER than the currently
-   visible area — the document turns scrollable and the bottom command bar gets
-   pushed below the fold (you can scroll down to find it). `svh` is the SMALL
-   (toolbar-shown) viewport, i.e. the height that is guaranteed to be on screen.
-   Sizing the shell to `svh` keeps it within the fold, which also means the
-   document never scrolls, so the toolbar never retracts and no gap opens at the
-   bottom — the stage (<main>) does all the scrolling.
-
-   (We can't detect "an ancestor wrapper that contains a frame" in CSS to size
-   it, because that needs :has() inside :has(), which the spec forbids — so the
-   viewport unit on the frame itself is both simpler and the only thing that
-   actually works.) */
+   `100svh` (the small, toolbar-shown viewport) is the right floor: it is the
+   height guaranteed to be on screen, so the initial fold is filled without the
+   shell ever being TALLER than the visible area at load. It needs no height on
+   any ancestor, so the frame fills its space whether it sits on <body> or is
+   mounted into <div id="app"> / Nuxt's root. A boxed frame (a docs demo, or any
+   frame given an explicit height + `overflow:auto`) becomes its own scroll
+   container, and the same sticky chrome sticks to that box instead — set
+   `min-block-size: 0` inline there so the explicit height wins. */
 :where(.vui:has(> main)) {
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -49,8 +46,8 @@
     'top'
     'main'
     'foot';
-  block-size: 100svh;
-  max-block-size: 100svh;
+  min-block-size: 100svh;
+  scroll-padding-block-start: var(--frame-header-h); /* anchor jumps clear the sticky header */
   /* No `overflow-x: hidden` here. The frame doesn't need to clip the inline axis:
      overflow is contained at the source — `min-inline-size: 0` on <main> (below)
      confines a wide child to the stage, clipped house-shapes (panels, chamfer
@@ -62,40 +59,57 @@
   color: var(--text-primary);
   font-family: var(--font-ui);
 }
-/* A frame nested INSIDE another frame (e.g. a demo box in the docs) is sized by
-   its own slot, not the viewport. Two separate :has() in a descendant selector
-   — no nesting — so this is valid. */
+/* The document root is the scroll container whenever the frame is the page
+   (on <body> OR mounted in a wrapper like #app / a Nuxt layout div), so the
+   anchor-jump padding has to live there too. `:has(.vui > main)` matches a
+   frame anywhere in the document without nesting :has() inside :has() (which
+   the spec forbids). */
+:where(html:has(.vui > main)) {
+  scroll-padding-block-start: var(--frame-header-h);
+}
+/* A tall header bumps the sticky offsets so the rail/anchors clear it. The html
+   rule mirrors the frame one onto the document root (the scroller for a page
+   frame) so anchor jumps clear a tall header too — it overrides the :root token
+   default because appshell is in a LATER cascade layer than tokens, not on
+   specificity. */
+:where(.vui:has(> main):has(> header.tall)) {
+  --frame-header-h: 76px;
+}
+:where(html:has(.vui > header.tall)) {
+  --frame-header-h: 76px;
+}
+/* A frame nested INSIDE another frame (e.g. a demo box in the docs) fills its
+   own slot, not the viewport. Two separate :has() in a descendant selector — no
+   nesting — so this is valid. */
 :where(.vui:has(> main) .vui:has(> main)) {
-  block-size: 100%;
-  max-block-size: none;
+  min-block-size: 100%;
 }
 
 /* ---------- Landmark → slot (mobile / default) ---------- */
 :where(.vui:has(> main)) > header {
+  position: sticky;
   z-index: 3;
+  inset-block-start: 0;
   grid-area: top;
 }
-/* The stage is the frame's scroll container. `min-inline-size: 0` is the
-   load-bearing line: as a grid item, <main> defaults to `min-width: auto` and
-   would refuse to shrink below the min-content width of its widest child (a long
-   unbroken string, a nowrap table), letting that child balloon the `1fr` track
-   and drag a scrollbar onto the WHOLE shell — header, rail and footer sliding
-   with it. Zeroing it confines any overflow INSIDE <main>, so the chrome stays
-   pinned and only the stage moves.
+/* The stage flows in the document; it is NOT a scroll container any more (the
+   page scrolls). `min-inline-size: 0` is still the load-bearing line: as a grid
+   item, <main> defaults to `min-width: auto` and would refuse to shrink below the
+   min-content width of its widest child (a long unbroken string, a nowrap table),
+   letting that child balloon the `1fr` column and drag a horizontal scrollbar onto
+   the WHOLE shell. Zeroing it confines a wide child to the stage column.
 
-   We deliberately DON'T clip the inline axis. With self-containing content
-   (text wraps, <pre>/tables/carousels self-scroll) the stage never overflows in
-   practice — but if a consumer misuses something and it does, `overflow-y: auto`
-   coerces overflow-x to auto and the stage scrolls. That is the graceful failure
-   we want: the mistake stays VISIBLE (a scrollbar the dev will notice) and the
-   content stays REACHABLE (the end user isn't locked out) — both of which a
-   destructive `overflow: clip` would silently take away. */
+   We deliberately DON'T clip the inline axis. With self-containing content (text
+   wraps, <pre>/tables/carousels self-scroll) the stage never overflows in
+   practice. If a consumer misuses something and a child still overflows, it
+   shows as a page-level scroll — VISIBLE (a scrollbar the dev will notice) and
+   REACHABLE (the end user isn't locked out) — the graceful failure we want, not
+   the silent loss a destructive `overflow: clip` would cause. */
 :where(.vui:has(> main)) > main {
   position: relative;
   grid-area: main;
   min-inline-size: 0;
   padding: var(--hud-edge);
-  overflow-y: auto;
 }
 /* footer, an explicit bottom bar, AND a side rail all live along the bottom
    on phones. A lone one fills `foot`; a footer PLUS a command bar are split
@@ -107,7 +121,9 @@
    desktop `grid-area: rail` rule below and trap every side rail in `foot`. */
 :where(.vui:has(> main))
   > :where(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
+  position: sticky;
   z-index: 3;
+  inset-block-end: 0;
   grid-area: foot;
 }
 /* …but a <footer> and a bottom command bar (a side rail dropped to the floor,
@@ -165,16 +181,22 @@
 
 /* ---------- Stage backdrop ----------
    The texture rides on the FRAME's pseudo-elements, placed in the `main` grid
-   cell. The frame never scrolls, so the backdrop covers the visible stage and
-   holds still while <main> scrolls beneath it — unlike an absolute overlay
-   INSIDE the scroller, which only covers the first screenful and then scrolls
-   away. The hex grid is on by default; the atmospheric overlay (vignette +
-   scanlines) is opt-in via `.vignette` on the frame (or on <body>), and off by
-   default since a fixed dark vignette + scanlines over scrolling text hurts
-   readability. <main> is transparent and sits above the backdrop. */
+   cell and pinned with `position: sticky` so it covers the viewport and holds
+   still while the page scrolls beneath it. Sticky (not fixed) keeps it scoped to
+   the frame's own scroll context, so a boxed demo's backdrop stays inside the box
+   instead of escaping to the whole viewport. `block-size: 100svh` + `align-self:
+   start` size it to one screen and stop it stretching the (now content-tall) cell.
+   The hex grid is on by default; the atmospheric overlay (vignette + scanlines)
+   is opt-in via `.vignette` on the frame (or on <body>), and off by default since
+   a dark vignette + scanlines over scrolling text hurts readability. <main> is
+   transparent and sits above the backdrop. */
 :where(.vui:has(> main))::before {
+  position: sticky;
   z-index: 0;
+  inset-block-start: 0;
   grid-area: main;
+  align-self: start;
+  block-size: 100svh;
   background-image: var(--grid-fine);
   background-size: var(--grid-fine-size);
   content: '';
@@ -187,8 +209,12 @@
 }
 :where(.vui:has(> main).vignette)::after,
 :where(body.vignette .vui:has(> main))::after {
+  position: sticky;
   z-index: 0;
+  inset-block-start: 0;
   grid-area: main;
+  align-self: start;
+  block-size: 100svh;
   background-image: var(--scanlines);
   content: '';
   opacity: 0.6;
@@ -248,6 +274,23 @@
   }
   :where(.vui:has(> main)) > :where(aside.right, nav.right) {
     grid-area: railend;
+  }
+
+  /* The rail sticks beside the scrolling content. It sits BELOW the banner
+     header (offset by its height) and is at most one screen tall, scrolling
+     its own overflow if the nav list is long. `align-self: start` stops the
+     grid stretching it to the full content height (which would defeat sticky).
+     header.inset (full-height rail, header beside it) resets the offset below. */
+  :where(.vui:has(> main)) > :where(nav.left, nav.right, aside) {
+    position: sticky;
+    inset-block-start: var(--frame-header-h);
+    align-self: start;
+    max-block-size: calc(100svh - var(--frame-header-h));
+    overflow-y: auto;
+  }
+  :where(.vui:has(> main):has(> header.inset)) > :where(nav.left, nav.right, aside) {
+    inset-block-start: 0;
+    max-block-size: 100svh;
   }
 
   /* Both rails / drawers at once */

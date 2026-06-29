@@ -141,6 +141,7 @@
     --container-pad: clamp(1rem, .6rem + 2vw, 2rem);
     --gutter: var(--space-7);
     --hud-edge: clamp(.5rem, .5rem + .5vw, 1rem);
+    --frame-header-h: 60px;
     --bp-s: 36rem;
     --bp-m: 48rem;
     --bp-l: 64rem;
@@ -2836,26 +2837,35 @@
   }
 
   :where(.vui:has( > main)) {
+    min-block-size: 100svh;
     background-color: var(--bg-base);
-    block-size: 100svh;
-    max-block-size: 100svh;
     color: var(--text-primary);
     font-family: var(--font-ui);
     grid-template: "top"
                    "main" 1fr
                    "foot"
                    / 1fr;
+    scroll-padding-block-start: var(--frame-header-h);
     display: grid;
   }
 
+  :where(html:has(.vui > main)) {
+    scroll-padding-block-start: var(--frame-header-h);
+  }
+
+  :where(.vui:has( > main):has( > header.tall)), :where(html:has(.vui > header.tall)) {
+    --frame-header-h: 76px;
+  }
+
   :where(.vui:has( > main) .vui:has( > main)) {
-    block-size: 100%;
-    max-block-size: none;
+    min-block-size: 100%;
   }
 
   :where(.vui:has( > main)) > header {
     z-index: 3;
     grid-area: top;
+    position: sticky;
+    inset-block-start: 0;
   }
 
   :where(.vui:has( > main)) > main {
@@ -2863,12 +2873,13 @@
     padding: var(--hud-edge);
     grid-area: main;
     position: relative;
-    overflow-y: auto;
   }
 
   :where(.vui:has( > main)) > :where(footer, nav.bottom, nav.left:not(.drawer), nav.right:not(.drawer), aside:not(.drawer)) {
     z-index: 3;
     grid-area: foot;
+    position: sticky;
+    inset-block-end: 0;
   }
 
   :where(.vui:has( > main):has( > footer):has( > nav.left:not(.drawer),  > nav.right:not(.drawer),  > nav.bottom,  > aside:not(.drawer))) {
@@ -2890,6 +2901,10 @@
     content: "";
     pointer-events: none;
     grid-area: main;
+    align-self: start;
+    block-size: 100svh;
+    position: sticky;
+    inset-block-start: 0;
   }
 
   :where(.vui:has( > main).vignette):before, :where(body.vignette .vui:has( > main)):before {
@@ -2904,6 +2919,10 @@
     opacity: .6;
     pointer-events: none;
     grid-area: main;
+    align-self: start;
+    block-size: 100svh;
+    position: sticky;
+    inset-block-start: 0;
   }
 
   :where(.vui:has( > main)) > main {
@@ -2948,6 +2967,19 @@
       grid-area: railend;
     }
 
+    :where(.vui:has( > main)) > :where(nav.left, nav.right, aside) {
+      max-block-size: calc(100svh - var(--frame-header-h));
+      align-self: start;
+      position: sticky;
+      inset-block-start: var(--frame-header-h);
+      overflow-y: auto;
+    }
+
+    :where(.vui:has( > main):has( > header.inset)) > :where(nav.left, nav.right, aside) {
+      max-block-size: 100svh;
+      inset-block-start: 0;
+    }
+
     :where(.vui:has( > main):has( > nav.left):has( > aside.right)), :where(.vui:has( > main):has( > aside:not(.right)):has( > aside.right)) {
       grid-template-columns: var(--rail-left-width) 1fr var(--rail-right-width);
       grid-template-areas: "top top top"
@@ -2990,7 +3022,7 @@
     z-index: 20;
     align-items: center;
     gap: var(--space-5);
-    min-block-size: 60px;
+    min-block-size: var(--frame-header-h);
     padding-inline: var(--hud-edge);
     border-block-end: var(--border-hair) solid var(--hairline);
     background-color: var(--bg-void);

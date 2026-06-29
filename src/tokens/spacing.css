@@ -74,6 +74,7 @@
   --container-pad: clamp(1rem, 0.6rem + 2vw, 2rem); /* fluid gutter */
   --gutter: var(--space-7);
   --hud-edge: clamp(0.5rem, 0.5rem + 0.5vw, 1rem); /* fluid HUD inset */
+  --frame-header-h: 60px; /* app-frame header height; the sticky side-rail offset + scroll-padding read it */
 
   /* ---- Responsive breakpoints (mobile-first, min-width).
           Exposed as tokens for reference; media queries below

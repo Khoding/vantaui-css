@@ -193,14 +193,14 @@ State is semantic-first: current item = `aria-current="page"` (alias `.active`);
 
 ## App frame ("write the landmarks, get the layout")
 
-Any `.vui` element that directly holds a `<main>` becomes an app frame and places landmarks by element, without requiring wrapper classes. On `<body>` it fills the visible viewport (`100svh`); nested in a sized box it fills the box.
+Any `.vui` element that directly holds a `<main>` becomes an app frame and places landmarks by element, without requiring wrapper classes. On `<body>` it is at least viewport-tall (`min-block-size: 100svh`) and grows with content; the PAGE scrolls naturally and the chrome stays put via `position: sticky`. Nested in a sized box (give it `overflow:auto` + `min-block-size:0`), that box becomes the scroller and the sticky chrome sticks to it.
 
 ```html
 <body class="vui">
-  <header>…</header>            <!-- top bar -->
+  <header>…</header>            <!-- top bar (sticky to top) -->
   <nav class="left">…</nav>      <!-- side rail: vertical ≥768px, bottom bar below -->
-  <main>…</main>                <!-- the scrolling stage -->
-  <footer>…</footer>            <!-- bottom bar (or use <nav class="bottom">) -->
+  <main>…</main>                <!-- main content; the document scrolls -->
+  <footer>…</footer>            <!-- bottom bar (sticky to bottom; or <nav class="bottom">) -->
 </body>
 ```
 
@@ -209,8 +209,8 @@ Any `.vui` element that directly holds a `<main>` becomes an app frame and place
 - `header.inset` flips the default: rail(s) rise full-height, the header is confined beside them.
 - The stage shows a faint hex-grid backdrop by default. Opt into vignette + scanlines with `.vignette` on the frame or `<body>` (off by default).
 - A `<footer>` and a bottom command bar (a side rail dropped to the floor, or `<nav class="bottom">`) can coexist: on phones they stack in separate rows — footer just above the command bar — instead of overlapping. From the `m` breakpoint up the rail returns to a column.
-- Mobile viewport hardening: the frame and `<body>` are both sized in `svh` (not `vh`/`dvh`) so the shell never exceeds the visible viewport — on mobile `vh`/`dvh` resolve to the toolbar-retracted (large) height, making the document scrollable and letting the bottom command bar drop below the fold (after an Android pull-to-refresh). Nothing scrolls at the document level, so the bottom bar stays put and pull-to-refresh keeps working; `<main>` does all the scrolling.
-- Overflow philosophy: `<main>` is the scroll container; `min-inline-size: 0` confines wide children so chrome never slides. Genuine misuse scrolls visibly rather than being silently clipped.
+- Natural document scrolling: the frame is `min-block-size: 100svh` (viewport-tall floor) and grows with content; the document is the scroller. This restores native scroll restoration, `:target`/anchor jumps (`scroll-padding-block-start: var(--frame-header-h)` clears the sticky header), find-in-page, and a mobile toolbar that retracts on scroll. The chrome stays visible because it is sticky: header to the top, footer / bottom command bar to the bottom, side rail offset `--frame-header-h` from the top (full-height under `header.inset`). Header height is `--frame-header-h` (60px; 76px under `header.tall`).
+- Overflow philosophy: the document (or a boxed frame's own scroller) scrolls; `min-inline-size: 0` on `<main>` confines wide children to the stage column so a runaway child can't drag the whole shell sideways. Genuine misuse scrolls visibly rather than being silently clipped.
 - Stage bleed: the stage adds `--hud-edge` padding on every side. A `vui-prose` or `bleed-full` child cancels that inline padding to span edge-to-edge. `vui-container` is not bled — it keeps the stage gutter and stays centered within it.
 
 ## Header / app bar

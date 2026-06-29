@@ -775,7 +775,7 @@
           frame: true,
           resize: true,
           code: '<aside class="drawer" id="demoDrawer">\n  <header>\n    <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n    <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n  </header>\n  <nav>\n    <h6>Telemetry</h6>\n    <a class="active"><i>space_dashboard</i>Overview</a>\n    <a><i>radar</i>Scan</a>\n    <a><i>map</i>City Map</a>\n    <h6>System</h6>\n    <a><i>handyman</i>Loadout</a>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <footer>\n    <button class="ghost block"><i>home</i>Sign out</button>\n  </footer>\n</aside>',
-          demo: '<div class="vui" style="block-size:600px">\n  <aside class="drawer" id="demoDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <a><i>map</i>City Map</a>\n      <h6>System</h6>\n      <a><i>handyman</i>Loadout</a>\n      <a><i>settings</i>Setup</a>\n    </nav>\n    <footer>\n      <button class="ghost block"><i>home</i>Sign out</button>\n    </footer>\n  </aside>\n  <header>\n    <button class="icon vui-until-m" data-open="demoDrawer" aria-label="Open menu"><i>menu</i></button>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button aria-label="Profile"><i>account_circle</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Command Center</h1>\n      <p>The sidebar is pinned on desktop and collapses to an off-canvas drawer on phones (resize to see it switch).</p>\n    </div>\n  </main>\n</div>',
+          demo: '<div class="vui" style="block-size:600px;min-block-size:0;overflow:auto">\n  <aside class="drawer" id="demoDrawer">\n    <header>\n      <span><img src="assets/emblem.svg" alt="">VANTA<b>UI</b></span>\n      <button class="icon vui-until-m" data-close aria-label="Close"><i>close</i></button>\n    </header>\n    <nav>\n      <h6>Telemetry</h6>\n      <a class="active"><i>space_dashboard</i>Overview</a>\n      <a><i>radar</i>Scan</a>\n      <a><i>map</i>City Map</a>\n      <h6>System</h6>\n      <a><i>handyman</i>Loadout</a>\n      <a><i>settings</i>Setup</a>\n    </nav>\n    <footer>\n      <button class="ghost block"><i>home</i>Sign out</button>\n    </footer>\n  </aside>\n  <header>\n    <button class="icon vui-until-m" data-open="demoDrawer" aria-label="Open menu"><i>menu</i></button>\n    <a>WAYNE<b>TECH</b></a>\n    <menu><button aria-label="Profile"><i>account_circle</i></button></menu>\n  </header>\n  <main>\n    <div class="vui-container">\n      <h1>Command Center</h1>\n      <p>The sidebar is pinned on desktop and collapses to an off-canvas drawer on phones (resize to see it switch).</p>\n    </div>\n  </main>\n</div>',
         },
       ],
     },
@@ -2056,7 +2056,7 @@
           frame: true,
           resize: true,
           code: '<body class="vui">\n  <nav class="left" aria-label="Rail">\n    <img src="emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</body>',
-          demo: '<div class="vui" style="block-size:600px">\n  <nav class="left" aria-label="Rail">\n    <img src="assets/emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</div>',
+          demo: '<div class="vui" style="block-size:600px;min-block-size:0;overflow:auto">\n  <nav class="left" aria-label="Rail">\n    <img src="assets/emblem.svg" alt="">\n    <a class="active"><i>space_dashboard</i>Ops</a>\n    <a><i>folder</i>Files</a>\n    <a><i>handyman</i>Tools</a>\n    <span class="max"></span>\n    <a><i>settings</i>Setup</a>\n  </nav>\n  <header>\n    <a>WAYNE<b>TECH</b></a>\n    <nav><a aria-current="page">Overview</a><a>Cases</a></nav>\n    <menu>\n      <span class="badge green dot">Online</span>\n      <button aria-label="User"><i>account_circle</i></button>\n    </menu>\n  </header>\n  <main>\n    <h1>Command Center</h1>\n    <p>Operational overview · night cycle 02:14</p>\n    <div class="vui-autogrid" style="--vui-min:10rem">\n      <article><div class="stat signal"><b>07</b><span>Active cases</span></div></article>\n      <article><div class="stat amber"><b>12</b><span>Hostiles</span></div></article>\n      <article><div class="stat"><b>04:18</b><span>Elapsed</span></div></article>\n    </div>\n  </main>\n</div>',
         },
       ],
     },
@@ -2098,6 +2098,28 @@
         {
           noDemo: true,
           code: "import 'vantaui-css';        // core\nimport 'vantaui-css/prose';  // VantaProse: long-form layout\nimport 'vantaui-css/stats';  // VantaStats: data-viz widgets",
+        },
+      ],
+    },
+    {
+      group: 'Extensions',
+      id: 'dev',
+      title: 'Dev linter',
+      blurb:
+        'A development-only companion that flags mistakes the semantic-first design cannot style away: bad HTML/a11y (two <code>&lt;h1&gt;</code>, a skipped heading level, an <code>&lt;img&gt;</code> with no alt, a stray <code>[role=tab]</code>) and helper-word conflicts (two mutually-exclusive words on one element). It is two halves: <code>vantaui-css/dev</code> (CSS) paints the flags; <code>vantaui-css/lint</code> (JS) walks the DOM and stamps them. <strong>Toggle a mistake below</strong> — the linter outlines and labels it live (and logs it). Ships nothing to production.',
+      render: function () {
+        return (
+          '<iframe class="dev-pg vui-chamfer" src="dev-playground.html" loading="lazy" ' +
+          'title="VantaUI dev linter playground" ' +
+          'style="inline-size:100%;block-size:560px;border:var(--border-hair) solid var(--hairline);background:var(--bg-void)"></iframe>'
+        );
+      },
+      examples: [
+        {
+          label: 'Usage (development only)',
+          noDemo: true,
+          code:
+            "import 'vantaui-css/dev';            // overlay paint — dev builds only\nimport {lint} from 'vantaui-css/lint';\n\nlint();                              // one pass over document\nlint(document, {observe: true});     // re-lint on DOM changes (SPA / Vue / Nuxt)",
         },
       ],
     },

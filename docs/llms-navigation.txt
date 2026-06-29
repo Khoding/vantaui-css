@@ -8,14 +8,14 @@ Related: interactive behaviours (drawers/menus/tabs/toolbars JS) → https://van
 
 ## App frame ("write the landmarks, get the layout")
 
-Any `.vui` element that DIRECTLY holds a `<main>` becomes an app frame and places landmarks by element without requiring wrapper classes. On `<body>` it fills the visible viewport (`100svh`); nested in a sized box it fills the box.
+Any `.vui` element that DIRECTLY holds a `<main>` becomes an app frame and places landmarks by element without requiring wrapper classes. On `<body>` it is at least the visible viewport tall (`min-block-size: 100svh`) and grows with content; the PAGE scrolls naturally and the chrome stays put via `position: sticky`. Nested in a sized box (give the box `overflow:auto` + `min-block-size:0`), that box becomes the scroll container and the same sticky chrome sticks to it.
 
 ```html
 <body class="vui">
-  <header>…</header>            <!-- top bar -->
+  <header>…</header>            <!-- top bar (sticky to top) -->
   <nav class="left">…</nav>      <!-- side rail: vertical ≥768px, bottom bar below -->
-  <main>…</main>                <!-- the scrolling stage -->
-  <footer>…</footer>            <!-- bottom bar (or use <nav class="bottom">) -->
+  <main>…</main>                <!-- main content; the document scrolls -->
+  <footer>…</footer>            <!-- bottom bar (sticky to bottom; or <nav class="bottom">) -->
 </body>
 ```
 
@@ -25,9 +25,9 @@ Any `.vui` element that DIRECTLY holds a `<main>` becomes an app frame and place
 - The stage shows a faint hex-grid backdrop by default. Opt into the atmospheric vignette + scanlines with `.vignette` on the frame or on `<body>` (which is off by default because it can hurt readability over scrolling text).
 - Drop the rail for a simple stacked header / main / footer shell.
 - A `<footer>` and a bottom command bar (a side rail dropped to the floor, or `<nav class="bottom">`) can coexist: on phones they stack in separate rows — footer just above the command bar — instead of overlapping. From the `m` breakpoint up the rail returns to a column, so they no longer share the floor.
-- Mobile viewport hardening: the frame is sized in `svh` and `<body>` matches (`min-block-size: 100svh`, not `100vh`/`100dvh`) so the shell never exceeds the visible viewport — on mobile `vh`/`dvh` resolve to the toolbar-retracted (large) height, which makes the document scrollable and pushes the bottom command bar below the fold (most visibly after an Android Chrome pull-to-refresh). Because nothing scrolls at the document level, the bottom bar stays put and pull-to-refresh keeps working; the stage (`<main>`) does all the scrolling.
+- Natural document scrolling: the frame is `min-block-size: 100svh` (a viewport-tall floor, so a short page still fills the screen) and grows with content; the document is the scroller. This restores native scroll restoration, working `:target`/anchor jumps (the frame sets `scroll-padding-block-start: var(--frame-header-h)` so they clear the sticky header) and find-in-page, and on mobile the browser toolbar retracts on scroll to give back screen. The chrome stays visible because it is sticky: the header to the top, the footer / bottom command bar to the bottom, and the side rail to `--frame-header-h` from the top (full-height under `header.inset`). The header height is the `--frame-header-h` token (60px, 76px under `header.tall`).
 
-Overflow philosophy: the stage (`<main>`) is the scroll container; `min-inline-size: 0` confines wide children inside it so chrome never slides. Genuine misuse scrolls visibly rather than being silently clipped.
+Overflow philosophy: the document (or a boxed frame's own scroller) does the scrolling; `min-inline-size: 0` on `<main>` confines wide children to the stage column so a runaway child can't drag the whole shell sideways. Genuine misuse scrolls visibly rather than being silently clipped.
 
 ## Header / app bar
 

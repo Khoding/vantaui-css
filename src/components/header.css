@@ -32,7 +32,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-5);
-  min-block-size: 60px;
+  min-block-size: var(--frame-header-h);
   padding-inline: var(--hud-edge);
   padding-block: 0;
   border-block-end: var(--border-hair) solid var(--hairline);
