@@ -33,10 +33,11 @@
    Claude Generated, verified by hand.
    ============================================================ */
 import {createServer} from 'node:http';
-import {readFile, writeFile, readdir, mkdir} from 'node:fs/promises';
-import {join, resolve, dirname, extname} from 'node:path';
+import {readFile, writeFile, mkdir} from 'node:fs/promises';
+import {resolve, dirname} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {chromium} from 'playwright';
+import {scanUniverse, classifyHelper} from './lib/css-universe.mjs';
 
 const root = process.cwd();
 const srcDir = resolve(root, 'src');
@@ -69,42 +70,8 @@ const PROBE_PROPS = [
 ];
 
 /* ============================================================
-   1. Static universe scan of the src tree
-   ============================================================ */
-async function listCss(dir) {
-  const out = [];
-  for (const ent of await readdir(dir, {withFileTypes: true})) {
-    const p = join(dir, ent.name);
-    if (ent.isDirectory()) out.push(...(await listCss(p)));
-    else if (ent.name.endsWith('.css')) out.push(p);
-  }
-  return out;
-}
-
-function stripComments(css) {
-  return css.replace(/\/\*[\s\S]*?\*\//g, '');
-}
-
-async function scanUniverse() {
-  const files = await listCss(srcDir);
-  const classes = new Set();
-  const propDefs = new Set();
-  const propReads = new Set();
-  for (const f of files) {
-    const css = stripComments(await readFile(f, 'utf8'));
-    for (const m of css.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) classes.add(m[1]);
-    for (const m of css.matchAll(/(--[\w-]+)\s*:/g)) propDefs.add(m[1]);
-    for (const m of css.matchAll(/var\(\s*(--[\w-]+)/g)) propReads.add(m[1]);
-  }
-  return {
-    cssClasses: [...classes].sort(),
-    cssPropDefs: [...propDefs].sort(),
-    cssPropReads: [...propReads].sort(),
-  };
-}
-
-/* ============================================================
-   2. Trigger / helper parsing (catalog prose -> real DOM)
+   1. Trigger parsing (catalog prose -> real DOM). The universe scan and
+      helper classification are shared with the build via ./lib/css-universe.
    ============================================================ */
 // Pull the first concrete construct out of a prose trigger string.
 function parseTrigger(trigger) {
@@ -123,20 +90,8 @@ function parseTrigger(trigger) {
   return {tag, classes, attrs};
 }
 
-// Classify a helper word into how it attaches to the element.
-function classifyHelper(word) {
-  if (word.includes('…')) return {kind: 'range', word}; // span ranges, skip
-  if (word.includes('="')) {
-    const [name, val] = word.split('=');
-    return {kind: 'attr', name, value: val.replace(/"/g, '')};
-  }
-  if (/^(data-|aria-)/.test(word)) return {kind: 'attr', name: word, value: word === 'aria-invalid' ? 'true' : 'x'};
-  if (word === 'role') return {kind: 'skip', word};
-  return {kind: 'class', word};
-}
-
 /* ============================================================
-   3. Build the fixture spec the page will stamp out
+   2. Build the fixture spec the page will stamp out
    ============================================================ */
 function buildSpec(components) {
   const spec = [];
@@ -160,6 +115,7 @@ function buildSpec(components) {
       classHelpers,
       attrHelpers,
       knobs: (c.knobs || []).map(k => k.name).filter(n => !n.startsWith('--_')),
+      combines: c.combines || [],
     });
   }
   return {spec, skipped};
@@ -177,21 +133,28 @@ function measureAll({spec, PROBE_PROPS}) {
     for (const p of PROBE_PROPS) o[p] = cs[p];
     return o;
   };
+  // Construct an element from a base spec, without inserting it.
+  const el = (base, extraClasses = [], attrs = {}, style = '') => {
+    const node = document.createElement(base.tag);
+    for (const cl of base.classes) node.classList.add(cl);
+    for (const cl of extraClasses) node.classList.add(cl);
+    for (const [k, v] of Object.entries(base.attrs)) node.setAttribute(k, v);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    if (style) node.setAttribute('style', style);
+    node.textContent = 'Probe content';
+    return node;
+  };
+  // Stamp a single element straight into the host and return it.
   const make = (s, extraClasses = [], attrs = {}, style = '') => {
-    const el = document.createElement(s.base.tag);
-    for (const cl of s.base.classes) el.classList.add(cl);
-    for (const cl of extraClasses) el.classList.add(cl);
-    for (const [k, v] of Object.entries(s.base.attrs)) el.setAttribute(k, v);
-    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
-    if (style) el.setAttribute('style', style);
-    el.textContent = 'Probe content';
-    host.appendChild(el);
-    return el;
+    const node = el(s.base, extraClasses, attrs, style);
+    host.appendChild(node);
+    return node;
   };
 
+  const baseById = Object.fromEntries(spec.map(s => [s.id, s.base]));
   const out = {};
   for (const s of spec) {
-    const comp = {base: null, helpers: {}, combos: {}, knobs: {}};
+    const comp = {base: null, helpers: {}, combos: {}, knobs: {}, combines: {}};
     const baseEl = make(s);
     comp.base = read(baseEl);
 
@@ -220,6 +183,19 @@ function measureAll({spec, PROBE_PROPS}) {
       const len = make(s, [], {}, `${k}: 40px`);
       const col = make(s, [], {}, `${k}: rgb(255, 0, 255)`);
       comp.knobs[k] = {len: read(len), col: read(col)};
+    }
+    // combines: render each catalogued partner B nested INSIDE this component A
+    // and measure B. Compared in node against B's standalone base, a delta means
+    // A genuinely restyles a nested B (a real edge), not just an aesthetic pairing.
+    for (const cid of s.combines) {
+      const childBase = baseById[cid];
+      if (!childBase || cid === s.id) continue;
+      const parent = el(s.base);
+      parent.textContent = '';
+      const child = el(childBase);
+      parent.appendChild(child);
+      host.appendChild(parent);
+      comp.combines[cid] = read(child);
     }
     out[s.id] = comp;
   }
@@ -332,12 +308,33 @@ function derive(raw, spec, propReads, kindsByComp) {
       knobs[k] = {consumed: affects.length > 0 || reads.has(k), affects};
     }
 
+    // combines: a catalogued pairing is a VERIFIED edge when nesting the partner
+    // inside this component actually changes the partner's computed style versus
+    // its standalone base. `restyles` lists the props the parent moves; an empty
+    // list means the pairing is idiomatic/aesthetic only (no CSS coupling).
+    const combines = {};
+    for (const [cid, nestedSnap] of Object.entries(m.combines || {})) {
+      const childBase = raw[cid] && raw[cid].base;
+      if (!childBase) continue;
+      // Drop emergent dimensions: a nested child simply has a different
+      // available width than a standalone one — that is layout context, not the
+      // parent restyling it. What remains (colour, border, type, padding…) is a
+      // genuine restyle edge.
+      const restyles = Object.keys(diffProps(childBase, nestedSnap)).filter(p => !NON_IDENTITY.has(p));
+      // A lone margin shift is usually layout centring (auto margins), not the
+      // parent restyling the child — require at least one non-margin property to
+      // call the edge verified, but keep margin in the evidence list.
+      const verified = restyles.some(p => p !== 'marginTop' && p !== 'marginLeft');
+      combines[cid] = {verified, restyles};
+    }
+
     facts[s.id] = {
       noOpHelpers: Object.entries(helperEffects).filter(([, v]) => v.length === 0).map(([w]) => w),
       helperEffects,
       mutexGroups,
       crossKindCollisions,
       knobs,
+      combines,
     };
   }
   return facts;
@@ -349,12 +346,11 @@ function derive(raw, spec, propReads, kindsByComp) {
 function fixtureHtml(cssHref) {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="stylesheet" href="${cssHref}">
-<style>#host > * { margin: 8px; }</style>
 </head><body class="vui"><main id="host"></main></body></html>`;
 }
 
 async function main() {
-  const universe = await scanUniverse();
+  const universe = await scanUniverse(srcDir);
   const {COMPONENTS} = await import(pathToFileURL(compatData).href);
   const {spec, skipped} = buildSpec(COMPONENTS);
 

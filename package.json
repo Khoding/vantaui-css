@@ -68,6 +68,7 @@
     "audit:overflow": "node scripts/audit-overflow.mjs",
     "probe": "node scripts/probe-css.mjs",
     "reconcile": "node scripts/reconcile-compat.mjs",
+    "verify:compat": "node scripts/probe-css.mjs && node scripts/reconcile-compat.mjs",
     "prepare": "husky",
     "prepublishOnly": "node scripts/build.mjs"
   },

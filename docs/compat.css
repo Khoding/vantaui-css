@@ -283,6 +283,21 @@
   text-transform: none;
 }
 
+/* "✓ verified" — this combine/conflict is proven by the CSS-truth probe
+   (docs/compat-facts.json), not just hand-asserted. A leading tick + a green
+   rim lift it above the unverified chips; hover shows the evidence. */
+.compat-chip.is-verified {
+  border-color: color-mix(in srgb, var(--green-400) 55%, transparent);
+  cursor: help;
+}
+
+.compat-chip.is-verified::before {
+  content: '✓';
+  margin-inline-end: 4px;
+  color: var(--green-400);
+  font-weight: 700;
+}
+
 /* ---------- Role badges (the semantics axis) ---------- */
 /* The card head pairs the name with its role; keep them on one baseline-aligned
    group so the links stay pushed to the trailing edge. */

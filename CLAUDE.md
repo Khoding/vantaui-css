@@ -57,9 +57,10 @@ This repo follows the global CSS conventions in `~/.claude/CLAUDE.md` (Vanilla C
 
 ## Build & checks
 
-- Build: `npm run build` (LightningCSS → `dist/vantaui.css` + `dist/vantaui.min.css`; also regenerates `js/vantaui.global.js` via esbuild).
+- Build: `npm run build` (LightningCSS → `dist/vantaui.css` + `dist/vantaui.min.css`; also regenerates `js/vantaui.global.js` via esbuild). The build runs two gates first: the docs-coverage gate (every component documented) and the catalog name-gate (every helper class / `--knob` named in `docs/compat-data.js` actually exists in the source CSS; a dead reference fails the build).
 - Lint: `npm run lint` (ESLint Baseline gate — run this after any CSS or JS change).
 - Overflow audit: `npm run audit:overflow`. Screenshots: `npm run shot`. Palette: `npm run palette`.
+- Compat truth: `npm run probe` renders every catalogued component headless and writes the machine-derived facts to `docs/compat-facts.json` (mutex groups, knob effects, cross-kind collisions). `npm run reconcile` diffs those facts against `docs/compat-data.js` and flags drift without rewriting prose; `npm run verify:compat` runs both (the CI/manual behavioural check, too slow for `build`). `docs/compat-facts.json` is generated — do not edit it by hand.
 - Do not edit `dist/` or `js/vantaui.global.js` by hand — both are generated.
 
 ## Cross-browser compatibility

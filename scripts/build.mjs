@@ -16,8 +16,9 @@
 import {bundle} from 'lightningcss';
 import {buildSync as esbuild} from 'esbuild';
 import {mkdirSync, writeFileSync, readFileSync, rmSync, copyFileSync, readdirSync} from 'node:fs';
-import {fileURLToPath} from 'node:url';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 import {dirname, resolve, basename} from 'node:path';
+import {scanUniverse, catalogNames} from './lib/css-universe.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
@@ -163,6 +164,41 @@ function checkDocsCoverage() {
   );
 }
 
+// ============================================================
+// Catalog name-gate — the cheap half of the compat reconciliation.
+//
+// docs/compat-data.js names helper classes and --knobs. This fails the build
+// when one of those names no longer exists in the source CSS (a class renamed
+// without updating the catalog, or a documented knob that is never defined or
+// read = dead). It is static (no browser), so it runs on every build. The
+// behavioural half — verifying mutual-exclusion groups by actually rendering —
+// lives in `npm run verify:compat` (probe + reconcile), too slow for here.
+// ============================================================
+async function checkCatalogNames() {
+  const {COMPONENTS} = await import(pathToFileURL(resolve(docsDir, 'compat-data.js')).href);
+  const {cssClasses, cssPropDefs, cssPropReads} = await scanUniverse(srcDir);
+  const {classes, knobs} = catalogNames(COMPONENTS);
+  const classSet = new Set(cssClasses);
+  const propSet = new Set([...cssPropDefs, ...cssPropReads]);
+  const problems = [];
+  for (const c of classes)
+    if (!classSet.has(c))
+      problems.push(
+        `• catalog helper class ".${c}" is not defined in any src CSS — rename/remove it in docs/compat-data.js (dead reference).`,
+      );
+  for (const k of knobs)
+    if (!propSet.has(k))
+      problems.push(
+        `• catalog knob "${k}" is never defined or read in src CSS — fix docs/compat-data.js (dead knob).`,
+      );
+  if (problems.length) {
+    throw new Error(`Catalog name-gate failed (${problems.length}):\n${problems.join('\n')}`);
+  }
+  console.log(
+    `✔ catalog names   ${classes.length} helper classes + ${knobs.length} knobs resolve to real CSS`,
+  );
+}
+
 // LightningCSS targets (major << 16 | minor << 8). This is the real feature
 // floor for the library: oklch, color-mix, :has(), cascade layers, mask and
 // conic-gradient all shipped together (~2023). Targeting it keeps OKLCH native
@@ -186,7 +222,8 @@ mkdirSync(outDir, {recursive: true});
 const entryText = readFileSync(entry, 'utf8');
 const fontsCss = readFileSync(resolve(srcDir, 'tokens/fonts.css'), 'utf8');
 const fontImports = fontsCss.match(REMOTE_IMPORT) || [];
-writeFileSync(tmpEntry, entryText.replace(LOCAL_FONTS_IMPORT, ''));
+// The temp entry is written inside the try below (not here) so that a gate
+// failure before the try can never orphan it past the finally cleanup.
 
 // The canonical cascade-layer order, taken straight from the entry so it can
 // never drift from src/vantaui.css.
@@ -253,7 +290,9 @@ function buildGlobal() {
 
 console.log('VantaUI — building dist/ …');
 checkDocsCoverage();
+await checkCatalogNames();
 try {
+  writeFileSync(tmpEntry, entryText.replace(LOCAL_FONTS_IMPORT, ''));
   build({entry: tmpEntry, minify: false, outFile: 'vantaui.css', fonts: true});
   build({entry: tmpEntry, minify: true, outFile: 'vantaui.min.css', fonts: true});
   for (const a of ADDONS) {
