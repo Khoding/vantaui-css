@@ -2968,7 +2968,7 @@
     }
 
     :where(.vui:has( > main)) > :where(nav.left, nav.right, aside) {
-      max-block-size: calc(100svh - var(--frame-header-h));
+      block-size: calc(100svh - var(--frame-header-h));
       align-self: start;
       position: sticky;
       inset-block-start: var(--frame-header-h);
@@ -2976,7 +2976,7 @@
     }
 
     :where(.vui:has( > main):has( > header.inset)) > :where(nav.left, nav.right, aside) {
-      max-block-size: 100svh;
+      block-size: 100svh;
       inset-block-start: 0;
     }
 

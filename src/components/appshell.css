@@ -277,20 +277,22 @@
   }
 
   /* The rail sticks beside the scrolling content. It sits BELOW the banner
-     header (offset by its height) and is at most one screen tall, scrolling
-     its own overflow if the nav list is long. `align-self: start` stops the
-     grid stretching it to the full content height (which would defeat sticky).
+     header (offset by its height) and is exactly one screen tall, so its
+     background fills the column to the bottom of the viewport while it stays
+     pinned; a long nav list scrolls inside it. `align-self: start` stops the
+     grid stretching it to the full CONTENT height (which would defeat sticky
+     and leave the background only as tall as the links).
      header.inset (full-height rail, header beside it) resets the offset below. */
   :where(.vui:has(> main)) > :where(nav.left, nav.right, aside) {
     position: sticky;
     inset-block-start: var(--frame-header-h);
     align-self: start;
-    max-block-size: calc(100svh - var(--frame-header-h));
+    block-size: calc(100svh - var(--frame-header-h));
     overflow-y: auto;
   }
   :where(.vui:has(> main):has(> header.inset)) > :where(nav.left, nav.right, aside) {
     inset-block-start: 0;
-    max-block-size: 100svh;
+    block-size: 100svh;
   }
 
   /* Both rails / drawers at once */
