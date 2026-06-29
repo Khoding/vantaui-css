@@ -1,6 +1,6 @@
 /* GENERATED from js/vantaui.js by scripts/build.mjs — do not edit by hand.
-   Classic-script build: plain <script src="vantaui.global.js"> (works over
-   file:// too). Exposes window.vui and auto-inits. The CSS works without it. */
+   Classic-script build: <script src="vantaui.global.js"> (works over file:// too).
+   Exposes window.vui and auto-inits. The CSS works without it. */
 (() => {
   // js/vantaui.js
   var isBrowser = typeof document !== "undefined";

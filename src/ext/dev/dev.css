@@ -1,0 +1,66 @@
+/* ============================================================
+   VantaUI dev layer: opt-in development-only lint overlay.
+   Not part of the core bundle, and NEVER ship it to production. Load it
+   only in development:
+     import 'vantaui-css/dev';              // bundler (dev entry only)
+     <link rel="stylesheet" href=".../dist/ext/dev.css">  // plain HTML
+
+   Two jobs:
+   1. The visual vocabulary for the JS linter (vantaui-css/lint). It stamps
+      data-vui-lint="<message>" on an offender; the rules below outline it and
+      label it with that message via attr().
+   2. A few PURE-CSS static checks that need no JS at all: an <img> with no
+      alt, an empty link/button. These paint the same outline so the two halves
+      look identical.
+
+   Authored into the reserved vui.ext layer, so the overlay sits ABOVE
+   vui.components and wins over component styling without !important (a
+   consumer's own unlayered styles still win, which is correct for a dev tool).
+   Tokens drive the colours. A replaced <img> has no ::after, so it gets the
+   outline only; the JS half also logs the message to the console.
+
+   Self-contained bundle: re-declares the core layer order so the cascade
+   position is right even if this loads before core.
+   ============================================================ */
+
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components, vui.ext, vui.utilities;
+
+@layer vui.ext {
+  /* JS-flagged offenders (data-vui-lint) + the pure-CSS checks share one look. */
+  :where([data-vui-lint]),
+  :where(.vui img:not([alt])),
+  :where(.vui a[href]:empty),
+  :where(.vui button:empty) {
+    outline: 2px dashed var(--red-400);
+    outline-offset: 2px;
+  }
+
+  /* The label: the JS message, or a fixed string for the pure-CSS checks.
+     ::after is skipped on replaced elements (img) — outline alone flags those. */
+  :where([data-vui-lint])::after,
+  :where(.vui a[href]:empty)::after,
+  :where(.vui button:empty)::after {
+    content: '\26A0\00A0' attr(data-vui-lint); /* ⚠ + message */
+    display: inline-block;
+    margin-block-start: 4px;
+    margin-inline-start: 4px;
+    padding-block: 2px;
+    padding-inline: 6px;
+    border: var(--border-hair) solid var(--red-400);
+    background-color: var(--ink-900);
+    color: var(--red-400);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    line-height: 1.3;
+    white-space: nowrap;
+    vertical-align: top;
+  }
+
+  /* Fixed labels for the pure-CSS checks (no data-vui-lint to read). */
+  :where(.vui a[href]:empty)::after {
+    content: '\26A0\00A0empty link (no text or aria-label)';
+  }
+  :where(.vui button:empty)::after {
+    content: '\26A0\00A0empty button (no text or aria-label)';
+  }
+}

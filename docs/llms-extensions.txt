@@ -1,6 +1,6 @@
 # VantaUI CSS: Extensions (opt-in add-ons)
 
-> Add-ons live outside the core bundle. You import each one separately, so core stays slim and you only ship what you use. Two ship today: VantaProse (long-form layout) and VantaStats (data-viz widgets). Both require the core tokens and author into VantaUI's cascade layers at zero specificity, so they theme from your tokens and never need `!important`.
+> Add-ons live outside the core bundle. You import each one separately, so core stays slim and you only ship what you use. Three ship today: VantaProse (long-form layout), VantaStats (data-viz widgets), and the dev linter (a development-only mistake-spotter). The UI add-ons require the core tokens and author into VantaUI's cascade layers at zero specificity, so they theme from your tokens and never need `!important`.
 
 Prerequisites: load core (`class="vui"` on a root, plus the core stylesheet). Then load the add-on you want. See the hub: https://vantaui-css.khodok.com/llms.txt
 
@@ -21,6 +21,37 @@ import 'vantaui-css/stats';      // VantaStats
 <link rel="stylesheet" href=".../dist/vantaui.min.css" />
 <link rel="stylesheet" href=".../dist/ext/stats.min.css" />
 ```
+
+---
+
+# Dev linter (`vantaui-css/dev` + `vantaui-css/lint`)
+
+A DEVELOPMENT-ONLY companion that flags the mistakes VantaUI's semantic-first design cannot style its way out of: bad HTML/a11y (two `<h1>`, a skipped heading level like h2 → h4, an `<img>` with no alt, a stray `[role="tab"]` outside a `[role="tablist"]`) and VantaUI helper-word conflicts (two mutually-exclusive words on one element, e.g. `fill ghost` or `raised inset`). Never ship it to production.
+
+Two halves that share one visual language:
+
+- `vantaui-css/dev` (CSS): the overlay paint. It outlines and labels any element carrying `data-vui-lint="<message>"`, and it does a few pure-CSS static checks on its own (an `<img>` with no alt, an empty link/button) with no JS at all. It authors into the reserved `vui.ext` layer, so it sits above components without `!important`.
+- `vantaui-css/lint` (JS): the walker. `lint()` scans the rendered DOM, stamps `data-vui-lint` on each offender (which the dev CSS paints), and `console.warn(message, node)`s a clickable reference. The helper-conflict rules are generated from the catalog (`docs/compat-data.js`), so they never drift.
+
+Nothing runs automatically and nothing is added to the core `init()`; you opt in, in development only.
+
+```js
+import 'vantaui-css';        // core
+import 'vantaui-css/dev';    // dev overlay paint — DEV builds only
+import {lint} from 'vantaui-css/lint';
+
+lint();                          // one pass over document
+lint(document, {observe: true}); // re-lint on DOM changes (SPA / Vue / Nuxt)
+```
+
+```html
+<!-- plain HTML, dev only -->
+<link rel="stylesheet" href=".../dist/ext/dev.css" />
+<script src=".../js/vantaui-lint.global.js"></script>
+<script>vuiLint(document, {observe: true});</script>
+```
+
+Each finding sets `data-vui-lint="<message>"` on the node; `lint()` returns the list of `{node, message}` and also logs each. `clear()` removes the markers; `stop()` ends `observe` mode. Limitation by design: a runtime DOM linter points at the rendered node, not a framework source line (`.vue` / `.jsx`) the way a compiler-hooked tool would.
 
 ---
 

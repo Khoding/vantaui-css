@@ -36,7 +36,7 @@ init();                                   // boots tabs, animated meters, drawer
 
 Fonts (Chakra Petch · Rajdhani · Share Tech Mono · Material Symbols) load automatically via `@import` inside the stylesheet. Note that the remote `@import` can break some build tools (like LightningCSS). If this occurs, you can vendor a copy of the stylesheet with the `@import` line removed and load the fonts separately.
 
-Package entry points (`exports`): `vantaui-css` (min css), `vantaui-css/css` (unminified), `vantaui-css/min`, `vantaui-css/stats` (VantaStats add-on), `vantaui-css/prose` (VantaProse add-on), `vantaui-css/js`, `vantaui-css/js/global`, `vantaui-css/vue`, `vantaui-css/nuxt`, `vantaui-css/src/*`. Add-ons load separately so core stays slim. See the Extensions section. **Breaking in v2.0:** `vui-prose` moved out of core into the `vantaui-css/prose` add-on (same markup, new import).
+Package entry points (`exports`): `vantaui-css` (min css), `vantaui-css/css` (unminified), `vantaui-css/min`, `vantaui-css/stats` (VantaStats add-on), `vantaui-css/prose` (VantaProse add-on), `vantaui-css/dev` (dev-linter overlay CSS), `vantaui-css/js`, `vantaui-css/js/global`, `vantaui-css/lint` (dev linter JS), `vantaui-css/lint/global`, `vantaui-css/vue`, `vantaui-css/nuxt`, `vantaui-css/src/*`. Add-ons load separately so core stays slim. See the Extensions section. **Breaking in v2.0:** `vui-prose` moved out of core into the `vantaui-css/prose` add-on (same markup, new import).
 
 ## Mental model: Settings, Elements, and Helpers (the BeerCSS way)
 
@@ -711,6 +711,10 @@ import 'vantaui-css/stats';      // VantaStats: data-viz widgets
 ```
 
 Plain HTML: link `dist/ext/prose.css` / `dist/ext/stats.css` (or `.min.css`) after the core stylesheet.
+
+## Dev linter (`vantaui-css/dev` + `vantaui-css/lint`)
+
+A DEVELOPMENT-ONLY mistake-spotter; never ship it to production. It flags bad HTML/a11y (two `<h1>`, a skipped heading level h2 → h4, an `<img>` with no alt, a `[role="tab"]` outside a `[role="tablist"]`) and VantaUI helper-word conflicts (two mutually-exclusive words on one element, e.g. `fill ghost`, `raised inset`). Two halves share one visual language: `vantaui-css/dev` (CSS) outlines + labels any element carrying `data-vui-lint="<message>"` (authoring into the `vui.ext` layer, no `!important`) and does a few pure-CSS static checks itself (`<img>` with no alt, empty link/button); `vantaui-css/lint` (JS) walks the DOM, stamps `data-vui-lint` on offenders, and `console.warn`s each. The conflict rules are generated from the catalog (`docs/compat-data.js`) so they never drift. Nothing auto-runs and nothing is added to core `init()`; opt in only in dev: `import {lint} from 'vantaui-css/lint'; lint(document, {observe:true})`. `lint()` returns `{node, message}[]`; `clear()` removes markers; `stop()` ends observe mode. It points at the rendered node, not a `.vue`/`.jsx` source line (a runtime DOM linter cannot, by design).
 
 ## VantaProse (`vantaui-css/prose`)
 

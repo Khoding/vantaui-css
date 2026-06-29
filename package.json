@@ -41,8 +41,14 @@
       "style": "./dist/ext/prose.css",
       "default": "./dist/ext/prose.min.css"
     },
+    "./dev": {
+      "style": "./dist/ext/dev.css",
+      "default": "./dist/ext/dev.min.css"
+    },
     "./js": "./js/vantaui.js",
     "./js/global": "./js/vantaui.global.js",
+    "./lint": "./js/vantaui-lint.js",
+    "./lint/global": "./js/vantaui-lint.global.js",
     "./vue": "./vue/index.js",
     "./nuxt": "./nuxt/module.mjs",
     "./src/*": "./src/*",
@@ -62,19 +68,21 @@
     "release:local": "node scripts/build.mjs && node scripts/release-local.mjs",
     "lint": "eslint .",
     "lint:css": "eslint \"src/**/*.css\"",
-    "lint:js": "eslint \"js/vantaui.js\" \"vue/**/*.js\"",
+    "lint:js": "eslint \"js/vantaui.js\" \"js/vantaui-lint.js\" \"vue/**/*.js\"",
     "palette": "node scripts/palette-oklch.mjs",
     "shot": "node scripts/shot.mjs",
     "audit:overflow": "node scripts/audit-overflow.mjs",
     "probe": "node scripts/probe-css.mjs",
     "reconcile": "node scripts/reconcile-compat.mjs",
     "verify:compat": "node scripts/probe-css.mjs && node scripts/reconcile-compat.mjs",
+    "gen:lint": "node scripts/gen-lint-rules.mjs",
     "prepare": "husky",
     "prepublishOnly": "node scripts/build.mjs"
   },
   "lint-staged": {
     "src/**/*.css": "eslint",
     "js/vantaui.js": "eslint",
+    "js/vantaui-lint.js": "eslint",
     "vue/**/*.js": "eslint"
   },
   "devDependencies": {

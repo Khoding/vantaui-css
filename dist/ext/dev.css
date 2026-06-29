@@ -1,0 +1,36 @@
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components, vui.ext, vui.utilities;
+@layer vui.tokens, vui.reset, vui.base, vui.layout, vui.components;
+
+@layer vui.ext {
+  :where([data-vui-lint]), :where(.vui img:not([alt])), :where(.vui a[href]:empty), :where(.vui button:empty) {
+    outline: 2px dashed var(--red-400);
+    outline-offset: 2px;
+  }
+
+  :where([data-vui-lint]):after, :where(.vui a[href]:empty):after, :where(.vui button:empty):after {
+    content: "⚠ " attr(data-vui-lint);
+    border: var(--border-hair) solid var(--red-400);
+    background-color: var(--ink-900);
+    color: var(--red-400);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    white-space: nowrap;
+    vertical-align: top;
+    margin-block-start: 4px;
+    margin-inline-start: 4px;
+    padding-block: 2px;
+    padding-inline: 6px;
+    line-height: 1.3;
+    display: inline-block;
+  }
+
+  :where(.vui a[href]:empty):after {
+    content: "⚠਎mpty link (no text or aria-label)";
+  }
+
+  :where(.vui button:empty):after {
+    content: "⚠਎mpty button (no text or aria-label)";
+  }
+}
+
+@layer vui.utilities;

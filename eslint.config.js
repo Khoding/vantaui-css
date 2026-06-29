@@ -29,6 +29,8 @@ export default defineConfig([
     'node_modules/',
     'scripts/',
     'js/vantaui.global.js', // generated from js/vantaui.js — see scripts/build.mjs
+    'js/vantaui-lint.global.js', // generated from js/vantaui-lint.js
+    'js/vantaui-lint-rules.js', // generated from docs/compat-data.js
   ]),
 
   // ---- CSS: Baseline "newly available" ----
@@ -85,6 +87,6 @@ export default defineConfig([
   // ---- JS: browser-API compat against browserslist ----
   {
     ...compat.configs['flat/recommended'],
-    files: ['js/vantaui.js', 'vue/**/*.js'],
+    files: ['js/vantaui.js', 'js/vantaui-lint.js', 'vue/**/*.js'],
   },
 ]);

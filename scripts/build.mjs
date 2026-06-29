@@ -19,6 +19,7 @@ import {mkdirSync, writeFileSync, readFileSync, rmSync, copyFileSync, readdirSyn
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {dirname, resolve, basename} from 'node:path';
 import {scanUniverse, catalogNames} from './lib/css-universe.mjs';
+import {genLintRules} from './gen-lint-rules.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
@@ -78,6 +79,7 @@ const DOC_TERMS = {
 // add-ons are documented in docs/llms-extensions.txt. Pure @import manifests
 // (e.g. stats.css) carry no rules of their own, so they are skipped.
 const EXT_DOC_TERMS = {
+  dev: ['dev linter', 'data-vui-lint'],
   prose: ['prose'],
   'stat-card': ['stat card'],
   bars: ['bar chart'],
@@ -89,7 +91,7 @@ const EXT_DOC_TERMS = {
   legend: ['legend'],
 };
 const EXT_MANIFESTS = new Set(['stats']); // entry files that only re-export parts
-const EXT_DIRS = ['ext/prose', 'ext/stats'];
+const EXT_DIRS = ['ext/dev', 'ext/prose', 'ext/stats'];
 
 function checkDocsCoverage() {
   const components = readdirSync(resolve(srcDir, 'components'))
@@ -260,6 +262,7 @@ function build({entry, minify, outFile, fonts = false}) {
 // cascade-layer order and bundles into dist/ext/. They carry no remote font
 // @import, so they skip the font-strip dance the core entry needs.
 const ADDONS = [
+  {name: 'dev', entry: resolve(srcDir, 'ext/dev/dev.css')},
   {name: 'prose', entry: resolve(srcDir, 'ext/prose/prose.css')},
   {name: 'stats', entry: resolve(srcDir, 'ext/stats/stats.css')},
 ];
@@ -268,15 +271,15 @@ const ADDONS = [
 // single source of truth; the module already auto-inits and assigns window.vui,
 // so an ESM→IIFE conversion is all the plain-<script> / file:// build needs.
 // (Same browser floor as the CSS targets above.)
-function buildGlobal() {
-  const srcJs = resolve(root, 'js', 'vantaui.js');
-  const destJs = resolve(root, 'js', 'vantaui.global.js');
+// IIFE build of an ES module for plain-<script> / file:// use (same browser
+// floor as the CSS targets). Both module sources already assign their window
+// global, so the conversion is all the classic build needs.
+function buildGlobalFrom(srcName, destName, note) {
+  const destJs = resolve(root, 'js', destName);
   const banner =
-    '/* GENERATED from js/vantaui.js by scripts/build.mjs — do not edit by hand.\n' +
-    '   Classic-script build: plain <script src="vantaui.global.js"> (works over\n' +
-    '   file:// too). Exposes window.vui and auto-inits. The CSS works without it. */';
+    `/* GENERATED from js/${srcName} by scripts/build.mjs — do not edit by hand.\n   ${note} */`;
   esbuild({
-    entryPoints: [srcJs],
+    entryPoints: [resolve(root, 'js', srcName)],
     outfile: destJs,
     bundle: true,
     format: 'iife',
@@ -284,13 +287,27 @@ function buildGlobal() {
     banner: {js: banner},
     legalComments: 'inline',
   });
-  const bytes = readFileSync(destJs).length;
-  console.log(`✔ ${'js/vantaui.global.js'.padEnd(16)} ${(bytes / 1024).toFixed(1)} kB`);
+  console.log(`✔ ${('js/' + destName).padEnd(16)} ${(readFileSync(destJs).length / 1024).toFixed(1)} kB`);
+}
+
+function buildGlobal() {
+  buildGlobalFrom(
+    'vantaui.js',
+    'vantaui.global.js',
+    'Classic-script build: <script src="vantaui.global.js"> (works over file:// too).\n   Exposes window.vui and auto-inits. The CSS works without it.',
+  );
+  // Dev linter, classic build. Opt-in only (window.vuiLint); never auto-runs.
+  buildGlobalFrom(
+    'vantaui-lint.js',
+    'vantaui-lint.global.js',
+    'DEV-ONLY dev linter: <script src="vantaui-lint.global.js"> exposes window.vuiLint.\n   Never ship to production. Pair with the dev CSS layer (dist/ext/dev.css).',
+  );
 }
 
 console.log('VantaUI — building dist/ …');
 checkDocsCoverage();
 await checkCatalogNames();
+await genLintRules(); // regenerate js/vantaui-lint-rules.js from the catalog
 try {
   writeFileSync(tmpEntry, entryText.replace(LOCAL_FONTS_IMPORT, ''));
   build({entry: tmpEntry, minify: false, outFile: 'vantaui.css', fonts: true});

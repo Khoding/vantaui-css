@@ -112,6 +112,22 @@ document.querySelectorAll('section[id]').forEach(s => io.observe(s));
 
 The `rootMargin` creates a trigger band roughly 12%–22% from the top of the viewport. A section becomes active when its top edge crosses into that band, so only one link is highlighted at a time and it reflects where the reader actually is. The `active` class is the same one VantaUI's navigation CSS already styles for current-page links.
 
+## Dev linter (`vantaui-css/lint`)
+
+A DEVELOPMENT-ONLY companion (separate from the core behaviours; not part of `init()` and never auto-runs). It walks the rendered DOM for mistakes VantaUI cannot style around — bad HTML/a11y (multiple `<h1>`, a skipped heading level, an `<img>` with no alt, a `[role="tab"]` outside a `[role="tablist"]`) and helper-word conflicts (two mutually-exclusive words on one element, e.g. `fill ghost`). Each finding gets `data-vui-lint="<message>"` on the node (painted by the `vantaui-css/dev` CSS overlay) and a `console.warn(message, node)`. The conflict rules are generated from the catalog, so they never drift.
+
+- **`lint(root = document, opts?)`**: runs one pass; returns `{node, message}[]`. `opts.observe` installs a `MutationObserver` to re-lint on DOM changes (SPA / Vue / Nuxt route swaps).
+- **`clear(root = document)`**: removes all `data-vui-lint` markers.
+- **`stop(root = document)`**: disconnects the observer started by `observe` and clears markers.
+
+```js
+import {lint} from 'vantaui-css/lint';
+import 'vantaui-css/dev'; // the overlay paint — DEV builds only
+lint(document, {observe: true});
+```
+
+Pair it with the framework adapters' dev hooks if you like: call `lint()` after `init()` on `page:finish` (Nuxt) or on mount (Vue). It points at the rendered node, not a `.vue`/`.jsx` source line — a runtime DOM linter cannot map back to source the way a compiler-hooked tool (e.g. Nuxt hints) does.
+
 ## Vue 3
 
 ```js
