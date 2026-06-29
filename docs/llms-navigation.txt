@@ -51,7 +51,7 @@ A `<header>` becomes a tactical app bar when it carries a `<nav>`, is the top ba
 The header is a **container-query context**: when the BAR itself (not just the viewport) gets narrower than 52rem, the inline nav + search collapse and the menu button (any header `<button>` with `aria-controls`/`commandfor`/`command`/`data-open`) appears.
 
 - Inside the header: an `<hr>` is a vertical divider; a `<menu>` is the trailing actions cluster.
-- Shape/tone helpers: `sticky` `glow` `bare` `tall` `center` (centers the nav) `float` (detached chamfered bar). Alignment: `max` (flex spacer) · `right` / `left`.
+- Shape/tone helpers: `sticky` `glow` `bare` `tall` `center` (centers the nav) `float` (detached chamfered bar). Alignment: `max` (flex spacer) · `right` / `left`. Note: `float` supplies its own shadow and border, so `glow` has no effect on a `float` header (do not combine them).
 
 ## Footer
 

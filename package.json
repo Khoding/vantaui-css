@@ -66,6 +66,8 @@
     "palette": "node scripts/palette-oklch.mjs",
     "shot": "node scripts/shot.mjs",
     "audit:overflow": "node scripts/audit-overflow.mjs",
+    "probe": "node scripts/probe-css.mjs",
+    "reconcile": "node scripts/reconcile-compat.mjs",
     "prepare": "husky",
     "prepublishOnly": "node scripts/build.mjs"
   },

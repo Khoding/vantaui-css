@@ -243,7 +243,7 @@ export const COMPONENTS = [
     ],
     knobs: [],
     combines: ['badge', 'avatar', 'type-roles'],
-    conflicts: [],
+    conflicts: ['vui-dot--cyan ↔ vui-dot--threat ↔ vui-dot--warn'],
     utilities: [],
   },
   {
@@ -344,7 +344,7 @@ export const COMPONENTS = [
     combines: ['button', 'badge', 'dl', 'table', 'meter', 'tabs', 'timeline', 'alert', 'empty', 'kv', 'container'],
     conflicts: [
       'raised ↔ inset ↔ flat ↔ stage',
-      'tone words mutually exclusive',
+      'amber ↔ cyan ↔ green ↔ red',
       'dim ↔ vivid',
       'Do not add .vui-container to the <article> — wrap the panel in a container instead (<div class="vui-container"><article>…)',
     ],
@@ -427,7 +427,7 @@ export const COMPONENTS = [
     ],
     knobs: [],
     combines: ['button', 'avatar', 'table', 'panel', 'header'],
-    conflicts: ['tone words mutually exclusive'],
+    conflicts: ['amber ↔ cyan ↔ green ↔ neutral ↔ red'],
     utilities: ['spacing'],
   },
   {
@@ -451,7 +451,7 @@ export const COMPONENTS = [
     ],
     knobs: [{ name: '--_size', note: 'Footprint (set via small/large or inline)' }],
     combines: ['badge', 'dot'],
-    conflicts: ['round ↔ hex', 'small ↔ large', 'status words mutually exclusive'],
+    conflicts: ['round ↔ hex', 'small ↔ large', 'busy ↔ idle ↔ offline ↔ online'],
     utilities: ['spacing'],
   },
   {
@@ -586,7 +586,7 @@ export const COMPONENTS = [
     ],
     knobs: [{ name: '--vui-alert-glyph', note: 'Override the leading glyph' }],
     combines: ['panel', 'button'],
-    conflicts: ['tone words mutually exclusive'],
+    conflicts: ['info ↔ secure ↔ threat ↔ warn'],
     utilities: ['spacing'],
   },
   {
@@ -750,7 +750,10 @@ export const COMPONENTS = [
     ],
     knobs: [],
     combines: ['navigation', 'menu', 'button', 'badge'],
-    conflicts: [],
+    conflicts: [
+      'float ↔ glow',
+      'glow has no effect on a float header (the floating bar overrides its shadow)',
+    ],
     utilities: ['breakpoint'],
   },
   {
